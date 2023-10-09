@@ -22,7 +22,7 @@ List of team members responsible for development:
 [Fill-in] List of team members responsible for operations:
 
 - Jan Janssens | @janjanssens(githubusername)
-- Pieter Deconinck | @pieter-deconinck
+- Pieter Deconinck | @Pieter-Deconinck
 - ...
 
 ## Technologies & Packages
