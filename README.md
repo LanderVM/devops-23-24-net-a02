@@ -2,18 +2,20 @@
 
 ## Group
 
-- [Fill-in] Project
-- [Fill-in] Group number
+- Foodtruck Project
+- A02 Group number
 
 ## Team members
 
 ### Development:
 
-[Fill-in] List of team members responsible for development:
+List of team members responsible for development:
 
-- Jan Janssens | @janjanssens(githubusername)
-- ...
-- ...
+- Kilian Ostijn | @Kilian3005
+- Lander Van Molle | @LanderVM
+- Sander Geuens | @SanderGeuens
+- Thomas Lissens | @ThomasLissens
+- Maurice Cantaert | @Skerath
 
 ### Operations:
 
