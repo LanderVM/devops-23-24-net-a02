@@ -23,6 +23,7 @@ List of team members responsible for development:
 
 - Jan Janssens | @janjanssens(githubusername)
 - Pieter Deconinck | @Pieter-Deconinck
+- Metehan Atili | @MetehanAtili
 - ...
 
 ## Technologies & Packages
