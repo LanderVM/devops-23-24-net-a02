@@ -1,6 +1,6 @@
 ﻿namespace Domain;
 
-//Todo Domain classes
+// TODO domain classes
 public class Class1
 {
 }
