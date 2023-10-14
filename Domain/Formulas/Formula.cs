@@ -15,8 +15,8 @@ public class Formula
     {
         Equipment.Add(new Equipment(
             new Image("https://blazor.radzen.com/images/community.svg", "Food truck placeholder img"),
-            "FoodTruck",
-            "The party begins here with Blanche's flagship FoodTruck"));
+            "The Food Truck",
+            "The party begins here with Blanche's flagship FoodTruck")); // TODO replace with foodtruck obj from db once available
         foreach (var eq in equipment)
             Equipment.Add(eq);
 
