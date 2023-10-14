@@ -4,7 +4,6 @@ using Shouldly;
 
 namespace FormulaTests;
 
-// TODO check for way to do multiple assertions like junit csv/methodsource ?
 public class FormulaTests
 {
     [Fact]
