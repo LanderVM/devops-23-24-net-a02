@@ -4,6 +4,7 @@ using Shouldly;
 
 namespace FormulaTests;
 
+// TODO check for way to do multiple assertions like junit csv/methodsource ?
 public class FormulaTests
 {
     [Fact]
@@ -25,7 +26,7 @@ public class FormulaTests
         Image image = new Image("https://blazor.radzen.com/images/community.svg", "Placeholder image");
         equipment.Add(new Equipment(image, "BBQ", "Tasty barbecue stuff!"));
         equipment.Add(new Equipment(image, "Tent Decoration", "Tents for a rainy day."));
-        const string title = "";
+        const string title = "The extended food truck formula";
         const string description =
             "Celebrating the new academic year? Sunny or rainy, this formula takes care of your students!";
 
@@ -34,5 +35,43 @@ public class FormulaTests
         formula.Equipment.Count.ShouldBe(equipment.Count + 1);
         formula.Equipment.ShouldContain(equipment[0]);
         formula.Equipment.ShouldContain(equipment[1]);
+    }
+
+    [Theory]
+    [InlineData("")]
+    [InlineData("    ")]
+    [InlineData(null)]
+    [InlineData("the")] // < 10 char
+    [InlineData("not quite      ")] // >= 10 char, but not after it gets trimmed
+    [InlineData("   not quite")] // >= 10 char, but not after it gets trimmed
+    public void Create_new_formula_invalid_title(string title)
+    {
+        List<Equipment> equipment = new();
+        const string description =
+            "Celebrating the new academic year? Sunny or rainy, this formula takes care of your students!";
+
+
+        Should.Throw<ArgumentException>(() =>
+        {
+            Formula formula = new Formula(equipment, title, description);
+        });
+    }
+
+    [Theory]
+    [InlineData("")]
+    [InlineData("    ")]
+    [InlineData(null)]
+    [InlineData("the best party exp")] // < 24 char
+    [InlineData("the best party exp quite    ")] // >= 24 char, but not after it gets trimmed
+    [InlineData("      the best party exp quite ")] // >= 24 char, but not after it gets trimmed
+    public void Create_new_formula_description_invalid(string description)
+    {
+        List<Equipment> equipment = new();
+        const string title = "long enough title";
+
+        Should.Throw<ArgumentException>(() =>
+        {
+            Formula formula = new Formula(equipment, title, description);
+        });
     }
 }
