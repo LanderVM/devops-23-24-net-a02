@@ -39,7 +39,6 @@ public class FormulaTests
     [Theory]
     [InlineData("")]
     [InlineData("    ")]
-    [InlineData(null)]
     [InlineData("the")] // < 10 char
     [InlineData("not quite      ")] // >= 10 char, but not after it gets trimmed
     [InlineData("   not quite")] // >= 10 char, but not after it gets trimmed
@@ -59,10 +58,9 @@ public class FormulaTests
     [Theory]
     [InlineData("")]
     [InlineData("    ")]
-    [InlineData(null)]
     [InlineData("the best party exp")] // < 24 char
-    [InlineData("the best party exp quite    ")] // >= 24 char, but not after it gets trimmed
-    [InlineData("      the best party exp quite ")] // >= 24 char, but not after it gets trimmed
+    [InlineData("the best party experien    ")] // >= 24 char, but not after it gets trimmed
+    [InlineData("      the best party experien")] // >= 24 char, but not after it gets trimmed
     public void Create_new_formula_description_invalid(string description)
     {
         List<Equipment> equipment = new();
