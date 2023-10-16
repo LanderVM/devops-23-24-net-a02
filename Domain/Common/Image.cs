@@ -2,7 +2,7 @@
 
 public class Image
 {
-    public string ImageUrl { get; set; } // TODO discuss how we'll be storing an image
+    public string ImageUrl { get; set; } // TODO blob storage
     public string AltText { get; set; }
 
     public Image(string imageUrl, string altText)
