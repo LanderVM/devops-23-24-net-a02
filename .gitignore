@@ -477,3 +477,5 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 
+
+.idea/.idea.devops-23-24-net-a02/.idea/
