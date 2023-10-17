@@ -1,5 +1,4 @@
-﻿using Ardalis.GuardClauses;
-using Domain.Common;
+﻿using Domain.Common;
 
 namespace Domain.Formulas;
 

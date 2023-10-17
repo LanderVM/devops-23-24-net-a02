@@ -1,6 +1,4 @@
-﻿using Ardalis.GuardClauses;
-
-namespace Domain.Formulas;
+﻿namespace Domain.Formulas;
 
 public class Description
 {
