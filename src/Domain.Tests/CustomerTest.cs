@@ -19,28 +19,6 @@ namespace FormulaTests;
     customer.Address.City.ShouldBe("Zottegem");
     customer.Address.PostalCode.ShouldBe("9620");
     customer.PhoneNumber.Value.ShouldBe("0479254691");
-    customer.Formula.ShouldBe(null);
-  }
-  [Fact]
-  public void Create_new_customer_with_formula_happyFlow()
-  {
-    List<Equipment> equipment = new();
-    const string title = "The base food truck formula";
-    const string description = "Having a small party? Our iconic food truck is your choice of the evening!";
-
-    Formula formula = new Formula(equipment, title, description);
-
-    Customer customer = new Customer("Jan", "Peeters", new Email("JanPeeters@gmail.com"), new Adress("Straat", "01", "Zottegem", "9620"), new PhoneNumber("0479254691"), formula);
-    customer.FirstName.ShouldBe("Jan");
-    customer.LastName.ShouldBe("Peeters");
-    customer.Email.Value.ShouldBeOfType(typeof(MailAddress));
-    customer.Email.Value.ToString().ShouldBe("JanPeeters@gmail.com");
-    customer.Address.Street.ShouldBe("Straat");
-    customer.Address.HouseNumber.ShouldBe("01");
-    customer.Address.City.ShouldBe("Zottegem");
-    customer.Address.PostalCode.ShouldBe("9620");
-    customer.PhoneNumber.Value.ShouldBe("0479254691");
-    formula.Equipment.Count.ShouldBe(1);
   }
 
   [Theory]

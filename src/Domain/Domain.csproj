@@ -10,4 +10,8 @@
       <PackageReference Include="Ardalis.GuardClauses" Version="4.1.1" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Reservations\" />
+    </ItemGroup>
+
 </Project>

@@ -4,7 +4,7 @@ namespace Domain.Customer;
 
 public class PhoneNumber
 {
-  public string Value { get; } = default!;
+  public string Value { get; }
 
   public PhoneNumber(string value)
   {
