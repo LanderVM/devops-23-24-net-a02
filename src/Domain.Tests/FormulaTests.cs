@@ -23,10 +23,11 @@ public class FormulaTests
     List<Equipment> equipment = new();
     Image image = new Image("https://blazor.radzen.com/images/community.svg", "Placeholder image");
     equipment.Add(new Equipment(image, "BBQ Deluxe", "Tasty barbecue stuff, in a deluxe package!", 100M, 2));
-    equipment.Add(new Equipment(image, "Tent Decoration", "Tents for a rainy day. Or perhaps for when it's too hot to sit in the sun?", 35.99M, 21));
+    equipment.Add(new Equipment(image, "Tent Decoration",
+      "Tents for a rainy day. Or perhaps for when it's too hot to sit in the sun?", 35.99M, 21));
     const string title = "The extended food truck formula";
     const string description =
-        "Celebrating the new academic year? Sunny or rainy, this formula takes care of your students!";
+      "Celebrating the new academic year? Sunny or rainy, this formula takes care of your students!";
 
     Formula formula = new Formula(equipment, title, description);
 
@@ -43,12 +44,12 @@ public class FormulaTests
   {
     List<Equipment> equipment = new();
     const string description =
-        "Celebrating the new academic year? Sunny or rainy, this formula takes care of your students!";
+      "Celebrating the new academic year? Sunny or rainy, this formula takes care of your students!";
 
 
     Should.Throw<ArgumentException>(() =>
     {
-      Formula formula = new Formula(equipment, title, description);
+      new Formula(equipment, title, description);
     });
   }
 
@@ -63,7 +64,49 @@ public class FormulaTests
 
     Should.Throw<ArgumentException>(() =>
     {
-      Formula formula = new Formula(equipment, title, description);
+      new Formula(equipment, title, description);
+    });
+  }
+
+  [Theory]
+  [InlineData(-50)]
+  [InlineData(int.MinValue)]
+  public void Create_new_formula_stock_invalid(int stock)
+  {
+    List<Equipment> equipment = new();
+    const string title = "The extended food truck formula";
+    const string description =
+      "Celebrating the new academic year? Sunny or rainy, this formula takes care of your students!";
+
+
+    Should.Throw<ArgumentException>(() =>
+    {
+      equipment.Add(new Equipment(new Image("image url", "alt text"), "BBQ Deluxe",
+        "Tasty barbecue stuff, in a deluxe package!", 20.50M, stock));
+      new Formula(equipment, title, description);
+    });
+  }
+
+  [Theory]
+  [InlineData("-50")]
+  [InlineData("-23.50")]
+  [InlineData("-0.0000000001")]
+  [InlineData("-70.23581629000")]
+  public void Create_new_formula_equipmentPrice_invalid(string number)
+  {
+    decimal price = Convert.ToDecimal(number);
+
+    List<Equipment> equipment = new();
+    const string title = "The extended food truck formula";
+    const string description =
+      "Celebrating the new academic year? Sunny or rainy, this formula takes care of your students!";
+
+
+    Should.Throw<ArgumentException>(() =>
+    {
+      equipment.Add(new Equipment(new Image("image url", "alt text"), "BBQ Deluxe",
+        "Tasty barbecue stuff, in a deluxe package!", price, 50));
+      new Formula(equipment, title, description);
     });
   }
 }
