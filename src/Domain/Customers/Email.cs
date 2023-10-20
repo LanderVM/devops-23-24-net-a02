@@ -4,6 +4,8 @@ namespace Domain.Customers;
 
 public class Email
 {
+  private Email() { } // EF Core constructor
+
   public MailAddress Value { get; }
 
   public Email(string value)

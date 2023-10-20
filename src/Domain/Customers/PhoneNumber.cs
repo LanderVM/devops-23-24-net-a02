@@ -4,6 +4,7 @@ namespace Domain.Customers;
 
 public class PhoneNumber
 {
+  private PhoneNumber() { } // EF Core constructor
   public string Value { get; }
 
   public PhoneNumber(string value)

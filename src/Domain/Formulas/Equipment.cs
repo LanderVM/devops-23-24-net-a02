@@ -4,6 +4,7 @@ namespace Domain.Formulas;
 
 public class Equipment
 {
+  private Equipment() { } // EF Core constructor
   public Image Image { get; set; }
   public Description Description { get; set; }
 

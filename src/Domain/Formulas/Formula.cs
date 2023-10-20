@@ -2,6 +2,9 @@
 
 public class Formula
 {
+  
+  private Formula() { } // EF Core constructor
+
   public List<Equipment> Equipment { get; } = new();
 
   public Description Description { get; set; }

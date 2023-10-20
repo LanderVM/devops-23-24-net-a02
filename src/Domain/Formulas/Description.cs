@@ -2,6 +2,8 @@
 
 public class Description
 {
+  private Description() { } // EF Core constructor TODO figure out if this could/should be in same table as parent obj?
+
   private string _title = "Er is geen titel beschikbaar voor dit item.";
 
   public string Title
@@ -27,7 +29,7 @@ public class Description
   }
 
   public Description(string title,
-      string subtext)
+    string subtext)
   {
     Title = title;
     Subtext = subtext;
