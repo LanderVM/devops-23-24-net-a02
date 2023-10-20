@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Domain.Customer;
+namespace Domain.Customers;
 
 public class PhoneNumber
 {
@@ -11,13 +11,14 @@ public class PhoneNumber
     if (isValidPhoneNumber(value))
     {
       Value = Guard.Against.NullOrWhiteSpace(value);
-    } else 
-    { 
+    }
+    else
+    {
       throw new ArgumentException($"{value} is not a valid phone number!");
     }
   }
 
-  private bool isValidPhoneNumber(string value) 
+  private bool isValidPhoneNumber(string value)
   {
     return new PhoneAttribute().IsValid(value);
   }

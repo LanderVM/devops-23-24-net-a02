@@ -1,10 +1,10 @@
 ﻿using System.Net.Mail;
 
-namespace Domain.Customer;
+namespace Domain.Customers;
 
 public class Email
 {
-  public MailAddress Value { get; } 
+  public MailAddress Value { get; }
 
   public Email(string value)
   {
@@ -27,6 +27,7 @@ public class Email
     {
       return false;
     }
+
     try
     {
       var addr = new MailAddress(email);

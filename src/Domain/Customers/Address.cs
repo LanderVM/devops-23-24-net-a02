@@ -1,13 +1,13 @@
-﻿namespace Domain.Customer;
+﻿namespace Domain.Customers;
 
-public class Adress
+public class Address
 {
   public string Street { get; }
   public string HouseNumber { get; }
   public string City { get; }
   public string PostalCode { get; }
 
-  public Adress( string street, string houseNumber, string city, string postalCode) 
+  public Address( string street, string houseNumber, string city, string postalCode) 
   {   
     Street = Guard.Against.NullOrWhiteSpace(street, nameof(street)); 
     HouseNumber = Guard.Against.NullOrWhiteSpace(houseNumber, nameof(houseNumber));

@@ -1,6 +1,5 @@
 ﻿using System.Net.Mail;
-using Domain.Customer;
-using Domain.Formulas;
+using Domain.Customers;
 
 namespace FormulaTests;
 
@@ -9,7 +8,7 @@ namespace FormulaTests;
   [Fact]
   public void Create_new_customer_happyFlow()
   {
-    Customer customer = new Customer("Jan", "Peeters", new Email("JanPeeters@gmail.com"), new Adress("Straat", "01", "Zottegem", "9620"), new PhoneNumber("0479254691"));
+    Customer customer = new Customer("Jan", "Peeters", new Email("JanPeeters@gmail.com"), new Address("Straat", "01", "Zottegem", "9620"), new PhoneNumber("0479254691"));
     customer.FirstName.ShouldBe("Jan");
     customer.LastName.ShouldBe("Peeters");
     customer.Email.Value.ShouldBeOfType(typeof(MailAddress));
@@ -48,7 +47,7 @@ namespace FormulaTests;
   {
     Should.Throw<ArgumentException>(() =>
     {
-      new Adress(street, houseNumber, city, postalCode);
+      new Address(street, houseNumber, city, postalCode);
     });
   }
 
