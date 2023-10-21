@@ -6,4 +6,10 @@
 
 Welcome to your new app.
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+<NavLink href="hi">
+    <RadzenButton Text="@text"></RadzenButton>
+</NavLink>
+
+@code {
+    string text = "Page Not Found";
+}

@@ -4,9 +4,13 @@
         <FocusOnNavigate RouteData="@routeData" Selector="h1" />
     </Found>
     <NotFound>
-        <PageTitle>Not found</PageTitle>
-        <LayoutView Layout="@typeof(MainLayout)">
-            <p role="alert">Sorry, there's nothing at this address.</p>
-        </LayoutView>
+        <PageTitle>Not Found</PageTitle>
+            <div class="error-container">
+            <RadzenText TextStyle="TextStyle.H3" Text="404 - Not Found" />
+            <RadzenText TextStyle="TextStyle.Subtitle1" Text="Sorry, there's nothing at this address."/>
+            <NavLink href="">
+                <RadzenButton Text="Go Home"/>
+              </NavLink>
+            </div>
     </NotFound>
 </Router>
