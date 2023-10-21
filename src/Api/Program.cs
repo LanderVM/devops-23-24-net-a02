@@ -7,27 +7,21 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// TODO move sensitive data to environment
 var dbConnection = "server=localhost;user=root;password=ewdjProject$$2;database=devopsA02";
-// new MariaDbServerVersion
-// new MySqlServerVersion(new Version(8, 0, 34));
 var serverVersion = ServerVersion.AutoDetect(dbConnection);
 
 builder.Services.AddDbContext<DomainContext>(
   dbContextOptions =>
-    /*{
-      if (builder.Environment.IsDevelopment())
-        dbContextOptions.UseMySql(dbConnection, serverVersion)
-          .LogTo(Console.WriteLine, LogLevel.Information)
-          .EnableSensitiveDataLogging()
-          .EnableDetailedErrors();
-      else
-        dbContextOptions.UseMySql(dbConnection, serverVersion);
-    }*/
-    dbContextOptions
-      .UseMySql(dbConnection, serverVersion)
-      .LogTo(Console.WriteLine, LogLevel.Information)
-      .EnableSensitiveDataLogging()
-      .EnableDetailedErrors()
+  {
+    if (builder.Environment.IsDevelopment())
+      dbContextOptions.UseMySql(dbConnection, serverVersion)
+        .LogTo(Console.WriteLine, LogLevel.Information)
+        .EnableSensitiveDataLogging()
+        .EnableDetailedErrors();
+    else
+      dbContextOptions.UseMySql(dbConnection, serverVersion);
+  }
 );
 
 // TODO service for CRUD here
