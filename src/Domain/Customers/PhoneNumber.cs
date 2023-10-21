@@ -1,10 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Domain.Common;
 
 namespace Domain.Customers;
 
-public class PhoneNumber
+public class PhoneNumber : Entity
 {
   private PhoneNumber() { } // EF Core constructor
+
+  public Customer Customer { get; set; }
   public string Value { get; }
 
   public PhoneNumber(string value)

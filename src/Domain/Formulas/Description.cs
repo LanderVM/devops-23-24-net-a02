@@ -1,6 +1,8 @@
-﻿namespace Domain.Formulas;
+﻿using Domain.Common;
 
-public class Description
+namespace Domain.Formulas;
+
+public class Description : Entity
 {
   private Description() { } // EF Core constructor TODO figure out if this could/should be in same table as parent obj?
 

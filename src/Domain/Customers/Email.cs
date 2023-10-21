@@ -1,10 +1,13 @@
 ﻿using System.Net.Mail;
+using Domain.Common;
 
 namespace Domain.Customers;
 
-public class Email
+public class Email : Entity
 {
   private Email() { } // EF Core constructor
+
+  public Customer Customer { get; set; }
 
   public MailAddress Value { get; }
 

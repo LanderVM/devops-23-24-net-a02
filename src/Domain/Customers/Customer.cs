@@ -1,6 +1,8 @@
-﻿namespace Domain.Customers;
+﻿using Domain.Common;
 
-public class Customer
+namespace Domain.Customers;
+
+public class Customer : Entity
 {
   private Customer() { } // EF Core constructor
   public string FirstName { get; }

@@ -8,9 +8,7 @@ public class Image : Entity
 
   public string ImageUrl { get; set; } // TODO blob storage
   public string AltText { get; set; }
-
-  public Equipment Equipment { get; set; } // TODO only for equipment or for other entity's too?
-
+  
   public Image(string imageUrl, string altText/*, Equipment equipment*/)
   {
     ImageUrl = imageUrl;

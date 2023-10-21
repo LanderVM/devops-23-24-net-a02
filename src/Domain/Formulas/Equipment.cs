@@ -2,7 +2,7 @@
 
 namespace Domain.Formulas;
 
-public class Equipment
+public class Equipment : Entity
 {
   private Equipment() { } // EF Core constructor
   public Image Image { get; set; }

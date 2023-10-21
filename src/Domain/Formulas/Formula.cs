@@ -1,6 +1,8 @@
-﻿namespace Domain.Formulas;
+﻿using Domain.Common;
 
-public class Formula
+namespace Domain.Formulas;
+
+public class Formula : Entity
 {
   
   private Formula() { } // EF Core constructor

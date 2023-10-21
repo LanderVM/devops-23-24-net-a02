@@ -1,9 +1,12 @@
-﻿namespace Domain.Customers;
+﻿using Domain.Common;
 
-public class Address
+namespace Domain.Customers;
+
+public class Address : Entity
 {
   private Address() { } // EF Core constructor
 
+  public Customer Customer { get; set; }
   public string Street { get; }
   public string HouseNumber { get; }
   public string City { get; }
