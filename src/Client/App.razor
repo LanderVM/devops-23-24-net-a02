@@ -1,16 +1,14 @@
 ﻿<Router AppAssembly="@typeof(App).Assembly">
     <Found Context="routeData">
-        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
-        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)"/>
+        <FocusOnNavigate RouteData="@routeData" Selector="h1"/>
     </Found>
     <NotFound>
         <PageTitle>Not Found</PageTitle>
-            <div class="error-container">
-            <RadzenText TextStyle="TextStyle.H3" Text="404 - Not Found" />
-            <RadzenText TextStyle="TextStyle.Subtitle1" Text="Sorry, there's nothing at this address."/>
+        <MudAlert Severity="Severity.Success">The reactor is running at optimum temperature</MudAlert>
+        <div class="error-container">
             <NavLink href="">
-                <RadzenButton Text="Go Home"/>
-              </NavLink>
-            </div>
+            </NavLink>
+        </div>
     </NotFound>
 </Router>
