@@ -18,8 +18,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Client\devops-23-24-net-a02.Client.csproj" />
-    <ProjectReference Include="..\Persistence\devops-23-24-net-a02.Persistence.csproj" />
+    <ProjectReference Include="..\Domain\devops-23-24-net-a02.Domain.csproj" />
     <ProjectReference Include="..\Shared\devops-23-24-net-a02.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Persistence\Configurations\" />
+    <Folder Include="Persistence\Triggers\" />
   </ItemGroup>
 
 
