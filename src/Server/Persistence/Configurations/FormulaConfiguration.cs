@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Server.Persistence.Configurations;
 
-public class FormulaConfiguration : IEntityTypeConfiguration<Formula>
+public class FormulaConfiguration : EntityConfiguration<Formula>
 {
-  public void Configure(EntityTypeBuilder<Formula> builder)
+  public override void Configure(EntityTypeBuilder<Formula> builder)
   {
     builder.OwnsOne<Description>(f => f.Description);
   }

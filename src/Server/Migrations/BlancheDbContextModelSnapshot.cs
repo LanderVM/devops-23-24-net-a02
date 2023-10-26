@@ -36,12 +36,15 @@ namespace devops2324neta02.Server.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Image");
+                    b.ToTable("Image", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Formulas.Equipment", b =>
@@ -59,6 +62,9 @@ namespace devops2324neta02.Server.Migrations
                     b.Property<int>("ImageId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(65,30)");
 
@@ -74,7 +80,7 @@ namespace devops2324neta02.Server.Migrations
 
                     b.HasIndex("ImageId");
 
-                    b.ToTable("Equipments");
+                    b.ToTable("Equipments", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Formulas.Formula", b =>
@@ -86,12 +92,15 @@ namespace devops2324neta02.Server.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Formulas");
+                    b.ToTable("Formulas", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Formulas.Equipment", b =>
@@ -106,7 +115,7 @@ namespace devops2324neta02.Server.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("Domain.Formulas.Description", "Description", b1 =>
+                    b.OwnsOne("Domain.Formulas.Equipment.Description#Domain.Formulas.Description", "Description", b1 =>
                         {
                             b1.Property<int>("EquipmentId")
                                 .HasColumnType("int");
@@ -121,7 +130,7 @@ namespace devops2324neta02.Server.Migrations
 
                             b1.HasKey("EquipmentId");
 
-                            b1.ToTable("Equipments");
+                            b1.ToTable("Equipments", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("EquipmentId");
@@ -135,7 +144,7 @@ namespace devops2324neta02.Server.Migrations
 
             modelBuilder.Entity("Domain.Formulas.Formula", b =>
                 {
-                    b.OwnsOne("Domain.Formulas.Description", "Description", b1 =>
+                    b.OwnsOne("Domain.Formulas.Formula.Description#Domain.Formulas.Description", "Description", b1 =>
                         {
                             b1.Property<int>("FormulaId")
                                 .HasColumnType("int");
@@ -150,7 +159,7 @@ namespace devops2324neta02.Server.Migrations
 
                             b1.HasKey("FormulaId");
 
-                            b1.ToTable("Formulas");
+                            b1.ToTable("Formulas", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("FormulaId");
