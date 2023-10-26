@@ -1,5 +1,6 @@
 ﻿using Domain.Formulas;
 using Microsoft.EntityFrameworkCore;
+using Server.Persistence.Triggers;
 
 namespace Api.Data;
 
@@ -22,19 +23,17 @@ public class BlancheDbContext : DbContext
       .LogTo(Console.WriteLine, LogLevel.Information)
       .EnableSensitiveDataLogging()
       .EnableDetailedErrors();
+    
+    dbContextOptionsBuilder.UseTriggers(options =>
+    {
+      options.AddTrigger<EntityBeforeSaveTrigger>();
+    });
   }
 
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
-    modelBuilder.Entity<Formula>(builder =>
-    {
-      builder.OwnsOne(f => f.Description);
-    });
-
-    modelBuilder.Entity<Equipment>(builder =>
-    {
-      builder.OwnsOne(e => e.Description);
-    });
+    base.OnModelCreating(modelBuilder);
+    modelBuilder.ApplyConfigurationsFromAssembly(typeof(BlancheDbContext).Assembly);
   }
 
   public DbSet<Formula> Formulas => Set<Formula>();
