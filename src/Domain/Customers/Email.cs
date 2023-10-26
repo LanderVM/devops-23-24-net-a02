@@ -20,9 +20,9 @@ public class Email : Entity
     }
   }
 
-  public Customer Customer { get; set; }
+  public Customer Customer { get; set; } = default!;
 
-  public MailAddress Value { get; }
+  public MailAddress Value { get; } = default!;
 
   private bool IsValidEmail(string email)
   {

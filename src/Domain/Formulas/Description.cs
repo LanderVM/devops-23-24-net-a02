@@ -4,9 +4,9 @@ namespace Domain.Formulas;
 
 public class Description
 {
-  private string _subtext = "Er is geen uitleg beschikbaar voor dit item.";
+  private string _subtext = default!;
 
-  private string _title = "Er is geen titel beschikbaar voor dit item.";
+  private string _title = default!;
   private Description() { } // EF Core constructor TODO figure out if this could/should be in same table as parent obj?
 
   public Description(string title,

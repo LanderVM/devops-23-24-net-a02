@@ -19,8 +19,8 @@ public class PhoneNumber : Entity
     }
   }
 
-  public Customer Customer { get; set; }
-  public string Value { get; }
+  public Customer Customer { get; set; } = default!;
+  public string Value { get; } = default!;
 
   private bool isValidPhoneNumber(string value)
   {
