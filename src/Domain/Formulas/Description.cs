@@ -2,7 +2,7 @@
 
 namespace Domain.Formulas;
 
-public class Description : Entity
+public class Description
 {
   private string _subtext = "Er is geen uitleg beschikbaar voor dit item.";
 

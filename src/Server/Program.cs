@@ -12,9 +12,10 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddRazorPages();
 
 // TODO move sensitive data to environment
-var dbConnection = "server=172.168.1.10;user=vagrant;password='ewdjProject$$2';database=devopsA02";
+// var dbConnection = "server=172.168.1.10;user=vagrant;password='ewdjProject$$2';database=devopsA02";
+var dbConnection = "server=localhost;user=root;password='ewdjProject$$2';database=devopsA02";
 var serverVersion = ServerVersion.AutoDetect(dbConnection);
-
+  
 builder.Services.AddDbContext<BlancheDbContext>(
   dbContextOptions =>
   {
