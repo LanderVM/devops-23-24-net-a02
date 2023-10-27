@@ -17,6 +17,8 @@ public class Equipment : Entity
     Stock = stock;
   }
 
+  public List<Formula> Formulas { get; set; } = default!;
+
   public Image Image { get; set; } = default!;
   public Description Description { get; set; } = default!;
 

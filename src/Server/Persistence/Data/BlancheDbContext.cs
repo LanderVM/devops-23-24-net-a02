@@ -1,4 +1,5 @@
-﻿using Domain.Formulas;
+﻿using Domain.Customers;
+using Domain.Formulas;
 using Microsoft.EntityFrameworkCore;
 using Server.Persistence.Triggers;
 
@@ -38,4 +39,5 @@ public class BlancheDbContext : DbContext
 
   public DbSet<Formula> Formulas => Set<Formula>();
   public DbSet<Equipment> Equipments => Set<Equipment>();
+  public DbSet<Customer> Customers => Set<Customer>();
 }

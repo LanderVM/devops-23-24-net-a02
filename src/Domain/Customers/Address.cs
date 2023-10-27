@@ -2,7 +2,7 @@
 
 namespace Domain.Customers;
 
-public class Address : Entity
+public class Address
 {
   private Address() { } // EF Core constructor
 
@@ -14,7 +14,6 @@ public class Address : Entity
     PostalCode = Guard.Against.NullOrWhiteSpace(postalCode, nameof(postalCode));
   }
 
-  public Customer Customer { get; set; } = default!;
   public string Street { get; } = default!;
   public string HouseNumber { get; } = default!;
   public string City { get; } = default!;

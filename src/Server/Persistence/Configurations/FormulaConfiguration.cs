@@ -8,6 +8,8 @@ public class FormulaConfiguration : EntityConfiguration<Formula>
 {
   public override void Configure(EntityTypeBuilder<Formula> builder)
   {
-    builder.OwnsOne<Description>(f => f.Description);
+    builder.OwnsOne<Description>(formula => formula.Description);
+    builder.HasMany(formula => formula.Equipment).WithMany(equipment => equipment.Formulas)
+      .UsingEntity(join => join.ToTable("FormulaEquipment"));
   }
 }

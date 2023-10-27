@@ -3,7 +3,7 @@ using Domain.Common;
 
 namespace Domain.Customers;
 
-public class Email : Entity
+public class Email
 {
   private Email() { } // EF Core constructor
 
@@ -19,8 +19,6 @@ public class Email : Entity
       throw new ArgumentException($"{value} is an invalid email");
     }
   }
-
-  public Customer Customer { get; set; } = default!;
 
   public MailAddress Value { get; } = default!;
 
