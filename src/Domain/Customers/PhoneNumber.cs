@@ -3,7 +3,7 @@ using Domain.Common;
 
 namespace Domain.Customers;
 
-public class PhoneNumber : Entity
+public class PhoneNumber
 {
   private PhoneNumber() { } // EF Core constructor
 
@@ -19,8 +19,7 @@ public class PhoneNumber : Entity
     }
   }
 
-  public Customer Customer { get; set; }
-  public string Value { get; }
+  public string Value { get; } = default!;
 
   private bool isValidPhoneNumber(string value)
   {

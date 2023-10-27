@@ -11,6 +11,6 @@ public class Image : Entity
     /*Equipment = equipment;*/
   }
 
-  public string ImageUrl { get; set; } // TODO blob storage
-  public string AltText { get; set; }
+  public string ImageUrl { get; set; } = default!; // TODO blob storage
+  public string AltText { get; set; } = default!;
 }

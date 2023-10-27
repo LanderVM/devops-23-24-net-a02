@@ -9,7 +9,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="EntityFrameworkCore.Triggered" Version="3.2.2" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="7.0.11" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.13">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="7.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.5.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.5.0" />
@@ -24,11 +29,6 @@
     <ProjectReference Include="..\Client\devops-23-24-net-a02.Client.csproj" />
     <ProjectReference Include="..\Domain\devops-23-24-net-a02.Domain.csproj" />
     <ProjectReference Include="..\Shared\devops-23-24-net-a02.Shared.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Persistence\Configurations\" />
-    <Folder Include="Persistence\Triggers\" />
   </ItemGroup>
 
 

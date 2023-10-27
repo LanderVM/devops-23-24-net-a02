@@ -3,7 +3,7 @@ using Domain.Common;
 
 namespace Domain.Customers;
 
-public class Email : Entity
+public class Email
 {
   private Email() { } // EF Core constructor
 
@@ -20,9 +20,7 @@ public class Email : Entity
     }
   }
 
-  public Customer Customer { get; set; }
-
-  public MailAddress Value { get; }
+  public MailAddress Value { get; } = default!;
 
   private bool IsValidEmail(string email)
   {

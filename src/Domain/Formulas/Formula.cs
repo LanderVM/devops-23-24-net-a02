@@ -14,5 +14,5 @@ public class Formula : Entity
 
   public List<Equipment> Equipment { get; } = new();
 
-  public Description Description { get; set; }
+  public Description Description { get; set; } = default!;
 }
