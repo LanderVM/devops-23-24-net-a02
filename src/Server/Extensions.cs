@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+using Server.Services;
 
 namespace Api.Data;
 
@@ -18,5 +17,11 @@ public static class Extensions
         DbInitializer.Initialize(context);
       }
     }
+  }
+  
+  public static IServiceCollection AddServices(this IServiceCollection services)
+  {
+    services.AddScoped<IEmailService, EmailService>();
+    return services;
   }
 }
