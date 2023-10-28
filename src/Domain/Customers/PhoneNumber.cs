@@ -9,7 +9,7 @@ public class PhoneNumber
 
   public PhoneNumber(string value)
   {
-    if (isValidPhoneNumber(value))
+    if (IsValidPhoneNumber(value))
     {
       Value = Guard.Against.NullOrWhiteSpace(value);
     }
@@ -21,7 +21,7 @@ public class PhoneNumber
 
   public string Value { get; } = default!;
 
-  private bool isValidPhoneNumber(string value)
+  private bool IsValidPhoneNumber(string value)
   {
     return new PhoneAttribute().IsValid(value);
   }

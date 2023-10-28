@@ -40,4 +40,5 @@ public class BlancheDbContext : DbContext
   public DbSet<Formula> Formulas => Set<Formula>();
   public DbSet<Equipment> Equipments => Set<Equipment>();
   public DbSet<Customer> Customers => Set<Customer>();
+  public DbSet<Email> Emails => Set<Email>();
 }

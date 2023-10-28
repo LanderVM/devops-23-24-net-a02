@@ -3,10 +3,11 @@ using Domain.Common;
 
 namespace Domain.Customers;
 
-public class Email
+public class Email : Entity
 {
-  private Email() { } // EF Core constructor
-
+  
+  private Email() {} // EF Core constructor
+  
   public Email(string value)
   {
     Guard.Against.NullOrWhiteSpace(value);
@@ -22,6 +23,7 @@ public class Email
 
   public MailAddress Value { get; } = default!;
 
+  // Todo improve with a TryCreate
   private bool IsValidEmail(string email)
   {
     var trimmedEmail = email.Trim();
@@ -30,7 +32,7 @@ public class Email
     {
       return false;
     }
-
+    
     try
     {
       var addr = new MailAddress(email);
