@@ -1,14 +1,23 @@
 using Api.Data;
-using Server.Services;
+using devops_23_24_net_a02.Shared.DTOs;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddServices();
 
-// builder.Services.AddControllersWithViews(); TODO check for difference
-builder.Services.AddControllers();
+builder.Services.AddValidatorsFromAssemblyContaining<EmailDto.Validator>();
+builder.Services.AddFluentValidationAutoValidation();
+
+builder.Services.AddControllersWithViews();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+  options.CustomSchemaIds(type => type.DeclaringType is null ? $"{type.Name}" : $"{type.DeclaringType?.Name}.{type.Name}");
+  options.EnableAnnotations();
+}).AddFluentValidationRulesToSwagger();
 builder.Services.AddRazorPages();
 
 builder.Services.AddDbContext<BlancheDbContext>();
