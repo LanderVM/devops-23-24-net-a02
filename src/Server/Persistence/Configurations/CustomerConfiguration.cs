@@ -9,6 +9,7 @@ public class CustomerConfiguration : EntityConfiguration<Customer>
 {
   public override void Configure(EntityTypeBuilder<Customer> builder)
   {
+    builder.HasOne<Email>(c => c.Email);
     builder.OwnsOne<PhoneNumber>(c => c.PhoneNumber).Property(p => p.Value);
     builder.OwnsOne<Address>(c => c.Address, address =>
     {

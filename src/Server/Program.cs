@@ -1,6 +1,9 @@
 using Api.Data;
+using Server.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddServices();
 
 // builder.Services.AddControllersWithViews(); TODO check for difference
 builder.Services.AddControllers();

@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace devops2324neta02.Server.Migrations
 {
     [DbContext(typeof(BlancheDbContext))]
-    [Migration("20231027140421_InitialCreate")]
+    [Migration("20231028184059_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -59,6 +59,9 @@ namespace devops2324neta02.Server.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<int>("EmailId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("tinyint(1)");
 
@@ -67,7 +70,33 @@ namespace devops2324neta02.Server.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("EmailId");
+
                     b.ToTable("Customers");
+                });
+
+            modelBuilder.Entity("Domain.Customers.Email", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Emails");
                 });
 
             modelBuilder.Entity("Domain.Formulas.Equipment", b =>
@@ -138,6 +167,12 @@ namespace devops2324neta02.Server.Migrations
 
             modelBuilder.Entity("Domain.Customers.Customer", b =>
                 {
+                    b.HasOne("Domain.Customers.Email", "Email")
+                        .WithMany()
+                        .HasForeignKey("EmailId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.OwnsOne("Domain.Customers.Address", "Address", b1 =>
                         {
                             b1.Property<int>("CustomerId")
@@ -156,23 +191,6 @@ namespace devops2324neta02.Server.Migrations
                                 .HasColumnType("longtext");
 
                             b1.Property<string>("Street")
-                                .IsRequired()
-                                .HasColumnType("longtext");
-
-                            b1.HasKey("CustomerId");
-
-                            b1.ToTable("Customers");
-
-                            b1.WithOwner()
-                                .HasForeignKey("CustomerId");
-                        });
-
-                    b.OwnsOne("Domain.Customers.Email", "Email", b1 =>
-                        {
-                            b1.Property<int>("CustomerId")
-                                .HasColumnType("int");
-
-                            b1.Property<string>("Value")
                                 .IsRequired()
                                 .HasColumnType("longtext");
 
@@ -204,8 +222,7 @@ namespace devops2324neta02.Server.Migrations
                     b.Navigation("Address")
                         .IsRequired();
 
-                    b.Navigation("Email")
-                        .IsRequired();
+                    b.Navigation("Email");
 
                     b.Navigation("PhoneNumber")
                         .IsRequired();
