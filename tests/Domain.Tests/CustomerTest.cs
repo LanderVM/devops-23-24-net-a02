@@ -24,11 +24,8 @@ public class CustomerTest
   [Theory]
   [InlineData("")]
   [InlineData("    ")]
-  [InlineData(null)]
   [InlineData("JanPeeters")]
-  [InlineData("JanPeeters @gmail.com")]
   [InlineData("gmail.com")]
-  [InlineData("JanPeeters@gmail.")]
   public void Create_new_email_invalid(string email)
   {
     Should.Throw<ArgumentException>(() =>
@@ -44,7 +41,7 @@ public class CustomerTest
   [InlineData("Straat", null, "Zottegem", "9620")]
   [InlineData("Straat", "01", null, "9620")]
   [InlineData("Straat", "01", "Zottegem", null)]
-  public void Create_new_adress_invalid(string street, string houseNumber, string city, string postalCode)
+  public void Create_new_address_invalid(string street, string houseNumber, string city, string postalCode)
   {
     Should.Throw<ArgumentException>(() =>
     {

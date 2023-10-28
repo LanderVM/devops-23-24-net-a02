@@ -1,40 +1,29 @@
 using Api.Data;
-using Microsoft.EntityFrameworkCore;
+using devops_23_24_net_a02.Shared.DTOs;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Services.AddServices();
 
-// builder.Services.AddControllersWithViews(); TODO check for difference
-builder.Services.AddControllers();
+builder.Services.AddValidatorsFromAssemblyContaining<EmailDto.Validator>();
+builder.Services.AddFluentValidationAutoValidation();
+
+builder.Services.AddControllersWithViews();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+  options.CustomSchemaIds(type => type.DeclaringType is null ? $"{type.Name}" : $"{type.DeclaringType?.Name}.{type.Name}");
+  options.EnableAnnotations();
+}).AddFluentValidationRulesToSwagger();
 builder.Services.AddRazorPages();
 
-// TODO move sensitive data to environment
-var dbConnection = "server=172.168.1.10;user=vagrant;password='ewdjProject$$2';database=devopsA02";
-var serverVersion = ServerVersion.AutoDetect(dbConnection);
-
-builder.Services.AddDbContext<BlancheDbContext>(
-  dbContextOptions =>
-  {
-    if (builder.Environment.IsDevelopment())
-    {
-      dbContextOptions.UseMySql(dbConnection, serverVersion)
-        .LogTo(Console.WriteLine, LogLevel.Information)
-        .EnableSensitiveDataLogging()
-        .EnableDetailedErrors();
-    }
-    else
-    {
-      dbContextOptions.UseMySql(dbConnection, serverVersion);
-    }
-  }
-);
+builder.Services.AddDbContext<BlancheDbContext>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
   app.UseWebAssemblyDebugging();

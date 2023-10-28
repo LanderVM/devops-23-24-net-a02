@@ -17,8 +17,10 @@ public class Equipment : Entity
     Stock = stock;
   }
 
-  public Image Image { get; set; }
-  public Description Description { get; set; }
+  public List<Formula> Formulas { get; set; } = default!;
+
+  public Image Image { get; set; } = default!;
+  public Description Description { get; set; } = default!;
 
   public decimal Price
   {

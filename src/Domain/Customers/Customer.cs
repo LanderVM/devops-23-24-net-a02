@@ -15,9 +15,9 @@ public class Customer : Entity
     PhoneNumber = phoneNumber;
   }
 
-  public string FirstName { get; }
-  public string LastName { get; }
-  public Email Email { get; }
-  public Address Address { get; }
-  public PhoneNumber PhoneNumber { get; }
+  public string FirstName { get; } = default!;
+  public string LastName { get; } = default!;
+  public Email Email { get; } = default!;
+  public Address Address { get; } = default!;
+  public PhoneNumber PhoneNumber { get; } = default!;
 }
