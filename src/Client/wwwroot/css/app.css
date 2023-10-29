@@ -1,7 +1,11 @@
 @import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
+@font-face {
+    font-family: "Imperial Script";
+    src: url("../css/imperial-script/font/ImperialScript-Regular.ttf")
+}
 html, body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: 'Imperial Script', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     margin: 0px;
 }
 
