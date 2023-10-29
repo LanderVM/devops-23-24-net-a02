@@ -1,17 +1,29 @@
 @inherits LayoutComponentBase
 @using devops_23_24_net_a02.Client.Pages.NavBar
 
-<MudThemeProvider/> 
-<MudDialogProvider/>
-<MudSnackbarProvider/>
+<MudThemeProvider Theme="MainTheme" />
+<MudDialogProvider />
+<MudSnackbarProvider />
 
-    
+
 
 <MudLayout>
     <MudAppBar>
-        <NavBar/>
+        <NavBar />
     </MudAppBar>
     <MudMainContent>
         @Body
     </MudMainContent>
 </MudLayout>
+
+@code {
+    MudTheme MainTheme = new MudTheme()
+    {
+        Palette = new PaletteLight()
+        {
+            Primary = "C8A86E",
+            Secondary = "EDE7DB",
+            AppbarBackground = "FFFFFF",
+        }
+    };
+}
