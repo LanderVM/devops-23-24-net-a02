@@ -1,0 +1,52 @@
+@page "/OverOns"
+@inject IDialogService DialogService
+
+
+<PageTitle>Over Ons</PageTitle>
+
+<MudGrid  Spacing="2" Justify="Justify.SpaceAround">
+    <MudItem lg="5" md="6" xs="12" >
+        <article>
+            <h4>Minimaal te voorziene ruimte</h4>
+            <p>5 m x 2 m x 2 m</p>
+        </article>
+        <br/>
+        <article style="line-height: 17.928px;">
+            <h4>Benodigdheden:</h4>
+            <ul>
+                <li>Iemand ter plaatse </li>
+                <li>Stopcontact</li>
+                <li>Voldoende vrije doorgang</li>
+                <li>Voldoende vrije ruimte</li>
+            </ul>
+        </article>
+        <br/>
+        <article>
+            <h4>Doorgang:</h4>
+            <p>Smalste punt op de route naar plaats van opstelling dient minimaal 3m te zijn!</p>
+        </article>
+        <br/>
+        <article class="meerInfoBtn">
+            <MudButton @onclick="OpenDialog" Variant="Variant.Filled" Style="background-color: #C8A86E; color: white;">Meer Info</MudButton>
+                  
+        </article>
+            
+    </MudItem>
+    <MudItem lg="7" md="6" xs="12">
+        <img src="images/3.jpg" alt="blanche" class="bigImg"/>
+        <img src="images/4.jpg" alt="blanche" class="imgLow" />
+        <img src="images/7.jpg" alt="blanche" class="imgLow" />
+        <img src="images/1.jpg" alt="blanche" class="imgLow" />
+    </MudItem>
+    
+</MudGrid>
+
+@code{
+
+    private void OpenDialog()
+    {    
+        var options = new DialogOptions { CloseOnEscapeKey = true };
+        DialogService.Show<Dialog>("Vul hier je e-mail in.", options);
+    }
+
+}
