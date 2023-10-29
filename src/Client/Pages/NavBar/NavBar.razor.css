@@ -1,0 +1,15 @@
+﻿#navBarText {
+    font-family: 'Imperial Script','Magenta Rose','Parisienne',Arial;
+    font-size: 4em;
+    margin-top: 15px;
+    margin-left: 35px;
+    color: black;
+}
+
+.appBarNavItem {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 1.5em;
+    margin-top: 15px;
+    margin-right: 20px;
+    color: black;
+}
