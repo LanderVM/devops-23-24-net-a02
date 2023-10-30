@@ -1,25 +1,24 @@
-<MudPopover Style="background-color: #C8A86E; color: white" Open="@_isOpen" Fixed="true" Class="px-4 pt-4" AnchorOrigin="Origin.CenterCenter" TransformOrigin="Origin.CenterCenter">
+<MudPopover Style="background-color: #C8A86E; color: white; margin-left: -10px"
+            Open="@_isOpen"
+    Class="px-4 pt-4"
+    AnchorOrigin="Origin.BottomRight">
     <div class="d-flex flex-column">
         <MudText>Druk hier voor een snelle inschatting</MudText>
         <MudButton OnClick="@ToggleOpen" Class="ml-auto mr-n3 mb-1" Color="Color.Inherit">Close</MudButton>
     </div>
 </MudPopover>
 
-
 @code{
     public bool _isOpen= false;
     
     protected override async Task OnInitializedAsync()
     {
-        await Task.Delay(1000); // Delay for 3 seconds
+        await Task.Delay(3000);
         ToggleOpen();
     }
 
     public void ToggleOpen()
     {
-        if (_isOpen)
-            _isOpen = false;
-        else
-            _isOpen = true;
+        _isOpen = !_isOpen;
     }
 }
