@@ -1,6 +1,6 @@
 ﻿#navBarText {
     font-family: 'Imperial Script', 'Magenta Rose', 'Parisienne', Arial, serif;
-    font-size: 128px;
+    font-size: 4em;
     margin-top: 15px;
     margin-left: 35px;
     color: black;
@@ -8,7 +8,7 @@
 
 .appBarNavItem {
     font-family: 'Source Sans Pro Bold', 'Arial Narrow', Arial, sans-serif;
-    font-size: 32px;
+    font-size: 1.5em;
     margin-top: 15px;
     margin-right: 20px;
     color: black;
