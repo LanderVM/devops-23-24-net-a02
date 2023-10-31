@@ -4,6 +4,18 @@
     font-family: "Imperial Script";
     src: url("../css/imperial-script/font/ImperialScript-Regular.ttf")
 }
+@font-face {
+    font-family: "Source Sans Pro";
+    src: url("../css/source-sans-pro/font/SourceSansPro-Regular.otf")
+}
+@font-face {
+    font-family: "Source Sans Pro Bold";
+    src: url("../css/source-sans-pro/font/SourceSansPro-Bold.otf")
+}
+@font-face {
+    font-family: "Source Sans Pro Semibold";
+    src: url("../css/source-sans-pro/font/SourceSansPro-Semibold.otf")
+}
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     margin: 0px;

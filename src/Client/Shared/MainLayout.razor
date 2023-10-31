@@ -1,7 +1,7 @@
 @inherits LayoutComponentBase
 @using devops_23_24_net_a02.Client.Pages.NavBar
 
-<MudThemeProvider Theme="MainTheme" />
+<MudThemeProvider Theme="MainTheme" DefaultScrollbar="true" />
 <MudDialogProvider />
 <MudSnackbarProvider />
 
@@ -18,17 +18,40 @@
 
 @code {
     MudTheme MainTheme = new MudTheme()
-    {
-        Palette = new PaletteLight()
         {
-            Primary = "C8A86E",
-            Secondary = "EDE7DB",
+            Typography = new Typography()
+            {
+                Default = new Default()
+                {
+                    FontFamily = new[] { "Source Sans Pro" }
+                },
+                H1 = new H1()
+                {
+                    FontFamily = new[] { "Source Sans Pro Semibold" }
+                },
+                H2 = new H2()
+                {
+                    FontFamily = new[] { "Source Sans Pro Semibold" }
+                },
+                H3 = new H3()
+                {
+                    FontFamily = new[] { "Source Sans Pro Semibold" }
+                },
+                H4 = new H4()
+                {
+                    FontFamily = new[] { "Source Sans Pro Semibold" }
+                }
+            },
+            Palette = new PaletteLight()
+            {
+                Primary = "C8A86E",
+                Secondary = "EDE7DB",
 
-            TextSecondary = "FFFFFF",
-            TextPrimary = "000000",
+                TextSecondary = "FFFFFF",
+                TextPrimary = "000000",
 
-            AppbarBackground = "FFFFFF",
-            Background = "F8F8F8",
-        }
-    };
+                AppbarBackground = "FFFFFF",
+                Background = "F8F8F8",
+            }
+        };
 }
