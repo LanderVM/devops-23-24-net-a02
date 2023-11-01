@@ -1,22 +1,36 @@
 @inherits LayoutComponentBase
 @using devops_23_24_net_a02.Client.Pages.NavBar
+@inject NavigationManager MyNavigationManager
 
 <MudThemeProvider Theme="MainTheme" DefaultScrollbar="true" />
 <MudDialogProvider />
 <MudSnackbarProvider />
 
 
+@if (onHomePage)
+{  
+    <MudLayout>     
+        <MudMainContent style="padding-top: 0px">
+            <NavBarHome />
+            @Body
+        </MudMainContent>
+    </MudLayout>            
+}  
+else  
+{  
+    <MudLayout>
+        <MudAppBar>
+            <NavBar />  
+        </MudAppBar>
+        <MudMainContent>
+            @Body
+        </MudMainContent>
+    </MudLayout>        
+ } 
 
-<MudLayout>
-    <MudAppBar>
-        <NavBar/>
-    </MudAppBar>
-    <MudMainContent>
-        @Body
-    </MudMainContent>
-</MudLayout>
 
 @code {
+    bool onHomePage => MyNavigationManager.Uri == MyNavigationManager.BaseUri;
     MudTheme MainTheme = new MudTheme()
         {
             Typography = new Typography()

@@ -1,13 +1,17 @@
-<MudAppBar Fixed="true" Elevation="25">
+<MudContainer MaxWidth="MaxWidth.ExtraLarge" >
+    <MudAppBar Fixed="true" Elevation="25" Height="80px">
         <p id="navBarText">Blanche</p>
-    <MudSpacer />
-    <NavLink href="/">
-        <p class="appBarNavItem">Home</p>
-    </NavLink>
-    <NavLink href="/">
-        <p class="appBarNavItem">Verhuur</p>
-    </NavLink>   
-    <NavLink href="/OverOns">
-        <p class="appBarNavItem">Over ons</p>
-    </NavLink>   
-</MudAppBar>
+        <MudSpacer />
+        <div class="nav-items">
+            <NavLink href="/">
+                <p class="appBarNavItem">Home</p>
+            </NavLink>
+            <NavLink href="/">
+                <p class="appBarNavItem">Verhuur</p>
+            </NavLink>
+            <NavLink href="/OverOns">
+                <p class="appBarNavItem">Over ons</p>
+            </NavLink>
+        </div>
+    </MudAppBar>
+</MudContainer>
