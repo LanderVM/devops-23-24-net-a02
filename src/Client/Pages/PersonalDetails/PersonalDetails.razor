@@ -1,0 +1,34 @@
+﻿@page "/personalDetails"
+
+<PageTitle>Persoonlijke gegevens</PageTitle>
+
+<MudPaper Width="100%" Class="pt-16" Height="100%" Elevation="0">
+    <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge">
+        <MudGrid Spacing="@Spacing">
+            <MudItem xs="4">
+                <MudTimeline Style="height:510px">
+                    <MudTimelineItem Color=Color.Primary Size="Size.Large" Variant="Variant.Filled">
+                        <MudText Style="color:#A07B37">1. Evenement</MudText>
+                    </MudTimelineItem>
+                    <MudTimelineItem Color=Color.Primary Size="Size.Large" Variant="Variant.Filled" Style="height:170px">
+                        <MudText Style="color:#A07B37">2. Personalia</MudText>
+                    </MudTimelineItem>
+                    <MudTimelineItem Color=Color.Secondary Size="Size.Large" Variant="Variant.Filled">
+                        <MudText Style="color:#C8A86E">3. Extra marteriaal</MudText>
+                    </MudTimelineItem>
+                </MudTimeline>
+            </MudItem>
+            <MudItem xs="4">
+
+            </MudItem>
+            <MudItem xs="4">
+
+            </MudItem>
+        </MudGrid>
+    </MudContainer>
+</MudPaper>
+
+@code {
+    private int Spacing { get; set; } = 2;
+
+}
