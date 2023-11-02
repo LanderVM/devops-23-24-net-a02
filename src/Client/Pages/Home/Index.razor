@@ -1,16 +1,33 @@
 @page "/"
 
 <PageTitle>Home</PageTitle>
+
 <div>
-    <img class="imgHome" src="images/HomeBackground.png" alt="Home"/>
+    <div class="img-container">
+        <img class="imgHome" src="images/HomeBackground.png" alt="Home" />
+        <div class="scroll-down-link">
+            <button class="scroll-down" onclick="document.getElementById('cards').scrollIntoView({behavior:'smooth'})"></button>
+        </div>
+
+    </div>
 </div>
 
 
-<p>
-    U organiseert binnenkort een feest en bent nog op zoek <br/>naar feestmateriaal en catering?
-</p>
+<MudStack Justify="Justify.SpaceAround" AlignItems="AlignItems.Center" Row="true" Spacing="2" Class="mt-16 mb-16 mb-6">
+    <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
+        <div class="line" />
+    </MudHidden>
+    <MudText Align="Align.Center" Typo="Typo.h5" Class="pl-6 pr-6">
+        U organiseert binnenkort een feest en bent nog op zoek <br />naar feestmateriaal en catering?
+    </MudText>
+    <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
+        <div class="line" />
+    </MudHidden>
+</MudStack>
 
-<div style="margin-bottom: 50px">
-    <Formulas/>
-    <PopUp/>
+<div Class="mt-16 mb-16 mb-6">
+    <Formulas />
+    <PopUp />
 </div>
+
+
