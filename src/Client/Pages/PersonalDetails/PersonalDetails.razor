@@ -45,7 +45,7 @@
                 <MudTextField @bind-Value="PersonalDetailsState.Gemeente" Class="ml-16 mr-16 mb-4 pt-2" Label="gemeente" Variant="Variant.Outlined"></MudTextField>
                 <MudText Class="ml-16 pl-16 mb-1" Typo="Typo.h6">
                     Adress is ook facturatieadres
-                    <MudSwitch @bind-Checked="@SwitchValue" Class="ml-4" Style="display:inline-block" Color="Color.Primary"/>
+                    <MudSwitch @bind-Checked="@PersonalDetailsState.SwitchValue" Class="ml-4" Style="display:inline-block" Color="Color.Primary"/>
                 </MudText>
             </MudItem>
             <MudItem xs="5">
@@ -59,7 +59,7 @@
                 <MudTextField @bind-Value="PersonalDetailsState.Postcode" Class="ml-16 mr-16 pt-2" Label="postcode" Variant="Variant.Outlined"></MudTextField>
             </MudItem>
         </MudGrid>
-        @if (!@SwitchValue)
+        @if (!@PersonalDetailsState.SwitchValue)
         {
             <MudGrid>
                 <MudItem xs="2">
@@ -92,8 +92,6 @@
 
 @code {
     private int Spacing { get; set; } = 2;
-
-    private bool SwitchValue { get; set; } = true;
 
     private void ClickVolgende()
     {

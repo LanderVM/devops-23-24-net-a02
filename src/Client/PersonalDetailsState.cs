@@ -16,5 +16,7 @@ public class PersonalDetailsState
   public string FacturatieHuisnummer { get; set; } = "";
   public string FacturatieGemeente { get; set; } = "";
   public string FacturatiePostcode { get; set; } = "";
+
+  public bool SwitchValue { get; set; } = true;
 }
 
