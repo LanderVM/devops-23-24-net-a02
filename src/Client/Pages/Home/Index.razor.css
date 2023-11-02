@@ -12,12 +12,12 @@
 }
 
 
-p {
-    text-align: center;
-    font-size: 30px;
-    margin: 25px;
+.line {
+    height: 3px;
+    flex: 1;
+    background-color: lightgray;
+    margin: 0 3rem; 
 }
-
 
 
 html {
@@ -32,6 +32,7 @@ html {
     left: 50%;
     transform: translateX(-50%);
     border-radius: 50px;
+    border: 2px solid #dcdcdc;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     cursor: pointer;
     background-color: white;
@@ -68,7 +69,7 @@ html {
     }
 
     100% {
-        top: 70%;
+        top: 75%;
         opacity: 0;
     }
 }
@@ -79,7 +80,7 @@ html {
 
 .scroll-down-link {
     position: absolute;
-    bottom: 20px;
+    bottom: 10%;
     left: 50%;
     transform: translateX(-50%);
     z-index: 2;

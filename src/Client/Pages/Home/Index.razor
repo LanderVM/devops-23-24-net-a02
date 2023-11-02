@@ -1,35 +1,33 @@
 @page "/"
 
 <PageTitle>Home</PageTitle>
-<div class="img-container">
-    <img class="imgHome" src="images/HomeBackground.png" alt="Home" />
-    <a href="#cards" class="scroll-down-link">
-        <div class="scroll-down"></div>
-    </a>
+
+<div>
+    <div class="img-container">
+        <img class="imgHome" src="images/HomeBackground.png" alt="Home" />
+        <div class="scroll-down-link">
+            <button class="scroll-down" onclick="document.getElementById('cards').scrollIntoView({behavior:'smooth'})"></button>
+        </div>
+
+    </div>
 </div>
 
-<p>
-    U organiseert binnenkort een feest en bent nog op zoek <br />naar feestmateriaal en catering?
-</p>
 
-<div style="margin-bottom: 50px" >
+<MudStack Justify="Justify.SpaceAround" AlignItems="AlignItems.Center" Row="true" Spacing="2" Class="mt-16 mb-16 mb-6">
+    <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
+        <div class="line" />
+    </MudHidden>
+    <MudText Align="Align.Center" Typo="Typo.h5" Class="pl-6 pr-6">
+        U organiseert binnenkort een feest en bent nog op zoek <br />naar feestmateriaal en catering?
+    </MudText>
+    <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
+        <div class="line" />
+    </MudHidden>
+</MudStack>
+
+<div Class="mt-16 mb-16 mb-6">
     <Formulas />
     <PopUp />
 </div>
 
-
-<AnchorNavigation />
-
-<script>
-    function BlazorScrollToId(id) {
-        const element = document.getElementById(id);
-        if (element instanceof HTMLElement) {
-            element.scrollIntoView({
-                behavior: "smooth",
-                block: "start",
-                inline: "nearest"
-            });
-        }
-    }
-</script>
 
