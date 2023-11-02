@@ -1,0 +1,79 @@
+﻿@page "/formulas"
+
+<PageTitle>Formulas</PageTitle>
+
+<MudPaper Width="100%" Class="pt-16" Height="100%" Elevation="0">
+    <MudContainer MaxWidth="MaxWidth.Large">
+        <MudGrid Spacing="@spacing">
+            <MudItem xs="4">
+                <MudPaper Height="450px" Width="100%" Class="mt-16 mb-6" Style="background-color:#EBEBEB" >
+                    <MudText Style="text-align: center;font-weight: bold;color:black" Typo="Typo.h3" Class="pt-5">
+                         Basic
+                    </MudText>
+                    <hr style="background-color:black;height:1.5px;border-width:0;margin-left:30px;margin-right:30px;margin-top:20px;margin-bottom:20px" />
+                    <MudText Style="font-size:1.7em;color:black" class="pl-16">
+                         <MudIcon Style="margin-right: 1.5px;color: green" Icon="@Icons.Material.Filled.Check" aria-label="check mark"></MudIcon>foodtruck
+                    </MudText>
+                </MudPaper>
+                <MudButton OnClick="@OnBasicClick" Variant="Variant.Filled" Size="Size.Large" Color="Color.Primary" FullWidth="true">Kies</MudButton>
+            </MudItem>
+            <MudItem xs="4">
+                <MudPaper Height="450px" Width="100%" Class="mb-6" Style="background-color:#EDE7DB">
+                    <MudText Style="text-align: center;font-weight: bold;color:black" Typo="Typo.h3" Class="pt-5">
+                         All-in
+                    </MudText>
+                    <hr style="background-color:black;height:1.5px;border-width:0;margin-left:30px;margin-right:30px;margin-top:20px;margin-bottom:20px" />
+                    <MudText Style="font-size:1.7em;color:black" class="pl-16">
+                         <MudIcon Style="margin-right: 1.5px;color: green" Icon="@Icons.Material.Filled.Check" aria-label="check mark"></MudIcon>foodtruck
+                    </MudText>
+                    <MudText Style="font-size:1.7em;color:black" class="pl-16">
+                         <MudIcon Style="margin-right: 1.5px;color: green" Icon="@Icons.Material.Filled.Check" aria-label="check mark"></MudIcon>vaten bier
+                    </MudText>
+                    <MudText Style="font-size:1.7em;color:black" class="pl-16">
+                         <MudIcon Style="margin-right: 1.5px;color: green" Icon="@Icons.Material.Filled.Check" aria-label="check mark"></MudIcon>glazen
+                    </MudText>
+                </MudPaper>
+                <MudButton OnClick="@OnAllInClick" Variant="Variant.Filled" Size="Size.Large" Color="Color.Primary" FullWidth="true">Kies</MudButton>
+            </MudItem>
+            <MudItem xs="4">
+                <MudPaper Height="450px" Width="100%" Class="mt-16 mb-6" Style="background-color:#EBEBEB">
+                    <MudText Style="text-align: center;font-weight: bold;color:black" Typo="Typo.h3" Class="pt-5">
+                         Gevorderd
+                    </MudText>
+                    <hr style="background-color:black;height:1.5px;border-width:0;margin-left:30px;margin-right:30px;margin-top:20px;margin-bottom:20px" />
+                    <MudText Style="font-size:1.7em;color:black" class="pl-16">
+                         <MudIcon Style="margin-right: 1.5px;color: green" Icon="@Icons.Material.Filled.Check" aria-label="check mark"></MudIcon>foodtruck
+                    </MudText>
+                    <MudText Style="font-size:1.7em;color:black" class="pl-16">
+                         <MudIcon Style="margin-right: 1.5px;color: green" Icon="@Icons.Material.Filled.Check" aria-label="check mark"></MudIcon>vaten bier
+                    </MudText>
+                    <MudText Style="font-size:1.7em;color:black" class="pl-16">
+                         <MudIcon Style="margin-right: 1.5px;color: green" Icon="@Icons.Material.Filled.Check" aria-label="check mark"></MudIcon>glazen
+                    </MudText>
+                    <MudText Style="font-size:1.7em;color:black" class="pl-16">
+                         <MudIcon Style="margin-right: 1.5px;color: green" Icon="@Icons.Material.Filled.Check" aria-label="check mark"></MudIcon>barbeque
+                    </MudText>
+                </MudPaper>
+                <MudButton OnClick="@OnGevorderdClick" Variant="Variant.Filled" Size="Size.Large" Color="Color.Primary" FullWidth="true">Kies</MudButton>
+            </MudItem>
+        </MudGrid>
+    </MudContainer>
+</MudPaper>
+
+@code {
+    public int spacing { get; set; } = 6;
+
+    private void OnBasicClick()
+    {
+
+    }
+
+    private void OnAllInClick()
+    {
+
+    }
+    private void OnGevorderdClick()
+    {
+        
+    }
+}
