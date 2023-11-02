@@ -12,7 +12,7 @@
                             <MudText Style="color:#FFFFFF;font-size:1.3em">1</MudText>
                         </ItemDot>
                         <ItemContent >
-                            <MudText Style="color:#A07B37">Evenement</MudText>
+                            <MudText Style="color:#A07B37;margin-top:12px">Evenement</MudText>
                         </ItemContent>
                     </MudTimelineItem>
                     <MudTimelineItem Color=Color.Primary Size="Size.Large" Variant="Variant.Filled" Style="height:170px">
@@ -20,7 +20,7 @@
                             <MudText Style="color:#FFFFFF;font-size:1.3em">2</MudText>
                         </ItemDot>
                         <ItemContent >
-                            <MudText Style="color:#A07B37">Personalia</MudText>
+                            <MudText Style="color:#A07B37;margin-top:60px">Personalia</MudText>
                         </ItemContent>
                     </MudTimelineItem>
                     <MudTimelineItem Color=Color.Secondary Size="Size.Large" Variant="Variant.Filled">
@@ -28,30 +28,62 @@
                             <MudText Style="color:#FFFFFF;font-size:1.3em">3</MudText>
                         </ItemDot>
                         <ItemContent >
-                            <MudText Style="color:#C8A86E">Extra marteriaal</MudText>
+                            <MudText Style="color:#C8A86E;margin-top:12px">Extra marteriaal</MudText>
                         </ItemContent>
                     </MudTimelineItem>
                 </MudTimeline>
             </MudItem>
             <MudItem xs="5">
                 <MudText Class="ml-16 mt-6 mb-1" Typo="Typo.h6">Naam</MudText>
-                <MudTextField @bind-Value="TextValue" Class="ml-16 mr-16 mb-6 pt-2" Label="Outlined" Variant="Variant.Outlined"></MudTextField>
+                <MudTextField @bind-Value="TextValue" Class="ml-16 mr-16 mb-6 pt-2" Label="naam" Variant="Variant.Outlined"></MudTextField>
                 <MudText Class="ml-16 mb-1" Typo="Typo.h6">Email</MudText>
-                <MudTextField @bind-Value="TextValue" Class="ml-16 mr-16 pt-2" Label="Outlined" Variant="Variant.Outlined"></MudTextField>
+                <MudTextField @bind-Value="TextValue" Class="ml-16 mr-16 pt-2" Label="email" Variant="Variant.Outlined"></MudTextField>
                 <MudText Class="ml-16 mt-16 mb-1" Typo="Typo.h6">Straat</MudText>
-                <MudTextField @bind-Value="TextValue" Class="ml-16 mr-16 mb-6 pt-2" Label="Outlined" Variant="Variant.Outlined"></MudTextField>
+                <MudTextField @bind-Value="TextValue" Class="ml-16 mr-16 mb-6 pt-2" Label="straat" Variant="Variant.Outlined"></MudTextField>
                 <MudText Class="ml-16 mb-1" Typo="Typo.h6">Gemeente</MudText>
-                <MudTextField @bind-Value="TextValue" Class="ml-16 mr-16 pt-2" Label="Outlined" Variant="Variant.Outlined"></MudTextField>
+                <MudTextField @bind-Value="TextValue" Class="ml-16 mr-16 mb-4 pt-2" Label="gemeente" Variant="Variant.Outlined"></MudTextField>
+                <MudText Class="ml-16 pl-16 mb-1" Typo="Typo.h6">
+                    Adress is ook facturatieadres
+                    <MudSwitch @bind-Checked="@SwitchValue" Class="ml-4" Style="display:inline-block" Color="Color.Primary"/>
+                </MudText>
             </MudItem>
             <MudItem xs="5">
                 <MudText Class="ml-16 mt-6 mb-1" Typo="Typo.h6">Voornaam</MudText>
-                <MudTextField @bind-Value="TextValue" Class="ml-16 mr-16 mb-6 pt-2" Label="Outlined" Variant="Variant.Outlined"></MudTextField>
+                <MudTextField @bind-Value="TextValue" Class="ml-16 mr-16 mb-6 pt-2" Label="voornaam" Variant="Variant.Outlined"></MudTextField>
                 <MudText Class="ml-16 mb-1" Typo="Typo.h6">Telefoon</MudText>
-                <MudTextField @bind-Value="TextValue" Class="ml-16 mr-16 pt-2" Label="Outlined" Variant="Variant.Outlined"></MudTextField>
+                <MudTextField @bind-Value="TextValue" Class="ml-16 mr-16 pt-2" Label="telefoon" Variant="Variant.Outlined"></MudTextField>
                 <MudText Class="ml-16 mt-16 mb-1" Typo="Typo.h6">Huisnummer</MudText>
-                <MudTextField @bind-Value="TextValue" Class="ml-16 mr-16 mb-6 pt-2" Label="Outlined" Variant="Variant.Outlined"></MudTextField>
+                <MudTextField @bind-Value="TextValue" Class="ml-16 mr-16 mb-6 pt-2" Label="huisnummer" Variant="Variant.Outlined"></MudTextField>
                 <MudText Class="ml-16 mb-1" Typo="Typo.h6">Postcode</MudText>
-                <MudTextField @bind-Value="TextValue" Class="ml-16 mr-16 pt-2" Label="Outlined" Variant="Variant.Outlined"></MudTextField>
+                <MudTextField @bind-Value="TextValue" Class="ml-16 mr-16 pt-2" Label="postcode" Variant="Variant.Outlined"></MudTextField>
+            </MudItem>
+        </MudGrid>
+        @if (!@SwitchValue)
+        {
+            <MudGrid>
+                <MudItem xs="2">
+
+                </MudItem>
+                <MudItem xs="5">
+                    <MudText Class="ml-16 mb-1" Typo="Typo.h6">Facturatie straat</MudText>
+                    <MudTextField @bind-Value="TextValue" Class="ml-16 mr-16 mb-6 pt-2" Label="straat" Variant="Variant.Outlined"></MudTextField>
+                    <MudText Class="ml-16 mb-1" Typo="Typo.h6">Facturatie gemeente</MudText>
+                    <MudTextField @bind-Value="TextValue" Class="ml-16 mr-16 mb-4 pt-2" Label="gemeente" Variant="Variant.Outlined"></MudTextField>
+                </MudItem>
+                <MudItem xs="5">
+                    <MudText Class="ml-16 mb-1" Typo="Typo.h6">Facturatie huisnummer</MudText>
+                    <MudTextField @bind-Value="TextValue" Class="ml-16 mr-16 mb-6 pt-2" Label="huisnummer" Variant="Variant.Outlined"></MudTextField>
+                    <MudText Class="ml-16 mb-1" Typo="Typo.h6">Facturatie Postcode</MudText>
+                    <MudTextField @bind-Value="TextValue" Class="ml-16 mr-16 pt-2" Label="postcode" Variant="Variant.Outlined"></MudTextField>
+                </MudItem>
+            </MudGrid>
+        }
+        <MudGrid>
+            <MudItem xs="9">
+
+            </MudItem>
+            <MudItem xs="3">
+                <MudButton Variant="Variant.Filled" Size="Size.Large" Color="Color.Primary">Volgende</MudButton>
             </MudItem>
         </MudGrid>
     </MudContainer>
@@ -60,6 +92,8 @@
 @code {
     private int Spacing { get; set; } = 2;
 
-    public string TextValue { get; set; }
+    private string TextValue { get; set; }
+
+    private bool SwitchValue { get; set; } = true;
 
 }
