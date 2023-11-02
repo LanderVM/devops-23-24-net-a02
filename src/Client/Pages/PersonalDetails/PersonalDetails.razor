@@ -1,4 +1,5 @@
 ﻿@page "/personalDetails"
+@inject PersonalDetailsState PersonalDetailsState
 
 <PageTitle>Persoonlijke gegevens</PageTitle>
 
@@ -35,13 +36,13 @@
             </MudItem>
             <MudItem xs="5">
                 <MudText Class="ml-16 mt-6 mb-1" Typo="Typo.h6">Naam</MudText>
-                <MudTextField @bind-Value="TextValue" Class="ml-16 mr-16 mb-6 pt-2" Label="naam" Variant="Variant.Outlined"></MudTextField>
+                <MudTextField @bind-Value="PersonalDetailsState.Naam" Class="ml-16 mr-16 mb-6 pt-2" Label="naam" Variant="Variant.Outlined"></MudTextField>
                 <MudText Class="ml-16 mb-1" Typo="Typo.h6">Email</MudText>
-                <MudTextField @bind-Value="TextValue" Class="ml-16 mr-16 pt-2" Label="email" Variant="Variant.Outlined"></MudTextField>
+                <MudTextField @bind-Value="PersonalDetailsState.Email" Class="ml-16 mr-16 pt-2" Label="email" Variant="Variant.Outlined"></MudTextField>
                 <MudText Class="ml-16 mt-16 mb-1" Typo="Typo.h6">Straat</MudText>
-                <MudTextField @bind-Value="TextValue" Class="ml-16 mr-16 mb-6 pt-2" Label="straat" Variant="Variant.Outlined"></MudTextField>
+                <MudTextField @bind-Value="PersonalDetailsState.Straat" Class="ml-16 mr-16 mb-6 pt-2" Label="straat" Variant="Variant.Outlined"></MudTextField>
                 <MudText Class="ml-16 mb-1" Typo="Typo.h6">Gemeente</MudText>
-                <MudTextField @bind-Value="TextValue" Class="ml-16 mr-16 mb-4 pt-2" Label="gemeente" Variant="Variant.Outlined"></MudTextField>
+                <MudTextField @bind-Value="PersonalDetailsState.Gemeente" Class="ml-16 mr-16 mb-4 pt-2" Label="gemeente" Variant="Variant.Outlined"></MudTextField>
                 <MudText Class="ml-16 pl-16 mb-1" Typo="Typo.h6">
                     Adress is ook facturatieadres
                     <MudSwitch @bind-Checked="@SwitchValue" Class="ml-4" Style="display:inline-block" Color="Color.Primary"/>
@@ -49,13 +50,13 @@
             </MudItem>
             <MudItem xs="5">
                 <MudText Class="ml-16 mt-6 mb-1" Typo="Typo.h6">Voornaam</MudText>
-                <MudTextField @bind-Value="TextValue" Class="ml-16 mr-16 mb-6 pt-2" Label="voornaam" Variant="Variant.Outlined"></MudTextField>
-                <MudText Class="ml-16 mb-1" Typo="Typo.h6">Telefoon</MudText>
-                <MudTextField @bind-Value="TextValue" Class="ml-16 mr-16 pt-2" Label="telefoon" Variant="Variant.Outlined"></MudTextField>
+                <MudTextField @bind-Value="PersonalDetailsState.Voornaam" Class="ml-16 mr-16 mb-6 pt-2" Label="voornaam" Variant="Variant.Outlined"></MudTextField>
+                <MudText Class="ml-16 mb-1" Typo="Typo.h6">Telefoon nummer</MudText>
+                <MudTextField @bind-Value="PersonalDetailsState.TelefoonNummer" Class="ml-16 mr-16 pt-2" Label="telefoon nummer" Variant="Variant.Outlined"></MudTextField>
                 <MudText Class="ml-16 mt-16 mb-1" Typo="Typo.h6">Huisnummer</MudText>
-                <MudTextField @bind-Value="TextValue" Class="ml-16 mr-16 mb-6 pt-2" Label="huisnummer" Variant="Variant.Outlined"></MudTextField>
+                <MudTextField @bind-Value="PersonalDetailsState.Huisnummer" Class="ml-16 mr-16 mb-6 pt-2" Label="huisnummer" Variant="Variant.Outlined"></MudTextField>
                 <MudText Class="ml-16 mb-1" Typo="Typo.h6">Postcode</MudText>
-                <MudTextField @bind-Value="TextValue" Class="ml-16 mr-16 pt-2" Label="postcode" Variant="Variant.Outlined"></MudTextField>
+                <MudTextField @bind-Value="PersonalDetailsState.Postcode" Class="ml-16 mr-16 pt-2" Label="postcode" Variant="Variant.Outlined"></MudTextField>
             </MudItem>
         </MudGrid>
         @if (!@SwitchValue)
@@ -66,24 +67,24 @@
                 </MudItem>
                 <MudItem xs="5">
                     <MudText Class="ml-16 mb-1" Typo="Typo.h6">Facturatie straat</MudText>
-                    <MudTextField @bind-Value="TextValue" Class="ml-16 mr-16 mb-6 pt-2" Label="straat" Variant="Variant.Outlined"></MudTextField>
+                    <MudTextField @bind-Value="PersonalDetailsState.FacturatieStraat" Class="ml-16 mr-16 mb-6 pt-2" Label="straat" Variant="Variant.Outlined"></MudTextField>
                     <MudText Class="ml-16 mb-1" Typo="Typo.h6">Facturatie gemeente</MudText>
-                    <MudTextField @bind-Value="TextValue" Class="ml-16 mr-16 mb-4 pt-2" Label="gemeente" Variant="Variant.Outlined"></MudTextField>
+                    <MudTextField @bind-Value="PersonalDetailsState.FacturatieGemeente" Class="ml-16 mr-16 mb-4 pt-2" Label="gemeente" Variant="Variant.Outlined"></MudTextField>
                 </MudItem>
                 <MudItem xs="5">
                     <MudText Class="ml-16 mb-1" Typo="Typo.h6">Facturatie huisnummer</MudText>
-                    <MudTextField @bind-Value="TextValue" Class="ml-16 mr-16 mb-6 pt-2" Label="huisnummer" Variant="Variant.Outlined"></MudTextField>
+                    <MudTextField @bind-Value="PersonalDetailsState.FacturatieHuisnummer" Class="ml-16 mr-16 mb-6 pt-2" Label="huisnummer" Variant="Variant.Outlined"></MudTextField>
                     <MudText Class="ml-16 mb-1" Typo="Typo.h6">Facturatie Postcode</MudText>
-                    <MudTextField @bind-Value="TextValue" Class="ml-16 mr-16 pt-2" Label="postcode" Variant="Variant.Outlined"></MudTextField>
+                    <MudTextField @bind-Value="PersonalDetailsState.FacturatiePostcode" Class="ml-16 mr-16 pt-2" Label="postcode" Variant="Variant.Outlined"></MudTextField>
                 </MudItem>
             </MudGrid>
         }
         <MudGrid>
-            <MudItem xs="9">
+            <MudItem xs="10">
 
             </MudItem>
-            <MudItem xs="3">
-                <MudButton Variant="Variant.Filled" Size="Size.Large" Color="Color.Primary">Volgende</MudButton>
+            <MudItem xs="2">
+                <MudButton Variant="Variant.Filled" Size="Size.Large" Color="Color.Primary" OnClick="@ClickVolgende">Volgende</MudButton>
             </MudItem>
         </MudGrid>
     </MudContainer>
@@ -92,8 +93,10 @@
 @code {
     private int Spacing { get; set; } = 2;
 
-    private string TextValue { get; set; }
-
     private bool SwitchValue { get; set; } = true;
 
+    private void ClickVolgende()
+    {
+        
+    }
 }
