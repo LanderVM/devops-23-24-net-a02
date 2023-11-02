@@ -30,7 +30,7 @@ else
 
 
 @code {
-    bool onHomePage => MyNavigationManager.Uri == MyNavigationManager.BaseUri;
+    bool onHomePage => MyNavigationManager.Uri.StartsWith(MyNavigationManager.BaseUri);
     MudTheme MainTheme = new MudTheme()
         {
             Typography = new Typography()

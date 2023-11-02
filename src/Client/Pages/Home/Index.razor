@@ -1,16 +1,35 @@
 @page "/"
 
 <PageTitle>Home</PageTitle>
-<div>
-    <img class="imgHome" src="images/HomeBackground.png" alt="Home"/>
+<div class="img-container">
+    <img class="imgHome" src="images/HomeBackground.png" alt="Home" />
+    <a href="#cards" class="scroll-down-link">
+        <div class="scroll-down"></div>
+    </a>
 </div>
-
 
 <p>
-    U organiseert binnenkort een feest en bent nog op zoek <br/>naar feestmateriaal en catering?
+    U organiseert binnenkort een feest en bent nog op zoek <br />naar feestmateriaal en catering?
 </p>
 
-<div style="margin-bottom: 50px">
-    <Formulas/>
-    <PopUp/>
+<div style="margin-bottom: 50px" >
+    <Formulas />
+    <PopUp />
 </div>
+
+
+<AnchorNavigation />
+
+<script>
+    function BlazorScrollToId(id) {
+        const element = document.getElementById(id);
+        if (element instanceof HTMLElement) {
+            element.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+                inline: "nearest"
+            });
+        }
+    }
+</script>
+
