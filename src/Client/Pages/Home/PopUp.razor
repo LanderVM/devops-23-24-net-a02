@@ -1,7 +1,9 @@
-<MudPopover Style="background-color: #C8A86E; color: white; margin-left: -10px"
-            Open="@_isOpen"
+<MudPopover 
+    Style="background-color: #C8A86E; color: white; margin-top: 90vh; position: fixed; margin-left: -10px; cursor: pointer;"
+    Open="@_isOpen"
     Class="px-4 pt-4"
-    AnchorOrigin="Origin.BottomRight">
+    @onclick=OpenQuickQuote
+    AnchorOrigin="Origin.TopRight">
     <div class="d-flex flex-column">
         <MudText>Druk hier voor een snelle inschatting</MudText>
         <MudButton OnClick="@ToggleOpen" Class="ml-auto mr-n3 mb-1" Color="Color.Inherit">Close</MudButton>
@@ -10,7 +12,7 @@
 
 @code{
     public bool _isOpen= false;
-    
+
     protected override async Task OnInitializedAsync()
     {
         await Task.Delay(3000);
@@ -20,5 +22,9 @@
     public void ToggleOpen()
     {
         _isOpen = !_isOpen;
+    }
+    public void OpenQuickQuote()
+    {
+        Console.WriteLine("Open!");
     }
 }
