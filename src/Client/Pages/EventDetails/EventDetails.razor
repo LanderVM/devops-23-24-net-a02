@@ -1,0 +1,33 @@
+﻿@page "/event/details"
+@using GoogleMapsComponents
+@using GoogleMapsComponents.Maps
+
+<div style="height:100px">
+    <GoogleMap @ref="@Map" Id="map1" Options="@_options" Height="500px"></GoogleMap>
+</div>
+
+@code {
+    private GoogleMap Map { get; set; } = default!;
+    private readonly MapOptions _options = new() { Zoom = 13, Center = new LatLngLiteral { Lat = 50.93735122680664, Lng = 4.03336238861084 }, MapTypeId = MapTypeId.Roadmap, DisableDefaultUI = true, };
+    private List<Marker> _markers = new();
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender) return;
+        await base.OnAfterRenderAsync(firstRender);
+        await Task.Delay(100); // Add a small delay to ensure map initialization
+        await AddMarker();
+    }
+
+    private async Task AddMarker()
+    {
+        var marker = await Marker.CreateAsync(Map.JsRuntime,
+            new MarkerOptions
+            {
+                Position = await Map.InteropObject.GetCenter(),
+                Map = Map.InteropObject,
+                Label = new MarkerLabel { Text = "Gekozen Locatie", FontWeight = "bold" },
+            });
+        _markers.Add(marker);
+    }
+}
