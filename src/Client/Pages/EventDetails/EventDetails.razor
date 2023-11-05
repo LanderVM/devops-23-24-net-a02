@@ -1,4 +1,4 @@
-﻿@page "/event/details"
+﻿@page "/event/eventdetails"
 @using GoogleMapsComponents
 @using GoogleMapsComponents.Maps
 @using GoogleMapsComponents.Maps.Places
@@ -45,7 +45,7 @@
 
         await _autocomplete.AddListener("place_changed", async () =>
         {
-            var place = await _autocomplete.GetPlace();
+            PlaceResult place = await _autocomplete.GetPlace();
 
             if (place.Geometry.Location is not null)
             {
