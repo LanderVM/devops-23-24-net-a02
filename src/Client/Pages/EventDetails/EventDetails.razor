@@ -1,25 +1,31 @@
 ﻿@page "/event/details"
 @using GoogleMapsComponents
 @using GoogleMapsComponents.Maps
+@using GoogleMapsComponents.Maps.Places
 
 <div style="height:100px">
-    <GoogleMap @ref="@Map" Id="map1" Options="@_options" Height="500px"></GoogleMap>
+    <GoogleMap @ref="@Map" Id="map1" Options="@_options" Height="500px" OnAfterInit="async () => await OnAfterMapInit()"></GoogleMap>
+    <MudText Class="ml-16 mb-1" Typo="Typo.h6">Adres</MudText>
+    <MudTextField @ref="_addressSearch" Class="ml-16 mr-16 mb-4 pt-2" Label="adres autocomplete" Variant="Variant.Outlined" T="string"></MudTextField>
 </div>
 
 @code {
     private GoogleMap Map { get; set; } = default!;
     private readonly MapOptions _options = new() { Zoom = 13, Center = new LatLngLiteral { Lat = 50.93735122680664, Lng = 4.03336238861084 }, MapTypeId = MapTypeId.Roadmap, DisableDefaultUI = true, };
-    private List<Marker> _markers = new();
+    private Marker? _selectedLocation;
+
+    private Autocomplete _autocomplete = default!;
+    private MudTextField<string> _addressSearch = default!;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (!firstRender) return;
         await base.OnAfterRenderAsync(firstRender);
         await Task.Delay(100); // Add a small delay to ensure map initialization
-        await AddMarker();
+        await SetDefaultMarker();
     }
 
-    private async Task AddMarker()
+    private async Task SetDefaultMarker()
     {
         var marker = await Marker.CreateAsync(Map.JsRuntime,
             new MarkerOptions
@@ -28,6 +34,55 @@
                 Map = Map.InteropObject,
                 Label = new MarkerLabel { Text = "Gekozen Locatie", FontWeight = "bold" },
             });
-        _markers.Add(marker);
+        await UpdateMarker(marker);
     }
+
+    private async Task OnAfterMapInit()
+    {
+        this._autocomplete = await Autocomplete.CreateAsync(Map.JsRuntime, _addressSearch.InputReference.ElementReference, new AutocompleteOptions
+        {
+            StrictBounds = false,
+            ComponentRestrictions = new ComponentRestrictions { Country = new[] { "be" } }
+        });
+
+        await this._autocomplete.SetFields(new[] { "address_components", "geometry", "name" });
+
+        await this._autocomplete.AddListener("place_changed", async () =>
+        {
+            var place = await this._autocomplete.GetPlace();
+
+            if (place?.Geometry == null)
+            {
+                Console.WriteLine("No results available for" + place?.Name);
+            }
+            else if (place.Geometry.Location != null)
+            {
+                await Map.InteropObject.SetCenter(place.Geometry.Location);
+                await Map.InteropObject.SetZoom(13);
+
+                var marker = await Marker.CreateAsync(this.Map.JsRuntime, new MarkerOptions
+                {
+                    Position = place.Geometry.Location,
+                    Map = Map.InteropObject,
+                    Title = place.Name
+                });
+                await UpdateMarker(marker);
+                Console.WriteLine("Displaying result for " + place.Name);
+            }
+            else if (place.Geometry.Viewport != null)
+            {
+                await Map.InteropObject.FitBounds(place.Geometry.Viewport, 5);
+                Console.WriteLine("Displaying result for " + place.Name);
+            }
+
+            StateHasChanged();
+        });
+    }
+
+    private async Task UpdateMarker(Marker marker)
+    {
+        if (_selectedLocation is not null) await _selectedLocation.SetMap(null);
+        _selectedLocation = marker;
+    }
+
 }
