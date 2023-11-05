@@ -1,0 +1,28 @@
+@using MudBlazor
+@using MudBlazor.Extensions
+
+
+<MudPaper Square="true" Style="background-color: #E5D8C1">
+    <MudContainer MaxWidth="MaxWidth.ExtraLarge">
+        <MudGrid Justify="Justify.SpaceEvenly" Spacing="5">
+            <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="true">
+                <MudItem lg="2" md="2" xs="12" Style="padding-top: 1vw; mix-blend-mode: multiply;">
+                    <img src="images/foodtruck.jpg" alt="foodtruck" width="120px">
+                </MudItem>
+            </MudHidden>
+            
+            <MudItem lg="8" md="8" xs="12" Style="text-align: center;padding-top: 2vw">
+                <MudLink Typo="Typo.h6" Color="Color.Dark" Href="/Formules" Style="margin-right: 4vw">Formules</MudLink>
+                <MudLink Typo="Typo.h6" Color="Color.Dark" Href="/" Style="margin-right: 4vw">Producten</MudLink>
+                <MudLink Typo="Typo.h6" Color="Color.Dark" Href="/OverOns" Style="margin-right: 4vw">Over Ons</MudLink>
+                <MudLink Typo="Typo.h6" Color="Color.Dark" Href="#" Style="margin-right: 4vw">Admin</MudLink>
+            </MudItem>
+            <MudItem lg="2" md="2" xs="12" Style="text-align: center; padding-top: 2vw">
+                <MudIcon Icon="@Icons.Custom.Brands.Gmail" Title="Mail"/>
+                <MudIcon Icon="@Icons.Custom.Brands.Facebook" Title="Facebook"/>
+                <MudIcon Icon="@Icons.Custom.Brands.Instagram" Title="Instagram"/>
+            </MudItem>
+        </MudGrid>
+    </MudContainer>
+</MudPaper>
+
