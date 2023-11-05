@@ -3,13 +3,40 @@
 @using GoogleMapsComponents.Maps
 @using GoogleMapsComponents.Maps.Places
 
-<div style="height:100px">
-    <GoogleMap @ref="@Map" Id="map1" Options="@_options" Height="500px" OnAfterInit="async () => await OnAfterMapInit()"></GoogleMap>
-    <MudText Class="ml-16 mb-1" Typo="Typo.h6">Adres</MudText>
-    <MudTextField @ref="_addressSearch" Class="ml-16 mr-16 mb-4 pt-2" Label="Adres" Variant="Variant.Outlined" T="string"></MudTextField>
-</div>
+<PageTitle>Stap 1</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.ExtraLarge" Style="margin-top: 4vw">
+    <MudGrid Justify="Justify.SpaceEvenly">
+        <MudItem lg="6" md="12" sm="12" Style="max-width: 770px">
+            <GoogleMap @ref="@Map" Id="map1" Options="@_options" Height="410px" OnAfterInit="async () => await OnAfterMapInit()"></GoogleMap>
+            <MudText Class="ml-16 mb-1" Typo="Typo.h6">Adres</MudText>
+            <MudTextField @ref="_addressSearch" Class="ml-16 mr-16 mb-4 pt-2" Label="Adres" Variant="Variant.Outlined" T="string"/>
+        </MudItem>
+        <MudItem lg="6" md="12" sm="12" Style="max-width: 770px">
+            <MudDateRangePicker 
+                Color="Color.Primary"
+                Elevation="2"
+                Label="Placeholder" 
+                Editable="true"
+                @bind-DateRange="_dateRange" 
+                PlaceholderStart="Start Date" 
+                PlaceholderEnd="End Date" 
+                Date="@(DateTime.Today.AddDays(1))"
+                PickerVariant="PickerVariant.Static"
+                IsDateDisabledFunc="@((DateTime dt) => dt.Date < DateTime.Now.Date || (int)dt.DayOfWeek == 0 || (int)dt.DayOfWeek == 6)"
+ />
+            <MudTimePicker Label="Start Uur" Editable="true"/>
+            <MudTimePicker Label="Eind Uur  " Editable="true"/>
+        </MudItem>
+    </MudGrid>
+   
+</MudContainer>
+
 
 @code {
+    private DateRange _dateRange = new DateRange(DateTime.Now.Date, DateTime.Now.AddDays(3).Date); 
+    
+    
     private GoogleMap Map { get; set; } = default!;
 
     private readonly MapOptions _options = new()
