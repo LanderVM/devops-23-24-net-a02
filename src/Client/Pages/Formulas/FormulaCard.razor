@@ -1,0 +1,29 @@
+﻿<MudPaper Height="450px" Width="100%" Class=@($"{MarginTop} mb-6") Style=@($"background-color:#{BackgroundColor}")>
+    <MudText Style="text-align: center;font-weight: bold;color:black" Typo="Typo.h3" Class="pt-5">
+        @Titel
+    </MudText>
+    <hr style="background-color:black;height:1.5px;border-width:0;margin-left:30px;margin-right:30px;margin-top:20px;margin-bottom:20px" />
+    @foreach(string attrbt in @Attributes)
+    {
+        <MudText Style="font-size:1.7em;color:black" class="pl-16">
+
+            <MudIcon Style="margin-right: 1.5px;color: green" Icon="@Icons.Material.Filled.Check" aria-label="check mark"></MudIcon>@attrbt
+        </MudText>
+    }
+</MudPaper>
+<MudButton OnClick="@Click" Variant="Variant.Filled" Size="Size.Large" Color="Color.Primary" FullWidth="true">Kies</MudButton>
+
+@code {
+
+    [Parameter]
+    public string Titel { get; set; } = "Basic";
+    [Parameter]
+    public EventCallback Click { get; set; }
+    [Parameter]
+    public string BackgroundColor { get; set; } = "EBEBEB";
+    [Parameter]
+    public List<string> Attributes { get; set; } = new List<string> { "foodtruck", "incl. eerste tap", "incl. tweede tap", "incl. derde tap" };
+    [Parameter]
+    public string MarginTop { get; set; } = "";
+
+}
