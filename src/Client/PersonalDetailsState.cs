@@ -12,6 +12,8 @@ public class PersonalDetailsState
   public string Gemeente { get; set; } = "";
   public string Postcode { get; set; } = "";
 
+  public string BtwNummer { get; set; } = "";
+
   public string FacturatieStraat { get; set; } = "";
   public string FacturatieHuisnummer { get; set; } = "";
   public string FacturatieGemeente { get; set; } = "";
