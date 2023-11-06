@@ -6,12 +6,26 @@
 <MudPaper Width="100%" Class="pt-16" Height="100%" Elevation="0">
     <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge">
         <MudGrid Spacing="@Spacing">
-            <MudItem lg="12" md="12" sm="5" xs="5">
+            <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="true">
+                <MudItem lg="12" md="12" sm="5" xs="5">
 
-            </MudItem>
-            <MudItem lg="2" md="2" sm="7" xs="7">
-                <TimeLineVertical step="2"></TimeLineVertical>
-            </MudItem>
+                </MudItem>
+                <MudItem lg="2" md="2" sm="7" xs="7">
+                    <TimeLineVertical step="2"></TimeLineVertical>
+                </MudItem>
+            </MudHidden>
+            <MudHidden Breakpoint="Breakpoint.MdAndUp">
+                <MudItem lg="2" md="2" sm="2" xs="2">
+
+                </MudItem>
+                <MudItem lg="8" md="8" sm="8" xs="8">
+                    <TimeLineHorizontal step="2"></TimeLineHorizontal>
+                </MudItem>
+                <MudItem lg="2" md="2" sm="2" xs="2">
+
+                </MudItem>
+            </MudHidden>
+            
             <MudItem lg="10" md="10" sm="12" xs="12">
                 <MudGrid Spacing="@Spacing">
                     <MudItem lg="6" md="6" sm="12" xs="12">
