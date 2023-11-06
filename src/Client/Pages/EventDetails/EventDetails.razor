@@ -9,9 +9,25 @@
 
 <MudContainer MaxWidth="MaxWidth.ExtraLarge" Style="margin-top: 4vw">
     <MudGrid Justify="Justify.SpaceEvenly">
-        <MudItem lg="2" md="2" sm="12">
-            <TimeLineVertical step="1" ></TimeLineVertical>
-        </MudItem>
+        <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="true">
+            <MudItem lg="12" md="12" sm="5" xs="5">
+
+            </MudItem>
+            <MudItem lg="2" md="2" sm="7" xs="7">
+                <TimeLineVertical step="1"></TimeLineVertical>
+            </MudItem>
+        </MudHidden>
+        <MudHidden Breakpoint="Breakpoint.MdAndUp">
+            <MudItem lg="2" md="2" sm="2" xs="2">
+
+            </MudItem>
+            <MudItem lg="8" md="8" sm="8" xs="8">
+                <TimeLineHorizontal step="1"></TimeLineHorizontal>
+            </MudItem>
+            <MudItem lg="2" md="2" sm="2" xs="2">
+
+            </MudItem>
+        </MudHidden>
         
         <MudItem lg="4" md="10" sm="12" Style="max-width: 500px">
             <GoogleMap @ref="@Map" Id="map1" Options="@_options" Height="410px" OnAfterInit="async () => await OnAfterMapInit()"></GoogleMap>
