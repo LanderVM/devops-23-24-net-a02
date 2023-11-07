@@ -15,11 +15,21 @@ public static class DbInitializer
       return; // DB seeded
     }
 
-    var img = new Image("placeholder img", "placeholder text");
+    var img = new Image("https://m.media-amazon.com/images/I/71uPXBaWafL._AC_SX679_.jpg", "placeholder text");
 
     var bbq = new Equipment(img, "Barbecue", "MMmmm Tasty", 20M, 50);
     var tent = new Equipment(img, "Tent", "To keep the party clean", 30M, 5);
     var barrel = new Equipment(img, "Barrel", "Storing the goods", 10M, 20);
+
+    var equipment = new Equipment[] {
+      new Equipment(img, "Bucket1","Damm!",15M,20),
+    new Equipment(img, "Bucket2", "Damm!", 17M, 30),
+    new Equipment(img, "Bucket3", "Damm!", 12M, 25),
+    new Equipment(img, "Bucket4", "Damm!", 44M, 10),
+    new Equipment(img, "Bucket5", "Damm!", 11M, 15),
+    new Equipment(img, "Bucket6", "Damm!", 54M, 7),
+    new Equipment(img, "Bucket7", "Damm!", 19M, 9)
+  };
 
     var formulas = new Formula[]
     {
@@ -37,6 +47,7 @@ public static class DbInitializer
 
     context.Formulas.AddRange(formulas);
     context.Customers.AddRange(Customers);
+    context.Equipments.AddRange(equipment);
     context.SaveChanges();
   }
 }
