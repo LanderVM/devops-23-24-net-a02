@@ -27,7 +27,10 @@ public class EquipmentService : IEquipmentService
          Subtext = x.Description.Subtext,
          Price = x.Price,
          Stock = x.Stock,
-         ImageData = new List<string> { x.Image.ImageUrl,x.Image.AltText},
+         ImageData = new EquipmentDto.ImageData { 
+              ImageUrl = x.Image.ImageUrl,
+              AltText = x.Image.AltText,
+         },
          FormulaIds = x.Formulas.Select(x => x.Id).ToList(),
        }).ToListAsync();
 

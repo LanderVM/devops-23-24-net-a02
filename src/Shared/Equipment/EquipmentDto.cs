@@ -14,8 +14,13 @@ public abstract class EquipmentDto
     public string Subtext { get; set; }
     public decimal Price { get; set; }
     public int Stock { get; set; }
-    public List<string> ImageData { get; set; }
+    public ImageData ImageData { get; set; }
     public List<int>? FormulaIds { get; set; }
       
+  }
+  public class ImageData {
+      public string ImageUrl { get; set; }
+
+      public string AltText { get; set; }
   }
 }
