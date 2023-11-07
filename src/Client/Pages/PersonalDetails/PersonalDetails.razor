@@ -1,5 +1,6 @@
 ﻿@page "/personaldetails"
 @inject PersonalDetailsState PersonalDetailsState
+@inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager
 
 <PageTitle>Persoonlijke gegevens</PageTitle>
 
@@ -105,6 +106,6 @@
 
     private void ClickVolgende()
     {
-        
+        NavigationManager.NavigateTo("/extramaterial");
     }
 }

@@ -8,6 +8,7 @@ public static class DbInitializer
 {
   public static void Initialize(BlancheDbContext context)
   {
+    
     if (context.Formulas.Any()
         && context.Equipments.Any()
         && context.Customers.Any())
@@ -45,9 +46,9 @@ public static class DbInitializer
 
     var Customers = new Customer[] { cust1, cust2 };
 
+    context.Equipments.AddRange(equipment);
     context.Formulas.AddRange(formulas);
     context.Customers.AddRange(Customers);
-    context.Equipments.AddRange(equipment);
     context.SaveChanges();
   }
 }
