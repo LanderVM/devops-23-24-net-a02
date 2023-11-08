@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using server.Services;
+using shared.Equipment;
 using Server.Services;
 
 namespace Api.Data;

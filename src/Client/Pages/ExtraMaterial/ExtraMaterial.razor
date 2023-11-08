@@ -1,5 +1,5 @@
 ﻿@page "/extramaterial"
-@using shared.Equipment;
+@using shared.Equipment
 @inject HttpClient HttpClient
 @inject IJSRuntime JS
 
@@ -57,27 +57,23 @@
 
 @code {
 
-    private int Spacing { get; set; } = 2;
-
+    [Inject] public IEquipmentService EquipmentSerivce { get; set; } = default!;
     private List<EquipmentDto.Index> Extras;
 
-    private void ClickVolgende()
-    {
-
-    }
+    private int Spacing { get; set; } = 2;
 
     protected override async Task OnInitializedAsync()
     {
 
-
-        var request = new HttpRequestMessage(HttpMethod.Get,
-            "http://localhost:5292/Equipment");
-
-        var response = await HttpClient.SendAsync(request);
-
+        var response = await EquipmentSerivce.GetIndexAsync();
 
         await JS.InvokeVoidAsync("console.log", "hohoh");
         await JS.InvokeVoidAsync("console.log", response);
+
+    }
+
+    private void ClickVolgende()
+    {
 
     }
 

@@ -1,6 +1,6 @@
 ﻿using shared.Equipment;
 
-namespace server.Services;
+namespace shared.Equipment;
 
 public interface IEquipmentService
 {
