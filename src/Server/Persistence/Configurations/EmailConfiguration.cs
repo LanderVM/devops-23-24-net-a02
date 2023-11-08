@@ -9,6 +9,7 @@ public class EmailConfiguration : EntityConfiguration<Email>
 {
   public override void Configure(EntityTypeBuilder<Email> builder)
   {
+    base.Configure(builder);
     builder.Property(e => e.Value)
       .HasConversion(e => e.ToString(), e => new MailAddress(e)) /*.HasColumnName()*/;
   }

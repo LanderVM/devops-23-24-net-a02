@@ -3,6 +3,7 @@ using System;
 using Api.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace devops2324neta02.Server.Migrations
 {
     [DbContext(typeof(BlancheDbContext))]
-    partial class BlancheDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231108180052_FixCustomerFieldsMissingBug")]
+    partial class FixCustomerFieldsMissingBug
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,27 +56,11 @@ namespace devops2324neta02.Server.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("HouseNumber")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
                     b.Property<bool>("IsActive")
                         .HasColumnType("tinyint(1)");
-
-                    b.Property<string>("PostalCode")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Street")
-                        .IsRequired()
-                        .HasColumnType("longtext");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime(6)");
@@ -284,20 +271,11 @@ namespace devops2324neta02.Server.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("AmountOrdered")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<int>("EquipmentOrderedId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsActive")
                         .HasColumnType("tinyint(1)");
-
-                    b.Property<decimal>("OriginalEquipmentPrice")
-                        .HasColumnType("decimal(65,30)");
 
                     b.Property<int>("QuotationId")
                         .HasColumnType("int");
@@ -306,8 +284,6 @@ namespace devops2324neta02.Server.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("EquipmentOrderedId");
 
                     b.HasIndex("QuotationId");
 
@@ -459,19 +435,11 @@ namespace devops2324neta02.Server.Migrations
 
             modelBuilder.Entity("Domain.Quotations.QuotationLine", b =>
                 {
-                    b.HasOne("Domain.Formulas.Equipment", "EquipmentOrdered")
-                        .WithMany()
-                        .HasForeignKey("EquipmentOrderedId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Domain.Quotations.Quotation", "Quotation")
                         .WithMany("QuotationLines")
                         .HasForeignKey("QuotationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("EquipmentOrdered");
 
                     b.Navigation("Quotation");
                 });

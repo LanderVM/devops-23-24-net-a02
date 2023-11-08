@@ -10,7 +10,7 @@ public class EntityConfiguration<T> : IEntityTypeConfiguration<T> where T : Enti
   {
     builder.ToTable(typeof(T).Name); 
     builder.Property(x => x.IsActive).IsRequired().HasDefaultValue(true).ValueGeneratedNever();
-    builder.Property(x => x.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
-    builder.Property(x => x.UpdatedAt).HasDefaultValueSql("GETUTCDATE()").IsConcurrencyToken();
+    builder.Property(x => x.CreatedAt).HasDefaultValueSql("NOW()");
+    builder.Property(x => x.UpdatedAt).HasDefaultValueSql("NOW()").IsConcurrencyToken();
   }
 }

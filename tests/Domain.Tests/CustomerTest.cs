@@ -14,10 +14,10 @@ public class CustomerTest
     customer.LastName.ShouldBe("Peeters");
     customer.Email.Value.ShouldBeOfType(typeof(MailAddress));
     customer.Email.Value.ToString().ShouldBe("JanPeeters@gmail.com");
-    customer.Address.Street.ShouldBe("Straat");
-    customer.Address.HouseNumber.ShouldBe("01");
-    customer.Address.City.ShouldBe("Zottegem");
-    customer.Address.PostalCode.ShouldBe("9620");
+    customer.BillingAddress.Street.ShouldBe("Straat");
+    customer.BillingAddress.HouseNumber.ShouldBe("01");
+    customer.BillingAddress.City.ShouldBe("Zottegem");
+    customer.BillingAddress.PostalCode.ShouldBe("9620");
     customer.PhoneNumber.Value.ShouldBe("0479254691");
   }
 

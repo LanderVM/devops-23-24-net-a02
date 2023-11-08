@@ -12,7 +12,7 @@ public class FormulaTests
     const string title = "The base food truck formula";
     const string description = "Having a small party? Our iconic food truck is your choice of the evening!";
 
-    var formula = new Formula(equipment, title, description);
+    var formula = new Formula(equipment, title, description, 20);
 
     formula.Equipment.Count.ShouldBe(0);
   }
@@ -29,7 +29,7 @@ public class FormulaTests
     const string description =
       "Celebrating the new academic year? Sunny or rainy, this formula takes care of your students!";
 
-    var formula = new Formula(equipment, title, description);
+    var formula = new Formula(equipment, title, description, 20);
 
     formula.Equipment.Count.ShouldBe(equipment.Count);
     formula.Equipment.ShouldContain(equipment[0]);
@@ -49,7 +49,7 @@ public class FormulaTests
 
     Should.Throw<ArgumentException>(() =>
     {
-      new Formula(equipment, title, description);
+      new Formula(equipment, title, description, 20);
     });
   }
 
@@ -64,7 +64,7 @@ public class FormulaTests
 
     Should.Throw<ArgumentException>(() =>
     {
-      new Formula(equipment, title, description);
+      new Formula(equipment, title, description, 20);
     });
   }
 
@@ -83,7 +83,7 @@ public class FormulaTests
     {
       equipment.Add(new Equipment(new Image("image url", "alt text"), "BBQ Deluxe",
         "Tasty barbecue stuff, in a deluxe package!", 20.50M, stock));
-      new Formula(equipment, title, description);
+      new Formula(equipment, title, description, 20);
     });
   }
 
@@ -106,7 +106,7 @@ public class FormulaTests
     {
       equipment.Add(new Equipment(new Image("image url", "alt text"), "BBQ Deluxe",
         "Tasty barbecue stuff, in a deluxe package!", price, 50));
-      new Formula(equipment, title, description);
+      new Formula(equipment, title, description, 20);
     });
   }
 }
