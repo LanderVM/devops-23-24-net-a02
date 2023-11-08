@@ -22,7 +22,17 @@ public class Quotation : Entity
   }
 
   public Formula Formula { get; set; } = default!;
-  public decimal OriginalFormulaPricePerDay { get; set; }
+  private decimal _originalFormulaPricePerDay;
+
+  public decimal OriginalFormulaPricePerDay
+  {
+    get => _originalFormulaPricePerDay;
+    set
+    {
+      _originalFormulaPricePerDay = Guard.Against.Negative(value);
+    }
+  }
+
   public Customer OrderedBy { get; set; } = default!;
   public Address EventLocation { get; set; } = default!;
   public List<QuotationLine> QuotationLines { get; set; } = new();
@@ -30,7 +40,7 @@ public class Quotation : Entity
   public DateTime StartTime { get; set; }
   public DateTime EndTime { get; set; }
 
-  public decimal GetPrice()
+  public decimal GetPrice() // TODO test
   {
     var days = (EndTime - StartTime).Days;
     var basePrice = OriginalFormulaPricePerDay * days;

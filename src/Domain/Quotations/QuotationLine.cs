@@ -17,10 +17,20 @@ public class QuotationLine : Entity
 
   public Quotation Quotation { get; set; } = default!;
   public Equipment EquipmentOrdered { get; set; } = default!;
-  public decimal OriginalEquipmentPrice { get; set; }
+  private decimal _originalEquipmentPricePerDay;
+
+  public decimal OriginalEquipmentPrice
+  {
+    get => _originalEquipmentPricePerDay;
+    set
+    {
+      _originalEquipmentPricePerDay = Guard.Against.Negative(value);
+    }
+  }
+
   public int AmountOrdered { get; set; }
 
-  public decimal GetPrice()
+  public decimal GetPrice() // TODO test
   {
     return AmountOrdered * OriginalEquipmentPrice;
   }

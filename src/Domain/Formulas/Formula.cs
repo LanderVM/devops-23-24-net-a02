@@ -16,6 +16,16 @@ public class Formula : Entity
 
   public List<Equipment> Equipment { get; } = new();
   public Description Description { get; set; } = default!;
-  public decimal PricePerDay { get; set; } = default!;
+  private decimal _pricePerDay;
+
+  public decimal PricePerDay
+  {
+    get => _pricePerDay;
+    set
+    {
+      _pricePerDay = Guard.Against.Negative(value);
+    }
+  }
+
   public List<Quotation> OrderedIn { get; set; } = default!;
 }
