@@ -10,9 +10,9 @@ public class QuotationLine : Entity
 
   public QuotationLine(Equipment equipment, int amountOrdered)
   {
+    EquipmentOrdered = Guard.Against.Null(equipment);
+    AmountOrdered = Guard.Against.NegativeOrZero(amountOrdered);
     OriginalEquipmentPrice = equipment.Price;
-    EquipmentOrdered = equipment;
-    AmountOrdered = amountOrdered;
   }
 
   public Quotation Quotation { get; set; } = default!;
@@ -30,7 +30,7 @@ public class QuotationLine : Entity
 
   public int AmountOrdered { get; set; }
 
-  public decimal GetPrice() // TODO test
+  public decimal GetPrice()
   {
     return AmountOrdered * OriginalEquipmentPrice;
   }

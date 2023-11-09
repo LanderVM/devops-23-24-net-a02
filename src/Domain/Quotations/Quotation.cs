@@ -11,14 +11,17 @@ public class Quotation : Entity
   public Quotation(Formula formula, Customer orderedBy, Address eventLocation, List<QuotationLine> quotationLines,
     DateTime startTime, DateTime endTime)
   {
-    Formula = formula;
+    if ((endTime - startTime).TotalSeconds <= 0) 
+      throw new ArgumentException("End time cannot be before start time!");
+
+    Formula = Guard.Against.Null(formula);
     OriginalFormulaPricePerDay = formula.PricePerDay;
-    OrderedBy = orderedBy;
-    EventLocation = eventLocation;
-    QuotationLines = quotationLines;
+    OrderedBy = Guard.Against.Null(orderedBy);
+    EventLocation = Guard.Against.Null(eventLocation);
+    QuotationLines = Guard.Against.Null(quotationLines);
     Status = QuotationStatus.Unread;
-    StartTime = startTime;
-    EndTime = endTime;
+    StartTime = Guard.Against.Null(startTime);
+    EndTime = Guard.Against.Null(endTime);
   }
 
   public Formula Formula { get; set; } = default!;
@@ -40,11 +43,11 @@ public class Quotation : Entity
   public DateTime StartTime { get; set; }
   public DateTime EndTime { get; set; }
 
-  public decimal GetPrice() // TODO test
+  public decimal GetPrice()
   {
-    var days = (EndTime - StartTime).Days;
+    var days = (EndTime - StartTime).Days + 1;
     var basePrice = OriginalFormulaPricePerDay * days;
-    var equipmentPrices = QuotationLines.Sum(quotationLine => quotationLine.GetPrice() * days);
-    return basePrice + equipmentPrices;
+    var extraEquipmentPrices = QuotationLines.Sum(quotationLine => quotationLine.GetPrice() * days);
+    return basePrice + extraEquipmentPrices;
   }
 }

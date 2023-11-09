@@ -1,6 +1,4 @@
-﻿using Domain.Customers;
-using Domain.Formulas;
-using Domain.Quotations;
+﻿using Domain.Quotations;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Server.Persistence.Configurations;
