@@ -10,19 +10,19 @@ public class QuotationConfiguration : EntityConfiguration<Quotation>
   public override void Configure(EntityTypeBuilder<Quotation> builder)
   {
     base.Configure(builder);
-    builder.HasOne<Formula>(q => q.Formula)
+    builder.HasOne(q => q.Formula)
       .WithMany(f => f.OrderedIn)
       .IsRequired();
     builder.Property(q => q.OriginalFormulaPricePerDay)
       .HasPrecision(2)
       .IsRequired();
-    builder.HasOne<Customer>(q => q.OrderedBy)
+    builder.HasOne(q => q.OrderedBy)
       .WithMany(c => c.Quotations)
       .IsRequired();
-    builder.HasOne<Address>(q => q.EventLocation)
+    builder.HasOne(q => q.EventLocation)
       .WithMany(a => a.EventLocations)
       .IsRequired();
-    builder.HasMany<QuotationLine>(q => q.QuotationLines)
+    builder.HasMany(q => q.QuotationLines)
       .WithOne(ql => ql.Quotation)
       .IsRequired();
     builder.Property(q => q.Status)

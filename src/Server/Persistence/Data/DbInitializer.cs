@@ -20,11 +20,9 @@ public static class DbInitializer
       return; // DB seeded
     }
 
-    var img = new Image("placeholder img", "placeholder text");
-
-    var bbq = new Equipment(img, "Barbecue", "MMmmm Tasty", 20M, 50);
-    var tent = new Equipment(img, "Tent", "To keep the party clean", 30M, 5);
-    var barrel = new Equipment(img, "Barrel", "Storing the goods", 10M, 20);
+    var bbq = new Equipment( "Barbecue", "MMmmm Tasty", 20M, 50);
+    var tent = new Equipment( "Tent", "To keep the party clean", 30M, 5);
+    var barrel = new Equipment("Barrel", "Storing the goods", 10M, 20);
 
     var formulas = new Formula[]
     {

@@ -12,8 +12,7 @@ public class CustomerTest
       new Address("Straat", "01", "Zottegem", "9620"), new PhoneNumber("0479254691"));
     customer.FirstName.ShouldBe("Jan");
     customer.LastName.ShouldBe("Peeters");
-    customer.Email.Value.ShouldBeOfType(typeof(MailAddress));
-    customer.Email.Value.ToString().ShouldBe("JanPeeters@gmail.com");
+    customer.Email.Value.ShouldBe("JanPeeters@gmail.com");
     customer.BillingAddress.Street.ShouldBe("Straat");
     customer.BillingAddress.HouseNumber.ShouldBe("01");
     customer.BillingAddress.City.ShouldBe("Zottegem");

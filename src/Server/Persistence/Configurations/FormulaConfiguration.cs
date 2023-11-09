@@ -9,11 +9,13 @@ public class FormulaConfiguration : EntityConfiguration<Formula>
   public override void Configure(EntityTypeBuilder<Formula> builder)
   {
     base.Configure(builder);
-    builder.OwnsOne<Description>(formula => formula.Description);
-    builder.HasMany(formula => formula.Equipment).WithMany(equipment => equipment.Formulas)
+    builder.HasMany(f => f.Equipment)
+      .WithMany(e => e.Formulas)
       .UsingEntity(join => join.ToTable("FormulaEquipment"));
+    builder.OwnsOne(f => f.Description)
+      .WithOwner();
     builder.Property(f => f.PricePerDay)
-      .IsRequired()
-      .HasPrecision(2);
+      .HasPrecision(2)
+      .IsRequired();
   }
 }
