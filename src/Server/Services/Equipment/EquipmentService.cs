@@ -28,8 +28,8 @@ public class EquipmentService : IEquipmentService
          Price = x.Price,
          Stock = x.Stock,
          ImageData = new EquipmentDto.ImageData { 
-              ImageUrl = x.Image.ImageUrl,
-              AltText = x.Image.AltText,
+           ImageUrl = "https://via.placeholder.com/350x300",
+           AltText = "placeholder txt",
          },
          FormulaIds = x.Formulas.Select(x => x.Id).ToList(),
        }).ToListAsync();

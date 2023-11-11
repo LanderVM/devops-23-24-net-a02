@@ -25,13 +25,13 @@ public static class DbInitializer
     var barrel = new Equipment("Barrel", "Storing the goods", 10M, 20);
 
     var equipment = new Equipment[] {
-      new Equipment(img, "Bucket1","Damm!",15M,20),
-    new Equipment(img, "Bucket2", "Damm!", 17M, 30),
-    new Equipment(img, "Bucket3", "Damm!", 12M, 25),
-    new Equipment(img, "Bucket4", "Damm!", 44M, 10),
-    new Equipment(img, "Bucket5", "Damm!", 11M, 15),
-    new Equipment(img, "Bucket6", "Damm!", 54M, 7),
-    new Equipment(img, "Bucket7", "Damm!", 19M, 9)
+      new ("Bucket1","Damm!",15M,20),
+    new ("Bucket2", "Damm!", 17M, 30),
+    new ("Bucket3", "Damm!", 12M, 25),
+    new ("Bucket4", "Damm!", 44M, 10),
+    new ("Bucket5", "Damm!", 11M, 15),
+    new ("Bucket6", "Damm!", 54M, 7),
+    new ("Bucket7", "Damm!", 19M, 9)
   };
 
     var formulas = new Formula[]
