@@ -24,6 +24,16 @@ public static class DbInitializer
     var tent = new Equipment( "Tent", "To keep the party clean", 30M, 5);
     var barrel = new Equipment("Barrel", "Storing the goods", 10M, 20);
 
+    var equipment = new Equipment[] {
+      new Equipment(img, "Bucket1","Damm!",15M,20),
+    new Equipment(img, "Bucket2", "Damm!", 17M, 30),
+    new Equipment(img, "Bucket3", "Damm!", 12M, 25),
+    new Equipment(img, "Bucket4", "Damm!", 44M, 10),
+    new Equipment(img, "Bucket5", "Damm!", 11M, 15),
+    new Equipment(img, "Bucket6", "Damm!", 54M, 7),
+    new Equipment(img, "Bucket7", "Damm!", 19M, 9)
+  };
+
     var formulas = new Formula[]
     {
       new(new List<Equipment>(), "Basic", "For a small party", 20M),
@@ -44,6 +54,7 @@ public static class DbInitializer
       DateTime.Today, DateTime.Today.AddDays(2));
     var quotes = new[] { quote1, quote2 };
 
+    context.Equipments.AddRange(equipment);
     context.Formulas.AddRange(formulas);
     context.Customers.AddRange(customers);
     context.Quotations.AddRange(quotes);

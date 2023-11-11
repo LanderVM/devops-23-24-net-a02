@@ -1,0 +1,124 @@
+﻿@page "/extramaterial"
+@using shared.Equipment
+@inject HttpClient HttpClient
+@inject ExtraMaterialState ExtraMaterialState
+@inject IJSRuntime JS
+
+<PageTitle>Stap 3</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.ExtraLarge" Style="margin-top: 4vw">
+    <MudGrid Justify="Justify.SpaceEvenly">
+        <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="true">
+            <MudItem lg="12" md="12" sm="5" xs="5">
+
+            </MudItem>
+            <MudItem lg="2" md="2" sm="7" xs="7">
+                <TimeLineVertical step="3"></TimeLineVertical>
+            </MudItem>
+        </MudHidden>
+        <MudHidden Breakpoint="Breakpoint.MdAndUp">
+            <MudItem lg="2" md="2" sm="2" xs="2">
+
+            </MudItem>
+            <MudItem lg="8" md="8" sm="8" xs="8">
+                <TimeLineHorizontal step="3"></TimeLineHorizontal>
+            </MudItem>
+            <MudItem lg="2" md="2" sm="2" xs="2">
+
+            </MudItem>
+        </MudHidden>
+
+        <MudItem lg="10" md="10" sm="12" xs="12">
+            <MudGrid Spacing="@Spacing">
+                @foreach (EquipmentDto.Index item in Extras)
+                {
+                    <MudItem lg="3" md="4" sm="6" xs="12">
+                        <MudCard>
+                            <MudCardMedia Image=@item.ImageData.ImageUrl Height="250" />
+                            <MudCardContent>
+                                <MudText Typo="Typo.h5" Class="mb-2">@item.Title</MudText>
+                                <MudText Typo="Typo.body2" Class="mb-3">@item.Subtext</MudText>
+                                <MudGrid>
+                                @if (ExtraMaterialState.ExtrasAmount[item.Id]>0) {
+                                        <MudItem lg="6" md="6" sm="6" xs="6">
+                                            <MudNumericField @bind-Value="@ExtraMaterialState.ExtrasAmount[item.Id]" Variant="Variant.Outlined" Style="height:35px" Margin="Margin.Dense" Min="0" Max="@item.Stock" Step="1"></MudNumericField>
+                                        </MudItem>
+                                    }
+                                    <MudItem lg="6" md="6" sm="6" xs="6">
+                                        <MudText Typo="Typo.body2" Class="pt-2">€ @(Decimal.Round(@item.Price,2))/72uur</MudText>
+                                    </MudItem>
+                                </MudGrid>
+                            </MudCardContent>
+                            @if (ExtraMaterialState.ExtrasAmount[item.Id]==0)
+                            {
+                                <MudCardActions>
+                                    <MudButton OnClick="@(()=>{Increment(item.Id);})" Variant="Variant.Filled" Color="Color.Primary" FullWidth="true">Voeg toe</MudButton>
+                                </MudCardActions>
+                            }
+                        </MudCard>
+                    </MudItem>
+                }
+            </MudGrid>
+
+        </MudItem>
+    </MudGrid>
+    <MudGrid>
+        <MudItem lg="2" md="2" sm="12" xs="12">
+
+        </MudItem>
+        <MudItem lg="4" md="4" sm="12" xs="12">
+
+        </MudItem>
+        <MudItem lg="4" md="4" sm="5" xs="5">
+
+        </MudItem>
+        <MudItem lg="2" md="2" sm="7" xs="7">
+            <MudButton Variant="Variant.Filled" Size="Size.Large" Color="Color.Primary" OnClick="@ClickVolgende">Volgende</MudButton>
+        </MudItem>
+    </MudGrid>
+
+
+
+
+</MudContainer>
+
+
+@code {
+
+    [Inject] public IEquipmentService EquipmentSerivce { get; set; } = default!;
+    private IEnumerable<EquipmentDto.Index> Extras;
+
+    private int Spacing { get; set; } = 2;
+
+    private int number { get; set; } = 0;
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        EquipmentResult.Index response = await EquipmentSerivce.GetIndexAsync();
+
+        Extras = response.Equipment;
+
+        foreach (EquipmentDto.Index item in Extras)
+        {
+            ExtraMaterialState.ExtrasAmount.Add(item.Id,0);
+        }
+
+        await JS.InvokeVoidAsync("console.log", "hohoh");
+        await JS.InvokeVoidAsync("console.log", response);
+
+    }
+
+    private void Increment(int key)
+    {
+        int count;
+        ExtraMaterialState.ExtrasAmount.TryGetValue(key, out count);
+        ExtraMaterialState.ExtrasAmount[key] = count + 1;
+    }
+
+    private void ClickVolgende()
+    {
+
+    }
+
+}
