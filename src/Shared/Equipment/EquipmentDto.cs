@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace shared.Equipment;
 
-public abstract class EquipmentDto
+public static class EquipmentDto
 {
   public class Index { 
     public int Id { get; set; }

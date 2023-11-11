@@ -1,6 +1,6 @@
 ﻿namespace Shared.Quotations;
 
-public abstract class QuotationResponse
+public static class QuotationResponse
 {
   public class Create
   {

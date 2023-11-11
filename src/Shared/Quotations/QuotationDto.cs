@@ -3,7 +3,7 @@ using Shared.Common;
 
 namespace Shared.Quotations;
 
-public abstract class QuotationDto
+public static class QuotationDto
 {
   public class Create
   {

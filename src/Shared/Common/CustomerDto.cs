@@ -3,13 +3,13 @@ using FluentValidation;
 
 namespace Shared.Common;
 
-public abstract class CustomerDto
+public static class CustomerDto
 {
   public class Create
   {
     public string FirstName { get; set; }
     public string LastName { get; set; }
-    public EmailDto.CreateEmail Email { get; set; }
+    public EmailDto.Create Email { get; set; }
     public AddressDto BillingAddress { get; set; }
     public string PhoneNumber { get; set; }
     public string? VatNumber { get; set; }
