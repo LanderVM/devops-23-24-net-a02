@@ -4,5 +4,5 @@ namespace Server.Services;
 
 public interface IEmailService
 {
-  Task<int> Create(EmailDto.CreateEmail model);
+  Task<int> CreateAsync(EmailDto.CreateEmail model);
 }

@@ -21,7 +21,7 @@ public class EmailController : ControllerBase
   public async Task<IActionResult> RegisterEmail(EmailDto.CreateEmail model)
   {
     _logger.Log(LogLevel.Information, "Registering new email {model.Email}", model.Email);
-    int emailIid = await _emailService.Create(model);
+    int emailIid = await _emailService.CreateAsync(model);
     _logger.Log(LogLevel.Information, "Registered email {model.Email}", model.Email);
     return CreatedAtAction(nameof(RegisterEmail), new {id = emailIid});
   }

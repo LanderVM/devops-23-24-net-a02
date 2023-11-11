@@ -15,11 +15,9 @@ public class EmailService : IEmailService
   }
 
 
-  public async Task<int> Create(EmailDto.CreateEmail model)
+  public async Task<int> CreateAsync(EmailDto.CreateEmail model)
   {
-    var parsedEmail = new MailAddress(model.Email);
-    
-    var correspondingEmail = _dbContext.Emails.FirstOrDefault(existingMail => existingMail.Value.Equals(parsedEmail));
+    var correspondingEmail = _dbContext.Emails.FirstOrDefault(existingMail => existingMail.Value.Equals(model.Email));
     if (correspondingEmail is not null)
       return correspondingEmail.Id;
 
