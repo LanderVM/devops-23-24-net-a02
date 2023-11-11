@@ -9,7 +9,7 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace devops_23_24_net_a02.Server.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class EquipmentController : ControllerBase
 {
   private readonly ILogger<EquipmentController> _logger;

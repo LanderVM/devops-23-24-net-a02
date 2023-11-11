@@ -2,17 +2,14 @@
 
 namespace Shared.Common;
 
-public abstract class AddressDto
+public class AddressDto
 {
-  public abstract class Create
-  {
     public string Street { get; set; }
     public string HouseNumber { get; set; }
     public string PostalCode { get; set; }
     public string City { get; set; }
-  }
 
-  public class Validator : AbstractValidator<Create>
+  public class Validator : AbstractValidator<AddressDto>
   {
     public Validator()
     {

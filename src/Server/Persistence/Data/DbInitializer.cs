@@ -10,8 +10,6 @@ public static class DbInitializer
 {
   public static void Initialize(BlancheDbContext context)
   {
-    context.Database.Migrate();
-    
     if (context.Formulas.Any()
         && context.Equipments.Any()
         && context.Customers.Any()
@@ -42,9 +40,9 @@ public static class DbInitializer
     };
 
     var cust1 = new Customer("Bert", "de Backer", new Email("bert.debacker@gmail.com"),
-      new Address("Rue de Bouillon", "52", "Grimbergen", "1850"), new PhoneNumber("0486980477"));
+      new Address("Rue de Bouillon", "52", "Grimbergen", "1850"), new PhoneNumber("0486980477"), "BE123");
     var cust2 = new Customer("Frederick", "Honderdpoot", new Email("f.honderdpoot@outlook.be"),
-      new Address("Korte Noordsstraat", "292", "Uitkerke", "8370"), new PhoneNumber("0479894230"));
+      new Address("Korte Noordsstraat", "292", "Uitkerke", "8370"), new PhoneNumber("0479894230"), null);
     var customers = new[] { cust1, cust2 };
 
     var quote1 = new Quotation(formulas[0], customers[0], customers[0].BillingAddress, new List<QuotationLine>(),

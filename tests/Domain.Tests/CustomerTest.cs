@@ -9,7 +9,7 @@ public class CustomerTest
   public void Create_new_customer_happyFlow()
   {
     var customer = new Customer("Jan", "Peeters", new Email("JanPeeters@gmail.com"),
-      new Address("Straat", "01", "Zottegem", "9620"), new PhoneNumber("0479254691"));
+      new Address("Straat", "01", "Zottegem", "9620"), new PhoneNumber("0479254691"), "BE123");
     customer.FirstName.ShouldBe("Jan");
     customer.LastName.ShouldBe("Peeters");
     customer.Email.Value.ShouldBe("JanPeeters@gmail.com");

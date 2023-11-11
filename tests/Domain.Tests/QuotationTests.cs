@@ -18,7 +18,7 @@ public class QuotationTests
     equipment = new();
     formula = new Formula(equipment, title, description, 20M);
     customer = new Customer("Jan", "Peeters", new Email("JanPeeters@gmail.com"),
-      new Address("Straat", "01", "Zottegem", "9620"), new PhoneNumber("0479254691"));
+      new Address("Straat", "01", "Zottegem", "9620"), new PhoneNumber("0479254691"), "BE123");
     quotationLines = new();
   }
 

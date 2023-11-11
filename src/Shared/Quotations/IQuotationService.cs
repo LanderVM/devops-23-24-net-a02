@@ -2,5 +2,5 @@
 
 public interface IQuotationService
 {
-  Task<int> CreateAsync();
+  Task<int> CreateAsync(QuotationDto.Create model);
 }

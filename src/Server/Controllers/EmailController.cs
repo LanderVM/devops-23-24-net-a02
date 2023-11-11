@@ -5,7 +5,7 @@ using Server.Services;
 namespace devops_23_24_net_a02.Server.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class EmailController : ControllerBase
 {
   private readonly ILogger<EmailController> _logger;

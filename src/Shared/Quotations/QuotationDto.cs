@@ -5,8 +5,9 @@ namespace Shared.Quotations;
 
 public abstract class QuotationDto
 {
-  public abstract class Create
+  public class Create
   {
+    public int FormulaId { get; set; }
     public AddressDto EventLocation { get; set; }
     public DateTime StartTime { get; set; }
     public DateTime EndTime { get; set; }
@@ -17,6 +18,8 @@ public abstract class QuotationDto
   {
     public Validator()
     {
+      RuleFor(model => model.FormulaId).NotEmpty();
+      RuleFor(model => model.FormulaId).Must(id => id >= 1).WithMessage("Formula id must be a positive id!");
       RuleFor(model => model.EventLocation).NotEmpty();
       RuleFor(model => model.StartTime).NotEmpty();
       RuleFor(model => model.EndTime).NotEmpty();
