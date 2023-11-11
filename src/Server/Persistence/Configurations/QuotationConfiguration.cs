@@ -17,9 +17,13 @@ public class QuotationConfiguration : EntityConfiguration<Quotation>
     builder.HasOne(q => q.OrderedBy)
       .WithMany(c => c.Quotations)
       .IsRequired();
-    builder.HasOne(q => q.EventLocation)
-      .WithMany(a => a.EventLocations)
-      .IsRequired();
+    builder.OwnsOne(c => c.EventLocation, address =>
+    {
+      address.Property(a => a.Street).IsRequired();
+      address.Property(a => a.HouseNumber).IsRequired();
+      address.Property(a => a.City).IsRequired();
+      address.Property(a => a.PostalCode).IsRequired();
+    });
     builder.HasMany(q => q.QuotationLines)
       .WithOne(ql => ql.Quotation)
       .IsRequired();

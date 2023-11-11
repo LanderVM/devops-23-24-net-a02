@@ -1,4 +1,5 @@
-﻿using Domain.Customers;
+﻿using Domain.Common;
+using Domain.Customers;
 using Domain.Quotations;
 using Microsoft.EntityFrameworkCore;
 using Shared.Quotations;
@@ -23,7 +24,6 @@ public class QuotationService : IQuotationService
       throw new ArgumentException($"Formula with id {chosenFormula.Id} is not active!");
 
     var customer = _dbContext.Customers
-      .Include(customer => customer.BillingAddress)
       .Include(customer => customer.Email)
       .AsEnumerable()
       .FirstOrDefault(customerFromDb => EqualsCustomer(model, customerFromDb));
@@ -35,7 +35,7 @@ public class QuotationService : IQuotationService
         GetCustomerEmail(model)
         ?? new Email(model.Customer.Email.Email),
         GetCustomerAddress(model)
-        ?? new Address(model.Customer.BillingAddress.Street,
+        ?? new BillingAddress(model.Customer.BillingAddress.Street,
           model.Customer.BillingAddress.HouseNumber,
           model.Customer.BillingAddress.City,
           model.Customer.BillingAddress.PostalCode),
@@ -44,15 +44,13 @@ public class QuotationService : IQuotationService
       _dbContext.Customers.Add(customer);
     }
 
-    if (customer.BillingAddress.IsActive is false)
-      customer.BillingAddress.IsActive = true; // TODO terug naar active zetten of nieuwe aanmaken?
-    if (customer.Email.IsActive is false) customer.Email.IsActive = true;
+    if (customer.Email.IsActive is false)
+      customer.Email.IsActive = true; // TODO nieuwe maken of gewoon terug actief zetten?
 
     Quotation quotation = new Quotation(
       chosenFormula,
       customer,
-      GetEventLocation(model)
-      ?? new Address(
+      new EventLocation(
         model.EventLocation.Street,
         model.EventLocation.HouseNumber,
         model.EventLocation.City,
@@ -61,8 +59,6 @@ public class QuotationService : IQuotationService
       new List<QuotationLine>(),
       model.StartTime,
       model.EndTime);
-
-    if (quotation.EventLocation.IsActive is false) quotation.EventLocation.IsActive = true;
 
     _dbContext.Quotations.Add(quotation);
     await _dbContext.SaveChangesAsync();
@@ -74,7 +70,7 @@ public class QuotationService : IQuotationService
     return _dbContext.Emails.FirstOrDefault(email => email.Value == model.Customer.Email.Email);
   }
 
-  private Address? GetCustomerAddress(QuotationDto.Create model)
+  private BillingAddress? GetCustomerAddress(QuotationDto.Create model)
   {
     return _dbContext.Customers.Include(customer => customer.BillingAddress)
       .FirstOrDefault(customerFromDb =>
@@ -82,16 +78,6 @@ public class QuotationService : IQuotationService
         && customerFromDb.BillingAddress.HouseNumber == model.Customer.BillingAddress.HouseNumber
         && customerFromDb.BillingAddress.PostalCode == model.Customer.BillingAddress.PostalCode
         && customerFromDb.BillingAddress.City == model.Customer.BillingAddress.City)?.BillingAddress;
-  }
-
-  private Address? GetEventLocation(QuotationDto.Create model)
-  {
-    return _dbContext.Quotations.Include(quotation => quotation.EventLocation)
-      .FirstOrDefault(quotationFromDb =>
-        quotationFromDb.EventLocation.Street == model.EventLocation.Street
-        && quotationFromDb.EventLocation.HouseNumber == model.EventLocation.HouseNumber
-        && quotationFromDb.EventLocation.PostalCode == model.EventLocation.PostalCode
-        && quotationFromDb.EventLocation.City == model.EventLocation.City)?.EventLocation;
   }
 
   private static bool EqualsCustomer(QuotationDto.Create model, Customer customerFromDb)

@@ -7,7 +7,7 @@ public class Customer : Entity
 {
   private Customer() { } // EF Core constructor
 
-  public Customer(string firstName, string lastName, Email email, Address billingAddress, PhoneNumber phoneNumber, string? vatNumber)
+  public Customer(string firstName, string lastName, Email email, BillingAddress billingAddress, PhoneNumber phoneNumber, string? vatNumber)
   {
     FirstName = Guard.Against.NullOrWhiteSpace(firstName, nameof(firstName));
     LastName = Guard.Against.NullOrWhiteSpace(lastName, nameof(lastName));
@@ -21,7 +21,7 @@ public class Customer : Entity
   public string LastName { get; set; } = default!;
   public string? VatNumber { get; set; }
   public Email Email { get; set; } = default!;
-  public Address BillingAddress { get; set; } = default!;
+  public BillingAddress BillingAddress { get; set; } = default!;
   public PhoneNumber PhoneNumber { get; set; } = default!;
   public List<Quotation> Quotations { get; set; } = new();
 }

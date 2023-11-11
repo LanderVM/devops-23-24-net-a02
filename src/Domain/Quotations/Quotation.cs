@@ -8,7 +8,7 @@ public class Quotation : Entity
 {
   private Quotation() { } // EF Core Constructor
 
-  public Quotation(Formula formula, Customer orderedBy, Address eventLocation, List<QuotationLine> quotationLines,
+  public Quotation(Formula formula, Customer orderedBy, EventLocation eventLocation, List<QuotationLine> quotationLines,
     DateTime startTime, DateTime endTime)
   {
     if ((endTime - startTime).TotalSeconds <= 0) 
@@ -37,7 +37,7 @@ public class Quotation : Entity
   }
 
   public Customer OrderedBy { get; set; } = default!;
-  public Address EventLocation { get; set; } = default!;
+  public EventLocation EventLocation { get; set; } = default!;
   public List<QuotationLine> QuotationLines { get; set; } = new();
   public QuotationStatus Status { get; set; } = QuotationStatus.Unread;
   public DateTime StartTime { get; set; }

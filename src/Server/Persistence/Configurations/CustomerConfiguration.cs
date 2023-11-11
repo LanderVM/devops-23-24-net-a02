@@ -14,9 +14,13 @@ public class CustomerConfiguration : EntityConfiguration<Customer>
       .IsRequired();
     builder.Property(c => c.LastName)
       .IsRequired();
-    builder.HasOne(c => c.BillingAddress)
-      .WithMany(a => a.BillingAddresses)
-      .IsRequired();
+    builder.OwnsOne(c => c.BillingAddress, address =>
+    {
+      address.Property(a => a.Street).IsRequired();
+      address.Property(a => a.HouseNumber).IsRequired();
+      address.Property(a => a.City).IsRequired();
+      address.Property(a => a.PostalCode).IsRequired();
+    });
     builder.OwnsOne(c => c.PhoneNumber)
       .Property(p => p.Value)
       .IsRequired();
