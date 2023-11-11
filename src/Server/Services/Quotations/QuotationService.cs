@@ -29,6 +29,7 @@ public class QuotationService : IQuotationService
       .FirstOrDefault(customerFromDb => EqualsCustomer(model, customerFromDb));
     if (customer is null)
     {
+      // TODO als customer enkel nieuw adres of telefoonnummer heeft, oude op inactief zetten & nieuwe maken, of gewoon updaten?
       customer = new Customer(
         model.Customer.FirstName,
         model.Customer.LastName,

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Shared.Quotations;
-using Server.Services;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace devops_23_24_net_a02.Server.Controllers;
 
@@ -18,6 +18,7 @@ public class QuotationController : ControllerBase
   }
 
   [HttpPost]
+  [SwaggerOperation("Saves a new quotation offer, registering a new customer if need be")]
   public async Task<IActionResult> RegisterQuotationRequest(QuotationDto.Create model)
   {
     _logger.Log(LogLevel.Information,
