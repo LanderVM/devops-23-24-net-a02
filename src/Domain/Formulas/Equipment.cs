@@ -9,9 +9,8 @@ public class Equipment : Entity
   private int _stock;
   private Equipment() { } // EF Core constructor
 
-  public Equipment(Image image, string title, string description, decimal price, int stock)
+  public Equipment(string title, string description, decimal price, int stock)
   {
-    Image = image;
     Description = new Description(title, description);
     Price = price;
     Stock = stock;
@@ -19,7 +18,6 @@ public class Equipment : Entity
 
   public List<Formula> Formulas { get; set; } = default!;
 
-  public Image Image { get; set; } = default!;
   public Description Description { get; set; } = default!;
 
   public decimal Price

@@ -12,7 +12,7 @@ public class FormulaTests
     const string title = "The base food truck formula";
     const string description = "Having a small party? Our iconic food truck is your choice of the evening!";
 
-    var formula = new Formula(equipment, title, description);
+    var formula = new Formula(equipment, title, description, 20);
 
     formula.Equipment.Count.ShouldBe(0);
   }
@@ -21,15 +21,14 @@ public class FormulaTests
   public void Create_new_formula_with_equipment_happyFlow()
   {
     List<Equipment> equipment = new();
-    var image = new Image("https://blazor.radzen.com/images/community.svg", "Placeholder image");
-    equipment.Add(new Equipment(image, "BBQ Deluxe", "Tasty barbecue stuff, in a deluxe package!", 100M, 2));
-    equipment.Add(new Equipment(image, "Tent Decoration",
+    equipment.Add(new Equipment( "BBQ Deluxe", "Tasty barbecue stuff, in a deluxe package!", 100M, 2));
+    equipment.Add(new Equipment( "Tent Decoration",
       "Tents for a rainy day. Or perhaps for when it's too hot to sit in the sun?", 35.99M, 21));
     const string title = "The extended food truck formula";
     const string description =
       "Celebrating the new academic year? Sunny or rainy, this formula takes care of your students!";
 
-    var formula = new Formula(equipment, title, description);
+    var formula = new Formula(equipment, title, description, 20);
 
     formula.Equipment.Count.ShouldBe(equipment.Count);
     formula.Equipment.ShouldContain(equipment[0]);
@@ -49,7 +48,7 @@ public class FormulaTests
 
     Should.Throw<ArgumentException>(() =>
     {
-      new Formula(equipment, title, description);
+      new Formula(equipment, title, description, 20);
     });
   }
 
@@ -64,7 +63,7 @@ public class FormulaTests
 
     Should.Throw<ArgumentException>(() =>
     {
-      new Formula(equipment, title, description);
+      new Formula(equipment, title, description, 20);
     });
   }
 
@@ -81,9 +80,9 @@ public class FormulaTests
 
     Should.Throw<ArgumentException>(() =>
     {
-      equipment.Add(new Equipment(new Image("image url", "alt text"), "BBQ Deluxe",
+      equipment.Add(new Equipment( "BBQ Deluxe",
         "Tasty barbecue stuff, in a deluxe package!", 20.50M, stock));
-      new Formula(equipment, title, description);
+      new Formula(equipment, title, description, 20);
     });
   }
 
@@ -104,9 +103,9 @@ public class FormulaTests
 
     Should.Throw<ArgumentException>(() =>
     {
-      equipment.Add(new Equipment(new Image("image url", "alt text"), "BBQ Deluxe",
+      equipment.Add(new Equipment( "BBQ Deluxe",
         "Tasty barbecue stuff, in a deluxe package!", price, 50));
-      new Formula(equipment, title, description);
+      new Formula(equipment, title, description, 20);
     });
   }
 }

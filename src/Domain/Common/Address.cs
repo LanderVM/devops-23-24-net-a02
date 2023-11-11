@@ -1,8 +1,9 @@
 ﻿using Domain.Common;
+using Domain.Quotations;
 
 namespace Domain.Customers;
 
-public class Address
+public class Address : Entity
 {
   private Address() { } // EF Core constructor
 
@@ -14,10 +15,12 @@ public class Address
     PostalCode = Guard.Against.NullOrWhiteSpace(postalCode, nameof(postalCode));
   }
 
-  public string Street { get; } = default!;
-  public string HouseNumber { get; } = default!;
-  public string City { get; } = default!;
-  public string PostalCode { get; } = default!;
+  public string Street { get; set; } = default!;
+  public string HouseNumber { get; set; } = default!;
+  public string City { get; set; } = default!;
+  public string PostalCode { get; set; } = default!;
+  public List<Quotation> EventLocations { get; set; } = new();
+  public List<Customer> BillingAddresses { get; set; } = new();
 
   public override string ToString()
   {

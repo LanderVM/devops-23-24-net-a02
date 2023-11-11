@@ -7,6 +7,13 @@ public class EquipmentConfiguration : EntityConfiguration<Equipment>
 {
   public override void Configure(EntityTypeBuilder<Equipment> builder)
   {
-    builder.OwnsOne<Description>(f => f.Description);
+    base.Configure(builder);
+    builder.OwnsOne(e => e.Description)
+      .WithOwner();
+    builder.Property(e => e.Price)
+      .HasPrecision(2)
+      .IsRequired();
+    builder.Property(e => e.Stock)
+      .IsRequired();
   }
 }
