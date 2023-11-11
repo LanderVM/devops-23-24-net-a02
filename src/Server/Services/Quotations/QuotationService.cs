@@ -22,12 +22,11 @@ public class QuotationService : IQuotationService
     if (chosenFormula.IsActive is false)
       throw new ArgumentException($"Formula with id {chosenFormula.Id} is not active!");
 
-    var customer = _dbContext.Customers.FirstOrDefault(customerFromDb =>
-      customerFromDb.FirstName == model.Customer.FirstName
-      && customerFromDb.LastName == model.Customer.LastName
-      && customerFromDb.Email.Value == model.Customer.Email.Email
-      && customerFromDb.PhoneNumber.Value == model.Customer.PhoneNumber
-      && customerFromDb.VatNumber == model.Customer.VatNumber);
+    var customer = _dbContext.Customers
+      .Include(customer => customer.BillingAddress)
+      .Include(customer => customer.Email)
+      .AsEnumerable()
+      .FirstOrDefault(customerFromDb => EqualsCustomer(model, customerFromDb));
     if (customer is null)
     {
       customer = new Customer(
@@ -42,9 +41,12 @@ public class QuotationService : IQuotationService
           model.Customer.BillingAddress.PostalCode),
         new PhoneNumber(model.Customer.PhoneNumber),
         model.Customer.VatNumber);
-
       _dbContext.Customers.Add(customer);
     }
+
+    if (customer.BillingAddress.IsActive is false)
+      customer.BillingAddress.IsActive = true; // TODO terug naar active zetten of nieuwe aanmaken?
+    if (customer.Email.IsActive is false) customer.Email.IsActive = true;
 
     Quotation quotation = new Quotation(
       chosenFormula,
@@ -59,6 +61,8 @@ public class QuotationService : IQuotationService
       new List<QuotationLine>(),
       model.StartTime,
       model.EndTime);
+
+    if (quotation.EventLocation.IsActive is false) quotation.EventLocation.IsActive = true;
 
     _dbContext.Quotations.Add(quotation);
     await _dbContext.SaveChangesAsync();
@@ -88,5 +92,18 @@ public class QuotationService : IQuotationService
         && quotationFromDb.EventLocation.HouseNumber == model.EventLocation.HouseNumber
         && quotationFromDb.EventLocation.PostalCode == model.EventLocation.PostalCode
         && quotationFromDb.EventLocation.City == model.EventLocation.City)?.EventLocation;
+  }
+
+  private static bool EqualsCustomer(QuotationDto.Create model, Customer customerFromDb)
+  {
+    return customerFromDb.FirstName == model.Customer.FirstName
+           && customerFromDb.LastName == model.Customer.LastName
+           && customerFromDb.Email.Value == model.Customer.Email.Email
+           && customerFromDb.PhoneNumber.Value == model.Customer.PhoneNumber
+           && customerFromDb.VatNumber == model.Customer.VatNumber
+           && customerFromDb.BillingAddress.Street == model.Customer.BillingAddress.Street
+           && customerFromDb.BillingAddress.HouseNumber == model.Customer.BillingAddress.HouseNumber
+           && customerFromDb.BillingAddress.PostalCode == model.Customer.BillingAddress.PostalCode
+           && customerFromDb.BillingAddress.City == model.Customer.BillingAddress.City;
   }
 }
