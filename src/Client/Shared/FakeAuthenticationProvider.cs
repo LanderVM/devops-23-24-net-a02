@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components.Authorization;
+﻿/*
+using Microsoft.AspNetCore.Components.Authorization;
 using System.Security.Claims;
 
 namespace Project.Client.Shared;
@@ -27,3 +28,4 @@ public class FakeAuthenticationProvider : AuthenticationStateProvider
     return Task.FromResult(new AuthenticationState(Current));
   }
 }
+*/

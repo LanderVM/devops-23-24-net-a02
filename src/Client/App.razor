@@ -1,20 +1,28 @@
 ﻿<CascadingAuthenticationState>
-<Router AppAssembly="@typeof(App).Assembly">
-    <Found Context="routeData">
-        <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
-        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
-    </Found>
-    <NotFound>
-        <PageTitle>Not found</PageTitle>
-        <LayoutView Layout="@typeof(MainLayout)">
-            <MudContainer>
-                <div>
-                    <MudText Typo="Typo.h3" GutterBottom="true">404</MudText>
-                    <MudText Typo="Typo.h5">Oops! The page you are looking for does not exist.</MudText>
-                    <MudButton Href="/" Color="Color.Primary" Variant="Variant.Filled">Go to Home</MudButton>
-                </div>
-            </MudContainer>
-        </LayoutView>
-    </NotFound>
-</Router>
+    <Router AppAssembly="@typeof(App).Assembly">
+        <Found Context="routeData">
+            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+                <Authorizing>
+                    <p>Determining session state, please wait...</p>
+                </Authorizing>
+                <NotAuthorized>
+                    <h1>Sorry</h1>
+                    <p>You're not authorized to reach this page. You need to log in.</p>
+                </NotAuthorized>
+            </AuthorizeRouteView>        
+            <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+        </Found>
+        <NotFound>
+            <PageTitle>Not found</PageTitle>
+            <LayoutView Layout="@typeof(MainLayout)">
+                <MudContainer>
+                    <div>
+                        <MudText Typo="Typo.h3" GutterBottom="true">404</MudText>
+                        <MudText Typo="Typo.h5">Oops! The page you are looking for does not exist.</MudText>
+                        <MudButton Href="/" Color="Color.Primary" Variant="Variant.Filled">Go to Home</MudButton>
+                    </div>
+                </MudContainer>
+            </LayoutView>
+        </NotFound>
+    </Router>
 </CascadingAuthenticationState>

@@ -477,3 +477,5 @@ FodyWeavers.xsd
 .idea/.idea.devops-23-24-net-a02/.idea/*
 ./src/Server/appsettings.Development.json 
 src/Server/appsettings.Development.json
+src/Client/wwwroot/appsettings.json
+src/Server/appsettings.json
