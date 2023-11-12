@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using System.Security.Claims;
 
-namespace Project.Client.Shared;
+namespace devops_23_24_net_a02.Client.Shared;
 
 public class FakeAuthenticationProvider : AuthenticationStateProvider
 {
