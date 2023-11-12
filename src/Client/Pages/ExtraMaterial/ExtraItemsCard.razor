@@ -5,6 +5,7 @@
     <MudCardContent>
         <MudText Typo="Typo.h5" Class="mb-2">@Title</MudText>
         <MudText Typo="Typo.body2" Class="mb-3">@Subtext</MudText>
+        <MudText Typo="Typo.body2" Class="mb-3">€ @(Decimal.Round(Price, 2))/72uur</MudText>
         <MudGrid>
             @if (ExtraMaterialState.ExtrasAmount[EquipmentId] > 0)
             {
@@ -13,7 +14,7 @@
                 </MudItem>
             }
             <MudItem lg="6" md="6" sm="6" xs="6">
-                <MudText Typo="Typo.body2" Class="pt-2">€ @(Decimal.Round(Price, 2))/72uur</MudText>
+                <MudText Typo="Typo.body2" Class="pt-2">@Stock in stock</MudText>
             </MudItem>
         </MudGrid>
     </MudCardContent>
