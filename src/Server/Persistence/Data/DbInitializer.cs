@@ -2,7 +2,6 @@
 using Domain.Customers;
 using Domain.Formulas;
 using Domain.Quotations;
-using Microsoft.EntityFrameworkCore;
 
 namespace Api.Data;
 
@@ -18,43 +17,72 @@ public static class DbInitializer
       return; // DB seeded
     }
 
-    var bbq = new Equipment( "Barbecue", "MMmmm Tasty", 20M, 50);
-    var tent = new Equipment( "Tent", "To keep the party clean", 30M, 5);
-    var barrel = new Equipment("Barrel", "Storing the goods", 10M, 20);
 
-    var equipment = new Equipment[] {
-      new ("Bucket1","Damm!",15M,20),
-    new ("Bucket2", "Damm!", 17M, 30),
-    new ("Bucket3", "Damm!", 12M, 25),
-    new ("Bucket4", "Damm!", 44M, 10),
-    new ("Bucket5", "Damm!", 11M, 15),
-    new ("Bucket6", "Damm!", 54M, 7),
-    new ("Bucket7", "Damm!", 19M, 9)
-  };
+    // Extra Items
+    var equipment = new[]
+    {
+      new Equipment("Saladette",
+        new List<string> { "34cm x 120cm x 28 cm", "Inclusief 5 st GN 1/4 bakken met deksels" }, 65M,
+        2),
+      new Equipment("GN bak 1/4", new List<string> { "diepte 150mm", "Inclusief deksel" }, 3M, 20),
+      new Equipment("GN bak 1/6", new List<string> { "diepte 150mm", "Inclusief deksel" }, 3M, 10), new Equipment(
+        "Barkoeler 320l",
+        new List<string> { "50cm x 135cm x 87cm", "3x glazen schuifdeuren", "Kleur zwart" }, 65M,
+        1),
+      new Equipment("Cocktail glas gouden rand", new List<string> { "330ml" }, 0.50M, 100),
+      new Equipment("Cocktail glas gemiddeld", new List<string> { "330ml" }, 0.20M, 100),
+      new Equipment("Cocktail glas klein", new List<string> { "250ml" }, 0.15M, 100),
+      new Equipment("Lichtslinger", new List<string> { "guirlandes 10m" }, 15M, 4),
+      new Equipment("Ijsemmer", new List<string> { "7l" }, 10M, 1),
+      new Equipment("Vuurschaal", new List<string> { "diameter 120cm" }, 40M, 1),
+      new Equipment("Driepoot met BBQ rooster", new List<string> { "Inclusief vuurschaal" }, 100M, 1),
+      new Equipment("Diepvries 80l", new List<string> { "60cm x 60cm x 80cm" }, 50M, 1),
+      new Equipment("Dienblad", new List<string> { "diameter 35cm", "Anti-slip", "Kleur zwart" }, 1.5M, 10),
+      new Equipment("Snijplank", new List<string> { "60cm x 40cm", "Kleur groen" }, 4M, 3),
+      new Equipment("Spoelbak klein", new List<string> { "100cm x 50cm x 80cm", "Type camping" }, 10M, 1),
+      new Equipment("Drankendispenser", new List<string>(), 10M, 1),
+      new Equipment("Soepketel", new List<string> { "10l", "Inclusief pollepel" }, 15M, 2),
+      new Equipment("Strobaal", new List<string> { "80cm x 45cm x 45cm" }, 4M, 10),
+      new Equipment("Schapenvacht", new List<string> { "ongev. 100cm x 50cm" }, 12M, 10),
+      new Equipment("Biertafelset", new List<string> { "220cm x 130cm x 48cm", "1 tafel met 2 banken" }, 15M, 5),
+      new Equipment("Fruitkist", new List<string> { "50cm x 41cm x 31cm" }, 5M, 20)
+    };
+    
+    // Items included in Formula's
+    var vatenBier = new Equipment("Vaten bier", new List<string> { "Inbegrepen in formule" }, 1.5M, 999);
+    var glazen = new Equipment("Glazen", new List<string> { "Inbegrepen in formule" }, 1.5M, 999);
+    var bbq = new Equipment("Bbq met bbq-kit", new List<string> { "Inbegrepen in formule", "Inclusief hout voor bbq" },
+      12M, 999);
 
+    // Formula's
     var formulas = new Formula[]
     {
-      new(new List<Equipment>(), "Basic", "For a small party", 20M),
-      new(new List<Equipment> { bbq, tent }, "Extended", "For a medium sized party", 30M),
-      new(new List<Equipment> { bbq, tent, barrel }, "All-in", "For the best party you could imagine", 40M)
+      new(new List<Equipment>(), "Basic", new List<string> { "For a small party" }),
+      new(new List<Equipment> {  }, "Extended", new List<string> { "For a medium sized party" }),
+      new(new List<Equipment> {  }, "All-in",
+        new List<string> { "For the best party you could imagine" })
     };
 
+    // Customers
     var cust1 = new Customer("Bert", "de Backer", new Email("bert.debacker@gmail.com"),
       new BillingAddress("Rue de Bouillon", "52", "Grimbergen", "1850"), new PhoneNumber("0486980477"), "BE123");
     var cust2 = new Customer("Frederick", "Honderdpoot", new Email("f.honderdpoot@outlook.be"),
       new BillingAddress("Korte Noordsstraat", "292", "Uitkerke", "8370"), new PhoneNumber("0479894230"), null);
     var customers = new[] { cust1, cust2 };
 
+    // Event locations for Quotations
     var eventLoc1 = new EventLocation("Rue de Bouillon", "52", "Grimbergen", "1850");
     var eventLoc2 = new EventLocation("Rue de Bouillon", "52", "Grimbergen", "1850");
 
+    // Quotations
     var quote1 = new Quotation(formulas[0], customers[0], eventLoc1, new List<QuotationLine>(),
       DateTime.Today, DateTime.Today.AddDays(2));
     var quote2 = new Quotation(formulas[2], customers[1], eventLoc2,
-      new List<QuotationLine> { new(barrel, 3), new(tent, 1), },
+      new List<QuotationLine> { new(equipment[5], 30), new(equipment[8], 1), },
       DateTime.Today, DateTime.Today.AddDays(2));
     var quotes = new[] { quote1, quote2 };
 
+    // Save to db
     context.Equipments.AddRange(equipment);
     context.Formulas.AddRange(formulas);
     context.Customers.AddRange(customers);
