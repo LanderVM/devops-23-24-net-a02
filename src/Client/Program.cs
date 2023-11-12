@@ -6,8 +6,6 @@ using devops_23_24_net_a02.Client.Pages.ExtraMaterial;
 using shared.Equipment;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using devops_23_24_net_a02.Client.Shared;
-/*using Project.Client.Shared;
-using Microsoft.AspNetCore.Components.Authorization;*/
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -32,11 +30,6 @@ builder.Services.AddMudServices();
 
 builder.Services.AddScoped<IEquipmentService, EquipmentService>();
 
-//Fake Authentication
-/*builder.Services.AddAuthorizationCore();
-builder.Services.AddScoped<FakeAuthenticationProvider>();
-builder.Services.AddScoped<AuthenticationStateProvider>(provider => provider.GetRequiredService<FakeAuthenticationProvider>());
-*/
 //Authentication
 builder.Services.AddOidcAuthentication(options =>
 {
