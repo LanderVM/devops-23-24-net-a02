@@ -33,29 +33,16 @@
                 @foreach (EquipmentDto.Index item in Extras)
                 {
                     <MudItem lg="3" md="4" sm="6" xs="12">
-                        <MudCard>
-                            <MudCardMedia Image=@item.ImageData.ImageUrl Height="250" />
-                            <MudCardContent>
-                                <MudText Typo="Typo.h5" Class="mb-2">@item.Title</MudText>
-                                <MudText Typo="Typo.body2" Class="mb-3">@item.Subtext</MudText>
-                                <MudGrid>
-                                @if (ExtraMaterialState.ExtrasAmount[item.Id]>0) {
-                                        <MudItem lg="6" md="6" sm="6" xs="6">
-                                            <MudNumericField @bind-Value="@ExtraMaterialState.ExtrasAmount[item.Id]" Variant="Variant.Outlined" Style="height:35px" Margin="Margin.Dense" Min="0" Max="@item.Stock" Step="1"></MudNumericField>
-                                        </MudItem>
-                                    }
-                                    <MudItem lg="6" md="6" sm="6" xs="6">
-                                        <MudText Typo="Typo.body2" Class="pt-2">€ @(Decimal.Round(@item.Price,2))/72uur</MudText>
-                                    </MudItem>
-                                </MudGrid>
-                            </MudCardContent>
-                            @if (ExtraMaterialState.ExtrasAmount[item.Id]==0)
-                            {
-                                <MudCardActions>
-                                    <MudButton OnClick="@(()=>{Increment(item.Id);})" Variant="Variant.Filled" Color="Color.Primary" FullWidth="true">Voeg toe</MudButton>
-                                </MudCardActions>
-                            }
-                        </MudCard>
+                        <ExtraItemsCard
+                            EquipmentId="@item.Id"
+                            ImageUrl="@item.ImageData.ImageUrl"
+                            Title="@item.Title"
+                            Subtext="@item.Subtext"
+                            Stock="@item.Stock"
+                            Price="@item.Price"
+                        >
+
+                        </ExtraItemsCard>
                     </MudItem>
                 }
             </MudGrid>
@@ -107,13 +94,6 @@
         await JS.InvokeVoidAsync("console.log", "hohoh");
         await JS.InvokeVoidAsync("console.log", response);
 
-    }
-
-    private void Increment(int key)
-    {
-        int count;
-        ExtraMaterialState.ExtrasAmount.TryGetValue(key, out count);
-        ExtraMaterialState.ExtrasAmount[key] = count + 1;
     }
 
     private void ClickVolgende()
