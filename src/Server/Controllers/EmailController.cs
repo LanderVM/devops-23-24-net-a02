@@ -1,11 +1,13 @@
 ﻿using devops_23_24_net_a02.Shared.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Server.Services;
+using Shared.Emails;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace devops_23_24_net_a02.Server.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class EmailController : ControllerBase
 {
   private readonly ILogger<EmailController> _logger;
@@ -18,11 +20,12 @@ public class EmailController : ControllerBase
   }
 
   [HttpPost]
-  public async Task<IActionResult> RegisterEmail(EmailDto.CreateEmail model)
+  [SwaggerOperation("Saves and sends an email with more information to the provided email address")]
+  public async Task<IActionResult> RegisterEmail(EmailDto.Create model)
   {
     _logger.Log(LogLevel.Information, "Registering new email {model.Email}", model.Email);
-    int emailIid = await _emailService.Create(model);
+    int emailIid = await _emailService.CreateAsync(model);
     _logger.Log(LogLevel.Information, "Registered email {model.Email}", model.Email);
-    return CreatedAtAction(nameof(RegisterEmail), new {id = emailIid});
+    return CreatedAtAction(nameof(RegisterEmail), new EmailResponse.Create { EmailId = emailIid});
   }
 }

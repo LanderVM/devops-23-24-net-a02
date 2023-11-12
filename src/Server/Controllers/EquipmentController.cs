@@ -1,15 +1,11 @@
-﻿using System.Runtime.InteropServices;
-using devops_23_24_net_a02.Shared.DTOs;
-using Microsoft.AspNetCore.Mvc;
-using server.Services;
-using Server.Services;
+﻿using Microsoft.AspNetCore.Mvc;
 using shared.Equipment;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace devops_23_24_net_a02.Server.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class EquipmentController : ControllerBase
 {
   private readonly ILogger<EquipmentController> _logger;
@@ -22,8 +18,8 @@ public class EquipmentController : ControllerBase
   }
 
 
-  [SwaggerOperation("Returns a list of equipment available in the extra's catalog.")]
   [HttpGet]
+  [SwaggerOperation("Returns a list of equipment available in the extra's catalog.")]
   public async Task<EquipmentResult.Index> GetEquipment()
   {
     return await _equipmentService.GetIndexAsync();

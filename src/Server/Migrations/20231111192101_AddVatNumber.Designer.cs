@@ -3,6 +3,7 @@ using System;
 using Api.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,19 +11,60 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace devops2324neta02.Server.Migrations
 {
     [DbContext(typeof(BlancheDbContext))]
-    partial class BlancheDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231111192101_AddVatNumber")]
+    partial class AddVatNumber
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.13")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
+            modelBuilder.Entity("Domain.Customers.Address", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("HouseNumber")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("PostalCode")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Street")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Address");
+                });
+
             modelBuilder.Entity("Domain.Customers.Customer", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("BillingAddressId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
@@ -55,6 +97,8 @@ namespace devops2324neta02.Server.Migrations
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BillingAddressId");
 
                     b.HasIndex("EmailId");
 
@@ -162,6 +206,9 @@ namespace devops2324neta02.Server.Migrations
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<int>("EventLocationId")
+                        .HasColumnType("int");
+
                     b.Property<int>("FormulaId")
                         .HasColumnType("int");
 
@@ -189,6 +236,8 @@ namespace devops2324neta02.Server.Migrations
                         .HasDefaultValueSql("NOW()");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("EventLocationId");
 
                     b.HasIndex("FormulaId");
 
@@ -250,40 +299,17 @@ namespace devops2324neta02.Server.Migrations
 
             modelBuilder.Entity("Domain.Customers.Customer", b =>
                 {
+                    b.HasOne("Domain.Customers.Address", "BillingAddress")
+                        .WithMany("BillingAddresses")
+                        .HasForeignKey("BillingAddressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Domain.Customers.Email", "Email")
                         .WithMany()
                         .HasForeignKey("EmailId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.OwnsOne("Domain.Customers.BillingAddress", "BillingAddress", b1 =>
-                        {
-                            b1.Property<int>("CustomerId")
-                                .HasColumnType("int");
-
-                            b1.Property<string>("City")
-                                .IsRequired()
-                                .HasColumnType("longtext");
-
-                            b1.Property<string>("HouseNumber")
-                                .IsRequired()
-                                .HasColumnType("longtext");
-
-                            b1.Property<string>("PostalCode")
-                                .IsRequired()
-                                .HasColumnType("longtext");
-
-                            b1.Property<string>("Street")
-                                .IsRequired()
-                                .HasColumnType("longtext");
-
-                            b1.HasKey("CustomerId");
-
-                            b1.ToTable("Customer");
-
-                            b1.WithOwner()
-                                .HasForeignKey("CustomerId");
-                        });
 
                     b.OwnsOne("Domain.Customers.PhoneNumber", "PhoneNumber", b1 =>
                         {
@@ -302,8 +328,7 @@ namespace devops2324neta02.Server.Migrations
                                 .HasForeignKey("CustomerId");
                         });
 
-                    b.Navigation("BillingAddress")
-                        .IsRequired();
+                    b.Navigation("BillingAddress");
 
                     b.Navigation("Email");
 
@@ -367,6 +392,12 @@ namespace devops2324neta02.Server.Migrations
 
             modelBuilder.Entity("Domain.Quotations.Quotation", b =>
                 {
+                    b.HasOne("Domain.Customers.Address", "EventLocation")
+                        .WithMany("EventLocations")
+                        .HasForeignKey("EventLocationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Domain.Formulas.Formula", "Formula")
                         .WithMany("OrderedIn")
                         .HasForeignKey("FormulaId")
@@ -379,37 +410,7 @@ namespace devops2324neta02.Server.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("Domain.Common.EventLocation", "EventLocation", b1 =>
-                        {
-                            b1.Property<int>("QuotationId")
-                                .HasColumnType("int");
-
-                            b1.Property<string>("City")
-                                .IsRequired()
-                                .HasColumnType("longtext");
-
-                            b1.Property<string>("HouseNumber")
-                                .IsRequired()
-                                .HasColumnType("longtext");
-
-                            b1.Property<string>("PostalCode")
-                                .IsRequired()
-                                .HasColumnType("longtext");
-
-                            b1.Property<string>("Street")
-                                .IsRequired()
-                                .HasColumnType("longtext");
-
-                            b1.HasKey("QuotationId");
-
-                            b1.ToTable("Quotation");
-
-                            b1.WithOwner()
-                                .HasForeignKey("QuotationId");
-                        });
-
-                    b.Navigation("EventLocation")
-                        .IsRequired();
+                    b.Navigation("EventLocation");
 
                     b.Navigation("Formula");
 
@@ -448,6 +449,13 @@ namespace devops2324neta02.Server.Migrations
                         .HasForeignKey("FormulasId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Customers.Address", b =>
+                {
+                    b.Navigation("BillingAddresses");
+
+                    b.Navigation("EventLocations");
                 });
 
             modelBuilder.Entity("Domain.Customers.Customer", b =>

@@ -1,0 +1,22 @@
+﻿using FluentValidation;
+
+namespace Shared.Common;
+
+public class AddressDto
+{
+    public string Street { get; set; }
+    public string HouseNumber { get; set; }
+    public string PostalCode { get; set; }
+    public string City { get; set; }
+
+  public class Validator : AbstractValidator<AddressDto>
+  {
+    public Validator()
+    {
+      RuleFor(model => model.Street).NotEmpty();
+      RuleFor(model => model.HouseNumber).NotEmpty();
+      RuleFor(model => model.PostalCode).NotEmpty();
+      RuleFor(model => model.City).NotEmpty();
+    }
+  }
+}

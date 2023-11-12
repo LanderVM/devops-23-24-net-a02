@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace shared.Equipment;
 
-public abstract class EquipmentResult
+public static class EquipmentResult
 {
 
   public class Index {

@@ -2,14 +2,14 @@
 
 namespace devops_23_24_net_a02.Shared.DTOs;
 
-public abstract class EmailDto
+public static class EmailDto
 {
-  public class CreateEmail
+  public class Create
   {
     public string Email { get; set; }
   }
 
-  public class Validator : AbstractValidator<CreateEmail>
+  public class Validator : AbstractValidator<Create>
   {
     public Validator()
     {
