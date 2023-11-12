@@ -1,10 +1,22 @@
-using Api.Data;
+﻿using Api.Data;
 using devops_23_24_net_a02.Shared.DTOs;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Authorization
+builder.Services.AddAuthentication(options =>
+{
+  options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+  options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+  options.Authority = builder.Configuration["Auth0:Authority"];
+  options.Audience = builder.Configuration["Auth0:ApiIdentifier"];
+});
 
 builder.Services.AddServices();
 
@@ -44,6 +56,10 @@ app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+// Authorization
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapRazorPages();
 app.MapControllers();
