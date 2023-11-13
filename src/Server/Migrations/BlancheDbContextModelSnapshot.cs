@@ -101,8 +101,7 @@ namespace devops2324neta02.Server.Migrations
                         .HasDefaultValue(true);
 
                     b.Property<decimal>("Price")
-                        .HasPrecision(2)
-                        .HasColumnType("decimal(2)");
+                        .HasColumnType("decimal(65,30)");
 
                     b.Property<int>("Stock")
                         .HasColumnType("int");
@@ -124,6 +123,10 @@ namespace devops2324neta02.Server.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<string>("BasePrice")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
@@ -133,9 +136,8 @@ namespace devops2324neta02.Server.Migrations
                         .HasColumnType("tinyint(1)")
                         .HasDefaultValue(true);
 
-                    b.Property<decimal>("PricePerDay")
-                        .HasPrecision(2)
-                        .HasColumnType("decimal(2)");
+                    b.Property<decimal>("PricePerDayExtra")
+                        .HasColumnType("decimal(65,30)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .IsConcurrencyToken()
@@ -169,12 +171,18 @@ namespace devops2324neta02.Server.Migrations
                         .HasColumnType("tinyint(1)")
                         .HasDefaultValue(true);
 
+                    b.Property<bool>("IsTripelBier")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<int>("OrderedById")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("OriginalFormulaPricePerDay")
-                        .HasPrecision(2)
-                        .HasColumnType("decimal(2)");
+                    b.Property<string>("OriginalFormulaPricePerDay")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<decimal>("OriginalFormulaPricePerDayExtra")
+                        .HasColumnType("decimal(65,30)");
 
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("datetime(6)");
@@ -318,7 +326,7 @@ namespace devops2324neta02.Server.Migrations
                             b1.Property<int>("EquipmentId")
                                 .HasColumnType("int");
 
-                            b1.Property<string>("Subtext")
+                            b1.Property<string>("Attributes")
                                 .IsRequired()
                                 .HasColumnType("longtext");
 
@@ -345,7 +353,7 @@ namespace devops2324neta02.Server.Migrations
                             b1.Property<int>("FormulaId")
                                 .HasColumnType("int");
 
-                            b1.Property<string>("Subtext")
+                            b1.Property<string>("Attributes")
                                 .IsRequired()
                                 .HasColumnType("longtext");
 

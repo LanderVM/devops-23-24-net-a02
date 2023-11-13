@@ -24,7 +24,7 @@ public class EquipmentService : IEquipmentService
        {
          Id = x.Id,
          Title = x.Description.Title,
-         Subtext = x.Description.Subtext,
+         Attributes = x.Description.Attributes,
          Price = x.Price,
          Stock = x.Stock,
          ImageData = new EquipmentDto.ImageData { 

@@ -12,6 +12,7 @@ public static class QuotationDto
     public DateTime StartTime { get; set; }
     public DateTime EndTime { get; set; }
     public CustomerDto.Create Customer { get; set; }
+    public bool IsTripelBier { get; set; }
   }
 
   public class Validator : AbstractValidator<Create>
@@ -27,6 +28,7 @@ public static class QuotationDto
         .Must(model => (model.EndTime - model.StartTime).TotalSeconds > 0)
         .WithMessage("End time cannot be before start time!");
       RuleFor(model => model.Customer).NotEmpty();
+      RuleFor(model => model.IsTripelBier).NotEmpty();
     }
   }
 }

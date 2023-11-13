@@ -7,25 +7,17 @@ public class Formula : Entity
 {
   private Formula() { } // EF Core constructor
 
-  public Formula(List<Equipment> equipment, string title, string description, decimal pricePerDay)
+  public Formula(List<Equipment> equipment, string title, List<string> description)
   {
     Equipment.AddRange(equipment);
     Description = new Description(title, description);
-    PricePerDay = pricePerDay;
   }
 
   public List<Equipment> Equipment { get; } = new();
   public Description Description { get; set; } = default!;
-  private decimal _pricePerDay;
+  public decimal PricePerDayExtra { get; protected set; } = 50M;
 
-  public decimal PricePerDay
-  {
-    get => _pricePerDay;
-    set
-    {
-      _pricePerDay = Guard.Against.Negative(value);
-    }
-  }
+  public List<decimal> BasePrice { get; set; } = new() { 350, 450, 520 };
 
   public List<Quotation> OrderedIn { get; set; } = default!;
 }

@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace devops2324neta02.Server.Migrations
 {
     /// <inheritdoc />
-    public partial class FixAddressBeingSeperateEntity : Migration
+    public partial class UpdateSeeding : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -36,18 +36,32 @@ namespace devops2324neta02.Server.Migrations
                 table: "Quotation");
 
             migrationBuilder.DropColumn(
+                name: "PricePerDay",
+                table: "Formula");
+
+            migrationBuilder.DropColumn(
                 name: "BillingAddressId",
                 table: "Customer");
 
-            migrationBuilder.AlterColumn<decimal>(
+            migrationBuilder.RenameColumn(
+                name: "Description_Subtext",
+                table: "Formula",
+                newName: "Description_Attributes");
+
+            migrationBuilder.RenameColumn(
+                name: "Description_Subtext",
+                table: "Equipment",
+                newName: "Description_Attributes");
+
+            migrationBuilder.AlterColumn<string>(
                 name: "OriginalFormulaPricePerDay",
                 table: "Quotation",
-                type: "decimal(2)",
-                precision: 2,
+                type: "longtext",
                 nullable: false,
                 oldClrType: typeof(decimal),
                 oldType: "decimal(2,30)",
-                oldPrecision: 2);
+                oldPrecision: 2)
+                .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.AddColumn<string>(
                 name: "EventLocation_City",
@@ -77,21 +91,38 @@ namespace devops2324neta02.Server.Migrations
                 nullable: false)
                 .Annotation("MySql:CharSet", "utf8mb4");
 
-            migrationBuilder.AlterColumn<decimal>(
-                name: "PricePerDay",
-                table: "Formula",
-                type: "decimal(2)",
-                precision: 2,
+            migrationBuilder.AddColumn<bool>(
+                name: "IsTripelBier",
+                table: "Quotation",
+                type: "tinyint(1)",
                 nullable: false,
-                oldClrType: typeof(decimal),
-                oldType: "decimal(2,30)",
-                oldPrecision: 2);
+                defaultValue: false);
+
+            migrationBuilder.AddColumn<decimal>(
+                name: "OriginalFormulaPricePerDayExtra",
+                table: "Quotation",
+                type: "decimal(65,30)",
+                nullable: false,
+                defaultValue: 0m);
+
+            migrationBuilder.AddColumn<string>(
+                name: "BasePrice",
+                table: "Formula",
+                type: "longtext",
+                nullable: false)
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.AddColumn<decimal>(
+                name: "PricePerDayExtra",
+                table: "Formula",
+                type: "decimal(65,30)",
+                nullable: false,
+                defaultValue: 0m);
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "Price",
                 table: "Equipment",
-                type: "decimal(2)",
-                precision: 2,
+                type: "decimal(65,30)",
                 nullable: false,
                 oldClrType: typeof(decimal),
                 oldType: "decimal(2,30)",
@@ -146,6 +177,22 @@ namespace devops2324neta02.Server.Migrations
                 table: "Quotation");
 
             migrationBuilder.DropColumn(
+                name: "IsTripelBier",
+                table: "Quotation");
+
+            migrationBuilder.DropColumn(
+                name: "OriginalFormulaPricePerDayExtra",
+                table: "Quotation");
+
+            migrationBuilder.DropColumn(
+                name: "BasePrice",
+                table: "Formula");
+
+            migrationBuilder.DropColumn(
+                name: "PricePerDayExtra",
+                table: "Formula");
+
+            migrationBuilder.DropColumn(
                 name: "BillingAddress_City",
                 table: "Customer");
 
@@ -161,15 +208,25 @@ namespace devops2324neta02.Server.Migrations
                 name: "BillingAddress_Street",
                 table: "Customer");
 
+            migrationBuilder.RenameColumn(
+                name: "Description_Attributes",
+                table: "Formula",
+                newName: "Description_Subtext");
+
+            migrationBuilder.RenameColumn(
+                name: "Description_Attributes",
+                table: "Equipment",
+                newName: "Description_Subtext");
+
             migrationBuilder.AlterColumn<decimal>(
                 name: "OriginalFormulaPricePerDay",
                 table: "Quotation",
                 type: "decimal(2,30)",
                 precision: 2,
                 nullable: false,
-                oldClrType: typeof(decimal),
-                oldType: "decimal(2)",
-                oldPrecision: 2);
+                oldClrType: typeof(string),
+                oldType: "longtext")
+                .OldAnnotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.AddColumn<int>(
                 name: "EventLocationId",
@@ -178,15 +235,13 @@ namespace devops2324neta02.Server.Migrations
                 nullable: false,
                 defaultValue: 0);
 
-            migrationBuilder.AlterColumn<decimal>(
+            migrationBuilder.AddColumn<decimal>(
                 name: "PricePerDay",
                 table: "Formula",
                 type: "decimal(2,30)",
                 precision: 2,
                 nullable: false,
-                oldClrType: typeof(decimal),
-                oldType: "decimal(2)",
-                oldPrecision: 2);
+                defaultValue: 0m);
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "Price",
@@ -195,8 +250,7 @@ namespace devops2324neta02.Server.Migrations
                 precision: 2,
                 nullable: false,
                 oldClrType: typeof(decimal),
-                oldType: "decimal(2)",
-                oldPrecision: 2);
+                oldType: "decimal(65,30)");
 
             migrationBuilder.AddColumn<int>(
                 name: "BillingAddressId",

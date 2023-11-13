@@ -11,7 +11,7 @@ public static class EquipmentDto
   public class Index { 
     public int Id { get; set; }
     public string Title { get; set; }
-    public string Subtext { get; set; }
+    public List<string> Attributes { get; set; }
     public decimal Price { get; set; }
     public int Stock { get; set; }
     public ImageData ImageData { get; set; }

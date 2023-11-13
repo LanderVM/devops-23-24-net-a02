@@ -1,5 +1,6 @@
 ﻿using Domain.Quotations;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Newtonsoft.Json;
 
 namespace Server.Persistence.Configurations;
 
@@ -12,7 +13,11 @@ public class QuotationConfiguration : EntityConfiguration<Quotation>
       .WithMany(f => f.OrderedIn)
       .IsRequired();
     builder.Property(q => q.OriginalFormulaPricePerDay)
-      .HasPrecision(2)
+      .HasConversion(
+        c => JsonConvert.SerializeObject(c),
+        c => JsonConvert.DeserializeObject<List<decimal>>(c) ?? new List<decimal>())
+      .IsRequired();
+    builder.Property(q => q.OriginalFormulaPricePerDayExtra)
       .IsRequired();
     builder.HasOne(q => q.OrderedBy)
       .WithMany(c => c.Quotations)

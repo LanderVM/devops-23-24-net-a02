@@ -4,16 +4,16 @@ namespace Domain.Formulas;
 
 public class Description
 {
-  private string _subtext = default!;
+  private List<string> _attributes = new();
 
   private string _title = default!;
-  private Description() { } // EF Core constructor TODO figure out if this could/should be in same table as parent obj?
+  private Description() { } // EF Core constructor
 
   public Description(string title,
-    string subtext)
+    List<string> attributes)
   {
     Title = title;
-    Subtext = subtext;
+    Attributes = attributes;
   }
 
   public string Title
@@ -21,18 +21,16 @@ public class Description
     get => _title;
     private set
     {
-      value = Guard.Against.NullOrWhiteSpace(value);
       _title = Guard.Against.NullOrWhiteSpace(value);
     }
   }
 
-  public string Subtext
+  public List<string> Attributes
   {
-    get => _subtext;
-    private set
+    get => _attributes;
+    protected set
     {
-      value = Guard.Against.NullOrWhiteSpace(value);
-      _subtext = Guard.Against.NullOrWhiteSpace(value);
+      _attributes = value.Select(attribute => Guard.Against.NullOrWhiteSpace(attribute)).ToList();
     }
   }
 }
