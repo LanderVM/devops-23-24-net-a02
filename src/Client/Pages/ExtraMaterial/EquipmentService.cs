@@ -8,7 +8,7 @@ public class EquipmentService : IEquipmentService
 {
 
   private readonly HttpClient client;
-  private const string endpoint = "/Equipment";
+  private const string endpoint = "/api/Equipment";
   public EquipmentService(HttpClient client)
   {
     this.client = client;
