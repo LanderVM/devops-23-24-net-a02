@@ -71,7 +71,7 @@
 
 @code {
 
-    [Inject] public IEquipmentService EquipmentSerivce { get; set; } = default!;
+    [Inject] public IEquipmentService EquipmentService { get; set; } = default!;
     private IEnumerable<EquipmentDto.Index> Extras;
 
     private int Spacing { get; set; } = 2;
@@ -81,7 +81,7 @@
     protected override async Task OnInitializedAsync()
     {
 
-        EquipmentResult.Index response = await EquipmentSerivce.GetIndexAsync();
+        EquipmentResult.Index response = await EquipmentService.GetIndexAsync();
 
         Extras = response.Equipment;
 
