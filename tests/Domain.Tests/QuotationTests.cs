@@ -40,8 +40,8 @@ public class QuotationTests
       DateTime.Today.AddDays(days));
 
     decimal totalPrice = days > 3
-      ? _formula.BasePrice[3] + _formula.PricePerDayExtra * (days - 3)
-      : _formula.BasePrice[days];
+      ? _formula.BasePrice[2] + _formula.PricePerDayExtra * (days - 3)
+      : _formula.BasePrice[days - 1];
 
     quotation.QuotationLines.Count.ShouldBe(0);
     quotation.Status.ShouldBe(QuotationStatus.Unread);
@@ -73,8 +73,8 @@ public class QuotationTests
 
 
     decimal totalPrice = days > 3
-      ? _formula.BasePrice[3] + _formula.PricePerDayExtra * (days - 3)
-      : _formula.BasePrice[days];
+      ? _formula.BasePrice[2] + _formula.PricePerDayExtra * (days - 3)
+      : _formula.BasePrice[days - 1];
     totalPrice += ((2 * _equipment[0].Price) + (5 * _equipment[1].Price)) * ((days + 2) / 3);
 
     quotation.QuotationLines.Count.ShouldBe(2);

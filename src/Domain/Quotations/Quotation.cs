@@ -43,7 +43,7 @@ public class Quotation : Entity
     var days = (EndTime - StartTime).Days + 1;
     var hasExtraDays = days > 3;
 
-    var basePrice = OriginalFormulaPricePerDay[hasExtraDays ? 3 : days];
+    var basePrice = OriginalFormulaPricePerDay[hasExtraDays ? 2 : days - 1];
     decimal extraDaysPrice = 0;
     if (hasExtraDays) extraDaysPrice = (days - 3) * OriginalFormulaPricePerDayExtra;
 
