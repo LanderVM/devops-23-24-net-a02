@@ -7,7 +7,7 @@ using shared.Equipment;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using devops_23_24_net_a02.Client.Shared;
 using shared.Formulas;
-using devops;
+using devops_23_24_net_a02.Client.Pages.Formulas;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
