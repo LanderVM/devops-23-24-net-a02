@@ -8,16 +8,18 @@
             <MudText Typo="Typo.body2" Class="mb-3">@i</MudText>
         }
         <MudText Typo="Typo.body2" Class="mb-3">€ @(Decimal.Round(Price, 2))/72uur</MudText>
+        <MudText Typo="Typo.body2" Class="mb-1">@Stock in stock</MudText>
         <MudGrid>
             @if (ExtraMaterialState.ExtrasAmount[EquipmentId] > 0)
             {
                 <MudItem lg="6" md="6" sm="6" xs="6">
                     <MudNumericField @bind-Value="@ExtraMaterialState.ExtrasAmount[EquipmentId]" Variant="Variant.Outlined" Style="height:35px" Margin="Margin.Dense" Min="0" Max="@Stock" Step="1"></MudNumericField>
                 </MudItem>
+                <MudItem lg="1" md="1" sm="1" xs="1">
+                    <MudIconButton Class="mt-1 mr-16" Icon="@Icons.Material.Filled.Delete" Variant="Variant.Filled" Color="Color.Error" Size="Size.Small" 
+                    OnClick="@(()=>{ExtraMaterialState.ExtrasAmount[EquipmentId]=0;})"/>
+                </MudItem>
             }
-            <MudItem lg="6" md="6" sm="6" xs="6">
-                <MudText Typo="Typo.body2" Class="pt-2">@Stock in stock</MudText>
-            </MudItem>
         </MudGrid>
     </MudCardContent>
     @if (ExtraMaterialState.ExtrasAmount[EquipmentId] == 0)
