@@ -9,32 +9,6 @@
     <MudPaper Width="100%" Class="pt-16" Height="100%" Elevation="0">
         <MudContainer MaxWidth="MaxWidth.Large">
             <MudGrid Spacing="@spacing">
-                <MudItem xs="4">
-                    <FormulaCard 
-                        BackgroundColor="#EBEBEB"
-                        Titel="Basic"
-                        Click=@(()=>{})
-                        MarginTop="mt-16"
-                    ></FormulaCard>
-                </MudItem>
-                <MudItem xs="4">
-                    <FormulaCard
-                        Titel="All-in"
-                        BackgroundColor="#EDE7DB"
-                        Attributes=@(new List<string>{"incl. Basic formule","vat(en) bier","glazen","barbeque"})
-                        Click=@(()=>{})
-                    >
-                    </FormulaCard>
-                </MudItem>
-                <MudItem xs="4">
-                    <FormulaCard 
-                        BackgroundColor="#EBEBEB"
-                        Titel="Gevorderd"
-                        Click=@(()=>{})
-                        MarginTop="mt-16"
-                        Attributes=@(new List<string>{"incl. Basic formule","vat(en) bier","glazen"})
-                    ></FormulaCard>
-                </MudItem>
                 @foreach (FormulaDto.Index item in Formulas)
                 {
                     @if (counter % 2 == 0)
