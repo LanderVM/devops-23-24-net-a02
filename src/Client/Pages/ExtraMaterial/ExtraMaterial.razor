@@ -1,8 +1,6 @@
 ﻿@page "/extramaterial"
 @using shared.Equipment
-@inject HttpClient HttpClient
 @inject ExtraMaterialState ExtraMaterialState
-@inject IJSRuntime JS
 
 <PageTitle>Stap 3</PageTitle>
 
@@ -89,9 +87,6 @@
         {
             ExtraMaterialState.ExtrasAmount.Add(item.Id,0);
         }
-
-        await JS.InvokeVoidAsync("console.log", "hohoh");
-        await JS.InvokeVoidAsync("console.log", response);
 
     }
 

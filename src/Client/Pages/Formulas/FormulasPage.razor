@@ -1,5 +1,7 @@
 ﻿@page "/formulas"
 @using devops_23_24_net_a02.Client.Pages.Formulas;
+@using shared.Formulas
+@inject NavigationManager NavigationManager
 
 <PageTitle>Formulas</PageTitle>
 
@@ -33,6 +35,33 @@
                         Attributes=@(new List<string>{"incl. Basic formule","vat(en) bier","glazen"})
                     ></FormulaCard>
                 </MudItem>
+                @foreach (FormulaDto.Index item in Formulas)
+                {
+                    @if (counter % 2 == 0)
+                    {
+                        <MudItem xs="4">
+                            <FormulaCard Titel=@item.Title
+                                         BackgroundColor="#EDE7DB"
+                                         Attributes=@item.Attributes
+                                         Click=@(()=>{
+                                            NavigateToEventdetails();
+                                         })>
+                            </FormulaCard>
+                        </MudItem>
+                    }
+                    else
+                    {
+                        <MudItem xs="4">
+                            <FormulaCard BackgroundColor="#EBEBEB"
+                                         Titel=@item.Title
+                                         Click=@(()=>{
+                                            NavigateToEventdetails();
+                                         })
+                                         MarginTop="mt-16"
+                                         Attributes=@item.Attributes></FormulaCard>
+                        </MudItem>
+                    }
+                }
             </MudGrid>
         </MudContainer>
     </MudPaper>
@@ -42,6 +71,25 @@
 
 @code {
     public int spacing { get; set; } = 6;
+
+    private int counter = 1;
+
+    [Inject] public IFormulaService FormulaService { get; set; } = default!;
+
+    private IEnumerable<FormulaDto.Index> Formulas;
+
+    protected override async Task OnInitializedAsync()
+    {
+        FormulaResult.Index response = await FormulaService.GetIndexAsync();
+
+        Formulas = response.Formulas;
+
+    }
+
+    private void NavigateToEventdetails()
+    {
+        NavigationManager.NavigateTo("/event/eventdetails");
+    }
 
     private void OnBasicClick()
     {

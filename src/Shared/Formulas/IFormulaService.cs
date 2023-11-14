@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace devops-23-24-net-a02.Shared.Formulas
+namespace shared.Formulas;
+
+public interface IFormulaService
 {
-    internal interface IFormulaService
-{
+  public Task<FormulaResult.Index> GetIndexAsync();
 }
-}
+

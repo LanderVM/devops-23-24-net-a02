@@ -4,9 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace devops-23-24-net-a02.Shared.Formulas
+namespace shared.Formulas;
+
+public class FormulaResult
 {
-    internal class FormulaResult
-{
+  public class Index { 
+    
+    public IEnumerable<FormulaDto.Index>? Formulas { get; set; }
+
+    public int TotalAmount { get; set; }
+  }
 }
-}
+

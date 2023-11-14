@@ -4,6 +4,7 @@ using server.Services;
 using shared.Equipment;
 using Server.Services;
 using Shared.Quotations;
+using shared.Formulas;
 
 namespace Api.Data;
 
@@ -27,6 +28,7 @@ public static class Extensions
     services.AddScoped<IEmailService, EmailService>();
     services.AddScoped<IEquipmentService, EquipmentService>();
     services.AddScoped<IQuotationService, QuotationService>();
+    services.AddScoped<IFormulaService, FormulaService>();
     return services;
   }
 }

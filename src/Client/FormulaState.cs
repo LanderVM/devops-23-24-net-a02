@@ -1,6 +1,7 @@
-﻿namespace devops-23-24-net-a02.Client
+﻿namespace devops_23_24_net_a02.Client;
+
+public class FormulaState
 {
-    public class FormulaState
-{
+  public int ChosenFormulaId;
 }
-}
+

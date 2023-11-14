@@ -6,6 +6,8 @@ using devops_23_24_net_a02.Client.Pages.ExtraMaterial;
 using shared.Equipment;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using devops_23_24_net_a02.Client.Shared;
+using shared.Formulas;
+using devops;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -29,6 +31,7 @@ builder.Services.AddMudServices(options =>
 builder.Services.AddMudServices();
 
 builder.Services.AddScoped<IEquipmentService, EquipmentService>();
+builder.Services.AddScoped<IFormulaService, FormulaService>();
 
 //Authentication
 builder.Services.AddOidcAuthentication(options =>
