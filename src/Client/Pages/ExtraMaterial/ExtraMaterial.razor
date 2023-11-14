@@ -83,9 +83,12 @@
 
         Extras = response.Equipment;
 
-        foreach (EquipmentDto.Index item in Extras)
+        if (ExtraMaterialState.ExtrasAmount.Count == 0)
         {
-            ExtraMaterialState.ExtrasAmount.Add(item.Id,0);
+            foreach (EquipmentDto.Index item in Extras)
+            {
+                ExtraMaterialState.ExtrasAmount.Add(item.Id, 0);
+            }
         }
 
     }
