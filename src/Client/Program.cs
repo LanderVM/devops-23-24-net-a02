@@ -22,6 +22,7 @@ builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>()
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 builder.Services.AddScoped<PersonalDetailsState>();
 builder.Services.AddScoped<ExtraMaterialState>();
+builder.Services.AddScoped<FormulaState>();
 builder.Services.AddMudServices();
 builder.Services.AddMudServices(options =>
 {

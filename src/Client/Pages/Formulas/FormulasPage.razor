@@ -2,6 +2,7 @@
 @using devops_23_24_net_a02.Client.Pages.Formulas;
 @using shared.Formulas
 @inject NavigationManager NavigationManager
+@inject FormulaState FormulaState
 
 <PageTitle>Formulas</PageTitle>
 
@@ -18,6 +19,11 @@
                                          BackgroundColor="#EDE7DB"
                                          Attributes=@item.Attributes
                                          Click=@(()=>{
+                                             FormulaState.ChosenFormulaId = item.Id;
+                                             FormulaState.Title = item.Title;
+                                             FormulaState.Attributes = item.Attributes;
+                                             FormulaState.PricePerDayExtra = item.PricePerDayExtra;
+                                             FormulaState.BasePrice = item.BasePrice;
                                             NavigateToEventdetails();
                                          })>
                             </FormulaCard>
@@ -29,6 +35,11 @@
                             <FormulaCard BackgroundColor="#EBEBEB"
                                          Titel=@item.Title
                                          Click=@(()=>{
+                                            FormulaState.ChosenFormulaId = item.Id;
+                                            FormulaState.Title = item.Title;
+                                            FormulaState.Attributes = item.Attributes;
+                                            FormulaState.PricePerDayExtra = item.PricePerDayExtra;
+                                            FormulaState.BasePrice = item.BasePrice;
                                             NavigateToEventdetails();
                                          })
                                          MarginTop="mt-16"
@@ -64,18 +75,6 @@
     private void NavigateToEventdetails()
     {
         NavigationManager.NavigateTo("/event/eventdetails");
-    }
-
-    private void OnBasicClick()
-    {
-    }
-
-    private void OnAllInClick()
-    {
-    }
-
-    private void OnGevorderdClick()
-    {
     }
 
 }
