@@ -1,6 +1,9 @@
 ﻿@page "/overview"
 @using shared.Equipment
 @inject ExtraMaterialState ExtraMaterialState
+@inject FormulaState FormulaState
+@inject EventDetailsState EventDetailsState
+@inject PersonalDetailsState PersonalDetailsState
 
 <PageTitle>Overzicht</PageTitle>
 
@@ -40,7 +43,7 @@
                         <MudItem xs="5">
                             <MudPaper Class="ma-1" Elevation="3" Style="background-color:#EDE7DB">
                                 <MudText Class="mt-1 ml-3">Datum</MudText>
-                                <MudText Class="ml-3">22 oktober - 23 oktober</MudText>
+                                <MudText Class="ml-3">@EventDetailsState.dateRange.Start.ToString().Substring(0,10) tot @EventDetailsState.dateRange.End.ToString().Substring(0,10)</MudText>
                             </MudPaper>
                         </MudItem>
                         <MudItem xs="7">
@@ -55,31 +58,31 @@
                         <MudItem xs="12">
                             <MudPaper Class="ma-1" Elevation="3" Style="background-color:#EDE7DB">
                                 <MudText Class="mt-1 ml-3">Naam</MudText>
-                                <MudText Class="ml-3">Jan de Nul</MudText>
+                                <MudText Class="ml-3">@(@PersonalDetailsState.Voornaam+" "+PersonalDetailsState.Naam)</MudText>
                             </MudPaper>
                         </MudItem>
                         <MudItem xs="12">
                             <MudPaper Class="ma-1" Elevation="3" Style="background-color:#EDE7DB">
                                 <MudText Class="mt-1 ml-3">Email</MudText>
-                                <MudText Class="ml-3">jan.denul@outlook.com</MudText>
+                                <MudText Class="ml-3">@PersonalDetailsState.Email</MudText>
                             </MudPaper>
                         </MudItem>
                         <MudItem xs="12">
                             <MudPaper Class="ma-1" Elevation="3" Style="background-color:#EDE7DB">
                                 <MudText Class="mt-1 ml-3">Telefoon</MudText>
-                                <MudText Class="ml-3">0455667788</MudText>
+                                <MudText Class="ml-3">@PersonalDetailsState.TelefoonNummer</MudText>
                             </MudPaper>
                         </MudItem>
                         <MudItem xs="12">
                             <MudPaper Class="ma-1" Elevation="3" Style="background-color:#EDE7DB">
                                 <MudText Class="mt-1 ml-3">Adres</MudText>
-                                <MudText Class="ml-3">Geeraardsstraat 55 Diksmuide</MudText>
+                                <MudText Class="ml-3">@($"{@PersonalDetailsState.Straat} {@PersonalDetailsState.Huisnummer} {@PersonalDetailsState.Postcode} {@PersonalDetailsState.Gemeente}")</MudText>
                             </MudPaper>
                         </MudItem>
                         <MudItem xs="12">
                             <MudPaper Class="ma-1" Elevation="3" Style="background-color:#EDE7DB">
                                 <MudText Class="mt-1 ml-3">Btw-nummer</MudText>
-                                <MudText Class="ml-3">111111111</MudText>
+                                <MudText Class="ml-3">@PersonalDetailsState.BtwNummer</MudText>
                             </MudPaper>
                         </MudItem>
                     </MudGrid>
