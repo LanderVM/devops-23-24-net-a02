@@ -1,0 +1,257 @@
+﻿@page "/overview"
+@using shared.Equipment
+@inject ExtraMaterialState ExtraMaterialState
+
+<PageTitle>Overzicht</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.ExtraLarge" Style="margin-top: 4vw">
+    <MudGrid Justify="Justify.SpaceEvenly">
+        <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="true">
+            <MudItem lg="12" md="12" sm="5" xs="5">
+
+            </MudItem>
+            <MudItem lg="2" md="2" sm="7" xs="7">
+                <TimeLineVertical step="3"></TimeLineVertical>
+            </MudItem>
+        </MudHidden>
+        <MudHidden Breakpoint="Breakpoint.MdAndUp">
+            <MudItem lg="2" md="2" sm="2" xs="2">
+
+            </MudItem>
+            <MudItem lg="8" md="8" sm="8" xs="8">
+                <TimeLineHorizontal step="3"></TimeLineHorizontal>
+            </MudItem>
+            <MudItem lg="2" md="2" sm="2" xs="2">
+
+            </MudItem>
+        </MudHidden>
+
+        <MudItem lg="10" md="10" sm="12" xs="12">
+            <MudGrid>
+                <MudItem xs="12">
+                    <MudText Typo="Typo.h4" Class="ml-3">Overzicht</MudText>
+                    <hr style="background-color:black;height:1.5px;border-width:0;margin-left:13px;margin-right:100px;margin-top:10px;margin-bottom:0px" />
+                </MudItem>
+                <MudItem xs="12">
+                    <MudText Typo="Typo.h5" Class="ml-3">Evenement</MudText>
+                </MudItem>
+                <MudItem lg="6" md="6" sm="12" xs="12">
+                    <MudGrid>
+                        <MudItem xs="5">
+                            <MudPaper Class="ma-1" Elevation="3" Style="background-color:#EDE7DB">
+                                <MudText Class="mt-1 ml-3">Datum</MudText>
+                                <MudText Class="ml-3">22 oktober - 23 oktober</MudText>
+                            </MudPaper>
+                        </MudItem>
+                        <MudItem xs="7">
+                            <MudPaper Class="ma-1" Elevation="3" Style="background-color:#EDE7DB">
+                                <MudText Class="mt-1 ml-3">Locatie</MudText>
+                                <MudText Class="ml-3">Geeraardsstraat 44 Gent</MudText>
+                            </MudPaper>
+                        </MudItem>
+                        <MudItem xs="12">
+                            <MudText Typo="Typo.h5" Class="ml-3">Contact en facturatie gegevens</MudText>
+                        </MudItem>
+                        <MudItem xs="12">
+                            <MudPaper Class="ma-1" Elevation="3" Style="background-color:#EDE7DB">
+                                <MudText Class="mt-1 ml-3">Naam</MudText>
+                                <MudText Class="ml-3">Jan de Nul</MudText>
+                            </MudPaper>
+                        </MudItem>
+                        <MudItem xs="12">
+                            <MudPaper Class="ma-1" Elevation="3" Style="background-color:#EDE7DB">
+                                <MudText Class="mt-1 ml-3">Email</MudText>
+                                <MudText Class="ml-3">jan.denul@outlook.com</MudText>
+                            </MudPaper>
+                        </MudItem>
+                        <MudItem xs="12">
+                            <MudPaper Class="ma-1" Elevation="3" Style="background-color:#EDE7DB">
+                                <MudText Class="mt-1 ml-3">Telefoon</MudText>
+                                <MudText Class="ml-3">0455667788</MudText>
+                            </MudPaper>
+                        </MudItem>
+                        <MudItem xs="12">
+                            <MudPaper Class="ma-1" Elevation="3" Style="background-color:#EDE7DB">
+                                <MudText Class="mt-1 ml-3">Adres</MudText>
+                                <MudText Class="ml-3">Geeraardsstraat 55 Diksmuide</MudText>
+                            </MudPaper>
+                        </MudItem>
+                        <MudItem xs="12">
+                            <MudPaper Class="ma-1" Elevation="3" Style="background-color:#EDE7DB">
+                                <MudText Class="mt-1 ml-3">Btw-nummer</MudText>
+                                <MudText Class="ml-3">111111111</MudText>
+                            </MudPaper>
+                        </MudItem>
+                    </MudGrid>
+                </MudItem>
+                <MudItem lg="6" md="6" sm="12" xs="12">
+                    
+                </MudItem>
+                <MudItem xs="12">
+                    <MudText Typo="Typo.h5" Class="ml-3">Extra materiaal</MudText>
+                </MudItem>
+                <MudItem xs="12">
+                    <MudGrid>
+                        @foreach (var item in ExtraMaterialState.ExtrasAmount)
+                        {
+                            @if (item.Value!=0)
+                            {
+                                <MudItem lg="3" md="4" sm="6" xs="12">
+                                <OverviewExtraItemsCard
+                                    ImageUrl="@(Extras.FirstOrDefault(x=> x.Id == item.Key).ImageData.ImageUrl)"
+                                    Title="@(Extras.FirstOrDefault(x=> x.Id == item.Key).Title)"
+                                    Attributes="@(Extras.FirstOrDefault(x=> x.Id == item.Key).Attributes)"
+                                    EquipmentId="@(Extras.FirstOrDefault(x=> x.Id == item.Key).Id)"
+                                    Amount="@item.Value"
+                                    Price="@(Extras.FirstOrDefault(x=> x.Id == item.Key).Price)"
+                                    ExternalMethod="@RefreshPage"
+                                    >
+
+                                </OverviewExtraItemsCard>
+                                </MudItem>
+                            }
+                        }
+                    </MudGrid>
+                </MudItem>
+                <MudItem xs="12">
+                    <MudText Typo="Typo.h5" Class="ml-3">Kost</MudText>
+                </MudItem>
+                <MudItem xs="12">
+                    <MudPaper Class="" Elevation="3" Style="background-color:#EDE7DB">
+                        <MudGrid>
+                            <MudItem lg="8" md="4" sm="4" xs="3">
+                                <MudText Style="font-weight: bold" Class="ml-6 mb-n4">
+                                    Omschrijving
+                                </MudText>
+                            </MudItem>
+                            <MudItem lg="1" md="2" sm="2" xs="2">
+                                <MudText Style="font-weight: bold" Class="mb-n4">
+                                    Aantal
+                                </MudText>
+                            </MudItem>
+                            <MudItem lg="1" md="2" sm="2" xs="2">
+                                <MudText Style="font-weight: bold" Class="mb-n4">
+                                    Prijs
+                                </MudText>
+                            </MudItem>
+                            <MudItem lg="1" md="2" sm="2" xs="2">
+                                <MudText Style="font-weight: bold" Class="mb-n4">
+                                    Btw
+                                </MudText>
+                            </MudItem>
+                            <MudItem lg="1" md="2" sm="2" xs="3">
+                                <MudText Style="font-weight: bold" Class="mr-6 mb-n4">
+                                    Subtotaal
+                                </MudText>
+                            </MudItem>
+                            <MudItem xs="12">
+                                <hr style="background-color:black;height:1.5px;border-width:0;margin-left:2px;margin-right:2px;" />
+                            </MudItem>
+                            <MudItem lg="8" md="4" sm="4" xs="3">
+                                <MudText  Class="ml-6 mt-n4">
+                                    Basic formule
+                                </MudText>
+                            </MudItem>
+                            <MudItem lg="1" md="2" sm="2" xs="2">
+                                <MudText Class="ml-4 mt-n4">
+                                    1
+                                </MudText>
+                            </MudItem>
+                            <MudItem lg="1" md="2" sm="2" xs="2">
+                                <MudText  Class="mt-n4">
+                                    €350
+                                </MudText>
+                            </MudItem>
+                            <MudItem lg="1" md="2" sm="2" xs="2">
+                                <MudText  Class="mt-n4">
+                                    21%
+                                </MudText>
+                            </MudItem>
+                            <MudItem lg="1" md="2" sm="2" xs="3">
+                                <MudText  Class="mr-6 mt-n4">
+                                    €350
+                                </MudText>
+                            </MudItem>
+                            <MudItem lg="8" md="4" sm="4" xs="3">
+                                <MudText Class="ml-6 mb-n4 mt-n4">
+                                    Vervoerskosten
+                                </MudText>
+                            </MudItem>
+                            <MudItem lg="1" md="2" sm="2" xs="2">
+                                <MudText Class="ml-4 mb-n4 mt-n4">
+                                    23
+                                </MudText>
+                            </MudItem>
+                            <MudItem lg="1" md="2" sm="2" xs="2">
+                                <MudText Class="mb-n4 mt-n4">
+                                    €0.75
+                                </MudText>
+                            </MudItem>
+                            <MudItem lg="1" md="2" sm="2" xs="2">
+                                <MudText Class="mb-n4 mt-n4">
+                                    21%
+                                </MudText>
+                            </MudItem>
+                            <MudItem lg="1" md="2" sm="2" xs="3">
+                                <MudText Class="mr-6 mb-n4 mt-n4">
+                                    €2.25
+                                </MudText>
+                            </MudItem>
+                            <MudItem xs="12">
+                                <hr style="background-color:black;height:1.5px;border-width:0;margin-left:2px;margin-right:2px;" />
+                            </MudItem>
+                        </MudGrid>
+                    </MudPaper>
+                </MudItem>
+            </MudGrid>
+
+        </MudItem>
+    </MudGrid>
+    <MudGrid>
+        <MudItem lg="2" md="2" sm="12" xs="12">
+
+        </MudItem>
+        <MudItem lg="4" md="4" sm="12" xs="12">
+
+        </MudItem>
+        <MudItem lg="4" md="4" sm="5" xs="5">
+
+        </MudItem>
+        <MudItem lg="2" md="2" sm="7" xs="7">
+            <MudButton Variant="Variant.Filled" Size="Size.Large" Color="Color.Primary" OnClick="@ClickVolgende">Offerte aanvraag verzenden</MudButton>
+        </MudItem>
+    </MudGrid>
+
+
+
+
+</MudContainer>
+
+
+@code {
+
+    [Inject] public IEquipmentService EquipmentService { get; set; } = default!;
+
+    private IEnumerable<EquipmentDto.Index> Extras;
+
+    protected override async Task OnInitializedAsync()
+    {
+        EquipmentResult.Index response = await EquipmentService.GetIndexAsync();
+
+        Extras = response.Equipment;
+
+    }
+
+    private void RefreshPage()
+    {
+        StateHasChanged();    
+
+    }
+
+
+    private void ClickVolgende()
+    {
+        
+    }
+
+}
