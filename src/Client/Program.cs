@@ -23,6 +23,7 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.
 builder.Services.AddScoped<PersonalDetailsState>();
 builder.Services.AddScoped<ExtraMaterialState>();
 builder.Services.AddScoped<FormulaState>();
+builder.Services.AddScoped<EventDetailsState>();
 builder.Services.AddMudServices();
 builder.Services.AddMudServices(options =>
 {
