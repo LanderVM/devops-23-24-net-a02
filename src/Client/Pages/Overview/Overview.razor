@@ -152,7 +152,7 @@
                             </MudItem>
                             <MudItem lg="8" md="4" sm="4" xs="3">
                                 <MudText  Class="ml-6 mt-n4">
-                                    Basic formule
+                                    @FormulaState.Title
                                 </MudText>
                             </MudItem>
                             <MudItem lg="1" md="2" sm="2" xs="2">
@@ -162,7 +162,7 @@
                             </MudItem>
                             <MudItem lg="1" md="2" sm="2" xs="2">
                                 <MudText  Class="mt-n4">
-                                    €350
+                                    @(Decimal.Round(GetPriceFormula(),2))
                                 </MudText>
                             </MudItem>
                             <MudItem lg="1" md="2" sm="2" xs="2">
@@ -172,9 +172,41 @@
                             </MudItem>
                             <MudItem lg="1" md="2" sm="2" xs="3">
                                 <MudText  Class="mr-6 mt-n4">
-                                    €350
+                                    @(Decimal.Round(GetPriceFormula() + GetPriceFormula()*0.21M, 2))
                                 </MudText>
                             </MudItem>
+                            @foreach (var item in ExtraMaterialState.ExtrasAmount)
+                            {
+                                @if (item.Value != 0)
+                                {
+                                    <MudItem lg="8" md="4" sm="4" xs="3">
+                                        <MudText Class="ml-6 mb-n4 mt-n4">
+                                            @(Extras.FirstOrDefault(x=> x.Id == item.Key).Title)
+                                        </MudText>
+                                    </MudItem>
+                                    <MudItem lg="1" md="2" sm="2" xs="2">
+                                        <MudText Class="ml-4 mb-n4 mt-n4">
+                                            @item.Value
+                                        </MudText>
+                                    </MudItem>
+                                    <MudItem lg="1" md="2" sm="2" xs="2">
+                                        <MudText Class="mb-n4 mt-n4">
+                                            @(Decimal.Round(Extras.FirstOrDefault(x=> x.Id == item.Key).Price,2))
+                                        </MudText>
+                                    </MudItem>
+                                    <MudItem lg="1" md="2" sm="2" xs="2">
+                                        <MudText Class="mb-n4 mt-n4">
+                                            21%
+                                        </MudText>
+                                    </MudItem>
+                                    <MudItem lg="1" md="2" sm="2" xs="3">
+                                        <MudText Class="mr-6 mb-n4 mt-n4">
+                                            @(Decimal.Round((Extras.FirstOrDefault(x => x.Id == item.Key).Price * item.Value) + ((Extras.FirstOrDefault(x => x.Id == item.Key).Price * item.Value)*0.21M),2))
+                                        </MudText>
+                                    </MudItem>
+                                    
+                                }
+                            }
                             <MudItem lg="8" md="4" sm="4" xs="3">
                                 <MudText Class="ml-6 mb-n4 mt-n4">
                                     Vervoerskosten
@@ -292,6 +324,32 @@
         StateHasChanged();    
 
     }
+
+    private decimal GetPriceFormula()
+    {
+        DateTime? start = EventDetailsState.dateRange.Start;
+        DateTime? end = EventDetailsState.dateRange.End;
+        TimeSpan? dif = end - start;
+        int amountOfDaysDiff = (int)dif.Value.TotalDays;
+        if (amountOfDaysDiff == 0)
+        {
+            return FormulaState.BasePrice[0];
+        }
+        else if (amountOfDaysDiff == 1)
+        {
+            return FormulaState.BasePrice[1];
+        }
+        else if (amountOfDaysDiff == 2)
+        {
+            return FormulaState.BasePrice[2];
+        }
+        else
+        {
+            int extraDays = amountOfDaysDiff - 2;
+            return FormulaState.PricePerDayExtra * extraDays + FormulaState.BasePrice[2];
+        }
+    }
+    
 
 
     private void ClickVolgende()
