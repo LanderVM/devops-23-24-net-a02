@@ -4,6 +4,7 @@
 @using GoogleMapsComponents.Maps.Places
 @using Size = MudBlazor.Size
 @inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager
+@inject EventDetailsState EventDetailsState
 
 <PageTitle>Stap 1</PageTitle>
 
@@ -39,7 +40,7 @@
                 Elevation="2"
                 Label="Placeholder" 
                 Editable="true"
-                @bind-DateRange="_dateRange" 
+                @bind-DateRange="@EventDetailsState.dateRange" 
                 PlaceholderStart="Start Date" 
                 PlaceholderEnd="End Date" 
                 Date="@(DateTime.Today.AddDays(1))"
@@ -47,9 +48,9 @@
                 IsDateDisabledFunc="@((DateTime dt) => dt.Date < DateTime.Now.Date || (int)dt.DayOfWeek == 0 || (int)dt.DayOfWeek == 6)"
             />
             <div style="width: 100%">
-                <MudTimePicker Class="d-inline-flex" Label="Start Uur" Editable="true"/>
-                <MudTimePicker Class="d-inline-flex" Label="Eind Uur  " Editable="true"/>
-                <MudTextField Class="d-inline-flex" @bind-Value="intValue" Label="Aantal Personen" />
+                <MudTimePicker Class="d-inline-flex" Label="Start Uur" @bind-Time="@EventDetailsState.startTime" Editable="true"/>
+                <MudTimePicker Class="d-inline-flex" Label="Eind Uur" @bind-Time="@EventDetailsState.endTime" Editable="true" />
+                <MudTextField Class="d-inline-flex" @bind-Value="@EventDetailsState.AantalPersonen" Label="Aantal Personen" />
             </div>
             
              
@@ -60,7 +61,7 @@
     
         </MudItem>
         <MudItem lg="4" md="4" sm="12" xs="12">
-           
+            
         </MudItem>
         <MudItem lg="4" md="4" sm="5" xs="5">
     
@@ -79,11 +80,9 @@
 @code {
     private void ClickVolgende()
     {
+        
         NavigationManager.NavigateTo("/personaldetails");
     }
-    int intValue;
-    private DateRange _dateRange = new DateRange(DateTime.Now.Date, DateTime.Now.AddDays(3).Date); 
-    
     
     private GoogleMap Map { get; set; } = default!;
 
@@ -134,6 +133,9 @@
                     Title = place.Name
                 });
                 await UpdateMarker(marker);
+                EventDetailsState.PlaceTitle = place.Name;
+                EventDetailsState.PlaceGeometry = place.Geometry;
+                //EventDetailsState.address = place.FormattedAddress;
             }
             else if (place.Geometry.Viewport is not null)
             {

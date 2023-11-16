@@ -1,5 +1,6 @@
 ﻿@page "/extramaterial"
 @using shared.Equipment
+@inject NavigationManager NavigationManager
 @inject ExtraMaterialState ExtraMaterialState
 
 <PageTitle>Stap 3</PageTitle>
@@ -95,7 +96,7 @@
 
     private void ClickVolgende()
     {
-
+        NavigationManager.NavigateTo("/overview");
     }
 
 }
