@@ -56,6 +56,14 @@
                                 <MudText Class="ml-3">Geeraardsstraat 44 Gent</MudText>
                             </MudPaper>
                         </MudItem>
+                        <MudHidden Breakpoint="Breakpoint.MdAndUp">
+                            <MudItem lg="6" md="6" sm="12" xs="12">
+                                <GoogleMap @ref="@Map" Id="map1" Options="@_options" Height="410px" OnAfterInit="async () => await OnAfterMapInit()"></GoogleMap>
+                                <MudPaper Class="mt-4 ml-1 mr-1" Elevation="3" Style="background-color:#EDE7DB">
+                                    <MudText Class="mt-1 mb-1 ml-3">Aantal personen op evenement: @(EventDetailsState.AantalPersonen.ToString())</MudText>
+                                    </MudPaper>
+                                </MudItem>
+                            </MudHidden>
                         <MudItem xs="12">
                             <MudText Typo="Typo.h5" Class="ml-3">Contact en facturatie gegevens</MudText>
                         </MudItem>
