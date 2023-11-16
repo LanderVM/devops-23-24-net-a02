@@ -93,7 +93,7 @@
                 </MudItem>
                 <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="true">
                         <MudItem lg="6" md="6" sm="12" xs="12">
-
+                            <GoogleMap @ref="@Map" Id="map1" Options="@_options" Height="410px" OnAfterInit="async () => await OnAfterMapInit()"></GoogleMap>
                         </MudItem>
                 </MudHidden>
                     @if (@NoExtraMaterial() == false)
@@ -521,13 +521,16 @@
             {
                 Position = EventDetailsState.PlaceGeometry.Location,
                 Map = Map.InteropObject,
-                Title = "rrrr";
+                Title = GetEventLocationTitle(),
             });
         await UpdateMarker(marker);
 
-        
+
     }
 
-
+    private string GetEventLocationTitle()
+    {
+        return EventDetailsState.PlaceTitle;
+    }
 
 }

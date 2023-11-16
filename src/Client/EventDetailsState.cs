@@ -16,7 +16,7 @@ public class EventDetailsState
   public TimeSpan? endTime = new TimeSpan();
 
   public PlaceGeometry PlaceGeometry { get; set; }
-  
+  public string PlaceTitle { get; set; }
 
 
 }
