@@ -1,4 +1,5 @@
-﻿using MudBlazor;
+﻿using GoogleMapsComponents.Maps.Places;
+using MudBlazor;
 
 namespace devops_23_24_net_a02.Client;
 
@@ -13,6 +14,9 @@ public class EventDetailsState
   public TimeSpan? startTime = new TimeSpan();
 
   public TimeSpan? endTime = new TimeSpan();
+
+  public PlaceGeometry PlaceGeometry { get; set; }
+  
 
 
 }

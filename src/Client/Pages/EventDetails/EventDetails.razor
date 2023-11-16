@@ -133,6 +133,8 @@
                     Title = place.Name
                 });
                 await UpdateMarker(marker);
+                EventDetailsState.PlaceTitle = place.Name;
+                EventDetailsState.PlaceGeometry = place.Geometry;
                 EventDetailsState.address = place.FormattedAddress;
             }
             else if (place.Geometry.Viewport is not null)

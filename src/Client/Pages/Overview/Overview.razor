@@ -4,6 +4,10 @@
 @inject FormulaState FormulaState
 @inject EventDetailsState EventDetailsState
 @inject PersonalDetailsState PersonalDetailsState
+@using GoogleMapsComponents
+@using GoogleMapsComponents.Maps
+@using GoogleMapsComponents.Maps.Places
+
 
 <PageTitle>Overzicht</PageTitle>
 
@@ -87,9 +91,11 @@
                         </MudItem>
                     </MudGrid>
                 </MudItem>
-                <MudItem lg="6" md="6" sm="12" xs="12">
-                    
-                </MudItem>
+                <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="true">
+                        <MudItem lg="6" md="6" sm="12" xs="12">
+
+                        </MudItem>
+                </MudHidden>
                     @if (@NoExtraMaterial() == false)
                 {
                 <MudItem xs="12">
@@ -298,7 +304,7 @@
 
         </MudItem>
         <MudItem lg="2" md="2" sm="7" xs="7">
-            <MudButton Class="mt-4 mb-4" Variant="Variant.Filled" Size="Size.Large" Color="Color.Primary" OnClick="@ClickVolgende">Offerte aanvraag verzenden</MudButton>
+            <MudButton Class="mt-4 mb-4" Variant="Variant.Filled" Size="MudBlazor.Size.Large" Color="Color.Primary" OnClick="@ClickVolgende">Offerte aanvraag verzenden</MudButton>
         </MudItem>
     </MudGrid>
 
@@ -490,7 +496,38 @@
 
     private void ClickVolgende()
     {
+
+    }
+
+    private Marker? _selectedLocation;
+
+    private GoogleMap Map { get; set; } = default!;
+
+    private readonly MapOptions _options = new()
+        { Zoom = 13, Center = new LatLngLiteral { Lat = 50.93735122680664, Lng = 4.03336238861084 }, MapTypeId = MapTypeId.Roadmap, DisableDefaultUI = true, };
+
+    private async Task UpdateMarker(Marker marker)
+    {
+        if (_selectedLocation is not null) await _selectedLocation.SetMap(null);
+        _selectedLocation = marker;
+    }
+
+    private async Task OnAfterMapInit()
+    {
+        await Map.InteropObject.SetCenter(EventDetailsState.PlaceGeometry.Location);
+        await Map.InteropObject.SetZoom(13);
+
+        var marker = await Marker.CreateAsync(Map.JsRuntime, new MarkerOptions
+            {
+                Position = EventDetailsState.PlaceGeometry.Location,
+                Map = Map.InteropObject,
+                Title = "rrrr";
+            });
+        await UpdateMarker(marker);
+
         
     }
+
+
 
 }
