@@ -90,9 +90,12 @@
                 <MudItem lg="6" md="6" sm="12" xs="12">
                     
                 </MudItem>
+                    @if (@NoExtraMaterial() == false)
+                {
                 <MudItem xs="12">
                     <MudText Typo="Typo.h5" Class="ml-3">Extra materiaal</MudText>
                 </MudItem>
+                    }
                 <MudItem xs="12">
                     <MudGrid>
                         @foreach (var item in ExtraMaterialState.ExtrasAmount)
@@ -152,7 +155,7 @@
                             </MudItem>
                             <MudItem lg="8" md="4" sm="4" xs="3">
                                 <MudText  Class="ml-6 mt-n4">
-                                    @FormulaState.Title
+                                    @($"{@FormulaState.Title} formule")
                                 </MudText>
                             </MudItem>
                             <MudItem lg="1" md="2" sm="2" xs="2">
@@ -172,7 +175,7 @@
                             </MudItem>
                             <MudItem lg="1" md="2" sm="2" xs="3">
                                 <MudText  Class="mr-6 mt-n4">
-                                    @(Decimal.Round(GetPriceFormula() + GetPriceFormula()*0.21M, 2))
+                                    @(Decimal.Round(GetPriceFormulaWithBtw(), 2))
                                 </MudText>
                             </MudItem>
                             @foreach (var item in ExtraMaterialState.ExtrasAmount)
@@ -319,6 +322,19 @@
 
     }
 
+    private bool NoExtraMaterial()
+    {
+        bool thereIsNoExtraMaterial = true;
+        foreach (var item in ExtraMaterialState.ExtrasAmount)
+        {
+            if (item.Value!=0)
+            {
+                thereIsNoExtraMaterial = false;
+            }
+        }
+        return thereIsNoExtraMaterial;
+    }
+
     private void RefreshPage()
     {
         StateHasChanged();    
@@ -327,29 +343,77 @@
 
     private decimal GetPriceFormula()
     {
+        decimal initialPrice = 0M;
+        decimal endPrice = 0M;
+
         DateTime? start = EventDetailsState.dateRange.Start;
         DateTime? end = EventDetailsState.dateRange.End;
         TimeSpan? dif = end - start;
         int amountOfDaysDiff = (int)dif.Value.TotalDays;
         if (amountOfDaysDiff == 0)
         {
-            return FormulaState.BasePrice[0];
+            initialPrice =  FormulaState.BasePrice[0];
         }
         else if (amountOfDaysDiff == 1)
         {
-            return FormulaState.BasePrice[1];
+            initialPrice = FormulaState.BasePrice[1];
         }
         else if (amountOfDaysDiff == 2)
         {
-            return FormulaState.BasePrice[2];
+            initialPrice = FormulaState.BasePrice[2];
         }
         else
         {
             int extraDays = amountOfDaysDiff - 2;
-            return FormulaState.PricePerDayExtra * extraDays + FormulaState.BasePrice[2];
+            initialPrice =  FormulaState.PricePerDayExtra * extraDays + FormulaState.BasePrice[2];
         }
+        if (FormulaState.Title.Equals("Extended"))
+        {
+            endPrice = initialPrice + (1.5M * EventDetailsState.AantalPersonen);
+        }
+        if (FormulaState.Title.Equals("All-in"))
+        {
+            endPrice = initialPrice + ((1.5M * EventDetailsState.AantalPersonen) + (12.0M*EventDetailsState.AantalPersonen));
+        }
+        return endPrice;
     }
-    
+    private decimal GetPriceFormulaWithBtw()
+    {
+        decimal initialPrice = 0M;
+        decimal additionalPrice = 0M;
+
+        DateTime? start = EventDetailsState.dateRange.Start;
+        DateTime? end = EventDetailsState.dateRange.End;
+        TimeSpan? dif = end - start;
+        int amountOfDaysDiff = (int)dif.Value.TotalDays;
+        if (amountOfDaysDiff == 0)
+        {
+            initialPrice = FormulaState.BasePrice[0];
+        }
+        else if (amountOfDaysDiff == 1)
+        {
+            initialPrice = FormulaState.BasePrice[1];
+        }
+        else if (amountOfDaysDiff == 2)
+        {
+            initialPrice = FormulaState.BasePrice[2];
+        }
+        else
+        {
+            int extraDays = amountOfDaysDiff - 2;
+            initialPrice = FormulaState.PricePerDayExtra * extraDays + FormulaState.BasePrice[2];
+        }
+        if (FormulaState.Title.Equals("Extended"))
+        {
+            additionalPrice = (1.5M * EventDetailsState.AantalPersonen);
+        }
+        if (FormulaState.Title.Equals("All-in"))
+        {
+            additionalPrice = ((1.5M * EventDetailsState.AantalPersonen) + (12.0M * EventDetailsState.AantalPersonen));
+        }
+        return ((initialPrice) + (initialPrice * 0.21M)) + ((additionalPrice) + (additionalPrice * 0.12M));
+    }
+
 
 
     private void ClickVolgende()
