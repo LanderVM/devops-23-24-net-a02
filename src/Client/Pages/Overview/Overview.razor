@@ -248,7 +248,7 @@
                             </MudItem>
                             <MudItem lg="1" md="2" sm="2" xs="3">
                                 <MudText Class="mr-6 mb-n4 mt-n4">
-                                    €510
+                                    @(Decimal.Round(BerekenTotaalZonderBtw(),2))
                                 </MudText>
                             </MudItem>
                             <MudItem lg="8" md="4" sm="4" xs="3">
@@ -261,7 +261,7 @@
                             </MudItem>
                             <MudItem lg="1" md="2" sm="2" xs="3">
                                 <MudText Class="mr-6 mb-n4 ">
-                                    €210
+                                    @(Decimal.Round(BerekenBtwOpTotaal(), 2))
                                 </MudText>
                             </MudItem>
                             <MudItem xs="12">
@@ -277,7 +277,7 @@
                             </MudItem>
                             <MudItem lg="1" md="2" sm="2" xs="3">
                                 <MudText Class="mr-6 mb-n4 mt-n4">
-                                    €660
+                                    @(Decimal.Round(BerekenTotaalZonderBtw(), 2) + Decimal.Round(BerekenBtwOpTotaal(), 2))
                                 </MudText>
                             </MudItem>
                         </MudGrid>
@@ -412,6 +412,78 @@
             additionalPrice = ((1.5M * EventDetailsState.AantalPersonen) + (12.0M * EventDetailsState.AantalPersonen));
         }
         return ((initialPrice) + (initialPrice * 0.21M)) + ((additionalPrice) + (additionalPrice * 0.12M));
+    }
+    private decimal GetFormulaBtw()
+    {
+        decimal initialPrice = 0M;
+        decimal additionalPrice = 0M;
+        decimal initialBtw = 0M;
+        decimal additionalBtw = 0M;
+
+        DateTime? start = EventDetailsState.dateRange.Start;
+        DateTime? end = EventDetailsState.dateRange.End;
+        TimeSpan? dif = end - start;
+        int amountOfDaysDiff = (int)dif.Value.TotalDays;
+        if (amountOfDaysDiff == 0)
+        {
+            initialPrice = FormulaState.BasePrice[0];
+        }
+        else if (amountOfDaysDiff == 1)
+        {
+            initialPrice = FormulaState.BasePrice[1];
+        }
+        else if (amountOfDaysDiff == 2)
+        {
+            initialPrice = FormulaState.BasePrice[2];
+        }
+        else
+        {
+            int extraDays = amountOfDaysDiff - 2;
+            initialPrice = FormulaState.PricePerDayExtra * extraDays + FormulaState.BasePrice[2];
+        }
+        if (FormulaState.Title.Equals("Extended"))
+        {
+            additionalPrice = (1.5M * EventDetailsState.AantalPersonen);
+        }
+        if (FormulaState.Title.Equals("All-in"))
+        {
+            additionalPrice = ((1.5M * EventDetailsState.AantalPersonen) + (12.0M * EventDetailsState.AantalPersonen));
+        }
+
+        initialBtw = initialPrice * 0.21M;
+        additionalBtw = additionalPrice * 0.12M;
+
+        return initialBtw + additionalBtw;
+    }
+    private decimal BerekenVervoersKosten()
+    {
+        return 0M;
+    }
+    private decimal BerekenTotaalZonderBtw()
+    {
+        decimal extrasKosten = 0M;
+        foreach (var item in ExtraMaterialState.ExtrasAmount)
+        {
+            if (item.Value != 0)
+            {
+                extrasKosten += (Extras.FirstOrDefault(x => x.Id == item.Key).Price * item.Value);
+            }
+        }
+        return BerekenVervoersKosten() + GetPriceFormula() + extrasKosten;
+
+    }
+    private decimal BerekenBtwOpTotaal()
+    {
+        decimal extrasKostenBtw = 0M;
+        decimal formuleBtw = 0M;
+        foreach (var item in ExtraMaterialState.ExtrasAmount)
+        {
+            if (item.Value != 0)
+            {
+                extrasKostenBtw += ((Extras.FirstOrDefault(x => x.Id == item.Key).Price * item.Value) * 0.21M);
+            }
+        }
+        return (BerekenVervoersKosten()*0.21M) + GetFormulaBtw() + extrasKostenBtw;
     }
 
 
