@@ -29,6 +29,7 @@ public static class Extensions
     services.AddScoped<IEquipmentService, EquipmentService>();
     services.AddScoped<IQuotationService, QuotationService>();
     services.AddScoped<IFormulaService, FormulaService>();
+    services.AddScoped<ICustomerService, CustomerService>();
     return services;
   }
 }
