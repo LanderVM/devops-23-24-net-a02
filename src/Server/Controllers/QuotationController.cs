@@ -16,6 +16,13 @@ public class QuotationController : ControllerBase
     _logger = logger;
     _quotationService = quotationService;
   }
+  [HttpGet]
+  [SwaggerOperation("Gives an estimated quotation price")]
+  public async Task<IActionResult> GetEstimatedQuotationPrice(QuotationDto.Price model)
+  {
+    decimal quotationPrice = await _quotationService.GetPriceAsync(model);
+    return CreatedAtAction(nameof(GetEstimatedQuotationPrice), new QuotationResponse.Price { EstimatedPrice = quotationPrice });
+  }
 
   [HttpPost]
   [SwaggerOperation("Saves a new quotation offer, registering a new customer if need be")]

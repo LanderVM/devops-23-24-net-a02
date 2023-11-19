@@ -2,6 +2,7 @@
 using Domain.Formulas;
 using Domain.Quotations;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Server.Persistence.Triggers;
 
 namespace Api.Data;
@@ -20,7 +21,10 @@ public class BlancheDbContext : DbContext
     
   var dbConnection = _configuration.GetConnectionString("DBConnectionString");
   var serverVersion = ServerVersion.AutoDetect(dbConnection);
-  
+    var mail = _configuration.GetSection("MailSettings").GetSection("MailAdress").Value;
+    var password = _configuration.GetSection("MailSettings").GetSection("Password").Value;
+    EmailConfiguration emailConfig = EmailConfiguration.CreateInstance(mail, password);
+
     dbContextOptionsBuilder.UseMySql(dbConnection, serverVersion)
       .LogTo(Console.WriteLine, LogLevel.Information)
       .EnableSensitiveDataLogging()

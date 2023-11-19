@@ -141,13 +141,14 @@ public class MailSender
     return contentBuilder.ToString();
   }
 
-  public void SendNewQuote(Formula formula, string comment)
+  public bool SendNewQuote(string comment)
   {    
     mail.Subject = "Offerte Blanche";
-    mail.Body = GetMailBody(formula, comment);
+    //mail.Body = GetMailBody(formula, comment);
+    mail.Body = "Dit is een test";
     mail.IsBodyHtml = true;
 
-    SendMail();
+    return SendMail();
   }
 
 }

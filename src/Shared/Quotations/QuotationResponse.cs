@@ -6,4 +6,8 @@ public static class QuotationResponse
   {
     public int QuotationId { get; set; }
   }
+  public class Price
+  {
+    public decimal EstimatedPrice { get; set; }
+  }
 }

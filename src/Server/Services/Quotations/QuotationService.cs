@@ -1,5 +1,6 @@
 ﻿using Domain.Common;
 using Domain.Customers;
+using Domain.Formulas;
 using Domain.Quotations;
 using Microsoft.EntityFrameworkCore;
 using Shared.Quotations;
@@ -92,5 +93,13 @@ public class QuotationService : IQuotationService
            && customerFromDb.BillingAddress.HouseNumber == model.Customer.BillingAddress.HouseNumber
            && customerFromDb.BillingAddress.PostalCode == model.Customer.BillingAddress.PostalCode
            && customerFromDb.BillingAddress.City == model.Customer.BillingAddress.City;
+  }
+
+  public async Task<decimal> GetPriceAsync(QuotationDto.Price model)
+  {
+    Formula formula = new Formula(null, model.Formula.Title, null);
+    Quotation quotation = new Quotation(formula, model.StartTime, model.EndTime, model.EstimatedNumberPeople, model.IsTripelBier);
+    return quotation.GetEstimatedPrice();
+    
   }
 }

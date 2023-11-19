@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using shared.Formulas;
 using Shared.Common;
 using Shared.Customer;
 
@@ -13,6 +14,14 @@ public static class QuotationDto
     public DateTime StartTime { get; set; }
     public DateTime EndTime { get; set; }
     public CustomerDto.Create Customer { get; set; }
+    public bool IsTripelBier { get; set; }
+  }
+  public class Price
+  {
+    public FormulaDto.Index Formula { get; set; }
+    public DateTime StartTime { get; set; }
+    public DateTime EndTime { get; set; }
+    public int EstimatedNumberPeople { get; set; }
     public bool IsTripelBier { get; set; }
   }
 
