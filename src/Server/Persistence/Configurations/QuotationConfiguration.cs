@@ -38,5 +38,7 @@ public class QuotationConfiguration : EntityConfiguration<Quotation>
       .IsRequired();
     builder.Property(q => q.EndTime)
       .IsRequired();
+    builder.Property(q => q.NumberOfPeople)
+      .IsRequired();
   }
 }

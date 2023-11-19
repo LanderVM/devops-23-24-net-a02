@@ -35,7 +35,7 @@ public class Quotation : Entity
     OriginalFormulaPricePerDayExtra = formula.PricePerDayExtra;
     StartTime = Guard.Against.Null(startTime);
     EndTime = Guard.Against.Null(endTime);
-    EstimatedNumberPeople = Guard.Against.NegativeOrZero(estimatedNumberPeople);
+    NumberOfPeople = Guard.Against.NegativeOrZero(estimatedNumberPeople);
     IsTripelBier = isTripelBier;
   }
 
@@ -49,10 +49,18 @@ public class Quotation : Entity
   public QuotationStatus Status { get; set; } = QuotationStatus.Unread;
   public DateTime StartTime { get; set; }
   public DateTime EndTime { get; set; }
-  public int EstimatedNumberPeople { get; protected set; }
+  public int NumberOfPeople { get; protected set; }
   public bool IsTripelBier { get; set; }
 
   public decimal GetPrice()
+  {
+    var days = (EndTime - StartTime).Days + 1;
+    var blocksOf3Days = days / 3 + (days % 3 != 0 ? 1 : 0);
+    var extraEquipmentPrices = QuotationLines.Sum(quotationLine => quotationLine.GetPrice() * blocksOf3Days);
+
+    return GetPriceDays() + extraEquipmentPrices;
+  }
+  private decimal GetPriceDays()
   {
     var days = (EndTime - StartTime).Days + 1;
     var hasExtraDays = days > 3;
@@ -61,52 +69,25 @@ public class Quotation : Entity
     decimal extraDaysPrice = 0;
     if (hasExtraDays) extraDaysPrice = (days - 3) * OriginalFormulaPricePerDayExtra;
 
-    var blocksOf3Days = days / 3 + (days % 3 != 0 ? 1 : 0);
-    var extraEquipmentPrices = QuotationLines.Sum(quotationLine => quotationLine.GetPrice() * blocksOf3Days);
-
-    return basePrice + extraDaysPrice + extraEquipmentPrices;
+    return basePrice + extraDaysPrice;
   }
 
   public decimal GetEstimatedPrice()
   {
     decimal priceBeer = IsTripelBier ? 1.5m : 3.0m;
     decimal priceBbq = 12m;
-
+    
     if (Formula.Id == 1)
     {
-      var days = (EndTime - StartTime).Days + 1;
-      var hasExtraDays = days > 3;
-
-      var basePrice = OriginalFormulaPricePerDay[hasExtraDays ? 2 : days - 1];
-      decimal extraDaysPrice = 0;
-      if (hasExtraDays) extraDaysPrice = (days - 3) * OriginalFormulaPricePerDayExtra;
-
-      var blocksOf3Days = days / 3 + (days % 3 != 0 ? 1 : 0);
-      return basePrice + extraDaysPrice;
+      return GetPriceDays();
     }
     if (Formula.Id == 2)
     {
-      var days = (EndTime - StartTime).Days + 1;
-      var hasExtraDays = days > 3;
-
-      var basePrice = OriginalFormulaPricePerDay[hasExtraDays ? 2 : days - 1];
-      decimal extraDaysPrice = 0;
-      if (hasExtraDays) extraDaysPrice = (days - 3) * OriginalFormulaPricePerDayExtra;
-
-      var blocksOf3Days = days / 3 + (days % 3 != 0 ? 1 : 0);
-      return basePrice + extraDaysPrice + (EstimatedNumberPeople * priceBeer);
+      return GetPriceDays() + (NumberOfPeople * priceBeer);
     }
     else
     {
-      var days = (EndTime - StartTime).Days + 1;
-      var hasExtraDays = days > 3;
-
-      var basePrice = OriginalFormulaPricePerDay[hasExtraDays ? 2 : days - 1];
-      decimal extraDaysPrice = 0;
-      if (hasExtraDays) extraDaysPrice = (days - 3) * OriginalFormulaPricePerDayExtra;
-
-      var blocksOf3Days = days / 3 + (days % 3 != 0 ? 1 : 0);
-      return basePrice + extraDaysPrice + (EstimatedNumberPeople * priceBeer) + (EstimatedNumberPeople * priceBbq);
+      return GetPriceDays() + (NumberOfPeople * priceBeer) + (NumberOfPeople * priceBbq);
     }
   }
 }

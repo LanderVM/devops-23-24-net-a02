@@ -2,6 +2,7 @@
 using System.Net.Mail;
 using System.Text;
 using Domain.Formulas;
+using Domain.Quotations;
 
 namespace Domain.Common;
 
@@ -35,8 +36,9 @@ public class MailSender
     }
   }
 
-  private string GetMailBody(Formula formula, string comment)
+  private string GetMailBody(Quotation quotation, string comment)
   {
+    var formula = quotation.Formula;
     if (formula == null || !formula.Equipment.Any())
     {
       throw new Exception("There is no Equipment in this formula");
@@ -141,10 +143,10 @@ public class MailSender
     return contentBuilder.ToString();
   }
 
-  public bool SendNewQuote(string comment)
+  public bool SendNewQuote(Quotation quotation, string comment)
   {    
     mail.Subject = "Offerte Blanche";
-    //mail.Body = GetMailBody(formula, comment);
+    mail.Body = GetMailBody(quotation, comment);
     mail.Body = "Dit is een test";
     mail.IsBodyHtml = true;
 

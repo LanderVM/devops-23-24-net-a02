@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Shared.Quotations;
 
 namespace devops_23_24_net_a02.Shared.DTOs;
 
@@ -7,6 +8,7 @@ public static class EmailDto
   public class Create
   {
     public string Email { get; set; }
+    public string QuotationId { get; set; }
   }
 
   public class Validator : AbstractValidator<Create>

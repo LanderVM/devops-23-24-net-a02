@@ -18,7 +18,7 @@ public static class QuotationDto
   }
   public class Price
   {
-    public FormulaDto.Index Formula { get; set; }
+    public int FormulaId { get; set; }
     public DateTime StartTime { get; set; }
     public DateTime EndTime { get; set; }
     public int EstimatedNumberPeople { get; set; }

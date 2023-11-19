@@ -33,7 +33,7 @@ public class EmailService : IEmailService
     string password = emailConfig.Password;
 
     MailSender mailSender = new MailSender(mail, email.Value, new System.Net.NetworkCredential(mail, password));
-    mailSender.SendNewQuote("Test");
+    //mailSender.SendNewQuote("Test");
 
     return email.Id;
   }

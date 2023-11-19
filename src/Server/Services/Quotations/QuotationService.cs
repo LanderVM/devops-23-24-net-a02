@@ -95,9 +95,11 @@ public class QuotationService : IQuotationService
            && customerFromDb.BillingAddress.City == model.Customer.BillingAddress.City;
   }
 
-  public async Task<decimal> GetPriceAsync(QuotationDto.Price model)
+  public async Task<decimal> GetEstimatedQuotationPrice(QuotationDto.Price model)
   {
-    Formula formula = new Formula(null, model.Formula.Title, null);
+    var formula = await _dbContext.Formulas.FirstOrDefaultAsync(x => x.Id == model.FormulaId);
+
+    Formula formula2 = new Formula(formula.Equipment, formula.Description.Title, formula.Description.Attributes);
     Quotation quotation = new Quotation(formula, model.StartTime, model.EndTime, model.EstimatedNumberPeople, model.IsTripelBier);
     return quotation.GetEstimatedPrice();
     
