@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Shared.Common;
+using Shared.Customer;
 
 namespace Shared.Quotations;
 

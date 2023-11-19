@@ -1,7 +1,8 @@
 ﻿using Api.Data;
-using Common;
 using Domain.Customers;
-using Shared.Common;
+using Microsoft.EntityFrameworkCore;
+using Shared.Customer;
+using Shared.Customers;
 
 namespace Server.Services;
 
@@ -23,5 +24,30 @@ public class CustomerService : ICustomerService
     _dbContext.Customers.Add(customer);
     await _dbContext.SaveChangesAsync();
     return customer.Id;
+  }
+
+  public async Task<CustomerResult.Index> GetIndexAsync(CustomerRequest.Index request)
+  {
+    var query = _dbContext.Customers.AsQueryable();
+
+    int totalAmount = await query.CountAsync();
+
+    var items = await query
+       .Skip((request.Page - 1) * request.PageSize)
+       .Take(request.PageSize)
+       .OrderBy(x => x.Id)
+       .Select(x => new CustomerDto.Index
+       {
+         Id = x.Id,
+         FirstName = x.FirstName,
+         LastName = x.LastName,
+       }).ToListAsync();
+
+    var result = new CustomerResult.Index
+    {
+      Customers = items,
+      TotalAmount = totalAmount
+    };
+    return result;
   }
 }

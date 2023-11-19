@@ -1,11 +1,8 @@
-﻿using System.Data;
-using Common;
-using devops_23_24_net_a02.Shared.DTOs;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Server.Services;
-using Shared.Common;
-using Shared.Emails;
+using Shared.Customer;
+using Shared.Customers;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace devops_23_24_net_a02.Server.Controllers;
@@ -21,6 +18,13 @@ public class CustomerController : ControllerBase
   {
     _logger = logger;
     _customerService = customerService;
+  }
+
+  [HttpGet]
+  [SwaggerOperation("Returns a list of customers")]
+  public async Task<CustomerResult.Index> GetIndex([FromQuery] CustomerRequest.Index request)
+  {
+    return await _customerService.GetIndexAsync(request);
   }
 
   [HttpPost]

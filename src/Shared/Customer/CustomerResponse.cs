@@ -1,4 +1,4 @@
-﻿namespace Common;
+﻿namespace Shared.Customer;
 
 public static class CustomerResponse
 {
