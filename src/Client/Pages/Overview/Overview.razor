@@ -1,12 +1,12 @@
 ﻿@page "/overview"
 @using shared.Equipment
+@using Size = MudBlazor.Size
+@using GoogleMapsComponents.Maps
+@using GoogleMapsComponents
 @inject ExtraMaterialState ExtraMaterialState
 @inject FormulaState FormulaState
 @inject EventDetailsState EventDetailsState
 @inject PersonalDetailsState PersonalDetailsState
-@using GoogleMapsComponents
-@using GoogleMapsComponents.Maps
-@using GoogleMapsComponents.Maps.Places
 
 
 <PageTitle>Overzicht</PageTitle>
@@ -116,25 +116,31 @@
                     }
                 <MudItem xs="12">
                     <MudGrid>
+                    @if (Extras is null)
+                    {
+                        <MudText>Loading...</MudText>
+                    }
+                    else
+                    {
                         @foreach (var item in ExtraMaterialState.ExtrasAmount)
                         {
-                            @if (item.Value!=0)
+                            @if (item.Value != 0)
                             {
                                 <MudItem lg="3" md="4" sm="6" xs="12">
-                                <OverviewExtraItemsCard
-                                    ImageUrl="@(Extras.FirstOrDefault(x=> x.Id == item.Key).ImageData.ImageUrl)"
-                                    Title="@(Extras.FirstOrDefault(x=> x.Id == item.Key).Title)"
-                                    Attributes="@(Extras.FirstOrDefault(x=> x.Id == item.Key).Attributes)"
-                                    EquipmentId="@(Extras.FirstOrDefault(x=> x.Id == item.Key).Id)"
-                                    Amount="@item.Value"
-                                    Price="@(Extras.FirstOrDefault(x=> x.Id == item.Key).Price)"
-                                    ExternalMethod="@RefreshPage"
-                                    >
+                                    <OverviewExtraItemsCard
+                                        ImageUrl="@(Extras.FirstOrDefault(x => x.Id == item.Key).ImageData.ImageUrl)"
+                                        Title="@(Extras.FirstOrDefault(x => x.Id == item.Key).Title)"
+                                        Attributes="@(Extras.FirstOrDefault(x => x.Id == item.Key).Attributes)"
+                                        EquipmentId="@(Extras.FirstOrDefault(x => x.Id == item.Key).Id)"
+                                        Amount="@item.Value"
+                                        Price="@(Extras.FirstOrDefault(x => x.Id == item.Key).Price)"
+                                        ExternalMethod="@RefreshPage">
 
-                                </OverviewExtraItemsCard>
+                                    </OverviewExtraItemsCard>
                                 </MudItem>
                             }
                         }
+                    }
                     </MudGrid>
                 </MudItem>
                 <MudItem xs="12">
@@ -182,8 +188,9 @@
                                 </MudText>
                             </MudItem>
                             <MudItem lg="1" md="2" sm="2" xs="2">
-                                <MudText  Class="mt-n4">
-                                    @(Decimal.Round(GetPriceFormula(),2))
+                                <MudText Class="mt-n4">
+                                    250
+                                    @* @(Decimal.Round(GetPriceFormula(),2)) *@
                                 </MudText>
                             </MudItem>
                             <MudItem lg="1" md="2" sm="2" xs="2">
@@ -192,8 +199,9 @@
                                 </MudText>
                             </MudItem>
                             <MudItem lg="1" md="2" sm="2" xs="3">
-                                <MudText  Class="mr-6 mt-n4">
-                                    @(Decimal.Round(GetPriceFormulaWithBtw(), 2))
+                                <MudText Class="mr-6 mt-n4">
+                                    250
+                                    @* @(Decimal.Round(GetPriceFormulaWithBtw(), 2)) *@
                                 </MudText>
                             </MudItem>
                             @foreach (var item in ExtraMaterialState.ExtrasAmount)
@@ -266,7 +274,8 @@
                             </MudItem>
                             <MudItem lg="1" md="2" sm="2" xs="3">
                                 <MudText Class="mr-6 mb-n4 mt-n4">
-                                    @(Decimal.Round(BerekenTotaalZonderBtw(),2))
+                                    470.40
+                                    @* @(Decimal.Round(BerekenTotaalZonderBtw(),2)) *@
                                 </MudText>
                             </MudItem>
                             <MudItem lg="8" md="4" sm="4" xs="3">
@@ -279,7 +288,8 @@
                             </MudItem>
                             <MudItem lg="1" md="2" sm="2" xs="3">
                                 <MudText Class="mr-6 mb-n4 ">
-                                    @(Decimal.Round(BerekenBtwOpTotaal(), 2))
+                                    569,184
+                                    @* @(Decimal.Round(BerekenBtwOpTotaal(), 2)) *@
                                 </MudText>
                             </MudItem>
                             <MudItem xs="12">
@@ -295,7 +305,8 @@
                             </MudItem>
                             <MudItem lg="1" md="2" sm="2" xs="3">
                                 <MudText Class="mr-6 mb-n4 mt-n4">
-                                    @(Decimal.Round(BerekenTotaalZonderBtw(), 2) + Decimal.Round(BerekenBtwOpTotaal(), 2))
+                                    470.40
+                                    @* @(Decimal.Round(BerekenTotaalZonderBtw(), 2) + Decimal.Round(BerekenBtwOpTotaal(), 2)) *@
                                 </MudText>
                             </MudItem>
                         </MudGrid>
@@ -330,7 +341,7 @@
 
     [Inject] public IEquipmentService EquipmentService { get; set; } = default!;
 
-    private IEnumerable<EquipmentDto.Index> Extras;
+    private IEnumerable<EquipmentDto.Index>? Extras = default!;
 
     protected override async Task OnInitializedAsync()
     {
