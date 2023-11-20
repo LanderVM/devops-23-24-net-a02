@@ -24,13 +24,11 @@ builder.Services.AddScoped<PersonalDetailsState>();
 builder.Services.AddScoped<ExtraMaterialState>();
 builder.Services.AddScoped<FormulaState>();
 builder.Services.AddScoped<EventDetailsState>();
-builder.Services.AddMudServices();
+
 builder.Services.AddMudServices(options =>
 {
   options.PopoverOptions.ThrowOnDuplicateProvider = false;
 });
-
-builder.Services.AddMudServices();
 
 builder.Services.AddScoped<IEquipmentService, EquipmentService>();
 builder.Services.AddScoped<IFormulaService, FormulaService>();

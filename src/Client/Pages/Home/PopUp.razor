@@ -1,9 +1,13 @@
-<MudOverlay Visible="isVisible" DarkBackground="true" ZIndex="9999" AutoClose="true">
-    <div class="d-flex flex-column align-items-center justify-content-center" Style="background-color: #C8A86E; color: white; cursor: pointer; padding: 20px; border-radius: 10px; box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);">
-        <MudText Typo="Typo.h5" Class="mb-3">Druk hier voor een snelle inschatting</MudText>
-        <MudButton @onclick="() => ToggleOverlay(false)" Class="ml-auto mr-n3 mb-1" Color="Color.Inherit" Variant="Variant.Outlined" StartIcon="@Icons.Material.Filled.Close">Close</MudButton>
-    </div>
-</MudOverlay>
+<AuthorizeView>
+    <NotAuthorized>
+        <MudOverlay Visible="isVisible" DarkBackground="true" ZIndex="9999" AutoClose="true">
+            <div class="d-flex flex-column align-items-center justify-content-center" Style="background-color: #C8A86E; color: white; cursor: pointer; padding: 20px; border-radius: 10px; box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);">
+                <MudText Typo="Typo.h5" Class="mb-3">Druk hier voor een snelle inschatting</MudText>
+                <MudButton @onclick="() => ToggleOverlay(false)" Class="ml-auto mr-n3 mb-1" Color="Color.Inherit" Variant="Variant.Outlined" StartIcon="@Icons.Material.Filled.Close">Close</MudButton>
+            </div>
+        </MudOverlay>
+    </NotAuthorized>
+</AuthorizeView>
 
 @code {
     private bool isVisible = false;
