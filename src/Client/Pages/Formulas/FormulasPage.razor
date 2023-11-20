@@ -1,5 +1,4 @@
 ﻿@page "/formulas"
-@using devops_23_24_net_a02.Client.Pages.Formulas;
 @using shared.Formulas
 @inject NavigationManager NavigationManager
 @inject FormulaState FormulaState
@@ -9,46 +8,40 @@
 <div Class="mt-5 mb-16">
     <MudPaper Width="100%" Class="pt-16" Height="100%" Elevation="0">
         <MudContainer MaxWidth="MaxWidth.Large">
-            <MudGrid Spacing="@spacing">
-                @foreach (FormulaDto.Index item in Formulas)
-                {
-                    @if (counter % 2 == 0)
+            @if (Formulas is null)
+            {
+                <MudText>Loading...</MudText>
+            }
+            else
+            {
+                <MudGrid Spacing="@spacing">
+                    @foreach (FormulaDto.Index item in Formulas)
                     {
-                        <MudItem xs="4">
-                            <FormulaCard Titel=@item.Title
-                                         BackgroundColor="#EDE7DB"
-                                         Attributes=@item.Attributes
-                                         Click=@(()=>{
-                                             FormulaState.ChosenFormulaId = item.Id;
-                                             FormulaState.Title = item.Title;
-                                             FormulaState.Attributes = item.Attributes;
-                                             FormulaState.PricePerDayExtra = item.PricePerDayExtra;
-                                             FormulaState.BasePrice = item.BasePrice;
-                                            NavigateToEventdetails();
-                                         })>
-                            </FormulaCard>
-                        </MudItem>
+                        @if (counter % 2 == 0)
+                        {
+                            <MudItem xs="4">
+                                <FormulaCard Titel=@item.Title
+                                             BackgroundColor="#EDE7DB"
+                                             Attributes=@item.Attributes
+                                             Click=@(() =>{ FormulaState.ChosenFormulaId = item.Id; FormulaState.Title = item.Title; FormulaState.Attributes = item.Attributes; FormulaState.PricePerDayExtra = item.PricePerDayExtra; FormulaState.BasePrice = item.BasePrice; NavigateToEventdetails(); })>
+                                </FormulaCard>
+                            </MudItem>
+                        }
+                        else
+                        {
+                            <MudItem xs="4">
+                                <FormulaCard BackgroundColor="#EBEBEB"
+                                             Titel=@item.Title
+                                             Click=@(() =>{ FormulaState.ChosenFormulaId = item.Id; FormulaState.Title = item.Title; FormulaState.Attributes = item.Attributes; FormulaState.PricePerDayExtra = item.PricePerDayExtra; FormulaState.BasePrice = item.BasePrice; NavigateToEventdetails(); })
+                                             MarginTop="mt-16"
+                                             Attributes=@item.Attributes>
+                                </FormulaCard>
+                            </MudItem>
+                        }
+                        counter++;
                     }
-                    else
-                    {
-                        <MudItem xs="4">
-                            <FormulaCard BackgroundColor="#EBEBEB"
-                                         Titel=@item.Title
-                                         Click=@(()=>{
-                                            FormulaState.ChosenFormulaId = item.Id;
-                                            FormulaState.Title = item.Title;
-                                            FormulaState.Attributes = item.Attributes;
-                                            FormulaState.PricePerDayExtra = item.PricePerDayExtra;
-                                            FormulaState.BasePrice = item.BasePrice;
-                                            NavigateToEventdetails();
-                                         })
-                                         MarginTop="mt-16"
-                                         Attributes=@item.Attributes></FormulaCard>
-                        </MudItem>
-                    }
-                    counter++;
-                }
-            </MudGrid>
+                </MudGrid>
+            }
         </MudContainer>
     </MudPaper>
 
@@ -60,16 +53,16 @@
 
     private int counter = 1;
 
-    [Inject] public IFormulaService FormulaService { get; set; } = default!;
+    [Inject]
+    public IFormulaService FormulaService { get; set; } = default!;
 
-    private IEnumerable<FormulaDto.Index> Formulas;
+    private IEnumerable<FormulaDto.Index>? Formulas = default!;
 
     protected override async Task OnInitializedAsync()
     {
         FormulaResult.Index response = await FormulaService.GetIndexAsync();
 
         Formulas = response.Formulas;
-
     }
 
     private void NavigateToEventdetails()
