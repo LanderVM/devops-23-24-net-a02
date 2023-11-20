@@ -1,30 +1,21 @@
-<MudPopover 
-    Style="background-color: #C8A86E; color: white; margin-top: 90vh; position: fixed; margin-left: -10px; cursor: pointer;"
-    Open="@_isOpen"
-    Class="px-4 pt-4"
-    @onclick=OpenQuickQuote
-    AnchorOrigin="Origin.TopRight">
-    <div class="d-flex flex-column">
-        <MudText>Druk hier voor een snelle inschatting</MudText>
-        <MudButton OnClick="@ToggleOpen" Class="ml-auto mr-n3 mb-1" Color="Color.Inherit">Close</MudButton>
+<MudOverlay Visible="isVisible" DarkBackground="true" ZIndex="9999" AutoClose="true">
+    <div class="d-flex flex-column align-items-center justify-content-center" Style="background-color: #C8A86E; color: white; cursor: pointer; padding: 20px; border-radius: 10px; box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);">
+        <MudText Typo="Typo.h5" Class="mb-3">Druk hier voor een snelle inschatting</MudText>
+        <MudButton @onclick="() => ToggleOverlay(false)" Class="ml-auto mr-n3 mb-1" Color="Color.Inherit" Variant="Variant.Outlined" StartIcon="@Icons.Material.Filled.Close">Close</MudButton>
     </div>
-</MudPopover>
+</MudOverlay>
 
-@code{
-    public bool _isOpen= false;
+@code {
+    private bool isVisible = false;
+
+    public void ToggleOverlay(bool value)
+    {
+        isVisible = value;
+    }
 
     protected override async Task OnInitializedAsync()
     {
-        await Task.Delay(3000);
-        ToggleOpen();
-    }
-
-    public void ToggleOpen()
-    {
-        _isOpen = !_isOpen;
-    }
-    public void OpenQuickQuote()
-    {
-        Console.WriteLine("Open!");
+        await Task.Delay(2000);
+        ToggleOverlay(true);
     }
 }
