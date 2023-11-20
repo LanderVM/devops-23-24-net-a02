@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Append.Blazor.Sidepanel" Version="6.3.3" />
     <PackageReference Include="BlazorGoogleMaps" Version="3.2.3" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Analyzers" Version="7.0.13" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="7.0.13" />

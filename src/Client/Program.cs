@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using devops_23_24_net_a02.Client.Shared;
 using shared.Formulas;
 using devops_23_24_net_a02.Client.Pages.Formulas;
+using Shared.Quotations;
+using devops_23_24_net_a02.Client.Pages.Home;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -22,6 +24,7 @@ builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>()
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 builder.Services.AddScoped<PersonalDetailsState>();
 builder.Services.AddScoped<ExtraMaterialState>();
+builder.Services.AddScoped<QuotationState>();
 builder.Services.AddScoped<FormulaState>();
 builder.Services.AddScoped<EventDetailsState>();
 
@@ -32,6 +35,7 @@ builder.Services.AddMudServices(options =>
 
 builder.Services.AddScoped<IEquipmentService, EquipmentService>();
 builder.Services.AddScoped<IFormulaService, FormulaService>();
+builder.Services.AddScoped<IQuotationService, QuotationService>();
 
 //Authentication
 builder.Services.AddOidcAuthentication(options =>

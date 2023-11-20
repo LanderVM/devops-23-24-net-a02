@@ -114,3 +114,18 @@ a, .btn-link {
     .loading-progress-text:after {
         content: var(--blazor-load-percentage-text, "Loading");
     }
+
+/*CSS Sidepanel*/
+#sidepanel.is-open {
+    width: 100%;
+}
+
+#sidepanel h1 {
+    font-size: 2.5rem;
+}
+
+@media (min-width: 768px) {
+    #sidepanel.is-open {
+        width: 55%;
+    }
+}
