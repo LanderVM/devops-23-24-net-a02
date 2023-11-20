@@ -29,19 +29,25 @@
 
         <MudItem lg="10" md="10" sm="12" xs="12">
             <MudGrid Spacing="@Spacing">
-                @foreach (EquipmentDto.Index item in Extras)
+                @if (Extras is null)
                 {
-                    <MudItem lg="3" md="4" sm="6" xs="12">
-                        <ExtraItemsCard
-                            EquipmentId="@item.Id"
-                            ImageUrl="@item.ImageData.ImageUrl"
-                            Title="@item.Title"
-                            Attributes="@item.Attributes"
-                            Stock="@item.Stock"
-                            Price="@item.Price"
-                        >
-                        </ExtraItemsCard>
-                    </MudItem>
+                    <MudText>Loading...</MudText>
+                }
+                else
+                {
+                    @foreach (EquipmentDto.Index item in Extras)
+                    {
+                        <MudItem lg="3" md="4" sm="6" xs="12">
+                            <ExtraItemsCard
+                                EquipmentId="@item.Id"
+                                ImageUrl="@item.ImageData.ImageUrl"
+                                Title="@item.Title"
+                                Attributes="@item.Attributes"
+                                Stock="@item.Stock"
+                                Price="@item.Price">
+                            </ExtraItemsCard>
+                        </MudItem>
+                    }
                 }
             </MudGrid>
 
@@ -63,15 +69,15 @@
     </MudGrid>
 
 
-
-
 </MudContainer>
 
 
 @code {
 
-    [Inject] public IEquipmentService EquipmentService { get; set; } = default!;
-    private IEnumerable<EquipmentDto.Index> Extras;
+    [Inject]
+    public IEquipmentService EquipmentService { get; set; } = default!;
+
+    private IEnumerable<EquipmentDto.Index>? Extras = default!;
 
     private int Spacing { get; set; } = 2;
 
@@ -79,7 +85,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-
         EquipmentResult.Index response = await EquipmentService.GetIndexAsync();
 
         Extras = response.Equipment;
@@ -91,7 +96,6 @@
                 ExtraMaterialState.ExtrasAmount.Add(item.Id, 0);
             }
         }
-
     }
 
     private void ClickVolgende()
