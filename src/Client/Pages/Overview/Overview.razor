@@ -204,6 +204,7 @@
                                     @* @(Decimal.Round(GetPriceFormulaWithBtw(), 2)) *@
                                 </MudText>
                             </MudItem>
+                            @if(Extras !=null) { 
                             @foreach (var item in ExtraMaterialState.ExtrasAmount)
                             {
                                 @if (item.Value != 0)
@@ -235,6 +236,7 @@
                                     </MudItem>
                                     
                                 }
+                            }
                             }
                             <MudItem lg="8" md="4" sm="4" xs="3">
                                 <MudText Class="ml-6 mb-n4 mt-n4">

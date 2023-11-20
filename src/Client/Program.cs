@@ -10,6 +10,7 @@ using shared.Formulas;
 using devops_23_24_net_a02.Client.Pages.Formulas;
 using Shared.Quotations;
 using devops_23_24_net_a02.Client.Pages.Home;
+using Append.Blazor.Sidepanel;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -27,6 +28,7 @@ builder.Services.AddScoped<ExtraMaterialState>();
 builder.Services.AddScoped<QuotationState>();
 builder.Services.AddScoped<FormulaState>();
 builder.Services.AddScoped<EventDetailsState>();
+builder.Services.AddSidepanel();
 
 builder.Services.AddMudServices(options =>
 {
