@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FluentValidation;
 
 namespace shared.Equipment;
 
@@ -22,5 +23,14 @@ public static class EquipmentDto
       public string ImageUrl { get; set; }
 
       public string AltText { get; set; }
+  }
+  public class Create {
+    public string Title { get; set; }
+    public List<string> Attributes { get; set; }
+    public decimal Price { get; set; }
+    public int Stock { get; set; }
+    public ImageData ImageData { get; set; }
+
+    
   }
 }
