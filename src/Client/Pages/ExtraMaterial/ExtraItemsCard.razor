@@ -15,7 +15,7 @@
                 @if (ExtraMaterialState.ExtrasAmount[EquipmentId] > 0)
                 {
                     <MudItem lg="6" md="6" sm="6" xs="6">
-                        <MudNumericField Variant="Variant.Outlined" Style="height:35px" Margin="Margin.Dense" Min="0" Step="1" Error="@HasError" ErrorText="U gaf een ongeldige waarde in" ValueChanged="@((int x)=>{CheckValue(x);})"></MudNumericField>
+                        <MudNumericField @bind-Value="@ExtraMaterialState.ExtrasAmount[EquipmentId]" Max="@Stock" Variant="Variant.Outlined" Style="height:35px" Margin="Margin.Dense" Min="0" Step="1" ErrorText="U gaf een ongeldige waarde in"></MudNumericField>
                     </MudItem>
                     <MudItem lg="6" md="6" sm="6" xs="6">
                         <MudIconButton Class="mt-1 mr-16" Icon="@Icons.Material.Filled.Delete" Variant="Variant.Filled" Color="Color.Error" Size="Size.Small"
@@ -34,17 +34,6 @@
 </MudCard>
 
 @code {
-
-    private bool HasError { get; set; } = false;
-
-    private void CheckValue(int value)
-    {
-        if (value<0||value>Stock)
-        {
-            HasError = true;
-        }
-        ExtraMaterialState.ExtrasAmount[EquipmentId] = value;
-    }
 
     [Parameter]
     public string ImageUrl { get; set; }

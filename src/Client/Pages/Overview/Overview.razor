@@ -314,6 +314,17 @@
                         </MudGrid>
                     </MudPaper>
                 </MudItem>
+                <MudItem xs="12">
+                    @if (@Extras != null) {
+                    <OverviewCostComponent
+                        Title="@FormulaState.Title"
+                        PriceFormula="@GetPriceFormula()"
+                        PriceFormulaWithBtw="@GetPriceFormulaWithBtw()"
+                        TotalWithoutBtw="@BerekenTotaalZonderBtw()"
+                        BtwOnTotal="BerekenBtwOpTotaal()"
+                        TotalWithBtw="@(Decimal.Round(BerekenTotaalZonderBtw(), 2) + Decimal.Round(BerekenBtwOpTotaal(), 2))" />
+                        }
+                </MudItem>
             </MudGrid>
 
         </MudItem>
