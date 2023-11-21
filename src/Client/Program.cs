@@ -28,6 +28,7 @@ builder.Services.AddScoped<ExtraMaterialState>();
 builder.Services.AddScoped<QuotationState>();
 builder.Services.AddScoped<FormulaState>();
 builder.Services.AddScoped<EventDetailsState>();
+builder.Services.AddSidepanel();
 
 builder.Services.AddMudServices(options =>
 {

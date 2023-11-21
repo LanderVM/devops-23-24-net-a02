@@ -15,7 +15,7 @@
                 @if (ExtraMaterialState.ExtrasAmount[EquipmentId] > 0)
                 {
                     <MudItem lg="6" md="6" sm="6" xs="6">
-                        <MudNumericField @bind-Value="@ExtraMaterialState.ExtrasAmount[EquipmentId]" Variant="Variant.Outlined" Style="height:35px" Margin="Margin.Dense" Min="0" Max="@Stock" Step="1"></MudNumericField>
+                        <MudNumericField @bind-Value="@ExtraMaterialState.ExtrasAmount[EquipmentId]" Max="@Stock" Variant="Variant.Outlined" Style="height:35px" Margin="Margin.Dense" Min="0" Step="1" ErrorText="U gaf een ongeldige waarde in"></MudNumericField>
                     </MudItem>
                     <MudItem lg="6" md="6" sm="6" xs="6">
                         <MudIconButton Class="mt-1 mr-16" Icon="@Icons.Material.Filled.Delete" Variant="Variant.Filled" Color="Color.Error" Size="Size.Small"
