@@ -18,25 +18,27 @@
 
         </MudItem>
         <MudItem lg="10" md="12" sm="12" xs="12">
-            <MudTable Items="@Extras" Hover="true" Breakpoint="Breakpoint.Xs" Loading="@Loading" LoadingProgressColor="Color.Info">
-                <HeaderContent>
-                    <MudTh>Titel</MudTh>
-                    <MudTh>Prijs</MudTh>
-                    <MudTh>Stock</MudTh>
-                    <MudTh>Aanpassen</MudTh>
-                    <MudTh>Verwijderen</MudTh>
-                </HeaderContent>
-                <RowTemplate>
-                    <MudTd DataLabel="Titel">@context.Title</MudTd>
-                    <MudTd DataLabel="Prijs">@(Decimal.Round(@context.Price,2))</MudTd>
-                    <MudTd DataLabel="Stock">@context.Stock</MudTd>
-                        <MudTd DataLabel="Aanpassen"><MudButton Variant="Variant.Filled" Color="Color.Primary">Aanpassen</MudButton></MudTd>
-                        <MudTd DataLabel="Verwijderen"><MudButton Variant="Variant.Filled" Color="Color.Primary">Verwijderen</MudButton></MudTd>
-                </RowTemplate>
-                <PagerContent>
-                    <MudTablePager />
-                </PagerContent>
-            </MudTable>
+            <MudGrid>
+                @if (Extras is null)
+                {
+                    <MudText>Loading...</MudText>
+                }
+                else
+                {
+                    @foreach (EquipmentDto.Index item in Extras)
+                    {
+                        <MudItem lg="3" md="4" sm="6" xs="12">
+                            <ExtraItemsAdminCard EquipmentId="@item.Id"
+                                            ImageUrl="@item.ImageData.ImageUrl"
+                                            Title="@item.Title"
+                                            Attributes="@item.Attributes"
+                                            Stock="@item.Stock"
+                                            Price="@item.Price">
+                            </ExtraItemsAdminCard>
+                        </MudItem>
+                    }
+                }
+            </MudGrid>
         </MudItem>
         <MudItem lg="1" md="12" sm="12" xs="12">
 
