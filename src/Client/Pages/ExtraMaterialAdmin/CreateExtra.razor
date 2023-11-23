@@ -1,20 +1,17 @@
 ﻿@using shared.Equipment;
 @using FluentValidation;
-
-<MudForm Model="@Create" @ref="@form" Validation="@(validator.ValidateValue)">
-    <MudTextField @bind-Value="Create.Title" For="@(() => Create.Title)"
-                  Immediate="true"
-                  Label="Titel" />
-    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@AddAttribute">Voeg attribuut toe</MudButton>
-</MudForm>
+<div style="width:600px;">
+<EditForm>
+        <MudTextField @bind-Value="Create.Title" For="@(() => Create.Title)"
+                      Immediate="true"
+                      Label="Titel" />
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@AddAttribute">Voeg attribuut toe</MudButton>
+</EditForm>
+</div>
 
 
 @code {
     private int AmountOfAttributes { get; set; } = 1;
-
-    private MudForm form;
-
-    private Validator validator = new Validator();
 
     private EquipmentDto.Create Create { get; set; } = new EquipmentDto.Create();
 
@@ -23,22 +20,5 @@
         AmountOfAttributes += 1;    
     }
 
-    public class Validator : AbstractValidator<EquipmentDto.Create>
-    {
-        public Validator()
-        {
-            RuleFor(x => x.Title).NotEmpty().MaximumLength(100);
-            RuleForEach(x => x.Attributes).NotEmpty().MaximumLength(100);
-            RuleFor(x => x.Price).NotEmpty().InclusiveBetween(0, 1000);
-            RuleFor(x => x.Stock).NotEmpty().InclusiveBetween(1, 1000);
-        }
-
-        public Func<object, string, Task<IEnumerable<string>>> ValidateValue => async (model, propertyName) =>
-        {
-            var result = await ValidateAsync(ValidationContext<EquipmentDto.Create>.CreateWithOptions((EquipmentDto.Create)model, x => x.IncludeProperties(propertyName)));
-            if (result.IsValid)
-                return Array.Empty<string>();
-            return result.Errors.Select(e => e.ErrorMessage);
-        };
-    }
+    
 }
