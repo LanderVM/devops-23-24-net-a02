@@ -10,17 +10,18 @@
             }
             <MudText Typo="Typo.body2" Class="mb-3">€ @(Decimal.Round(Price, 2))/72uur</MudText>
             <MudText Typo="Typo.body2" Class="mb-1">@Stock in stock</MudText>
+            
         </MudCardContent>
-            <MudCardActions Class="mt-auto">
-                <MudGrid>
-                    <MudItem xs="12">
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true">Aanpassen</MudButton>
-                    </MudItem>
+        <MudCardActions Class="mt-auto">
+            <MudGrid>
+                <MudItem xs="12">
+                    <MudButton class="mb-n4" Variant="Variant.Filled" Color="Color.Primary" FullWidth="true">Aanpassen</MudButton>
+                </MudItem>
                 <MudItem xs="12">
                     <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true">Verwijderen</MudButton>
                 </MudItem>
-                </MudGrid>
-            </MudCardActions>
+            </MudGrid>
+        </MudCardActions>
     </div>
 </MudCard>
 
