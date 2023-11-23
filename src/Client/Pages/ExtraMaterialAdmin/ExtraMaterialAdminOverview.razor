@@ -75,6 +75,23 @@
 
     private void AddItem()
     {
-        Sidepanel.Open<CreateExtra>("Extra item","toevoegen");
+        var callback1 = EventCallback.Factory.Create(this, Close);
+        var callback2 = EventCallback.Factory.Create(this, Refresh);
+
+        var parameters = new Dictionary<string,object>
+        {
+            {nameof(CreateExtra.Close),callback1 },
+            {nameof(CreateExtra.Refresh),callback2 },
+        };
+
+        Sidepanel.Open<CreateExtra>("Extra item","toevoegen",parameters);
+    }
+    private void Close()
+    {
+        Sidepanel.Close();    
+    }
+    private void Refresh()
+    {
+        StateHasChanged();    
     }
 }

@@ -1,16 +1,53 @@
 ﻿@using shared.Equipment;
-@using FluentValidation;
+@using Microsoft.AspNetCore.Components;
+@inject IEquipmentService EquipmentService;
 <div style="width:600px;">
-<EditForm>
-        <MudTextField @bind-Value="Create.Title" For="@(() => Create.Title)"
+<EditForm Model="@Create" OnValidSubmit="CreateEquipmentAsync">
+<Blazored.FluentValidation.FluentValidationValidator/>
+
+        <MudTextField @bind-Value="Create.Title" 
+                      For="@(() => Create.Title)"
                       Immediate="true"
-                      Label="Titel" />
-        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@AddAttribute">Voeg attribuut toe</MudButton>
+                      Label="Titel" 
+                      Variant="Variant.Outlined"/>
+
+        <MudNumericField @bind-Value="Create.Price"
+        Class="mt-3"
+        Label="Prijs" 
+        For="@(() => Create.Price)" 
+        Variant="Variant.Outlined" 
+        Step="0.01M" 
+        Min="0.0M" />
+
+        <MudNumericField @bind-Value="Create.Stock"
+                         Class="mt-3"
+        Label="Stock" 
+        For="@(() => Create.Stock)" 
+        Variant="Variant.Outlined" 
+        Step="1" 
+        Min="0" />
+        <MudGrid Class="mt-6">
+            <MudItem xs="2">
+
+            </MudItem>
+            <MudItem xs="4">
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" ButtonType="ButtonType.Submit">Voeg Item toe</MudButton>
+            </MudItem>
+            <MudItem xs="4">
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="Close">Annuleren</MudButton>
+            </MudItem>
+        </MudGrid>
+
 </EditForm>
 </div>
 
 
 @code {
+    [Parameter]
+    public EventCallback Close { get; set; } = default!;
+    [Parameter]
+    public EventCallback Refresh { get; set; } = default!;
+
     private int AmountOfAttributes { get; set; } = 1;
 
     private EquipmentDto.Create Create { get; set; } = new EquipmentDto.Create();
@@ -20,5 +57,21 @@
         AmountOfAttributes += 1;    
     }
 
-    
+    protected override void OnInitialized()
+    {
+        Create.ImageData = new EquipmentDto.ImageData
+        {
+                ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/7/77/Google_Images_2015_logo.svg",
+                AltText ="a google image"
+
+        };
+    }
+
+    private async Task CreateEquipmentAsync()
+    {
+        await EquipmentService.CreateAsync(Create);
+        Close.InvokeAsync();
+        Refresh.InvokeAsync();
+    }
+
 }

@@ -18,5 +18,21 @@ public class EquipmentService : IEquipmentService
     var response = await client.GetFromJsonAsync<EquipmentResult.Index>(endpoint);
     return response;
   }
+
+  public async Task<int> DeleteAsync(int equipmentId)
+  {
+    throw new NotImplementedException();
+  }
+
+  public async Task<int> CreateAsync(EquipmentDto.Create model)
+  {
+    var response = await client.PostAsJsonAsync(endpoint,model);
+    return await response.Content.ReadFromJsonAsync<int>();
+  }
+
+  public async Task<int> UpdateAsync(int equipmentId, EquipmentDto.Mutate model)
+  {
+    throw new NotImplementedException();
+  }
 }
 

@@ -12,6 +12,17 @@ public class EquipmentService : IEquipmentService
   {
     _dbContext = blancheDbContext;
   }
+
+  public Task<int> CreateAsync(EquipmentDto.Create model)
+  {
+    throw new NotImplementedException();
+  }
+
+  public Task<int> DeleteAsync(int equipmentId)
+  {
+    throw new NotImplementedException();
+  }
+
   public async Task<EquipmentResult.Index> GetIndexAsync()
   {
     var query = _dbContext.Equipments.AsQueryable();
@@ -40,5 +51,10 @@ public class EquipmentService : IEquipmentService
       TotalAmount = totalAmount
     };
     return result;
+  }
+
+  public Task<int> UpdateAsync(int equipmentId, EquipmentDto.Mutate model)
+  {
+    throw new NotImplementedException();
   }
 }
