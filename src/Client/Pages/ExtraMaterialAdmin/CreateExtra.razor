@@ -26,7 +26,14 @@
         Variant="Variant.Outlined" 
         Step="1" 
         Min="0" />
+
+        <MudText Class="mt-5 mb-1" Typo="Typo.body2">Onderscheid je attributen in de text met een "/"</MudText>
         
+        <MudTextField @bind-Value="Attributes"
+                      Label="Attributen"
+                      Variant="Variant.Outlined" 
+                      Lines="3"
+                      />
 
         <MudGrid Class="mt-6">
             <MudItem xs="2">
@@ -51,6 +58,8 @@
     public EventCallback Refresh { get; set; } = default!;
 
     private int AmountOfAttributes { get; set; } = 2;
+
+    private string Attributes { get; set; } = default!;
 
     private EquipmentDto.Create Create { get; set; } = new EquipmentDto.Create();
 
