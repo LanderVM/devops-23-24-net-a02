@@ -26,14 +26,6 @@
         Variant="Variant.Outlined" 
         Step="1" 
         Min="0" />
-        @for (int i = 0;i<Create.Attributes.Count;i++)
-        {
-            <MudTextField @bind-Value="Create.Attributes[i]"
-                          For="@(() => Create.Attributes[i])"
-                          Immediate="true"
-                          Label="Attribuut"
-                          Variant="Variant.Outlined" />
-        }
         
 
         <MudGrid Class="mt-6">
