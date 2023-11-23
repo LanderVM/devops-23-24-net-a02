@@ -5,6 +5,12 @@ namespace Shared.Common;
 
 public static class CustomerDto
 {
+  public class Index
+  {
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public EmailDto.Create Email { get; set; }
+  }
   public class Create
   {
     public string FirstName { get; set; }

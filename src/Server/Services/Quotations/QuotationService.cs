@@ -2,6 +2,7 @@
 using Domain.Customers;
 using Domain.Quotations;
 using Microsoft.EntityFrameworkCore;
+using shared.Equipment;
 using Shared.Quotations;
 
 namespace Api.Data.Services.Quotations;
@@ -15,6 +16,24 @@ public class QuotationService : IQuotationService
     _dbContext = dbContext;
   }
 
+  public async Task<QuotationResult.Index> GetIndexAsync()
+  {
+    var query = _dbContext.Quotations.AsQueryable();
+
+    var items = await query
+      .OrderBy(x => x.Id)
+      .Select(x => new QuotationDto.Index
+      {
+        QuotationId = x.Id, 
+        Customer = x.OrderedBy, 
+        CreatedAt = x.CreatedAt
+      });
+    var result = new QuotationResult.Index
+    {
+      Equipment = items,
+    };
+    return result;
+  }
   public async Task<int> CreateAsync(QuotationDto.Create model)
   {
     var chosenFormula = _dbContext.Formulas.FirstOrDefault(formula => formula.Id == model.FormulaId);
@@ -65,6 +84,8 @@ public class QuotationService : IQuotationService
     await _dbContext.SaveChangesAsync();
     return quotation.Id;
   }
+
+ 
 
   private Email? GetCustomerEmail(QuotationDto.Create model)
   {
