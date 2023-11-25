@@ -1,4 +1,4 @@
-﻿@page "/extramaterial"
+﻿@page "/ExtraMaterial"
 @using shared.Equipment
 @inject NavigationManager NavigationManager
 @inject ExtraMaterialState ExtraMaterialState
@@ -38,13 +38,12 @@
                     @foreach (EquipmentDto.Index item in Extras)
                     {
                         <MudItem lg="3" md="4" sm="6" xs="12">
-                            <ExtraItemsCard
-                                EquipmentId="@item.Id"
-                                ImageUrl="@item.ImageData.ImageUrl"
-                                Title="@item.Title"
-                                Attributes="@item.Attributes"
-                                Stock="@item.Stock"
-                                Price="@item.Price">
+                            <ExtraItemsCard EquipmentId="@item.Id"
+                                            ImageUrl="@item.ImageData.ImageUrl"
+                                            Title="@item.Title"
+                                            Attributes="@item.Attributes"
+                                            Stock="@item.Stock"
+                                            Price="@item.Price">
                             </ExtraItemsCard>
                         </MudItem>
                     }
@@ -100,7 +99,6 @@
 
     private void ClickVolgende()
     {
-        NavigationManager.NavigateTo("/overview");
+        NavigationManager.NavigateTo(Routes.Overview);
     }
-
 }

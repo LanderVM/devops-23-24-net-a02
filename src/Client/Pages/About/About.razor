@@ -1,60 +1,58 @@
 @page "/OverOns"
-@inject IDialogService DialogService
 
+@inject IDialogService DialogService
 
 <PageTitle>Over Ons</PageTitle>
 
 <MudContainer MaxWidth="MaxWidth.ExtraLarge">
-    <MudGrid  Spacing="4" Justify="Justify.SpaceAround" Style="margin-top: 25px">
-        <MudItem lg="6" md="12" sm="12" xs="12" >
+    <MudGrid Spacing="4" Justify="Justify.SpaceAround" Style="margin-top: 25px">
+        <MudItem lg="6" md="12" sm="12" xs="12">
             <MudText GutterBottom="true" Align="Align.Center" Typo="Typo.h4">Minimaal te voorziene ruimte</MudText>
-            <MudText GutterBottom="true" Align="Align.Center" Typo="Typo.subtitle2" >5 m x 2 m x 2 m</MudText>
+            <MudText GutterBottom="true" Align="Align.Center" Typo="Typo.subtitle2">5 m x 2 m x 2 m</MudText>
             <MudSpacer />
             <MudText GutterBottom="true" Align="Align.Center" Typo="Typo.h4">Benodigdheden:</MudText>
             <MudText GutterBottom="true" Align="Align.Center" Typo="Typo.subtitle2">
-                    Iemand ter plaatse <br/> 
-                    Stopcontact <br/> 
-                    Voldoende vrije doorgang <br/> 
-                    Voldoende vrije ruimte<br/> 
+                Iemand ter plaatse <br />
+                Stopcontact <br />
+                Voldoende vrije doorgang <br />
+                Voldoende vrije ruimte<br />
             </MudText>
-            <MudSpacer/>
+            <MudSpacer />
             <MudText GutterBottom="true" Align="Align.Center" Typo="Typo.h4">Doorgang:</MudText>
             <MudText GutterBottom="true" Align="Align.Center" Typo="Typo.subtitle2">Smalste punt op de route naar plaats van opstelling dient minimaal 3m te zijn!</MudText>
-            <MudSpacer/>
+            <MudSpacer />
             <article style="text-align: center; margin-top: 2.5vw">
                 <MudButton Size="Size.Large" @onclick="OpenDialog" Variant="Variant.Filled" Style="background-color: #C8A86E; color: white;">Meer Info</MudButton>
-                      
+
             </article>
-                
+
         </MudItem>
         <MudItem lg="6" md="12" sm="12" xs="12">
             <MudGrid>
                 <MudItem lg="12" md="12" xs="12">
-                    <MudImage Fluid="true" Src="images/3.jpg" Alt="Blanche"/>
+                    <MudImage Fluid="true" Src="images/3.jpg" Alt="Blanche" />
                 </MudItem>
                 <MudItem lg="4" md="4" sm="4" xs="12">
-                    <MudImage Fluid="true" Src="images/4.jpg" Alt="Blanche"/>
+                    <MudImage Fluid="true" Src="images/4.jpg" Alt="Blanche" />
                 </MudItem>
                 <MudItem lg="4" md="4" sm="4" xs="12">
-                <MudImage Fluid="true" Src="images/7.jpg" Alt="Blanche"/>
+                    <MudImage Fluid="true" Src="images/7.jpg" Alt="Blanche" />
                 </MudItem>
                 <MudItem lg="4" md="4" sm="4" xs="12">
-                    <MudImage Fluid="true" Src="images/5.jpg" Alt="Blanche"/>
+                    <MudImage Fluid="true" Src="images/5.jpg" Alt="Blanche" />
                 </MudItem>
             </MudGrid>
- 
+
         </MudItem>
-        
+
     </MudGrid>
 </MudContainer>
 
 
-@code{
-
+@code {
     private void OpenDialog()
-    {    
+    {
         var options = new DialogOptions { CloseOnEscapeKey = true };
         DialogService.Show<Dialog>("Vul hier je e-mail in voor meer info.", options);
     }
-
 }

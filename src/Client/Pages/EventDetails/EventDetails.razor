@@ -1,4 +1,4 @@
-﻿@page "/event/eventdetails"
+﻿@page "/Event/EventDetails"
 @using GoogleMapsComponents
 @using GoogleMapsComponents.Maps
 @using GoogleMapsComponents.Maps.Places
@@ -29,68 +29,63 @@
 
             </MudItem>
         </MudHidden>
-        
+
         <MudItem lg="4" md="10" sm="12" Style="max-width: 500px">
             <GoogleMap @ref="@Map" Id="map1" Options="@_options" Height="410px" OnAfterInit="async () => await OnAfterMapInit()"></GoogleMap>
-            <MudTextField @ref="_addressSearch" Class="ml-16 mr-16 mb-4 pt-2" Label="Adres" Variant="Variant.Outlined" T="string"/>
+            <MudTextField @ref="_addressSearch" Class="ml-16 mr-16 mb-4 pt-2" Label="Adres" Variant="Variant.Outlined" T="string" />
         </MudItem>
         <MudItem lg="4" md="10" sm="12" Style="max-width: 770px">
-            <MudDateRangePicker 
-                Color="Color.Primary"
-                Elevation="2"
-                Label="Placeholder" 
-                Editable="true"
-                @bind-DateRange="@EventDetailsState.dateRange" 
-                PlaceholderStart="Start Date" 
-                PlaceholderEnd="End Date" 
-                Date="@(DateTime.Today.AddDays(1))"
-                PickerVariant="PickerVariant.Static"
-                IsDateDisabledFunc="@((DateTime dt) => dt.Date < DateTime.Now.Date || (int)dt.DayOfWeek == 0 || (int)dt.DayOfWeek == 6)"
-            />
+            <MudDateRangePicker Color="Color.Primary"
+                                Elevation="2"
+                                Label="Placeholder"
+                                Editable="true"
+            @bind-DateRange="@EventDetailsState.dateRange"
+                                PlaceholderStart="Start Date"
+                                PlaceholderEnd="End Date"
+                                Date="@(DateTime.Today.AddDays(1))"
+                                PickerVariant="PickerVariant.Static"
+                                IsDateDisabledFunc="@((DateTime dt) => dt.Date < DateTime.Now.Date || (int)dt.DayOfWeek == 0 || (int)dt.DayOfWeek == 6)" />
             <div style="width: 100%">
-                <MudTimePicker Class="d-inline-flex" Label="Start Uur" @bind-Time="@EventDetailsState.startTime" Editable="true"/>
+                <MudTimePicker Class="d-inline-flex" Label="Start Uur" @bind-Time="@EventDetailsState.startTime" Editable="true" />
                 <MudTimePicker Class="d-inline-flex" Label="Eind Uur" @bind-Time="@EventDetailsState.endTime" Editable="true" />
                 <MudTextField Class="d-inline-flex" @bind-Value="@EventDetailsState.AantalPersonen" Label="Aantal Personen" />
             </div>
-            
-             
+
+
         </MudItem>
     </MudGrid>
     <MudGrid>
         <MudItem lg="2" md="2" sm="12" xs="12">
-    
+
         </MudItem>
         <MudItem lg="4" md="4" sm="12" xs="12">
-            
+
         </MudItem>
         <MudItem lg="4" md="4" sm="5" xs="5">
-    
+
         </MudItem>
         <MudItem lg="2" md="2" sm="7" xs="7">
-            <MudButton Variant="Variant.Filled" Size="Size.Large" Color="Color.Primary" OnClick="@ClickVolgende">Volgende</MudButton>
+            <MudButton Variant="Variant.Filled" Size="Size.Large" Color="Color.Primary" OnClick="@ClickNext">Volgende</MudButton>
         </MudItem>
     </MudGrid>
-    
-    
-    
-   
 </MudContainer>
 
 
 @code {
-    private void ClickVolgende()
+    private void ClickNext()
     {
-        
-        NavigationManager.NavigateTo("/personaldetails");
+        NavigationManager.NavigateTo(Routes.PersonalDetails);
     }
-    
+
     private GoogleMap Map { get; set; } = default!;
-
     private readonly MapOptions _options = new()
-    { Zoom = 13, Center = new LatLngLiteral { Lat = 50.93735122680664, Lng = 4.03336238861084 }, MapTypeId = MapTypeId.Roadmap, DisableDefaultUI = true, };
-
+        {
+            Zoom = 13,
+            Center = new LatLngLiteral { Lat = 50.93735122680664, Lng = 4.03336238861084 },
+            MapTypeId = MapTypeId.Roadmap,
+            DisableDefaultUI = true,
+        };
     private Marker? _selectedLocation;
-
     private Autocomplete _autocomplete = default!;
     private MudTextField<string> _addressSearch = default!;
 
@@ -98,11 +93,11 @@
     {
         var marker = await Marker.CreateAsync(Map.JsRuntime,
             new MarkerOptions
-            {
-                Position = await Map.InteropObject.GetCenter(),
-                Map = Map.InteropObject,
-                Title = "HOGENT Campus Aalst"
-            });
+                {
+                    Position = await Map.InteropObject.GetCenter(),
+                    Map = Map.InteropObject,
+                    Title = "HOGENT Campus Aalst"
+                });
         await UpdateMarker(marker);
     }
 
@@ -110,10 +105,10 @@
     {
         await SetDefaultMarker();
         _autocomplete = await Autocomplete.CreateAsync(Map.JsRuntime, _addressSearch.InputReference.ElementReference, new AutocompleteOptions
-        {
-            StrictBounds = false,
-            ComponentRestrictions = new ComponentRestrictions { Country = new[] { "be" } }
-        });
+            {
+                StrictBounds = false,
+                ComponentRestrictions = new ComponentRestrictions { Country = new[] { "be" } }
+            });
 
         await _autocomplete.SetFields(new[] { "address_components", "geometry", "name" });
 
@@ -127,15 +122,14 @@
                 await Map.InteropObject.SetZoom(13);
 
                 var marker = await Marker.CreateAsync(Map.JsRuntime, new MarkerOptions
-                {
-                    Position = place.Geometry.Location,
-                    Map = Map.InteropObject,
-                    Title = place.Name
-                });
+                    {
+                        Position = place.Geometry.Location,
+                        Map = Map.InteropObject,
+                        Title = place.Name
+                    });
                 await UpdateMarker(marker);
                 EventDetailsState.PlaceTitle = place.Name;
                 EventDetailsState.PlaceGeometry = place.Geometry;
-                //EventDetailsState.address = place.FormattedAddress;
             }
             else if (place.Geometry.Viewport is not null)
             {
