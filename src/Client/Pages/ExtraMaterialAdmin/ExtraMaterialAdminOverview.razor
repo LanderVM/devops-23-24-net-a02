@@ -33,7 +33,9 @@
                                             Title="@item.Title"
                                             Attributes="@item.Attributes"
                                             Stock="@item.Stock"
-                                            Price="@item.Price">
+                                            Price="@item.Price"
+                                            UpdateItem="UpdateItem"
+                            >
                             </ExtraItemsAdminCard>
                         </MudItem>
                     }
@@ -75,7 +77,22 @@
 
     }
 
+    private void UpdateItem(object equipmentId)
+    {
+        var callback1 = EventCallback.Factory.Create(this, Close);
+        var callback2 = EventCallback.Factory.Create(this, Refresh);
 
+        int equipmentId2 = (int)equipmentId;
+
+        var parameters = new Dictionary<string, object>
+        {
+            {nameof(EditExtra.Close),callback1 },
+            {nameof(EditExtra.Refresh),callback2 },
+            { nameof(EditExtra.EquipmentId),equipmentId2},
+        };
+
+        Sidepanel.Open<EditExtra>("Extra item", "updaten", parameters);
+    }
 
     private void AddItem()
     {

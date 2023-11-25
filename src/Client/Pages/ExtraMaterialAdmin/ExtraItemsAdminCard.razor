@@ -14,12 +14,24 @@
         </MudCardContent>
         <MudCardActions Class="mt-auto">
             <MudGrid>
-                <MudItem xs="12">
-                    <MudButton class="mb-n4" Variant="Variant.Filled" Color="Color.Primary" FullWidth="true">Aanpassen</MudButton>
-                </MudItem>
-                <MudItem xs="12">
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true">Verwijderen</MudButton>
-                </MudItem>
+                @if (!wantToRemove)
+                {
+                    <MudItem xs="12">
+                        <MudButton OnClick="UpdateCard" Class="mb-n4" Variant="Variant.Filled" Color="Color.Primary" FullWidth="true">Aanpassen</MudButton>
+                    </MudItem>
+                    <MudItem xs="12">
+                        <MudButton OnClick="ChangeWantToRemove" Variant="Variant.Filled" Color="Color.Primary" FullWidth="true">Verwijderen</MudButton>
+                    </MudItem>
+                }else
+                {
+                    <MudItem xs="12">
+                        <MudButton Class="mb-n4" Variant="Variant.Filled" Color="Color.Error" FullWidth="true">Definitief verwijderen</MudButton>
+                    </MudItem>
+                    <MudItem xs="12">
+                        <MudButton OnClick="ChangeWantToRemove" Variant="Variant.Filled" Color="Color.Primary" FullWidth="true">Annuleren</MudButton>
+                    </MudItem>
+                }
+
             </MudGrid>
         </MudCardActions>
     </div>
@@ -44,6 +56,22 @@
 
     [Parameter]
     public decimal Price { get; set; }
+
+    [Parameter]
+    public EventCallback UpdateItem { get; set; }
+
+
+    private bool wantToRemove = false;
+
+    private void ChangeWantToRemove()
+    {
+        wantToRemove = !wantToRemove;
+    }
+
+    private void UpdateCard()
+    {
+        UpdateItem.InvokeAsync(EquipmentId);
+    }
 
     
 
