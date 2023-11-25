@@ -86,7 +86,7 @@
         EquipmentDto.Index response = await EquipmentService.GetSpecificIndexAsync(EquipmentId);
         Model.Title = response.Title;
         Model.Stock = response.Stock;
-        Model.Price = response.Price;
+        Model.Price = Decimal.Round(response.Price,2);
         Model.Attributes = response.Attributes;
         Model.ImageData = response.ImageData;
         StateHasChanged();

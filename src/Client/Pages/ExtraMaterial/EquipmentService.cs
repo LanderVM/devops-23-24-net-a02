@@ -35,9 +35,10 @@ public class EquipmentService : IEquipmentService
     throw new NotImplementedException();
   }
 
-  public Task<EquipmentDto.Index> GetSpecificIndexAsync(int equipmentId)
+  public async Task<EquipmentDto.Index> GetSpecificIndexAsync(int equipmentId)
   {
-    throw new NotImplementedException();
+    EquipmentDto.Index response = await client.GetFromJsonAsync<EquipmentDto.Index>($"{endpoint}/{equipmentId}");
+    return response;
   }
 }
 
