@@ -36,14 +36,17 @@
                       />
 
         <MudGrid Class="mt-6">
-            <MudItem xs="2">
+            <MudItem xs="1">
 
             </MudItem>
-            <MudItem xs="4">
-                <MudButton Variant="Variant.Filled" Color="Color.Primary" ButtonType="ButtonType.Submit">Voeg Item toe</MudButton>
+            <MudItem xs="5">
+                <MudButton Class="mr-1" Variant="Variant.Filled" FullWidth="true" Color="Color.Primary" ButtonType="ButtonType.Submit">Voeg Item toe</MudButton>
             </MudItem>
-            <MudItem xs="4">
-                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="Close">Annuleren</MudButton>
+            <MudItem xs="5">
+                <MudButton Class="ml-1" Variant="Variant.Filled" FullWidth="true" Color="Color.Primary" OnClick="Close">Annuleren</MudButton>
+            </MudItem>
+            <MudItem xs="1">
+
             </MudItem>
         </MudGrid>
 
@@ -82,8 +85,13 @@
     private async Task CreateEquipmentAsync()
     {
         await EquipmentService.CreateAsync(Create);
+        await Close.InvokeAsync();
+        await Refresh.InvokeAsync();
+    }
+
+    private void Cancel()
+    {
         Close.InvokeAsync();
-        Refresh.InvokeAsync();
     }
 
 }

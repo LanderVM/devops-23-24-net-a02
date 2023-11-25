@@ -55,7 +55,7 @@
     </MudGrid>
 </MudContainer>
 
-    @code {
+@code {
     [Inject]
     public IEquipmentService EquipmentService { get; set; } = default!;
 
@@ -92,8 +92,15 @@
     {
         Sidepanel.Close();    
     }
-    private void Refresh()
+    private async Task Refresh()
     {
+        Loading = true;
+
+        EquipmentResult.Index response = await EquipmentService.GetIndexAsync();
+
+        Extras = response.Equipment;
+
+        Loading = false;
         StateHasChanged();    
     }
 }
