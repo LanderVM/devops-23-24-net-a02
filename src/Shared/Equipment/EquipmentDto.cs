@@ -52,5 +52,17 @@ public static class EquipmentDto
     public decimal Price { get; set; }
     public int Stock { get; set; }
     public ImageData ImageData { get; set; }
+
+    public class Validator : AbstractValidator<EquipmentDto.Mutate>
+    {
+      public Validator()
+      {
+        RuleFor(x => x.Title).NotEmpty().MaximumLength(100);
+        RuleForEach(x => x.Attributes).NotEmpty().MaximumLength(100);
+        RuleFor(x => x.Price).NotEmpty().InclusiveBetween(0, 5000);
+        RuleFor(x => x.Stock).NotEmpty().InclusiveBetween(1, 1000);
+      }
+
+    }
   }
 }
