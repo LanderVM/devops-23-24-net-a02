@@ -53,6 +53,11 @@ public class EquipmentService : IEquipmentService
     return result;
   }
 
+  public Task<EquipmentDto.Index> GetSpecificIndexAsync(int equipmentId)
+  {
+    throw new NotImplementedException();
+  }
+
   public Task<int> UpdateAsync(int equipmentId, EquipmentDto.Mutate model)
   {
     throw new NotImplementedException();
