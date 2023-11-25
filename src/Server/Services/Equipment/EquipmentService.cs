@@ -53,9 +53,29 @@ public class EquipmentService : IEquipmentService
     return result;
   }
 
-  public Task<EquipmentDto.Index> GetSpecificIndexAsync(int equipmentId)
+  public async Task<EquipmentDto.Index> GetSpecificIndexAsync(int equipmentId)
   {
-    throw new NotImplementedException();
+    EquipmentDto.Index equipment = await _dbContext.Equipments.Select(x => new EquipmentDto.Index
+    {
+      Id = x.Id,
+      Title = x.Description.Title,
+      Attributes = x.Description.Attributes,
+      Price = x.Price,
+      Stock = x.Stock,
+      ImageData = new EquipmentDto.ImageData
+      {
+        ImageUrl = "https://via.placeholder.com/350x300",
+        AltText = "placeholder txt",
+      },
+      FormulaIds = x.Formulas.Select(x => x.Id).ToList(),
+    }).FirstOrDefaultAsync(x => x.Id == equipmentId);
+
+    if(equipment == null)
+    {
+      throw new Exception($"equipment with id: {equipmentId} not found");
+    }
+
+    return equipment;
   }
 
   public Task<int> UpdateAsync(int equipmentId, EquipmentDto.Mutate model)
