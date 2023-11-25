@@ -55,7 +55,7 @@ public class EquipmentService : IEquipmentService
 
   public async Task<EquipmentDto.Index> GetSpecificIndexAsync(int equipmentId)
   {
-    EquipmentDto.Index equipment = await _dbContext.Equipments.Select(x => new EquipmentDto.Index
+    EquipmentDto.Index? equipment = await _dbContext.Equipments.Select(x => new EquipmentDto.Index
     {
       Id = x.Id,
       Title = x.Description.Title,
