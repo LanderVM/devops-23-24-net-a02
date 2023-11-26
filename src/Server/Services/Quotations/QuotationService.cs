@@ -2,8 +2,9 @@
 using Domain.Customers;
 using Domain.Quotations;
 using Microsoft.EntityFrameworkCore;
-using shared.Equipment;
+using Shared.Common;
 using Shared.Quotations;
+
 
 namespace Api.Data.Services.Quotations;
 
@@ -18,21 +19,33 @@ public class QuotationService : IQuotationService
 
   public async Task<QuotationResult.Index> GetIndexAsync()
   {
-    var query = _dbContext.Quotations.AsQueryable();
-
-    var items = await query
-      .OrderBy(x => x.Id)
-      .Select(x => new QuotationDto.Index
+    var query = _dbContext.Quotations
+      .Include(q => q.OrderedBy)          
+      .ThenInclude(c => c.Email)      
+      .OrderBy(q => q.Id)
+      .Select(q => new QuotationDto.Index
       {
-        QuotationId = x.Id, 
-        Customer = x.OrderedBy, 
-        CreatedAt = x.CreatedAt
+        QuotationId = q.Id,
+        Customer = new CustomerDto.Index
+        {
+          FirstName = q.OrderedBy.FirstName,
+          LastName = q.OrderedBy.LastName,
+          Email = q.OrderedBy.Email.Value,
+          
+        },
+        CreatedAt = q.CreatedAt.ToShortDateString()
       });
+
+    var items = await query.ToListAsync();
+
     var result = new QuotationResult.Index
     {
-      Equipment = items,
+      Quotation = items,
     };
+
     return result;
+
+    
   }
   public async Task<int> CreateAsync(QuotationDto.Create model)
   {

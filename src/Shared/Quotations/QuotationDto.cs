@@ -10,8 +10,8 @@ public static class QuotationDto
   public class Index
   {
     public int QuotationId { get; set; }
-    public Customer Customer { get; set; }
-    public DateTime CreatedAt { get; set; }
+    public CustomerDto.Index Customer { get; set; }
+    public String CreatedAt { get; set; }
     
   }
   public class Create

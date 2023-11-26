@@ -18,5 +18,10 @@ public class QuotationService : IQuotationService
     throw new NotImplementedException();
   }
 
+  public async Task<QuotationResult.Index> GetIndexAsync()
+  {
+    var response = await client.GetFromJsonAsync<QuotationResult.Index>(endpoint);
+    return response;
+  }
 }
 
