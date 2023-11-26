@@ -1,5 +1,5 @@
 ﻿using Api.Data;
-using devops_23_24_net_a02.Shared.DTOs;
+using devops_23_24_net_a02.Shared.Emails;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;

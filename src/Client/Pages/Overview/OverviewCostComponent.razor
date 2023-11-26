@@ -43,7 +43,7 @@
         </MudItem>
         <MudItem lg="1" md="2" sm="2" xs="2">
             <MudText Class="mt-n4">
-                 @(Decimal.Round(PriceFormula,2))
+                @(Decimal.Round(PriceFormula, 2))
             </MudText>
         </MudItem>
         <MudItem lg="1" md="2" sm="2" xs="2">
@@ -132,7 +132,7 @@
         </MudItem>
         <MudItem lg="1" md="2" sm="2" xs="3">
             <MudText Class="mr-6 mb-n4 mt-n4">
-                @(Decimal.Round(@TotalWithoutBtw,2))
+                @(Decimal.Round(@TotalWithoutBtw, 2))
             </MudText>
         </MudItem>
         <MudItem lg="8" md="4" sm="4" xs="3">
@@ -171,7 +171,7 @@
 @code {
     [Inject] public IEquipmentService EquipmentService { get; set; } = default!;
 
-    [Parameter,EditorRequired]
+    [Parameter, EditorRequired]
     public string Title { get; set; }
     [Parameter, EditorRequired]
     public decimal PriceFormula { get; set; }

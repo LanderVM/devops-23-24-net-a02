@@ -1,5 +1,4 @@
-﻿using System.Net.Http.Json;
-using Shared.Quotations;
+﻿using Shared.Quotations;
 
 namespace devops_23_24_net_a02.Client.Pages.Home;
 

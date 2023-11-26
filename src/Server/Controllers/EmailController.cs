@@ -1,4 +1,4 @@
-﻿using devops_23_24_net_a02.Shared.DTOs;
+﻿using devops_23_24_net_a02.Shared.Emails;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Server.Services;
