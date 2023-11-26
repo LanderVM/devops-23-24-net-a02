@@ -19,9 +19,20 @@ public class EquipmentService : IEquipmentService
     throw new NotImplementedException();
   }
 
-  public Task<int> DeleteAsync(int equipmentId)
+  public async Task<int> DeleteAsync(int equipmentId)
   {
-    throw new NotImplementedException();
+    Equipment? equipment = await _dbContext.Equipments.SingleOrDefaultAsync(x => x.Id==equipmentId);
+
+    if (equipment is null) {
+      throw new Exception($"Equipment with id: {equipmentId} doesnt exist");
+    }
+
+    int id = equipment.Id;
+
+    _dbContext.Equipments.Remove(equipment);
+    await _dbContext.SaveChangesAsync();
+
+    return id;
   }
 
   public async Task<EquipmentResult.Index> GetIndexAsync()

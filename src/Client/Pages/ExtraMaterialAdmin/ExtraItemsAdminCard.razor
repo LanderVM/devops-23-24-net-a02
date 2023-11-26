@@ -1,4 +1,5 @@
-﻿
+﻿@using shared.Equipment;
+
 <MudCard Style="height: 100%;">
     <div style="height: 100%; display: flex; flex-direction: column;">
         <MudCardMedia Image=@ImageUrl Height="250" />
@@ -25,7 +26,7 @@
                 }else
                 {
                     <MudItem xs="12">
-                        <MudButton Class="mb-n4" Variant="Variant.Filled" Color="Color.Error" FullWidth="true">Definitief verwijderen</MudButton>
+                        <MudButton OnClick="DeleteEquipment" Class="mb-n4" Variant="Variant.Filled" Color="Color.Error" FullWidth="true">Definitief verwijderen</MudButton>
                     </MudItem>
                     <MudItem xs="12">
                         <MudButton OnClick="ChangeWantToRemove" Variant="Variant.Filled" Color="Color.Primary" FullWidth="true">Annuleren</MudButton>
@@ -38,6 +39,9 @@
 </MudCard>
 
 @code {
+
+    [Inject]
+    public IEquipmentService EquipmentService { get; set; } = default!;
 
     [Parameter]
     public string ImageUrl { get; set; }
@@ -60,6 +64,9 @@
     [Parameter]
     public EventCallback UpdateItem { get; set; }
 
+    [Parameter]
+    public EventCallback RefreshOverviewPage{ get; set; }
+
 
     private bool wantToRemove = false;
 
@@ -68,9 +75,16 @@
         wantToRemove = !wantToRemove;
     }
 
-    private void UpdateCard()
+    private async Task UpdateCard()
     {
-        UpdateItem.InvokeAsync(EquipmentId);
+        await UpdateItem.InvokeAsync(EquipmentId);
+        await RefreshOverviewPage.InvokeAsync();
+    }
+
+    private async Task DeleteEquipment()
+    {
+        await EquipmentService.DeleteAsync(EquipmentId);
+        await RefreshOverviewPage.InvokeAsync();
     }
 
     

@@ -39,5 +39,12 @@ public class EquipmentController : ControllerBase
     await _equipmentService.UpdateAsync(equipmentId, model);
     return NoContent();
   }
+  [SwaggerOperation("Deletes equipment item from catalog.")]
+  [HttpDelete("{equipmentId}")]
+  public async Task<int> Delete(int equipmentId)
+  {
+    int id = await _equipmentService.DeleteAsync(equipmentId);
+    return id;
+  }
 }
 

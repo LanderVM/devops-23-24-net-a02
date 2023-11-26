@@ -21,7 +21,8 @@ public class EquipmentService : IEquipmentService
 
   public async Task<int> DeleteAsync(int equipmentId)
   {
-    throw new NotImplementedException();
+    var response = await client.DeleteAsync($"{endpoint}/{equipmentId}");
+    return await response.Content.ReadFromJsonAsync<int>();
   }
 
   public async Task<int> CreateAsync(EquipmentDto.Create model)
