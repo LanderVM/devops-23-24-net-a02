@@ -57,10 +57,10 @@ public static class DbInitializer
     // Formula's
     var formulas = new Formula[]
     {
-      new(new List<Equipment>(), "Basic", new List<string> { "For a small party" }),
-      new(new List<Equipment> {  }, "Extended", new List<string> { "For a medium sized party" }),
-      new(new List<Equipment> {  }, "All-in",
-        new List<string> { "For the best party you could imagine" })
+      new(new List<Equipment>(), "Basic", new List<string> { "De foodtruck" }),
+      new(new List<Equipment>(), "Extended", new List<string> { "De foodtruck", "Met bier (keuze uit pils of tripel)", "Glazen inbegrepen" }),
+      new(new List<Equipment>(), "All-in",
+        new List<string> { "De foodtruck", "Met bier (keuze uit pils of tripel)", "Glazen inbegrepen", "Inclusief barbecue", "Inclusief hout & eten voor de bbq", "Bbq-kit ingebegrepen" })
     };
 
     // Customers

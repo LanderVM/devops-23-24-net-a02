@@ -1,30 +1,151 @@
-<MudPopover 
-    Style="background-color: #C8A86E; color: white; margin-top: 90vh; position: fixed; margin-left: -10px; cursor: pointer;"
-    Open="@_isOpen"
-    Class="px-4 pt-4"
-    @onclick=OpenQuickQuote
-    AnchorOrigin="Origin.TopRight">
+﻿@using global::Shared.Quotations;
+@using shared.Formulas;
+@using shared.Equipment;
+
+@inject FormulaState FormulaState
+@inject QuotationState QuotationState
+@inject ExtraMaterialState ExtraMaterialState
+@inject NavigationManager NavigationManager
+
+<SidepanelComponent Title="Snelle inschatting" Backdrop="@BackdropType.Dismiss" @ref="sidepanel">
+    <MudContainer>
+        <MudGrid Justify="Justify.SpaceBetween" Class="my-5">
+            <MudItem xs="12">
+                <MudDateRangePicker Color="Color.Primary"
+                                    Elevation="2"
+                                    Label="Placeholder"
+                                    Editable="true"
+                @bind-DateRange="@QuotationState.DateRange"
+                                    PlaceholderStart="Start datum"
+                                    PlaceholderEnd="Eind datum"
+                                    Date="@(DateTime.Today.AddDays(1))"
+                                    PickerVariant="PickerVariant.Static"
+                                    IsDateDisabledFunc="@((DateTime dt) => dt.Date < DateTime.Now.Date || (int)dt.DayOfWeek == 0 || (int)dt.DayOfWeek == 6)" />
+            </MudItem>
+        </MudGrid>
+
+        <MudGrid Justify="Justify.SpaceBetween" Class="my-5 align-center">
+            <MudItem md="5" xs="8">
+                <MudSelect T="String" Label="Formule" Variant="Variant.Outlined" @bind-Value="FormulaState.Title">
+                    @foreach (FormulaDto.Index item in Formulas)
+                    {
+                        <MudSelectItem T="String" Value=@item.Title></MudSelectItem>
+                    }
+                </MudSelect>
+            </MudItem>
+            <MudItem Class="justify-center" md="2" xs="4">
+                <MudText Align="Align.Center">Met</MudText>
+            </MudItem>
+            <MudItem md="2" xs="6">
+                <MudNumericField Label="Aantal" T="String" Variant="Variant.Outlined" />
+            </MudItem>
+            <MudItem Class="justify-center" md="3" xs="4">
+                <MudText Align="Align.Center">personen</MudText>
+            </MudItem>
+        </MudGrid>
+
+        <MudGrid Class="my-5 align-center">
+            <MudItem md="3" xs="4">
+                <MudText>Extra materiaal over:</MudText>
+            </MudItem>
+            <MudItem md="2" xs="4">
+                <MudCheckBox @bind-Checked="_showExtraItems"></MudCheckBox>
+            </MudItem>
+            <MudItem xs="3" />
+            <MudItem md="4" xs="4">
+                <MudSelect T="String" MultiSelection="true" Label="Materiaal" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter">
+                    @foreach (EquipmentDto.Index item in Extras)
+                    {
+                        <MudSelectItem T="String" Value="item.Title" />
+                    }
+                </MudSelect>
+            </MudItem>
+        </MudGrid>
+
+        <MudGrid Class="my-5 justify-center" Justify="Justify.Center">
+            <MudItem xs="12">
+                <MudText Typo="Typo.h4" Align="Align.Center">Dit zal tussen de €350 en €500 liggen</MudText>
+            </MudItem>
+            <MudItem xs="12">
+                <MudText Typo="Typo.subtitle1" Align="Align.Center">Deze prijs is een schatting en ligt dus niet vast</MudText>
+            </MudItem>
+            <MudItem xs="3" />
+            <MudItem xs="6">
+                <MudButton Variant="Variant.Filled" Size="Size.Large" Color="Color.Primary" OnClick="@ToFormulas" Class="justify-center">
+                    Naar Formules
+                </MudButton>
+            </MudItem>
+        </MudGrid>
+    </MudContainer>
+</SidepanelComponent>
+
+<MudPopover Style="background-color: #C8A86E; color: white; margin-top: 90vh; position: fixed; margin-left: -10px; cursor: pointer;"
+            Open="@_isOpen"
+            Class="px-4 pt-4"
+@onclick=OpenSideSheet
+            AnchorOrigin="Origin.TopRight">
     <div class="d-flex flex-column">
         <MudText>Druk hier voor een snelle inschatting</MudText>
         <MudButton OnClick="@ToggleOpen" Class="ml-auto mr-n3 mb-1" Color="Color.Inherit">Close</MudButton>
     </div>
 </MudPopover>
 
-@code{
-    public bool _isOpen= false;
+@code {
+    public bool _isOpen = false;
+    public bool _showExtraItems { get; set; } = false;
+
+    private SidepanelComponent sidepanel;
+    private DateRange _dateRange = new DateRange(DateTime.Now.Date, DateTime.Now.AddDays(3).Date);
+
+
+    [Inject] public IFormulaService FormulaService { get; set; } = default!;
+    private IEnumerable<FormulaDto.Index> Formulas;
+
+    [Inject] public IEquipmentService EquipmentService { get; set; } = default!;
+    private IEnumerable<EquipmentDto.Index> Extras;
 
     protected override async Task OnInitializedAsync()
     {
-        await Task.Delay(3000);
+        FormulaResult.Index response = await FormulaService.GetIndexAsync();
+        EquipmentResult.Index responseEquipment = await EquipmentService.GetIndexAsync();
+
+        Extras = responseEquipment.Equipment;
+
+        if (ExtraMaterialState.ExtrasAmount.Count == 0)
+        {
+            foreach (EquipmentDto.Index item in Extras)
+            {
+                ExtraMaterialState.ExtrasAmount.Add(item.Id, 0);
+            }
+        }
+
+
+        Formulas = response.Formulas;
+
+        await Task.Delay(1000);
         ToggleOpen();
     }
 
+    // Pop-up
     public void ToggleOpen()
     {
         _isOpen = !_isOpen;
     }
-    public void OpenQuickQuote()
+
+    // Sidesheet
+    public void OpenSideSheet()
     {
-        Console.WriteLine("Open!");
+        sidepanel.Open();
+    }
+
+    private void CloseSideSheet()
+    {
+        sidepanel.Close();
+    }
+
+    // Navigate
+    private void ToFormulas()
+    {
+        NavigationManager.NavigateTo("/formulas");
     }
 }
