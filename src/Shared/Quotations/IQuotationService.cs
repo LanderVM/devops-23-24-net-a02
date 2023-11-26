@@ -3,5 +3,5 @@
 public interface IQuotationService
 {
   Task<int> CreateAsync(QuotationDto.Create model);
-  Task<decimal> GetEstimatedQuotationPrice(QuotationDto.Price model);
+  public Task<QuotationDto.Details> GetPriceEstimationDetails();
 }

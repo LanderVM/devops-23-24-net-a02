@@ -3,6 +3,9 @@ using Domain.Customers;
 using Domain.Formulas;
 using Domain.Quotations;
 using Microsoft.EntityFrameworkCore;
+using shared.Equipment;
+using shared.Formulas;
+using Shared.Common;
 using Shared.Quotations;
 
 namespace Api.Data.Services.Quotations;
@@ -95,7 +98,7 @@ public class QuotationService : IQuotationService
            && customerFromDb.BillingAddress.City == model.Customer.BillingAddress.City;
   }
 
-  public async Task<decimal> GetEstimatedQuotationPrice(QuotationDto.Price model)
+  /*public async Task<decimal> GetEstimatedQuotationPrice()
   {
     var formula = await _dbContext.Formulas.FirstOrDefaultAsync(x => x.Id == model.FormulaId);
 
@@ -103,5 +106,49 @@ public class QuotationService : IQuotationService
     Quotation quotation = new Quotation(formula, model.StartTime, model.EndTime, model.EstimatedNumberPeople, model.IsTripelBier);
     return quotation.GetEstimatedPrice();
     
+  }*/
+
+  public async Task<QuotationDto.Details> GetPriceEstimationDetails()
+  {
+    var queryFormulas = _dbContext.Formulas.AsQueryable();
+
+    IEnumerable<FormulaDto.Select> itemsFormulas = await queryFormulas.OrderBy(x => x.Id).Select(
+      x => new FormulaDto.Select
+      {
+        Id = x.Id,
+        Title = x.Description.Title,
+      }
+      ).ToListAsync();
+
+
+    var queryEquipment = _dbContext.Equipments.AsQueryable();
+
+    IEnumerable<EquipmentDto.Select> itemsEquipment = await queryEquipment.OrderBy(x => x.Id).Select(
+      x => new EquipmentDto.Select
+      {
+        Id = x.Id,
+        Title = x.Description.Title,
+      }
+      ).ToListAsync();
+
+
+    var queryDates = _dbContext.Quotations.AsQueryable();
+
+    IEnumerable<DateDto> unavailableDates = await queryDates.OrderBy(x => x.StartTime).Select(
+      x => new DateDto
+      {
+        StartTime = x.StartTime.Ticks,
+        EndTime = x.EndTime.Ticks
+      }
+      ).ToListAsync();
+
+    var result = new QuotationDto.Details
+    {
+      Formulas = itemsFormulas,
+      Equipment = itemsEquipment,
+      UnavailableDates = unavailableDates,
+    };
+
+    return result;
   }
 }

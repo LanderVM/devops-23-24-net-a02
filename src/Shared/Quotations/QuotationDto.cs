@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using shared.Equipment;
 using shared.Formulas;
 using Shared.Common;
 using Shared.Customer;
@@ -16,13 +17,11 @@ public static class QuotationDto
     public CustomerDto.Create Customer { get; set; }
     public bool IsTripelBier { get; set; }
   }
-  public class Price
+  public class Details
   {
-    public int FormulaId { get; set; }
-    public DateTime StartTime { get; set; }
-    public DateTime EndTime { get; set; }
-    public int EstimatedNumberPeople { get; set; }
-    public bool IsTripelBier { get; set; }
+    public IEnumerable<FormulaDto.Select> Formulas { get; set; } = default!;
+    public IEnumerable<EquipmentDto.Select> Equipment { get; set; } = default!;
+    public IEnumerable<DateDto> UnavailableDates { get; set; } = default!;
   }
 
   public class Validator : AbstractValidator<Create>

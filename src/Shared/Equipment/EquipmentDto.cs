@@ -23,4 +23,10 @@ public static class EquipmentDto
 
       public string AltText { get; set; }
   }
+
+  public class Select
+  {
+    public int Id { get; set; }
+    public string Title { get; set; } = default!;
+  }
 }

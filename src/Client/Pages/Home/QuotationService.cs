@@ -18,5 +18,9 @@ public class QuotationService : IQuotationService
     throw new NotImplementedException();
   }
 
+  public Task<QuotationDto.Details> GetPriceEstimationDetails()
+  {
+    throw new NotImplementedException();
+  }
 }
 
