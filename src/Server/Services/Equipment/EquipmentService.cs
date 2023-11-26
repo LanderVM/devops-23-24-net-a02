@@ -1,4 +1,5 @@
 ﻿using Api.Data;
+using Domain.Formulas;
 using Microsoft.EntityFrameworkCore;
 using shared.Equipment;
 
@@ -78,8 +79,20 @@ public class EquipmentService : IEquipmentService
     return equipment;
   }
 
-  public Task<int> UpdateAsync(int equipmentId, EquipmentDto.Mutate model)
+  public async Task UpdateAsync(int equipmentId, EquipmentDto.Mutate model)
   {
-    throw new NotImplementedException();
+    Equipment? equipment = await _dbContext.Equipments.SingleOrDefaultAsync(x => x.Id == equipmentId);
+
+    if (equipment is null)
+      throw new Exception($"equipment with id: {equipmentId} not found");
+
+    Description description = new(model.Title, model.Attributes);
+
+    equipment.UpdatedAt = DateTime.UtcNow;
+    equipment.Description = description;
+    equipment.Price = model.Price;
+    equipment.Stock = model.Stock;
+
+    await _dbContext.SaveChangesAsync();
   }
 }

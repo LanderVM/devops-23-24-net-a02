@@ -30,9 +30,9 @@ public class EquipmentService : IEquipmentService
     return await response.Content.ReadFromJsonAsync<int>();
   }
 
-  public async Task<int> UpdateAsync(int equipmentId, EquipmentDto.Mutate model)
+  public async Task UpdateAsync(int equipmentId, EquipmentDto.Mutate model)
   {
-    throw new NotImplementedException();
+    var response = await client.PutAsJsonAsync($"{endpoint}/{equipmentId}", model);
   }
 
   public async Task<EquipmentDto.Index> GetSpecificIndexAsync(int equipmentId)

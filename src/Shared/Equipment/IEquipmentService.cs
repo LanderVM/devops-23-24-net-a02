@@ -10,7 +10,7 @@ public interface IEquipmentService
 
   public Task<int> CreateAsync(EquipmentDto.Create model);
 
-  public Task<int> UpdateAsync(int equipmentId,EquipmentDto.Mutate model);
+  public Task UpdateAsync(int equipmentId, EquipmentDto.Mutate model);
 
   public Task<EquipmentDto.Index> GetSpecificIndexAsync(int equipmentId);
 }

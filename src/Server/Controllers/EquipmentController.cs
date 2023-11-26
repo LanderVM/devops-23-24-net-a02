@@ -31,5 +31,13 @@ public class EquipmentController : ControllerBase
   {
     return await _equipmentService.GetSpecificIndexAsync(equipmentId);
   }
+
+  [SwaggerOperation("Edites an equipment item in the catalog.")]
+  [HttpPut("{equipmentId}")]
+  public async Task<IActionResult> Edit(int equipmentId, EquipmentDto.Mutate model)
+  {
+    await _equipmentService.UpdateAsync(equipmentId, model);
+    return NoContent();
+  }
 }
 
