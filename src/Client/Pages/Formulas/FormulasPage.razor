@@ -1,4 +1,4 @@
-﻿@page "/formulas"
+﻿@page "/Formules"
 @using shared.Formulas
 @inject NavigationManager NavigationManager
 @inject FormulaState FormulaState
@@ -61,13 +61,11 @@
     protected override async Task OnInitializedAsync()
     {
         FormulaResult.Index response = await FormulaService.GetIndexAsync();
-
         Formulas = response.Formulas;
     }
 
     private void NavigateToEventdetails()
     {
-        NavigationManager.NavigateTo("/event/eventdetails");
+        NavigationManager.NavigateTo(Routes.EventDetails);
     }
-
 }

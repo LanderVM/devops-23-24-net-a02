@@ -53,109 +53,108 @@
                         <MudItem xs="7">
                             <MudPaper Class="ma-1" Elevation="3" Style="background-color:#EDE7DB">
                                 <MudText Class="mt-1 ml-3">Locatie</MudText>
-                                <MudText Class="ml-3">@EventDetailsState.address</MudText>
+                                <MudText Class="ml-3">@EventDetailsState.Address</MudText>
                             </MudPaper>
                         </MudItem>
                         <MudHidden Breakpoint="Breakpoint.MdAndUp">
                             <MudItem lg="6" md="6" sm="12" xs="12">
                                 <GoogleMap @ref="@Map" Id="map1" Options="@_options" Height="410px" OnAfterInit="async () => await OnAfterMapInit()"></GoogleMap>
                                 <MudPaper Class="mt-4 ml-1 mr-1" Elevation="3" Style="background-color:#EDE7DB">
-                                    <MudText Class="mt-1 mb-1 ml-3">Aantal personen op evenement: @(EventDetailsState.AantalPersonen.ToString())</MudText>
+                                    <MudText Class="mt-1 mb-1 ml-3">Aantal personen op evenement: @(EventDetailsState.NumberOfPeople.ToString())</MudText>
                                     </MudPaper>
                                 </MudItem>
                             </MudHidden>
-                        <MudItem xs="12">
-                            <MudText Typo="Typo.h5" Class="ml-3">Contact en facturatie gegevens</MudText>
-                        </MudItem>
-                        <MudItem xs="12">
-                            <MudPaper Class="ma-1" Elevation="3" Style="background-color:#EDE7DB">
-                                <MudText Class="mt-1 ml-3">Naam</MudText>
-                                <MudText Class="ml-3">@(@PersonalDetailsState.Voornaam+" "+PersonalDetailsState.Naam)</MudText>
-                            </MudPaper>
-                        </MudItem>
-                        <MudItem xs="12">
-                            <MudPaper Class="ma-1" Elevation="3" Style="background-color:#EDE7DB">
-                                <MudText Class="mt-1 ml-3">Email</MudText>
-                                <MudText Class="ml-3">@PersonalDetailsState.Email</MudText>
-                            </MudPaper>
-                        </MudItem>
-                        <MudItem xs="12">
-                            <MudPaper Class="ma-1" Elevation="3" Style="background-color:#EDE7DB">
-                                <MudText Class="mt-1 ml-3">Telefoon</MudText>
-                                <MudText Class="ml-3">@PersonalDetailsState.TelefoonNummer</MudText>
-                            </MudPaper>
-                        </MudItem>
-                        <MudItem xs="12">
-                            <MudPaper Class="ma-1" Elevation="3" Style="background-color:#EDE7DB">
-                                <MudText Class="mt-1 ml-3">Adres</MudText>
-                                <MudText Class="ml-3">@($"{@PersonalDetailsState.Straat} {@PersonalDetailsState.Huisnummer} {@PersonalDetailsState.Postcode} {@PersonalDetailsState.Gemeente}")</MudText>
-                            </MudPaper>
-                        </MudItem>
-                        <MudItem xs="12">
-                            <MudPaper Class="ma-1" Elevation="3" Style="background-color:#EDE7DB">
-                                <MudText Class="mt-1 ml-3">Btw-nummer</MudText>
-                                <MudText Class="ml-3">@PersonalDetailsState.BtwNummer</MudText>
-                            </MudPaper>
-                        </MudItem>
+                            <MudItem xs="12">
+                                <MudText Typo="Typo.h5" Class="ml-3">Contact en facturatie gegevens</MudText>
+                            </MudItem>
+                            <MudItem xs="12">
+                                <MudPaper Class="ma-1" Elevation="3" Style="background-color:#EDE7DB">
+                                    <MudText Class="mt-1 ml-3">Naam</MudText>
+                                    <MudText Class="ml-3">@(@PersonalDetailsState.LastName + " " + PersonalDetailsState.FirstName)</MudText>
+                                </MudPaper>
+                            </MudItem>
+                            <MudItem xs="12">
+                                <MudPaper Class="ma-1" Elevation="3" Style="background-color:#EDE7DB">
+                                    <MudText Class="mt-1 ml-3">Email</MudText>
+                                    <MudText Class="ml-3">@PersonalDetailsState.Email</MudText>
+                                </MudPaper>
+                            </MudItem>
+                            <MudItem xs="12">
+                                <MudPaper Class="ma-1" Elevation="3" Style="background-color:#EDE7DB">
+                                    <MudText Class="mt-1 ml-3">Telefoon</MudText>
+                                    <MudText Class="ml-3">@PersonalDetailsState.PhoneNumber</MudText>
+                                </MudPaper>
+                            </MudItem>
+                            <MudItem xs="12">
+                                <MudPaper Class="ma-1" Elevation="3" Style="background-color:#EDE7DB">
+                                    <MudText Class="mt-1 ml-3">Adres</MudText>
+                                    <MudText Class="ml-3">@($"{@PersonalDetailsState.Street} {@PersonalDetailsState.Housenumber} {@PersonalDetailsState.PostalCode} {@PersonalDetailsState.City}")</MudText>
+                                </MudPaper>
+                            </MudItem>
+                            <MudItem xs="12">
+                                <MudPaper Class="ma-1" Elevation="3" Style="background-color:#EDE7DB">
+                                    <MudText Class="mt-1 ml-3">Btw-nummer</MudText>
+                                    <MudText Class="ml-3">@PersonalDetailsState.BtwNumber</MudText>
+                                </MudPaper>
+                            </MudItem>
 
-                    </MudGrid>
-                </MudItem>
-                <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="true">
+                        </MudGrid>
+                    </MudItem>
+                    <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="true">
                         <MudItem lg="6" md="6" sm="12" xs="12">
                             <GoogleMap @ref="@Map" Id="map1" Options="@_options" Height="410px" OnAfterInit="async () => await OnAfterMapInit()"></GoogleMap>
                             <MudPaper Class="mt-4 ml-1 mr-1" Elevation="3" Style="background-color:#EDE7DB">
-                                <MudText Class="mt-1 mb-1 ml-3">Aantal personen op evenement: @(EventDetailsState.AantalPersonen.ToString())</MudText>
+                                <MudText Class="mt-1 mb-1 ml-3">Aantal personen op evenement: @(EventDetailsState.NumberOfPeople.ToString())</MudText>
                             </MudPaper>
                         </MudItem>
-                </MudHidden>
+                    </MudHidden>
                     @if (@NoExtraMaterial() == false)
-                    {
-                        <MudItem xs="12">
-                            <MudText Typo="Typo.h5" Class="ml-3">Extra materiaal</MudText>
-                         </MudItem>
-                    }
+                {
+                    <MudItem xs="12">
+                        <MudText Typo="Typo.h5" Class="ml-3">Extra materiaal</MudText>
+                    </MudItem>
+                }
                 <MudItem xs="12">
                     <MudGrid>
-                    @if (Extras is null)
-                    {
-                        <MudText>Loading...</MudText>
-                    }
-                    else
-                    {
-                        @foreach (var item in ExtraMaterialState.ExtrasAmount)
+                        @if (Extras is null)
                         {
-                            @if (item.Value != 0)
+                            <MudText>Loading...</MudText>
+                        }
+                        else
+                        {
+                            @foreach (var item in ExtraMaterialState.ExtrasAmount)
                             {
-                                <MudItem lg="3" md="4" sm="6" xs="12">
-                                    <OverviewExtraItemsCard
-                                        ImageUrl="@(Extras.FirstOrDefault(x => x.Id == item.Key).ImageData.ImageUrl)"
-                                        Title="@(Extras.FirstOrDefault(x => x.Id == item.Key).Title)"
-                                        Attributes="@(Extras.FirstOrDefault(x => x.Id == item.Key).Attributes)"
-                                        EquipmentId="@(Extras.FirstOrDefault(x => x.Id == item.Key).Id)"
-                                        Amount="@item.Value"
-                                        Price="@(Extras.FirstOrDefault(x => x.Id == item.Key).Price)"
-                                        ExternalMethod="@RefreshPage">
+                                @if (item.Value != 0)
+                                {
+                                    <MudItem lg="3" md="4" sm="6" xs="12">
+                                        <OverviewExtraItemsCard ImageUrl="@(Extras.FirstOrDefault(x => x.Id == item.Key).ImageData.ImageUrl)"
+                                                                Title="@(Extras.FirstOrDefault(x => x.Id == item.Key).Title)"
+                                                                Attributes="@(Extras.FirstOrDefault(x => x.Id == item.Key).Attributes)"
+                                                                EquipmentId="@(Extras.FirstOrDefault(x => x.Id == item.Key).Id)"
+                                                                Amount="@item.Value"
+                                                                Price="@(Extras.FirstOrDefault(x => x.Id == item.Key).Price)"
+                                                                ExternalMethod="@RefreshPage">
 
-                                    </OverviewExtraItemsCard>
-                                </MudItem>
+                                        </OverviewExtraItemsCard>
+                                    </MudItem>
+                                }
                             }
                         }
-                    }
                     </MudGrid>
                 </MudItem>
                 <MudItem xs="12">
                     <MudText Typo="Typo.h5" Class="ml-3">Kost</MudText>
                 </MudItem>
                 <MudItem xs="12">
-                    @if (@Extras != null) {
-                    <OverviewCostComponent
-                        Title="@FormulaState.Title"
-                        PriceFormula="@GetPriceFormula()"
-                        PriceFormulaWithBtw="@GetPriceFormulaWithBtw()"
-                        TotalWithoutBtw="@BerekenTotaalZonderBtw()"
-                        BtwOnTotal="BerekenBtwOpTotaal()"
-                        TotalWithBtw="@(Decimal.Round(BerekenTotaalZonderBtw(), 2) + Decimal.Round(BerekenBtwOpTotaal(), 2))" />
-                        }
+                    @if (@Extras != null)
+                    {
+                        <OverviewCostComponent Title="@FormulaState.Title"
+                                               PriceFormula="@GetPriceFormula()"
+                                               PriceFormulaWithBtw="@GetPriceFormulaWithBtw()"
+                                               TotalWithoutBtw="@BerekenTotaalZonderBtw()"
+                                               BtwOnTotal="BerekenBtwOpTotaal()"
+                                               TotalWithBtw="@(Decimal.Round(BerekenTotaalZonderBtw(), 2) + Decimal.Round(BerekenBtwOpTotaal(), 2))" />
+                    }
                 </MudItem>
             </MudGrid>
 
@@ -201,7 +200,7 @@
         bool thereIsNoExtraMaterial = true;
         foreach (var item in ExtraMaterialState.ExtrasAmount)
         {
-            if (item.Value!=0)
+            if (item.Value != 0)
             {
                 thereIsNoExtraMaterial = false;
             }
@@ -211,7 +210,7 @@
 
     private void RefreshPage()
     {
-        StateHasChanged();    
+        StateHasChanged();
 
     }
 
@@ -226,7 +225,7 @@
         int amountOfDaysDiff = (int)dif.Value.TotalDays;
         if (amountOfDaysDiff == 0)
         {
-            initialPrice =  FormulaState.BasePrice[0];
+            initialPrice = FormulaState.BasePrice[0];
         }
         else if (amountOfDaysDiff == 1)
         {
@@ -239,15 +238,15 @@
         else
         {
             int extraDays = amountOfDaysDiff - 2;
-            initialPrice =  FormulaState.PricePerDayExtra * extraDays + FormulaState.BasePrice[2];
+            initialPrice = FormulaState.PricePerDayExtra * extraDays + FormulaState.BasePrice[2];
         }
         if (FormulaState.Title.Equals("Extended"))
         {
-            endPrice = initialPrice + (1.5M * EventDetailsState.AantalPersonen);
+            endPrice = initialPrice + (1.5M * EventDetailsState.NumberOfPeople);
         }
         if (FormulaState.Title.Equals("All-in"))
         {
-            endPrice = initialPrice + ((1.5M * EventDetailsState.AantalPersonen) + (12.0M*EventDetailsState.AantalPersonen));
+            endPrice = initialPrice + ((1.5M * EventDetailsState.NumberOfPeople) + (12.0M * EventDetailsState.NumberOfPeople));
         }
         return endPrice;
     }
@@ -279,11 +278,11 @@
         }
         if (FormulaState.Title.Equals("Extended"))
         {
-            additionalPrice = (1.5M * EventDetailsState.AantalPersonen);
+            additionalPrice = (1.5M * EventDetailsState.NumberOfPeople);
         }
         if (FormulaState.Title.Equals("All-in"))
         {
-            additionalPrice = ((1.5M * EventDetailsState.AantalPersonen) + (12.0M * EventDetailsState.AantalPersonen));
+            additionalPrice = ((1.5M * EventDetailsState.NumberOfPeople) + (12.0M * EventDetailsState.NumberOfPeople));
         }
         return ((initialPrice) + (initialPrice * 0.21M)) + ((additionalPrice) + (additionalPrice * 0.12M));
     }
@@ -317,11 +316,11 @@
         }
         if (FormulaState.Title.Equals("Extended"))
         {
-            additionalPrice = (1.5M * EventDetailsState.AantalPersonen);
+            additionalPrice = (1.5M * EventDetailsState.NumberOfPeople);
         }
         if (FormulaState.Title.Equals("All-in"))
         {
-            additionalPrice = ((1.5M * EventDetailsState.AantalPersonen) + (12.0M * EventDetailsState.AantalPersonen));
+            additionalPrice = ((1.5M * EventDetailsState.NumberOfPeople) + (12.0M * EventDetailsState.NumberOfPeople));
         }
 
         initialBtw = initialPrice * 0.21M;
@@ -357,7 +356,7 @@
                 extrasKostenBtw += ((Extras.FirstOrDefault(x => x.Id == item.Key).Price * item.Value) * 0.21M);
             }
         }
-        return (BerekenVervoersKosten()*0.21M) + GetFormulaBtw() + extrasKostenBtw;
+        return (BerekenVervoersKosten() * 0.21M) + GetFormulaBtw() + extrasKostenBtw;
     }
 
 

@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace devops_23_24_net_a02.Shared.DTOs;
+namespace devops_23_24_net_a02.Shared.Emails;
 
 public static class EmailDto
 {

@@ -4,17 +4,15 @@
     <MudCardMedia Image=@ImageUrl Height="250" />
     <MudCardContent>
         <MudText Typo="Typo.h5" Class="mb-2">@Title</MudText>
-        @foreach (string i in Attributes)
+        @foreach (string attrbt in Attributes)
         {
-            <MudText Typo="Typo.body2" Class="mb-3">@i</MudText>
+            <MudText Typo="Typo.body2" Class="mb-3">@attrbt </MudText>
         }
         <MudText Typo="Typo.body2" Class="mb-3">€ @(Decimal.Round(Price, 2))/72uur</MudText>
         <MudText Typo="Typo.h6" Class="mb-1">@Amount besteld</MudText>
-        <MudIconButton Class="mt-1 mr-16" Icon="@Icons.Material.Filled.Delete" Variant="Variant.Filled" Color="Color.Error" Size="Size.Small"
-                       OnClick="@(()=>{
-                            ExtraMaterialState.ExtrasAmount[EquipmentId]=0;
-                            ExternalMethod.InvokeAsync();
-                        })" />
+        MudIconButton Class="mt-1 mr-16" Icon="@Icons.Material.Filled.Delete" Variant="Variant.Filled" Color="Color.Error" Size="Size.Small"
+        OnClick="@HandleDeleteClick" />
+
     </MudCardContent>
 </MudCard>
 
@@ -36,5 +34,10 @@
     [Parameter]
     public EventCallback ExternalMethod { get; set; }
 
+    private void HandleDeleteClick()
+    {
+        ExtraMaterialState.ExtrasAmount[EquipmentId] = 0;
+        ExternalMethod.InvokeAsync();
+    }
 }
 
