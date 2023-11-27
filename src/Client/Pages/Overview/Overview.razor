@@ -67,38 +67,38 @@
                             <MudItem xs="12">
                                 <MudText Typo="Typo.h5" Class="ml-3">Contact en facturatie gegevens</MudText>
                             </MudItem>
-                            <!--
+                            
                             <MudItem xs="12">
                                 <MudPaper Class="ma-1" Elevation="3" Style="background-color:#EDE7DB">
                                     <MudText Class="mt-1 ml-3">Naam</MudText>
-                                    <MudText Class="ml-3">@(@PersonalDetailsState.LastName + " " + PersonalDetailsState.FirstName)</MudText>
+                                    <MudText Class="ml-3">@(@PersonalDetailsState.PersonalDetailsObject.LastName + " " + PersonalDetailsState.PersonalDetailsObject.FirstName)</MudText>
                                 </MudPaper>
                             </MudItem>
                             <MudItem xs="12">
                                 <MudPaper Class="ma-1" Elevation="3" Style="background-color:#EDE7DB">
                                     <MudText Class="mt-1 ml-3">Email</MudText>
-                                    <MudText Class="ml-3">@PersonalDetailsState.Email</MudText>
+                                    <MudText Class="ml-3">@PersonalDetailsState.PersonalDetailsObject.Email</MudText>
                                 </MudPaper>
                             </MudItem>
                             <MudItem xs="12">
                                 <MudPaper Class="ma-1" Elevation="3" Style="background-color:#EDE7DB">
                                     <MudText Class="mt-1 ml-3">Telefoon</MudText>
-                                    <MudText Class="ml-3">@PersonalDetailsState.PhoneNumber</MudText>
+                                    <MudText Class="ml-3">@PersonalDetailsState.PersonalDetailsObject.PhoneNumber</MudText>
                                 </MudPaper>
                             </MudItem>
                             <MudItem xs="12">
                                 <MudPaper Class="ma-1" Elevation="3" Style="background-color:#EDE7DB">
                                     <MudText Class="mt-1 ml-3">Adres</MudText>
-                                    <MudText Class="ml-3">@($"{@PersonalDetailsState.Street} {@PersonalDetailsState.Housenumber} {@PersonalDetailsState.PostalCode} {@PersonalDetailsState.City}")</MudText>
+                                    <MudText Class="ml-3">@($"{@PersonalDetailsState.PersonalDetailsObject.Street} {@PersonalDetailsState.PersonalDetailsObject.Housenumber} {@PersonalDetailsState.PersonalDetailsObject.PostalCode} {@PersonalDetailsState.PersonalDetailsObject.City}")</MudText>
                                 </MudPaper>
                             </MudItem>
                             <MudItem xs="12">
                                 <MudPaper Class="ma-1" Elevation="3" Style="background-color:#EDE7DB">
                                     <MudText Class="mt-1 ml-3">Btw-nummer</MudText>
-                                    <MudText Class="ml-3">@PersonalDetailsState.BtwNumber</MudText>
+                                    <MudText Class="ml-3">@(CheckIfBtwNumberIsEmpty())</MudText>
                                 </MudPaper>
                             </MudItem>
-                            -->
+                            
                         </MudGrid>
                     </MudItem>
                     <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="true">
@@ -399,6 +399,18 @@
     private string GetEventLocationTitle()
     {
         return EventDetailsState.PlaceTitle;
+    }
+
+    private string CheckIfBtwNumberIsEmpty()
+    {
+        if (PersonalDetailsState.PersonalDetailsObject.BtwNumber is null || string.IsNullOrWhiteSpace(PersonalDetailsState.PersonalDetailsObject.BtwNumber))
+        {
+            return "Geen Btw-nummer opgegeven";
+        }
+        else
+        {
+            return PersonalDetailsState.PersonalDetailsObject.BtwNumber;
+        }
     }
 
 }
