@@ -46,9 +46,14 @@
                                 PickerVariant="PickerVariant.Static"
                                 IsDateDisabledFunc="@((DateTime dt) => dt.Date < DateTime.Now.Date || (int)dt.DayOfWeek == 0 || (int)dt.DayOfWeek == 6)" />
             <div style="width: 100%">
-                <MudTimePicker Class="d-inline-flex" Label="Start Uur" @bind-Time="@EventDetailsState.startTime" Editable="true" />
-                <MudTimePicker Class="d-inline-flex" Label="Eind Uur" @bind-Time="@EventDetailsState.endTime" Editable="true" />
-                <MudTextField Class="d-inline-flex" @bind-Value="@EventDetailsState.NumberOfPeople" Label="Aantal Personen" />
+                <MudGrid>
+                    <MudItem xs="6">
+                        <MudSwitch @bind-Checked="@EventDetailsState.HasTripleBeer" Label="Bestel trippel bier i.p.v. blond" Color="Color.Primary" UnCheckedColor="Color.Secondary" />
+                    </MudItem>
+                    <MudItem xs="6">
+                        <MudTextField Class="d-inline-flex" @bind-Value="@EventDetailsState.NumberOfPeople" Label="Aantal Personen" />
+                    </MudItem>
+                </MudGrid>
             </div>
 
 
@@ -110,7 +115,7 @@
                 ComponentRestrictions = new ComponentRestrictions { Country = new[] { "be" } }
             });
 
-        await _autocomplete.SetFields(new[] { "address_components", "geometry", "name" });
+        await _autocomplete.SetFields(new[] { "ALL" });
 
         await _autocomplete.AddListener("place_changed", async () =>
         {
