@@ -163,7 +163,7 @@
     </MudGrid>
     <MudGrid>
         <MudItem lg="2" md="2" sm="12" xs="12">
-
+            
         </MudItem>
         <MudItem lg="4" md="4" sm="12" xs="12">
 
@@ -182,7 +182,7 @@
 </MudContainer>
 
 
-@code {
+    @code {
 
     [Inject] public IEquipmentService EquipmentService { get; set; } = default!;
 
@@ -223,7 +223,9 @@
         DateTime? start = EventDetailsState.dateRange.Start;
         DateTime? end = EventDetailsState.dateRange.End;
         TimeSpan? dif = end - start;
+
         int amountOfDaysDiff = (int)dif.Value.TotalDays;
+        Console.WriteLine("timedif: " + amountOfDaysDiff);
         if (amountOfDaysDiff == 0)
         {
             initialPrice = FormulaState.BasePrice[0];
@@ -241,14 +243,20 @@
             int extraDays = amountOfDaysDiff - 2;
             initialPrice = FormulaState.PricePerDayExtra * extraDays + FormulaState.BasePrice[2];
         }
-        if (FormulaState.Title.Equals("Extended"))
+        Console.WriteLine("initial price: "+initialPrice);
+        if (FormulaState.ChosenFormulaId == 2)
         {
             endPrice = initialPrice + (1.5M * EventDetailsState.NumberOfPeople);
         }
-        if (FormulaState.Title.Equals("All-in"))
+        else if (FormulaState.ChosenFormulaId == 3)
         {
             endPrice = initialPrice + ((1.5M * EventDetailsState.NumberOfPeople) + (12.0M * EventDetailsState.NumberOfPeople));
         }
+        else
+        {
+            endPrice = initialPrice;
+        }
+        Console.WriteLine("initial price: " + endPrice);
         return endPrice;
     }
     private decimal GetPriceFormulaWithBtw()
