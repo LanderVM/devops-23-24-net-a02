@@ -8,12 +8,7 @@
 <div Class="mt-5 mb-16">
     <MudPaper Width="100%" Class="pt-16" Height="100%" Elevation="0">
         <MudContainer MaxWidth="MaxWidth.Large">
-            @if (Formulas is null)
-            {
-                <MudText>Loading...</MudText>
-            }
-            else
-            {
+            <Loader IsLoading=@(Formulas == null)>
                 <MudGrid Spacing="@spacing">
                     @foreach (FormulaDto.Index item in Formulas)
                     {
@@ -41,7 +36,7 @@
                         counter++;
                     }
                 </MudGrid>
-            }
+            </Loader>
         </MudContainer>
     </MudPaper>
 
