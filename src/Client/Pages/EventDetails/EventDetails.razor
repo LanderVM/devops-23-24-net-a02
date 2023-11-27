@@ -5,6 +5,7 @@
 @using Size = MudBlazor.Size
 @inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager
 @inject EventDetailsState EventDetailsState
+@inject FormulaState FormulaState
 
 <PageTitle>Stap 1</PageTitle>
 
@@ -46,7 +47,10 @@
                                 PickerVariant="PickerVariant.Static"
                                 IsDateDisabledFunc="@((DateTime dt) => dt.Date < DateTime.Now.Date || (int)dt.DayOfWeek == 0 || (int)dt.DayOfWeek == 6)" />
             <div style="width: 100%">
-                <MudSwitch @bind-Checked="@EventDetailsState.HasTripleBeer" Label="Bestel trippel bier i.p.v. blond" Color="Color.Primary" UnCheckedColor="Color.Secondary" />
+                @if (FormulaState.ChosenFormulaId!=1)
+                {
+                    <MudSwitch @bind-Checked="@EventDetailsState.HasTripleBeer" Label="Bestel trippel bier i.p.v. blond" Color="Color.Primary" UnCheckedColor="Color.Secondary" />
+                }
                 <MudTextField Class="d-inline-flex" @bind-Value="@EventDetailsState.NumberOfPeople" Label="Aantal Personen" />
             </div>
 
