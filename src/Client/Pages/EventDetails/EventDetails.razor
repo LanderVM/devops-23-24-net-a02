@@ -46,14 +46,8 @@
                                 PickerVariant="PickerVariant.Static"
                                 IsDateDisabledFunc="@((DateTime dt) => dt.Date < DateTime.Now.Date || (int)dt.DayOfWeek == 0 || (int)dt.DayOfWeek == 6)" />
             <div style="width: 100%">
-                <MudGrid>
-                    <MudItem xs="6">
-                        <MudSwitch @bind-Checked="@EventDetailsState.HasTripleBeer" Label="Bestel trippel bier i.p.v. blond" Color="Color.Primary" UnCheckedColor="Color.Secondary" />
-                    </MudItem>
-                    <MudItem xs="6">
-                        <MudTextField Class="d-inline-flex" @bind-Value="@EventDetailsState.NumberOfPeople" Label="Aantal Personen" />
-                    </MudItem>
-                </MudGrid>
+                <MudSwitch @bind-Checked="@EventDetailsState.HasTripleBeer" Label="Bestel trippel bier i.p.v. blond" Color="Color.Primary" UnCheckedColor="Color.Secondary" />
+                <MudTextField Class="d-inline-flex" @bind-Value="@EventDetailsState.NumberOfPeople" Label="Aantal Personen" />
             </div>
 
 
@@ -70,7 +64,7 @@
 
         </MudItem>
         <MudItem lg="2" md="2" sm="7" xs="7">
-            <MudButton Variant="Variant.Filled" Size="Size.Large" Color="Color.Primary" OnClick="@ClickNext">Volgende</MudButton>
+            <MudButton Class="mb-2" Variant="Variant.Filled" Size="Size.Large" Color="Color.Primary" OnClick="@ClickNext">Volgende</MudButton>
         </MudItem>
     </MudGrid>
 </MudContainer>
