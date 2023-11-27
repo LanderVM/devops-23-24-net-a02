@@ -14,11 +14,5 @@ public class PersonalDetailsState
 
   public string BtwNumber { get; set; } = "";
 
-  public string BillingStreet { get; set; } = "";
-  public string BillingHouseNumber { get; set; } = "";
-  public string BillingCity { get; set; } = "";
-  public string BillingPostalCode { get; set; } = "";
-
-  public bool SwitchValue { get; set; } = true;
 }
 
