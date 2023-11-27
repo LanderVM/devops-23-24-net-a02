@@ -33,7 +33,7 @@
 
         <MudItem lg="4" md="10" sm="12" Style="max-width: 500px">
             <GoogleMap @ref="@Map" Id="map1" Options="@_options" Height="410px" OnAfterInit="async () => await OnAfterMapInit()"></GoogleMap>
-            <MudTextField @ref="_addressSearch" Class="ml-16 mr-16 mb-4 pt-2" Label="Adres" Variant="Variant.Outlined" T="string" ErrorText="Gelieve volledig adres in te geven" Error="@AddressError" />
+            <MudTextField @ref="_addressSearch" Class="ml-16 mr-16 mb-4 pt-2" Label="Adres" Variant="Variant.Outlined" T="string" ErrorText="Gelieve een volledig adres in te geven" Error="@AddressError" />
         </MudItem>
         <MudItem lg="4" md="10" sm="12" Style="max-width: 770px">
             <MudDateRangePicker Color="Color.Primary"

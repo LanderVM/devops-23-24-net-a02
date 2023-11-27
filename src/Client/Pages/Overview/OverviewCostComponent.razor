@@ -32,27 +32,27 @@
             <hr style="background-color:black;height:1.5px;border-width:0;margin-left:2px;margin-right:2px;" />
         </MudItem>
         <MudItem lg="8" md="4" sm="4" xs="3">
-            <MudText Class="ml-6 mt-n4">
+            <MudText Class="ml-6 mt-n4 mb-n4">
                 @($"{@Title} formule")
             </MudText>
         </MudItem>
         <MudItem lg="1" md="2" sm="2" xs="2">
-            <MudText Class="ml-4 mt-n4">
+            <MudText Class="ml-4 mt-n4 mb-n4">
                 1
             </MudText>
         </MudItem>
         <MudItem lg="1" md="2" sm="2" xs="2">
-            <MudText Class="mt-n4">
+            <MudText Class="mt-n4 mb-n4">
                 @(Decimal.Round(PriceFormula, 2))
             </MudText>
         </MudItem>
         <MudItem lg="1" md="2" sm="2" xs="2">
-            <MudText Class="mt-n4">
+            <MudText Class="mt-n4 mb-n4">
                 21%
             </MudText>
         </MudItem>
         <MudItem lg="1" md="2" sm="2" xs="3">
-            <MudText Class="mr-6 mt-n4">
+            <MudText Class="mr-6 mt-n4 mb-n4">
                 @(Decimal.Round(PriceFormulaWithBtw, 2))
             </MudText>
         </MudItem>
@@ -136,7 +136,7 @@
             </MudText>
         </MudItem>
         <MudItem lg="8" md="4" sm="4" xs="3">
-            <MudText Class="ml-6 mb-n4">
+            <MudText Class="ml-6 mt-n4 mb-n4">
                 Totaal Btw
             </MudText>
         </MudItem>
@@ -144,7 +144,7 @@
 
         </MudItem>
         <MudItem lg="1" md="2" sm="2" xs="3">
-            <MudText Class="mr-6 mb-n4 ">
+            <MudText Class="mr-6 mt-n4 mb-n4 ">
                 @(Decimal.Round(@BtwOnTotal, 2))
             </MudText>
         </MudItem>
