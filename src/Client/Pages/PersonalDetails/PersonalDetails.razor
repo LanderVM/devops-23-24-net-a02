@@ -1,65 +1,82 @@
 ﻿@page "/PersoonlijkeDetails"
 @inject PersonalDetailsState PersonalDetailsState
 @inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager
+@using FluentValidation
 
 <PageTitle>Persoonlijke gegevens</PageTitle>
 
-<MudPaper Width="100%" Class="pt-16" Height="100%" Elevation="0">
-    <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge">
-        <MudGrid Spacing="@Spacing">
-            <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="true">
-                <MudItem lg="12" md="12" sm="5" xs="5" />
+<MudForm Model="@PersonalDetailsState.PersonalDetailsObject" @ref="@form" ValidationDelay="0" Validation="@(PersonalDetailsState.personalDetailsClassValidator.ValidateValue)">
+    <MudPaper Width="100%" Class="pt-16" Height="100%" Elevation="0">
+        <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge">
+            <MudGrid Spacing="@Spacing">
+                <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="true">
+                    <MudItem lg="12" md="12" sm="5" xs="5" />
+                    <MudItem lg="2" md="2" sm="7" xs="7">
+                        <TimeLineVertical step="2"></TimeLineVertical>
+                    </MudItem>
+                </MudHidden>
+                <MudHidden Breakpoint="Breakpoint.MdAndUp">
+                    <MudItem lg="2" md="2" sm="2" xs="2" />
+                    <MudItem lg="8" md="8" sm="8" xs="8">
+                        <TimeLineHorizontal step="2"></TimeLineHorizontal>
+                    </MudItem>
+                    <MudItem lg="2" md="2" sm="2" xs="2" />
+                </MudHidden>
+
+                <MudItem lg="10" md="10" sm="12" xs="12">
+                    <MudGrid Spacing="@Spacing">
+                        <MudItem lg="6" md="6" sm="12" xs="12">
+                            <MudTextField @bind-Value="PersonalDetailsState.PersonalDetailsObject.FirstName" For="@(() => PersonalDetailsState.PersonalDetailsObject.FirstName)" Immediate="true" Required="true" InputType="InputType.Text" MaxLength="50" Class=" ml-16 mr-16 mb-6 pt-2" Label="Voornaam" Variant="Variant.Outlined"></MudTextField>
+                            <MudTextField @bind-Value="PersonalDetailsState.PersonalDetailsObject.Email" For="@(() => PersonalDetailsState.PersonalDetailsObject.Email)" Immediate="true" Required="true" InputType="InputType.Email" MaxLength="50" Class="ml-16 mr-16 pt-2" Label="Email" Variant="Variant.Outlined"></MudTextField>
+                        </MudItem>
+                        <MudItem lg="6" md="6" sm="12" xs="12">
+                            <MudTextField @bind-Value="PersonalDetailsState.PersonalDetailsObject.LastName" For="@(() => PersonalDetailsState.PersonalDetailsObject.LastName)" Immediate="true" Required="true" InputType="InputType.Text" MaxLength="50" Class="ml-16 mr-16 mb-6 pt-2" Label="Naam" Variant="Variant.Outlined"></MudTextField>
+                            <MudTextField @bind-Value="PersonalDetailsState.PersonalDetailsObject.PhoneNumber" For="@(() => PersonalDetailsState.PersonalDetailsObject.PhoneNumber)" Immediate="true" Required="true" InputType="InputType.Telephone" MaxLength="50" Class=" ml-16 mr-16 pt-2" Label="Telefoonnummer" Variant="Variant.Outlined"></MudTextField>
+                        </MudItem>
+                        <MudItem lg="6" md="6" sm="12" xs="12">
+                            <MudTextField @bind-Value="PersonalDetailsState.PersonalDetailsObject.Street" For="@(() => PersonalDetailsState.PersonalDetailsObject.Street)" Immediate="true" Required="true" InputType="InputType.Text" MaxLength="50" Class="ml-16 mr-16 mb-6 pt-2" Label="Straat" Variant="Variant.Outlined"></MudTextField>
+                            <MudTextField @bind-Value="PersonalDetailsState.PersonalDetailsObject.City" For="@(() => PersonalDetailsState.PersonalDetailsObject.City)" Immediate="true" Required="true" InputType="InputType.Text" MaxLength="50" Class="ml-16 mr-16 mb-4 pt-2" Label="Gemeente" Variant="Variant.Outlined"></MudTextField>
+                        </MudItem>
+                        <MudItem lg="6" md="6" sm="12" xs="12">
+                            <MudTextField @bind-Value="PersonalDetailsState.PersonalDetailsObject.Housenumber" For="@(() => PersonalDetailsState.PersonalDetailsObject.Housenumber)" Immediate="true" Required="true" InputType="InputType.Text" MaxLength="15" Class="ml-16 mr-16 mb-6 pt-2" Label="Huisnummer" Variant="Variant.Outlined"></MudTextField>
+                            <MudTextField @bind-Value="PersonalDetailsState.PersonalDetailsObject.PostalCode" For="@(() => PersonalDetailsState.PersonalDetailsObject.PostalCode)" Immediate="true" Required="true" InputType="InputType.Number" MaxLength="50" Class="ml-16 mr-16 pt-2" Label="Postcode" Variant="Variant.Outlined"></MudTextField>
+                        </MudItem>
+                        <MudItem lg="6" md="6" sm="12" xs="12">
+                            <MudTextField @bind-Value="PersonalDetailsState.PersonalDetailsObject.BtwNumber" For="@(() => PersonalDetailsState.PersonalDetailsObject.BtwNumber)" Immediate="true" InputType="InputType.Text" MaxLength="50" Class="ml-16 mr-16 mb-6 pt-2" Label="Btw-nummer" Variant="Variant.Outlined"></MudTextField>
+
+                        </MudItem>
+                    </MudGrid>
+                </MudItem>
+            </MudGrid>
+            <MudGrid>
+                <MudItem lg="10" md="10" sm="5" xs="5" />
                 <MudItem lg="2" md="2" sm="7" xs="7">
-                    <TimeLineVertical step="2"></TimeLineVertical>
+                    <MudButton Class="mb-2" Variant="Variant.Filled" Size="Size.Large" Color="Color.Primary" OnClick="@(async () => await Submit())">Volgende</MudButton>
                 </MudItem>
-            </MudHidden>
-            <MudHidden Breakpoint="Breakpoint.MdAndUp">
-                <MudItem lg="2" md="2" sm="2" xs="2" />
-                <MudItem lg="8" md="8" sm="8" xs="8">
-                    <TimeLineHorizontal step="2"></TimeLineHorizontal>
-                </MudItem>
-                <MudItem lg="2" md="2" sm="2" xs="2" />
-            </MudHidden>
+            </MudGrid>
 
-            <MudItem lg="10" md="10" sm="12" xs="12">
-                <MudGrid Spacing="@Spacing">
-                    <MudItem lg="6" md="6" sm="12" xs="12">
-                        <MudTextField @bind-Value="PersonalDetailsState.LastName" Required="true" InputType="InputType.Text" Class=" ml-16 mr-16 mb-6 pt-2" Label="Voornaam" Variant="Variant.Outlined"></MudTextField>
-                        <MudTextField @bind-Value="PersonalDetailsState.Email" Required="true" InputType="InputType.Email" Class="ml-16 mr-16 pt-2" Label="Email" Variant="Variant.Outlined"></MudTextField>
-                    </MudItem>
-                    <MudItem lg="6" md="6" sm="12" xs="12">
-                        <MudTextField @bind-Value="PersonalDetailsState.FirstName" Required="true" InputType="InputType.Text" Class="ml-16 mr-16 mb-6 pt-2" Label="Naam" Variant="Variant.Outlined"></MudTextField>
-                        <MudTextField @bind-Value="PersonalDetailsState.PhoneNumber" Required="true" InputType="InputType.Telephone" Class=" ml-16 mr-16 pt-2" Label="Telefoonnummer" Variant="Variant.Outlined"></MudTextField>
-                    </MudItem>
-                    <MudItem lg="6" md="6" sm="12" xs="12">
-                        <MudTextField @bind-Value="PersonalDetailsState.Street" Required="true" InputType="InputType.Text" Class="ml-16 mr-16 mb-6 pt-2" Label="Straat" Variant="Variant.Outlined"></MudTextField>
-                        <MudTextField @bind-Value="PersonalDetailsState.City" Required="true" InputType="InputType.Text" Class="ml-16 mr-16 mb-4 pt-2" Label="Gemeente" Variant="Variant.Outlined"></MudTextField>
-                    </MudItem>
-                    <MudItem lg="6" md="6" sm="12" xs="12">
-                        <MudTextField @bind-Value="PersonalDetailsState.Housenumber" Required="true" InputType="InputType.Text" Class="ml-16 mr-16 mb-6 pt-2" Label="Huisnummer" Variant="Variant.Outlined"></MudTextField>
-                        <MudTextField @bind-Value="PersonalDetailsState.PostalCode" Required="true" InputType="InputType.Number" Class="ml-16 mr-16 pt-2" Label="Postcode" Variant="Variant.Outlined"></MudTextField>
-                    </MudItem>
-                    <MudItem lg="6" md="6" sm="12" xs="12">
-                        <MudTextField @bind-Value="PersonalDetailsState.BtwNumber" Required="true" InputType="InputType.Text" Class="ml-16 mr-16 mb-6 pt-2" Label="Btw-nummer" Variant="Variant.Outlined"></MudTextField>
+        </MudContainer>
+    </MudPaper>
+</MudForm>
 
-                    </MudItem>
-                </MudGrid>
-            </MudItem>
-        </MudGrid>
-        <MudGrid>
-            <MudItem lg="10" md="10" sm="5" xs="5" />
-            <MudItem lg="2" md="2" sm="7" xs="7">
-                <MudButton Class="mb-2" Variant="Variant.Filled" Size="Size.Large" Color="Color.Primary" OnClick="@ClickVolgende">Volgende</MudButton>
-            </MudItem>
-        </MudGrid>
-    </MudContainer>
-</MudPaper>
 
 @code {
+    private MudForm form;
+
     private int Spacing { get; set; } = 2;
 
-    private void ClickVolgende()
+    private void GoNext()
     {
         NavigationManager.NavigateTo(Routes.ExtraMaterial);
+    }
+
+    private async Task Submit()
+    {
+        await form.Validate();
+
+        if (form.IsValid)
+        {
+            GoNext();
+        }
     }
 }
