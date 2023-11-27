@@ -117,12 +117,7 @@
                 }
                 <MudItem xs="12">
                     <MudGrid>
-                        @if (Extras is null)
-                        {
-                            <MudText>Loading...</MudText>
-                        }
-                        else
-                        {
+                        <Loader IsLoading=@(Extras == null)>
                             @foreach (var item in ExtraMaterialState.ExtrasAmount)
                             {
                                 @if (item.Value != 0)
@@ -140,7 +135,7 @@
                                     </MudItem>
                                 }
                             }
-                        }
+                        </Loader>
                     </MudGrid>
                 </MudItem>
                 <MudItem xs="12">

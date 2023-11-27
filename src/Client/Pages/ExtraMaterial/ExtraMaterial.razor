@@ -29,12 +29,7 @@
 
         <MudItem lg="10" md="10" sm="12" xs="12">
             <MudGrid Spacing="@Spacing">
-                @if (Extras is null)
-                {
-                    <MudText>Loading...</MudText>
-                }
-                else
-                {
+                 <Loader IsLoading=@(Extras == null)>
                     @foreach (EquipmentDto.Index item in Extras)
                     {
                         <MudItem lg="3" md="4" sm="6" xs="12">
@@ -47,7 +42,7 @@
                             </ExtraItemsCard>
                         </MudItem>
                     }
-                }
+                </Loader>
             </MudGrid>
 
         </MudItem>
