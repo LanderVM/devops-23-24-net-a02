@@ -1,8 +1,10 @@
-﻿using Domain.Common;
+﻿using System.Linq;
+using Domain.Common;
 using Domain.Customers;
 using Domain.Formulas;
 using Domain.Quotations;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using shared.Equipment;
 using shared.Formulas;
 using Shared.Common;
@@ -98,16 +100,6 @@ public class QuotationService : IQuotationService
            && customerFromDb.BillingAddress.City == model.Customer.BillingAddress.City;
   }
 
-  /*public async Task<decimal> GetEstimatedQuotationPrice()
-  {
-    var formula = await _dbContext.Formulas.FirstOrDefaultAsync(x => x.Id == model.FormulaId);
-
-    Formula formula2 = new Formula(formula.Equipment, formula.Description.Title, formula.Description.Attributes);
-    Quotation quotation = new Quotation(formula, model.StartTime, model.EndTime, model.EstimatedNumberPeople, model.IsTripelBier);
-    return quotation.GetEstimatedPrice();
-    
-  }*/
-
   public async Task<QuotationDto.Details> GetPriceEstimationDetails()
   {
     var queryFormulas = _dbContext.Formulas.AsQueryable();
@@ -150,5 +142,44 @@ public class QuotationService : IQuotationService
     };
 
     return result;
+  }
+
+  public async Task<QuotationDto.Estimate> GetPriceEstimationTest(QuotationDto.Estimate model)
+  {
+    return model;
+  }
+
+  public async Task<decimal> GetPriceEstimationPrice(QuotationDto.Estimate model)
+  {
+    decimal totalPrice = 0;
+
+    var chosenFormula = _dbContext.Formulas.FirstOrDefault(formula => formula.Id == model.FormulaId);
+    if (chosenFormula is null)
+      throw new ArgumentException($"Formula with id {model.FormulaId} does not exist!");
+    if (chosenFormula.IsActive is false)
+      throw new ArgumentException($"Formula with id {chosenFormula.Id} is not active!"); var queryEquipment = _dbContext.Equipments.AsQueryable();
+
+    List<EquipmentDto.Index>? equipmentDtoQuery = new List<EquipmentDto.Index>();
+
+    if (model.EquipmentIds != null && model.EquipmentIds.Any())
+    {
+      equipmentDtoQuery = await queryEquipment
+          .Where(x => model.EquipmentIds.Contains(x.Id))
+          .Select(z => new EquipmentDto.Index
+          {
+            Id = z.Id,
+            Price = z.Price,
+          }).ToListAsync();
+    }
+
+    List<Equipment> equipmentList = new();
+    foreach (var item in equipmentDtoQuery)
+    {
+      Equipment equipment = new(item.Price);
+      equipmentList.Add(equipment);
+    }
+
+    Quotation quotation = new Quotation(new Formula(equipmentList), chosenFormula.Id, model.StartTime, model.EndTime, model.EstimatedNumberOfPeople, model.IsTripelBier) ;
+    return quotation.GetEstimatedPrice();
   }
 }

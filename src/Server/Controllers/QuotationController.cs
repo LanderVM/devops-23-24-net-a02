@@ -18,9 +18,16 @@ public class QuotationController : ControllerBase
   }
   [HttpGet("/api/PriceEstimation/Details")]
   [SwaggerOperation("Returns all required data to set up the calculation for a quotation")]
-  public async Task<QuotationDto.Details> GetEstimatedQuotationPrice()
+  public async Task<QuotationDto.Details> GetEstimatedQuotationDetails()
   {
     return await _quotationService.GetPriceEstimationDetails();
+  }
+
+  [HttpGet("/api/PriceEstimation/Calculate")]
+  [SwaggerOperation("Calculates a estimate on how much a offer would cost")]
+  public async Task<decimal> GetEstimatedQuotationPrice([FromQuery] QuotationDto.Estimate model)
+  {
+    return await _quotationService.GetPriceEstimationPrice(model);
   }
 
   [HttpPost]
@@ -36,4 +43,6 @@ public class QuotationController : ControllerBase
       model.EventLocation, (model.Customer.FirstName + model.Customer.LastName));
     return CreatedAtAction(nameof(RegisterQuotationRequest), new QuotationResponse.Create { QuotationId = quotationId});
   }
+
+
 }

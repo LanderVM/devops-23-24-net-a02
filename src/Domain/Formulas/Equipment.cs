@@ -15,6 +15,12 @@ public class Equipment : Entity
     Price = price;
     Stock = stock;
   }
+  public Equipment(decimal price)
+  {
+    // Description = new Description(title, description);
+    Price = price;
+  }
+
 
   public List<Formula> Formulas { get; set; } = default!;
 

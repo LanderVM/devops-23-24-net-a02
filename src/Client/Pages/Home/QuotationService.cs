@@ -22,5 +22,10 @@ public class QuotationService : IQuotationService
   {
     throw new NotImplementedException();
   }
+
+  public Task<decimal> GetPriceEstimationPrice(QuotationDto.Estimate model)
+  {
+    throw new NotImplementedException();
+  }
 }
 

@@ -13,6 +13,11 @@ public class Formula : Entity
     Description = new Description(title, description);
   }
 
+  public Formula(List<Equipment> equipment)
+  {
+    Equipment.AddRange(equipment);
+  }
+
   public List<Equipment> Equipment { get; } = new();
   public Description Description { get; set; } = default!;
   public decimal PricePerDayExtra { get; protected set; } = 50M;
@@ -20,4 +25,9 @@ public class Formula : Entity
   public List<decimal> BasePrice { get; set; } = new() { 350, 450, 520 };
 
   public List<Quotation> OrderedIn { get; set; } = default!;
+
+  public decimal getPriceForEquipment() 
+  { 
+    return Equipment.Sum(x => x.Price); 
+  }
 }

@@ -17,6 +17,18 @@ public static class QuotationDto
     public CustomerDto.Create Customer { get; set; }
     public bool IsTripelBier { get; set; }
   }
+
+  public class Estimate
+  {
+    public int FormulaId { get; set; }
+    public AddressDto? EventLocation { get; set; } = default!;
+    public List<int>? EquipmentIds { get; set; } = default!;
+    public DateTime StartTime { get; set; }
+    public DateTime EndTime { get; set; }
+    public int EstimatedNumberOfPeople { get; set; }
+    public bool IsTripelBier { get; set; }
+  }
+
   public class Details
   {
     public IEnumerable<FormulaDto.Select> Formulas { get; set; } = default!;

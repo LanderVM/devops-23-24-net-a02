@@ -25,12 +25,13 @@ public class Quotation : Entity
     EndTime = Guard.Against.Null(endTime);
     IsTripelBier = isTripelBier;
   }
-  public Quotation(Formula formula, DateTime startTime, DateTime endTime, int estimatedNumberPeople, bool isTripelBier = false)
+  public Quotation(Formula formula, int formulaId, DateTime startTime, DateTime endTime, int estimatedNumberPeople, bool isTripelBier = false)
   {
     if ((endTime - startTime).TotalSeconds <= 0)
       throw new ArgumentException("End time cannot be before start time!");
 
     Formula = Guard.Against.Null(formula);
+    FormulaId = formulaId;
     OriginalFormulaPricePerDay = formula.BasePrice;
     OriginalFormulaPricePerDayExtra = formula.PricePerDayExtra;
     StartTime = Guard.Against.Null(startTime);
@@ -38,8 +39,9 @@ public class Quotation : Entity
     NumberOfPeople = Guard.Against.NegativeOrZero(estimatedNumberPeople);
     IsTripelBier = isTripelBier;
   }
-
+  
   public Formula Formula { get; set; } = default!;
+  public int FormulaId { get; set; } = 1;
   public List<decimal> OriginalFormulaPricePerDay { get; protected set; } = new();
   public decimal OriginalFormulaPricePerDayExtra { get; protected set; }
 
@@ -62,7 +64,7 @@ public class Quotation : Entity
   }
   private decimal GetPriceDays()
   {
-    var days = (EndTime - StartTime).Days + 1;
+    var days = (EndTime - StartTime).Days;
     var hasExtraDays = days > 3;
 
     var basePrice = OriginalFormulaPricePerDay[hasExtraDays ? 2 : days - 1];
@@ -74,20 +76,20 @@ public class Quotation : Entity
 
   public decimal GetEstimatedPrice()
   {
-    decimal priceBeer = IsTripelBier ? 1.5m : 3.0m;
+    decimal priceBeer = IsTripelBier ? 3.0m : 1.5m;
     decimal priceBbq = 12m;
-    
-    if (Formula.Id == 1)
+
+    if (FormulaId == 3)
     {
-      return GetPriceDays();
+      return GetPriceDays() + Formula.getPriceForEquipment() + (NumberOfPeople * priceBeer) + (NumberOfPeople * priceBbq);
     }
-    if (Formula.Id == 2)
+    if (FormulaId == 2)
     {
-      return GetPriceDays() + (NumberOfPeople * priceBeer);
+      return GetPriceDays() + Formula.getPriceForEquipment() + (NumberOfPeople * priceBeer);
     }
     else
     {
-      return GetPriceDays() + (NumberOfPeople * priceBeer) + (NumberOfPeople * priceBbq);
+      return GetPriceDays() ;
     }
   }
 }
