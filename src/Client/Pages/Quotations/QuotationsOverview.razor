@@ -1,10 +1,12 @@
 
 @page "/offertes"
 @using System.Net.Http.Json
+@using Domain.Quotations
 @using global::Shared.Quotations
 
 
-<MudContainer MaxWidth="MaxWidth.Large">
+
+<MudContainer MaxWidth="MaxWidth.Large" Class="mt-16 mb-16">
     <MudDataGrid Items="@Quotations" Filterable="false" SortMode="@SortMode.None" Groupable="false">
         <Columns>
             <PropertyColumn Property="x => x.Customer.FirstName" Title="Voornaam"/>
@@ -19,6 +21,9 @@
                 </CellTemplate>
             </TemplateColumn>
         </Columns>
+        <PagerContent>
+                <MudDataGridPager T="QuotationDto.Index" />
+            </PagerContent>
     </MudDataGrid>
 </MudContainer>
 
