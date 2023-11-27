@@ -33,7 +33,7 @@
 
         <MudItem lg="4" md="10" sm="12" Style="max-width: 500px">
             <GoogleMap @ref="@Map" Id="map1" Options="@_options" Height="410px" OnAfterInit="async () => await OnAfterMapInit()"></GoogleMap>
-            <MudTextField @ref="_addressSearch" Class="ml-16 mr-16 mb-4 pt-2" Label="Adres" Variant="Variant.Outlined" T="string" />
+            <MudTextField @ref="_addressSearch" Class="ml-16 mr-16 mb-4 pt-2" Label="Adres" Variant="Variant.Outlined" T="string" ErrorText="Gelieve volledig adres in te geven" Error="@AddressError" />
         </MudItem>
         <MudItem lg="4" md="10" sm="12" Style="max-width: 770px">
             <MudDateRangePicker Color="Color.Primary"
@@ -75,6 +75,8 @@
 
 
 @code {
+    private bool AddressError = false;
+
     private void ClickNext()
     {
         NavigationManager.NavigateTo(Routes.PersonalDetails);
@@ -118,6 +120,7 @@
         await _autocomplete.AddListener("place_changed", async () =>
         {
             PlaceResult place = await _autocomplete.GetPlace();
+            //Console.WriteLine("size adrscomp:" + place.AddressComponents.Count());
 
             if (place.Geometry.Location is not null)
             {
@@ -134,6 +137,23 @@
                 EventDetailsState.PlaceTitle = place.Name;
                 EventDetailsState.PlaceGeometry = place.Geometry;
             }
+            if (place.FormattedAddress is not null)
+            {
+                EventDetailsState.FormattedAddress = place.FormattedAddress;
+            }
+            
+            if (place.AddressComponents is not null)
+                {
+                    if (place.AddressComponents.Count() < 7)
+                        {
+                            AddressError = true;
+                        } else
+                            {
+                                AddressError = false;
+                            }
+                }
+            
+            
             else if (place.Geometry.Viewport is not null)
             {
                 await Map.InteropObject.FitBounds(place.Geometry.Viewport, 5);
