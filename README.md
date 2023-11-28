@@ -6,7 +6,7 @@
 - A02 Group number
 
 ## Team members
-
+ 
 ### Development:
  
 List of team members responsible for development:
