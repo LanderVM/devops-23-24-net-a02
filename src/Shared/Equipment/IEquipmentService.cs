@@ -13,5 +13,7 @@ public interface IEquipmentService
   public Task UpdateAsync(int equipmentId, EquipmentDto.Mutate model);
 
   public Task<EquipmentDto.Index> GetSpecificIndexAsync(int equipmentId);
+
+  public Task<EquipmentDto.Mutate> GetSpecificMutateAsync(int equipmentId);
 }
 

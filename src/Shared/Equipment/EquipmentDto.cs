@@ -55,7 +55,7 @@ public static class EquipmentDto
       public Validator()
       {
         RuleFor(x => x.Title).NotEmpty().MaximumLength(100);
-        RuleForEach(x => x.Attributes).NotEmpty().MaximumLength(100);
+        RuleFor(x => x.Attributes).NotEmpty().MaximumLength(100);
         RuleFor(x => x.Price).NotEmpty().InclusiveBetween(0, 5000);
         RuleFor(x => x.Stock).NotEmpty().InclusiveBetween(1, 1000);
       }

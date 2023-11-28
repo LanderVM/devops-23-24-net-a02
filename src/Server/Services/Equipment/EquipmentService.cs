@@ -16,6 +16,11 @@ public class EquipmentService : IEquipmentService
 
   public async Task<int> CreateAsync(EquipmentDto.Create model)
   {
+    Equipment? e = await _dbContext.Equipments.SingleOrDefaultAsync(x => x.Description.Title.Equals(model.Title));
+
+    if (e is not null)
+      throw new Exception($"equipment with title: {model.Title} already exists");
+
     List<string> list = model.Attributes.Split(';').ToList();
     List<string> attributes = new List<string>();
 
@@ -104,6 +109,30 @@ public class EquipmentService : IEquipmentService
     return equipment;
   }
 
+  public async Task<EquipmentDto.Mutate> GetSpecificMutateAsync(int equipmentId)
+  {
+    Equipment? equipment = await _dbContext.Equipments.FirstOrDefaultAsync(x => x.Id == equipmentId);
+
+    if (equipment is null)
+      throw new Exception($"equipment with id: {equipmentId} not found");
+
+    string attributes = string.Join(";", equipment.Description.Attributes);
+
+    EquipmentDto.Mutate mutate = new EquipmentDto.Mutate{ 
+      Title = equipment.Description.Title,
+      Attributes = attributes,
+      Price = equipment.Price,
+      Stock= equipment.Stock,
+      ImageData = new EquipmentDto.ImageData
+      {
+        ImageUrl = "https://via.placeholder.com/350x300",
+        AltText = "placeholder txt",
+      },
+    };
+
+    return mutate;
+  }
+
   public async Task UpdateAsync(int equipmentId, EquipmentDto.Mutate model)
   {
     Equipment? equipment = await _dbContext.Equipments.SingleOrDefaultAsync(x => x.Id == equipmentId);
@@ -111,7 +140,16 @@ public class EquipmentService : IEquipmentService
     if (equipment is null)
       throw new Exception($"equipment with id: {equipmentId} not found");
 
-    Description description = new(model.Title, model.Attributes);
+    List<string> list = model.Attributes.Split(';').ToList();
+    List<string> attributes = new List<string>();
+
+    foreach (string s in list)
+    {
+      string s2 = s.Trim();
+      attributes.Add(s2);
+    }
+
+    Description description = new(model.Title, attributes);
 
     equipment.UpdatedAt = DateTime.UtcNow;
     equipment.Description = description;

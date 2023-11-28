@@ -25,11 +25,18 @@ public class EquipmentController : ControllerBase
     return await _equipmentService.GetIndexAsync();
   }
 
+  /*
   [HttpGet("{equipmentId}")]
   [SwaggerOperation("Returns a specific equipment based on id.")]
-  public async Task<EquipmentDto.Index> GetSpecificEquipment(int equipmentId)
+  public async Task<EquipmentDto.Index> GetSpecificEquipmentIndex(int equipmentId)
   {
     return await _equipmentService.GetSpecificIndexAsync(equipmentId);
+  }*/
+  [HttpGet("{equipmentId}")]
+  [SwaggerOperation("Returns a specific equipment based on id.")]
+  public async Task<EquipmentDto.Mutate> GetSpecificEquipmentMutate(int equipmentId)
+  {
+    return await _equipmentService.GetSpecificMutateAsync(equipmentId);
   }
 
   [SwaggerOperation("Edites an equipment item in the catalog.")]

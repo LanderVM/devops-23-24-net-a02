@@ -35,11 +35,17 @@ public class EquipmentService : IEquipmentService
   {
     var response = await client.PutAsJsonAsync($"{endpoint}/{equipmentId}", model);
   }
-
+  
   public async Task<EquipmentDto.Index> GetSpecificIndexAsync(int equipmentId)
   {
-    EquipmentDto.Index response = await client.GetFromJsonAsync<EquipmentDto.Index>($"{endpoint}/{equipmentId}");
-    return response;
+    EquipmentDto.Index? response = await client.GetFromJsonAsync<EquipmentDto.Index>($"{endpoint}/{equipmentId}");
+    return response!;
+  }
+  
+  public async Task<EquipmentDto.Mutate> GetSpecificMutateAsync(int equipmentId)
+  {
+    EquipmentDto.Mutate? response = await client.GetFromJsonAsync<EquipmentDto.Mutate>($"{endpoint}/{equipmentId}");
+    return response!;
   }
 }
 

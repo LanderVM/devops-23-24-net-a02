@@ -7,7 +7,6 @@
 
         <MudTextField @bind-Value="Model.Title"
                       For="@(() => Model.Title)"
-                      Immediate="true"
                       Label="Titel"
                       Variant="Variant.Outlined" />
 
@@ -29,7 +28,8 @@
 
         <MudText Class="mt-5 mb-1" Typo="Typo.body2">Onderscheid je attributen in de text met een "/"</MudText>
 
-        <MudTextField @bind-Value="Attributes"
+        <MudTextField @bind-Value="Model.Attributes"
+                      For="@(() => Model.Attributes)"
                       Label="Attributen"
                       Variant="Variant.Outlined"
                       Lines="3" />
@@ -62,16 +62,16 @@
     [Parameter]
     public EventCallback Refresh { get; set; } = default!;
 
-    private int AmountOfAttributes { get; set; } = 2;
+    //private int AmountOfAttributes { get; set; } = 2;
 
-    private string Attributes { get; set; } = default!;
+    //private string Attributes { get; set; } = default!;
 
     private EquipmentDto.Mutate Model { get; set; } = new EquipmentDto.Mutate();
-
+    /*
     private void AddAttribute()
     {
         AmountOfAttributes += 1;
-    }
+    }*/
 
     protected override async Task OnParametersSetAsync()
     {
@@ -81,9 +81,9 @@
                 AltText = "a google image"
 
             };
-        Model.Attributes = new List<string> { "", "" };
+        //Model.Attributes = new List<string> { "", "" };
 
-        EquipmentDto.Index response = await EquipmentService.GetSpecificIndexAsync(EquipmentId);
+        EquipmentDto.Mutate response = await EquipmentService.GetSpecificMutateAsync(EquipmentId);
         Model.Title = response.Title;
         Model.Stock = response.Stock;
         Model.Price = Decimal.Round(response.Price,2);
