@@ -18,7 +18,7 @@ List of team members responsible for development:
 - Maurice Cantaert | @Skerath
 
 ### Operations:
-
+ 
 [Fill-in] List of team members responsible for operations:
 
 - Jan Janssens | @janjanssens(githubusername)
