@@ -46,5 +46,13 @@ public class EquipmentController : ControllerBase
     int id = await _equipmentService.DeleteAsync(equipmentId);
     return id;
   }
+
+  [SwaggerOperation("Creates equipment and adds it to the catalog.")]
+  [HttpPost]
+  public async Task<int> Create(EquipmentDto.Create model)
+  {
+    int id = await _equipmentService.CreateAsync(model);
+    return id;
+  }
 }
 

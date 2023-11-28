@@ -29,9 +29,10 @@
         Step="1" 
         Min="0" />
 
-        <MudText Class="mt-5 mb-1" Typo="Typo.body2">Onderscheid je attributen in de text met een "/"</MudText>
+        <MudText Class="mt-5 mb-1" Typo="Typo.body2">Onderscheid je attributen in de text met een ";"</MudText>
         
-        <MudTextField @bind-Value="Attributes"
+        <MudTextField @bind-Value="CreateEquipment.Attributes"
+                      For="@(() => CreateEquipment.Attributes)"
                       Label="Attributen"
                       Variant="Variant.Outlined" 
                       Lines="3"
@@ -77,20 +78,21 @@
 
     private IBrowserFile image;
 
-    private int AmountOfAttributes { get; set; } = 2;
+    //private int AmountOfAttributes { get; set; } = 2;
 
     private string Attributes { get; set; } = default!;
 
     private EquipmentDto.Create CreateEquipment { get; set; } = new EquipmentDto.Create();
 
+    /*
     private void AddAttribute()
     {
         AmountOfAttributes += 1;    
-    }
+    }*/
 
     protected override void OnInitialized()
     {
-        CreateEquipment.Attributes = new List<string> { "",""};
+        //CreateEquipment.Attributes = new List<string> { "",""};
         CreateEquipment.ImageData = new EquipmentDto.ImageData
             {
                 ImageUrl = "https://via.placeholder.com/350x300",

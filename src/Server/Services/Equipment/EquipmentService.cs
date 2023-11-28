@@ -14,9 +14,23 @@ public class EquipmentService : IEquipmentService
     _dbContext = blancheDbContext;
   }
 
-  public Task<int> CreateAsync(EquipmentDto.Create model)
+  public async Task<int> CreateAsync(EquipmentDto.Create model)
   {
-    throw new NotImplementedException();
+    List<string> list = model.Attributes.Split(';').ToList();
+    List<string> attributes = new List<string>();
+
+    foreach (string s in list) { 
+      string s2 = s.Trim();
+      attributes.Add(s2);
+    }
+    
+    Equipment equipment = new Equipment(model.Title,attributes,model.Price,model.Stock);
+
+    _dbContext.Equipments.Add(equipment);
+
+    await _dbContext.SaveChangesAsync();
+
+    return equipment.Id;
   }
 
   public async Task<int> DeleteAsync(int equipmentId)
