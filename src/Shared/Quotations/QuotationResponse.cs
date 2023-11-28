@@ -1,4 +1,4 @@
-﻿namespace Shared.Quotations;
+﻿namespace shared.Quotations;
 
 public static class QuotationResponse
 {

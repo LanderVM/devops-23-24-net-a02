@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Shared.Quotations;
+﻿using System.Reflection.Metadata.Ecma335;
+using Api.Data.Services.Quotations;
+using Microsoft.AspNetCore.Mvc;
+using shared.Quotations;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace devops_23_24_net_a02.Server.Controllers;
@@ -28,6 +30,15 @@ public class QuotationController : ControllerBase
     _logger.Log(LogLevel.Information,
       "Registered new quotation request at {model} for {(model.Customer.FirstName + model.Customer.LastName)}",
       model.EventLocation, (model.Customer.FirstName + model.Customer.LastName));
-    return CreatedAtAction(nameof(RegisterQuotationRequest), new QuotationResponse.Create { QuotationId = quotationId});
+    return CreatedAtAction(nameof(RegisterQuotationRequest), new QuotationResponse.Create { QuotationId = quotationId });
   }
+
+  [HttpGet("/dates")]
+  [SwaggerOperation("Gets all the dates for which there is an approved quotation")]
+  public async Task<List<DateTime>> GetApprovedQuotationsDates() { 
+    List<DateTime> dateTimes = await _quotationService.GetDatesAsync();
+    return dateTimes;
+  }
+
 }
+

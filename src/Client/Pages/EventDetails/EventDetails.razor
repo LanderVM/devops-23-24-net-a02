@@ -3,9 +3,12 @@
 @using GoogleMapsComponents.Maps
 @using GoogleMapsComponents.Maps.Places
 @using Size = MudBlazor.Size
+@using shared.Quotations;
 @inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager
 @inject EventDetailsState EventDetailsState
 @inject FormulaState FormulaState
+
+
 
 <PageTitle>Stap 1</PageTitle>
 
@@ -45,7 +48,7 @@
                                 PlaceholderEnd="End Date"
                                 Date="@(DateTime.Today.AddDays(1))"
                                 PickerVariant="PickerVariant.Static"
-                                IsDateDisabledFunc="@((DateTime dt) => dt.Date < DateTime.Now.Date || (int)dt.DayOfWeek == 0 || (int)dt.DayOfWeek == 6)" />
+                                IsDateDisabledFunc="@((DateTime dt) => dt.Date < DateTime.Now.Date || (int)dt.DayOfWeek == 0 || (int)dt.DayOfWeek == 6 || DateTimes.Contains(dt.Date))" />
             <div style="width: 100%">
                 @if (FormulaState.ChosenFormulaId!=1)
                 {
@@ -76,10 +79,27 @@
 
 @code {
     private bool AddressError = false;
+    private List<DateTime> DateTimes { get; set; } = new List<DateTime>();
+
+    [Inject]
+    public IQuotationService QuotationService { get; set; } = default!;
+
 
     private void ClickNext()
     {
         NavigationManager.NavigateTo(Routes.PersonalDetails);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        List<DateTime> list = await QuotationService.GetDatesAsync();
+        IEnumerable<DateTime> times = list.Select(x => x.Date);
+        foreach (DateTime item in times)
+        {
+            DateTimes.Add(item);
+        }
+
     }
 
     private GoogleMap Map { get; set; } = default!;

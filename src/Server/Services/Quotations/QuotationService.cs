@@ -2,7 +2,7 @@
 using Domain.Customers;
 using Domain.Quotations;
 using Microsoft.EntityFrameworkCore;
-using Shared.Quotations;
+using shared.Quotations;
 
 namespace Api.Data.Services.Quotations;
 
@@ -92,5 +92,28 @@ public class QuotationService : IQuotationService
            && customerFromDb.BillingAddress.HouseNumber == model.Customer.BillingAddress.HouseNumber
            && customerFromDb.BillingAddress.PostalCode == model.Customer.BillingAddress.PostalCode
            && customerFromDb.BillingAddress.City == model.Customer.BillingAddress.City;
+  }
+
+  public async Task<List<DateTime>> GetDatesAsync()
+  {
+    var query = _dbContext.Quotations.AsQueryable();
+
+    IEnumerable <Quotation> quotations = await query.Where(x=>x.Status == QuotationStatus.Read).ToListAsync();
+
+    List<DateTime> dateTimes = new List<DateTime>();
+
+    foreach (var item in quotations)
+    {
+      DateTime startDate = item.StartTime;
+      DateTime endDate = item.EndTime;
+
+      while (startDate <= endDate)
+      {
+        dateTimes.Add(startDate);
+        startDate = startDate.AddDays(1);
+      }
+    }
+
+    return dateTimes;
   }
 }

@@ -1,4 +1,5 @@
-﻿using Shared.Quotations;
+﻿using System.Net.Http.Json;
+using shared.Quotations;
 
 namespace devops_23_24_net_a02.Client.Pages.Home;
 
@@ -17,5 +18,10 @@ public class QuotationService : IQuotationService
     throw new NotImplementedException();
   }
 
+  public async Task<List<DateTime>> GetDatesAsync()
+  {
+    List<DateTime>? response = await client.GetFromJsonAsync<List<DateTime>>($"/dates");
+    return response!;
+  }
 }
 
