@@ -135,10 +135,12 @@ public class EquipmentService : IEquipmentService
 
   public async Task UpdateAsync(int equipmentId, EquipmentDto.Mutate model)
   {
-    Equipment? equipment = await _dbContext.Equipments.SingleOrDefaultAsync(x => x.Id == equipmentId);
+    Equipment? eq = await _dbContext.Equipments.FirstOrDefaultAsync(x=>x.Id == equipmentId);
 
-    if (equipment is null)
-      throw new Exception($"equipment with id: {equipmentId} not found");
+    if (eq is null)
+    {
+      throw new Exception($"Equipment with id: {equipmentId} doesn't exists");
+    }
 
     List<string> list = model.Attributes.Split(';').ToList();
     List<string> attributes = new List<string>();
@@ -149,12 +151,10 @@ public class EquipmentService : IEquipmentService
       attributes.Add(s2);
     }
 
-    Description description = new(model.Title, attributes);
-
-    equipment.UpdatedAt = DateTime.UtcNow;
-    equipment.Description = description;
-    equipment.Price = model.Price;
-    equipment.Stock = model.Stock;
+    Description des = new Description(model.Title, attributes);
+    eq.Description = des;
+    eq.Stock = model.Stock;
+    eq.Price = model.Price;
 
     await _dbContext.SaveChangesAsync();
   }
