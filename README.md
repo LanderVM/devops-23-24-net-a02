@@ -8,7 +8,7 @@
 ## Team members
  
 ### Development:
- 
+
 List of team members responsible for development:
 
 - Kilian Ostijn | @Kilian3005
