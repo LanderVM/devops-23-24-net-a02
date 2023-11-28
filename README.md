@@ -4,7 +4,7 @@
 
 - Foodtruck Project
 - A02 Group number
-
+ 
 ## Team members
 
 ### Development:
