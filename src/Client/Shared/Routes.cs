@@ -8,4 +8,5 @@ public static class Routes
   public const string Formula = "/Formules";
   public const string Home = "/";
   public const string ExtraMaterial = "/ExtraMateriaal";
+  public const string Quotations = "/Offertes";
 }

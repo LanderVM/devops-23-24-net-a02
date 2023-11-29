@@ -2,7 +2,9 @@
 using Domain.Customers;
 using Domain.Quotations;
 using Microsoft.EntityFrameworkCore;
+using Shared.Common;
 using Shared.Quotations;
+
 
 namespace Api.Data.Services.Quotations;
 
@@ -15,6 +17,35 @@ public class QuotationService : IQuotationService
     _dbContext = dbContext;
   }
 
+  public async Task<QuotationResult.Index> GetIndexAsync()
+  {
+    var query = _dbContext.Quotations
+      .Include(q => q.OrderedBy)          
+      .ThenInclude(c => c.Email)      
+      .OrderBy(q => q.Id)
+      .Select(q => new QuotationDto.Index
+      {
+        QuotationId = q.Id,
+        Customer = new CustomerDto.Index
+        {
+          FirstName = q.OrderedBy.FirstName,
+          LastName = q.OrderedBy.LastName,
+          Email = q.OrderedBy.Email.Value,
+          
+        },
+        CreatedAt = q.CreatedAt.ToShortDateString()
+      });
+
+    var items = await query.ToListAsync();
+
+    var result = new QuotationResult.Index
+    {
+      Quotation = items,
+    };
+    return result;
+
+    
+  }
   public async Task<int> CreateAsync(QuotationDto.Create model)
   {
     var chosenFormula = _dbContext.Formulas.FirstOrDefault(formula => formula.Id == model.FormulaId);
@@ -65,6 +96,8 @@ public class QuotationService : IQuotationService
     await _dbContext.SaveChangesAsync();
     return quotation.Id;
   }
+
+ 
 
   private Email? GetCustomerEmail(QuotationDto.Create model)
   {

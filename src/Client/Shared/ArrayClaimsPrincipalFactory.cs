@@ -18,6 +18,7 @@ public class ArrayClaimsPrincipalFactory<TAccount> : AccountClaimsPrincipalFacto
     var user = await base.CreateUserAsync(account, options);
 
     var claimsIdentity = (ClaimsIdentity)user.Identity;
+    
 
     if (account != null)
     {
@@ -37,6 +38,7 @@ public class ArrayClaimsPrincipalFactory<TAccount> : AccountClaimsPrincipalFacto
         }
       }
     }
+    
     return user;
   }
 }
