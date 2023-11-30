@@ -1,0 +1,108 @@
+﻿@using shared.Equipment;
+@using Microsoft.AspNetCore.Components;
+@inject IEquipmentService EquipmentService;
+<div style="width:600px;">
+    <EditForm Model="@Model" OnValidSubmit="UpdateEquipmentAsync">
+        <Blazored.FluentValidation.FluentValidationValidator />
+
+        <MudTextField @bind-Value="Model.Title"
+                      For="@(() => Model.Title)"
+                      Label="Titel"
+                      Variant="Variant.Outlined" />
+
+        <MudNumericField @bind-Value="Model.Price"
+                         Class="mt-3"
+                         Label="Prijs"
+                         For="@(() => Model.Price)"
+                         Variant="Variant.Outlined"
+                         Step="0.01M"
+                         Min="0.0M" />
+
+        <MudNumericField @bind-Value="Model.Stock"
+                         Class="mt-3"
+                         Label="Stock"
+                         For="@(() => Model.Stock)"
+                         Variant="Variant.Outlined"
+                         Step="1"
+                         Min="0" />
+
+        <MudText Class="mt-5 mb-1" Typo="Typo.body2">Onderscheid je attributen in de text met een ";"</MudText>
+
+        <MudTextField @bind-Value="Model.Attributes"
+                      For="@(() => Model.Attributes)"
+                      Label="Attributen"
+                      Variant="Variant.Outlined"
+                      Lines="3" />
+
+        <MudGrid Class="mt-6">
+            <MudItem xs="1">
+
+            </MudItem>
+            <MudItem xs="5">
+                <MudButton Class="mr-1" Variant="Variant.Filled" FullWidth="true" Color="Color.Primary" ButtonType="ButtonType.Submit">Pas aan</MudButton>
+            </MudItem>
+            <MudItem xs="5">
+                <MudButton Class="ml-1" Variant="Variant.Filled" FullWidth="true" Color="Color.Primary" OnClick="Close">Annuleren</MudButton>
+            </MudItem>
+            <MudItem xs="1">
+
+            </MudItem>
+        </MudGrid>
+
+    </EditForm>
+</div>
+
+
+@code {
+    [Parameter]
+    public int EquipmentId { get; set; } = default!;
+
+    [Parameter]
+    public EventCallback Close { get; set; } = default!;
+    [Parameter]
+    public EventCallback Refresh { get; set; } = default!;
+
+    //private int AmountOfAttributes { get; set; } = 2;
+
+    //private string Attributes { get; set; } = default!;
+
+    private EquipmentDto.Mutate Model { get; set; } = new EquipmentDto.Mutate();
+    /*
+    private void AddAttribute()
+    {
+        AmountOfAttributes += 1;
+    }*/
+
+    protected override async Task OnParametersSetAsync()
+    {
+        Model.ImageData = new EquipmentDto.ImageData
+            {
+                ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/7/77/Google_Images_2015_logo.svg",
+                AltText = "a google image"
+
+            };
+        //Model.Attributes = new List<string> { "", "" };
+
+        EquipmentDto.Mutate response = await EquipmentService.GetSpecificMutateAsync(EquipmentId);
+        Model.Title = response.Title;
+        Model.Stock = response.Stock;
+        Model.Price = Decimal.Round(response.Price,2);
+        Model.Attributes = response.Attributes;
+        Model.ImageData = response.ImageData;
+        StateHasChanged();
+
+    }
+
+    private async Task UpdateEquipmentAsync()
+    {
+        await EquipmentService.UpdateAsync(EquipmentId,Model);
+        await Close.InvokeAsync();
+        await Refresh.InvokeAsync();
+    }
+
+    private void Cancel()
+    {
+        Close.InvokeAsync();
+    }
+
+}

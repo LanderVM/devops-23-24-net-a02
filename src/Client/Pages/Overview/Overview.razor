@@ -176,10 +176,6 @@
             <MudButton Class="mt-4 mb-4" Variant="Variant.Filled" Size="MudBlazor.Size.Large" Color="Color.Primary" OnClick="@CreateQuotationAsync">Offerte aanvraag verzenden</MudButton>
         </MudItem>
     </MudGrid>
-
-
-
-
 </MudContainer>
 
 
@@ -363,11 +359,7 @@
         }
         return (BerekenVervoersKosten() * 0.21M) + GetFormulaBtw() + extrasKostenBtw;
     }
-
-
-
-    
-    
+        
     private async Task CreateQuotationAsync()
     {
         int result = await QuotationService.CreateAsync(quotation);

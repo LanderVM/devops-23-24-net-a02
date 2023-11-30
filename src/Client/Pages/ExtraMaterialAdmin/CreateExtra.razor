@@ -1,0 +1,123 @@
+﻿@using shared.Equipment;
+@using Microsoft.AspNetCore.Components;
+@using Microsoft.AspNetCore.Components.Forms;
+@using FluentValidation;
+@inject IEquipmentService EquipmentService;
+<div style="width:600px;">
+<EditForm Model="@CreateEquipment" OnValidSubmit="CreateEquipmentAsync">
+<Blazored.FluentValidation.FluentValidationValidator/>
+
+        <MudTextField @bind-Value="CreateEquipment.Title" 
+                      For="@(() => CreateEquipment.Title)"
+                      Immediate="true"
+                      Label="Titel" 
+                      Variant="Variant.Outlined"/>
+
+        <MudNumericField @bind-Value="CreateEquipment.Price"
+        Class="mt-3"
+        Label="Prijs" 
+        For="@(() => CreateEquipment.Price)" 
+        Variant="Variant.Outlined" 
+        Step="0.01M" 
+        Min="0.0M" />
+
+        <MudNumericField @bind-Value="CreateEquipment.Stock"
+                         Class="mt-3"
+        Label="Stock" 
+        For="@(() => CreateEquipment.Stock)" 
+        Variant="Variant.Outlined" 
+        Step="1" 
+        Min="0" />
+
+        <MudText Class="mt-5 mb-1" Typo="Typo.body2">Onderscheid je attributen in de text met een ";"</MudText>
+        
+        <MudTextField @bind-Value="CreateEquipment.Attributes"
+                      For="@(() => CreateEquipment.Attributes)"
+                      Label="Attributen"
+                      Variant="Variant.Outlined" 
+                      Lines="3"
+                      />
+        <MudGrid Class="mt-2 mb-2">
+            <MudItem xs ="12">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroupFileAddon01">Upload afbeelding</span>
+                    </div>
+                    <div class="custom-file">
+                        <InputFile class="custom-file-input" accept="image/*" OnChange="@LoadImage"></InputFile>
+                    </div>
+                </div>
+            </MudItem>
+            
+        </MudGrid>
+        <MudGrid Class="mt-6">
+            <MudItem xs="1">
+
+            </MudItem>
+            <MudItem xs="5">
+                <MudButton Class="mr-1" Variant="Variant.Filled" FullWidth="true" Color="Color.Primary" ButtonType="ButtonType.Submit">Voeg Item toe</MudButton>
+            </MudItem>
+            <MudItem xs="5">
+                <MudButton Class="ml-1" Variant="Variant.Filled" FullWidth="true" Color="Color.Primary" OnClick="Close">Annuleren</MudButton>
+            </MudItem>
+            <MudItem xs="1">
+
+            </MudItem>
+        </MudGrid>
+
+</EditForm>
+</div>
+
+
+@code {
+
+    [Parameter]
+    public EventCallback Close { get; set; } = default!;
+    [Parameter]
+    public EventCallback Refresh { get; set; } = default!;
+
+    private IBrowserFile image;
+
+    //private int AmountOfAttributes { get; set; } = 2;
+
+    private string Attributes { get; set; } = default!;
+
+    private EquipmentDto.Create CreateEquipment { get; set; } = new EquipmentDto.Create();
+
+    /*
+    private void AddAttribute()
+    {
+        AmountOfAttributes += 1;    
+    }*/
+
+    protected override void OnInitialized()
+    {
+        //CreateEquipment.Attributes = new List<string> { "",""};
+        CreateEquipment.ImageData = new EquipmentDto.ImageData
+            {
+                ImageUrl = "https://via.placeholder.com/350x300",
+                AltText = "placeholder txt",
+            };
+    }
+
+    private async Task CreateEquipmentAsync()
+    {
+        
+
+        await EquipmentService.CreateAsync(CreateEquipment);
+        await Close.InvokeAsync();
+        await Refresh.InvokeAsync();
+        
+    }
+
+    private void Cancel()
+    {
+        Close.InvokeAsync();
+    }
+
+
+    private void LoadImage(InputFileChangeEventArgs e)
+    {
+        image = e.File;
+    }
+}

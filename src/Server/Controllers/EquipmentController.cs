@@ -25,5 +25,42 @@ public class EquipmentController : ControllerBase
     
     return await _equipmentService.GetIndexAsync();
   }
+
+  /*
+  [HttpGet("{equipmentId}")]
+  [SwaggerOperation("Returns a specific equipment based on id.")]
+  public async Task<EquipmentDto.Index> GetSpecificEquipmentIndex(int equipmentId)
+  {
+    return await _equipmentService.GetSpecificIndexAsync(equipmentId);
+  }*/
+  [HttpGet("{equipmentId}")]
+  [SwaggerOperation("Returns a specific equipment based on id.")]
+  public async Task<EquipmentDto.Mutate> GetSpecificEquipmentMutate(int equipmentId)
+  {
+    return await _equipmentService.GetSpecificMutateAsync(equipmentId);
+  }
+
+  [SwaggerOperation("Edites an equipment item in the catalog.")]
+  [HttpPut("{equipmentId}")]
+  public async Task<IActionResult> Edit(int equipmentId, EquipmentDto.Mutate model)
+  {
+    await _equipmentService.UpdateAsync(equipmentId, model);
+    return NoContent();
+  }
+  [SwaggerOperation("Deletes equipment item from catalog.")]
+  [HttpDelete("{equipmentId}")]
+  public async Task<int> Delete(int equipmentId)
+  {
+    int id = await _equipmentService.DeleteAsync(equipmentId);
+    return id;
+  }
+
+  [SwaggerOperation("Creates equipment and adds it to the catalog.")]
+  [HttpPost]
+  public async Task<int> Create(EquipmentDto.Create model)
+  {
+    int id = await _equipmentService.CreateAsync(model);
+    return id;
+  }
 }
 

@@ -1,0 +1,125 @@
+﻿@page "/extramaterial-admin"
+@using shared.Equipment
+
+<PageTitle>Aanpassen extra's'</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.Large">
+    <MudGrid Justify="Justify.SpaceEvenly">
+        <MudItem lg="1" md="1" sm="12" xs="12">
+
+        </MudItem>
+        <MudItem lg="4" md="5" sm="12" xs="12">
+            <MudText Class="mt-6" Typo="Typo.h4">Overzicht extra materiaal</MudText>
+        </MudItem>
+        <MudItem lg="7" md="6" sm="12" xs="12">
+
+        </MudItem>
+        <MudItem lg="1" md="12" sm="12" xs="12">
+
+        </MudItem>
+        <MudItem lg="10" md="12" sm="12" xs="12">
+            <MudGrid>
+                @if (Extras is null)
+                {
+                    <MudText>Loading...</MudText>
+                }
+                else
+                {
+                    @foreach (EquipmentDto.Index item in Extras)
+                    {
+                        <MudItem lg="3" md="4" sm="6" xs="12">
+                            <ExtraItemsAdminCard EquipmentId="@item.Id"
+                                            ImageUrl="@item.ImageData.ImageUrl"
+                                            Title="@item.Title"
+                                            Attributes="@item.Attributes"
+                                            Stock="@item.Stock"
+                                            Price="@item.Price"
+                                            UpdateItem="UpdateItem"
+                                            RefreshOverviewPage="Refresh">
+                            </ExtraItemsAdminCard>
+                        </MudItem>
+                    }
+                }
+            </MudGrid>
+        </MudItem>
+        <MudItem lg="1" md="12" sm="12" xs="12">
+
+        </MudItem>
+        <MudItem lg="8" md="8" sm="5" xs="5">
+
+        </MudItem>
+            <MudItem lg="3" md="3" sm="7" xs="7">
+                <MudButton OnClick="AddItem" Class="mb-6" Variant="Variant.Filled" Color="Color.Primary">Extra item toevoegen</MudButton>
+            </MudItem>
+            <MudItem lg="1" md="1" sm="12" xs="12">
+
+            </MudItem>
+    </MudGrid>
+</MudContainer>
+
+@code {
+    [Inject]
+    public IEquipmentService EquipmentService { get; set; } = default!;
+
+    private IEnumerable<EquipmentDto.Index>? Extras = default!;
+
+    private bool Loading { get; set; } = true;
+
+    [Inject] ISidepanelService Sidepanel { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        EquipmentResult.Index response = await EquipmentService.GetIndexAsync();
+
+        Extras = response.Equipment;
+
+        Loading = false;
+
+    }
+
+    private void UpdateItem(object equipmentId)
+    {
+        var callback1 = EventCallback.Factory.Create(this, Close);
+        var callback2 = EventCallback.Factory.Create(this, Refresh);
+
+        int equipmentId2 = (int)equipmentId;
+
+        var parameters = new Dictionary<string, object>
+        {
+            {nameof(EditExtra.Close),callback1 },
+            {nameof(EditExtra.Refresh),callback2 },
+            { nameof(EditExtra.EquipmentId),equipmentId2},
+        };
+
+        Sidepanel.Open<EditExtra>("Extra item", "updaten", parameters);
+    }
+
+    private void AddItem()
+    {
+        var callback1 = EventCallback.Factory.Create(this, Close);
+        var callback2 = EventCallback.Factory.Create(this, Refresh);
+
+        var parameters = new Dictionary<string,object>
+        {
+            {nameof(CreateExtra.Close),callback1 },
+            {nameof(CreateExtra.Refresh),callback2 },
+        };
+
+        Sidepanel.Open<CreateExtra>("Extra item","toevoegen",parameters);
+    }
+    private void Close()
+    {
+        Sidepanel.Close();    
+    }
+    private async Task Refresh()
+    {
+        Loading = true;
+
+        EquipmentResult.Index response = await EquipmentService.GetIndexAsync();
+
+        Extras = response.Equipment;
+
+        Loading = false;
+        StateHasChanged();    
+    }
+}
