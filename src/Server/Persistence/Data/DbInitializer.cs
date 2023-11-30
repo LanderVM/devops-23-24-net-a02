@@ -70,9 +70,18 @@ public static class DbInitializer
       new BillingAddress("Korte Noordsstraat", "292", "Uitkerke", "8370"), new PhoneNumber("0479894230"), null);
     var customers = new[] { cust1, cust2 };
 
-    // Event locations for Quotations
     var eventLoc1 = new EventLocation("Rue de Bouillon", "52", "Grimbergen", "1850");
     var eventLoc2 = new EventLocation("Rue de Bouillon", "52", "Grimbergen", "1850");
+    var eventLoc3 = new EventLocation("Rue de Bouillon", "52", "Grimbergen", "1850");
+    var eventLoc4 = new EventLocation("Rue de Bouillon", "52", "Grimbergen", "1850");
+    var eventLoc5 = new EventLocation("Rue de Bouillon", "52", "Grimbergen", "1850");
+    var eventLoc6 = new EventLocation("Rue de Bouillon", "52", "Grimbergen", "1850");
+    var eventLoc7 = new EventLocation("Rue de Bouillon", "52", "Grimbergen", "1850");
+    var eventLoc8 = new EventLocation("Rue de Bouillon", "52", "Grimbergen", "1850");
+    var eventLoc9 = new EventLocation("Rue de Bouillon", "52", "Grimbergen", "1850");
+    var eventLoc10 = new EventLocation("Rue de Bouillon", "52", "Grimbergen", "1850");
+    var eventLoc11 = new EventLocation("Rue de Bouillon", "52", "Grimbergen", "1850");
+
 
     // Quotations
     var quote1 = new Quotation(formulas[0], customers[0], eventLoc1, new List<QuotationLine>(),
@@ -80,7 +89,29 @@ public static class DbInitializer
     var quote2 = new Quotation(formulas[2], customers[1], eventLoc2,
       new List<QuotationLine> { new(equipment[5], 30), new(equipment[8], 1), },
       DateTime.Today, DateTime.Today.AddDays(2));
-    var quotes = new[] { quote1, quote2 };
+    var quote3 = new Quotation(formulas[0], customers[0], eventLoc3, new List<QuotationLine>(),
+      DateTime.Today, DateTime.Today.AddDays(2));
+    var quote4 = new Quotation(formulas[0], customers[0], eventLoc4, new List<QuotationLine>(),
+      DateTime.Today, DateTime.Today.AddDays(2));
+    var quote5 = new Quotation(formulas[2], customers[1], eventLoc5,
+      new List<QuotationLine> { new(equipment[5], 30), new(equipment[8], 1), },
+      DateTime.Today, DateTime.Today.AddDays(2));
+    var quote6 = new Quotation(formulas[0], customers[0], eventLoc6, new List<QuotationLine>(),
+      DateTime.Today, DateTime.Today.AddDays(2));
+    var quote7 = new Quotation(formulas[0], customers[0], eventLoc7, new List<QuotationLine>(),
+      DateTime.Today, DateTime.Today.AddDays(2));
+    var quote8 = new Quotation(formulas[2], customers[1], eventLoc8,
+      new List<QuotationLine> { new(equipment[5], 30), new(equipment[8], 1), },
+      DateTime.Today, DateTime.Today.AddDays(2));
+    var quote9 = new Quotation(formulas[0], customers[0], eventLoc9, new List<QuotationLine>(),
+      DateTime.Today, DateTime.Today.AddDays(2));
+    var quote10 = new Quotation(formulas[2], customers[1], eventLoc10,
+      new List<QuotationLine> { new(equipment[5], 30), new(equipment[8], 1), },
+      DateTime.Today, DateTime.Today.AddDays(2));
+    var quote11 = new Quotation(formulas[0], customers[0], eventLoc11, new List<QuotationLine>(),
+      DateTime.Today, DateTime.Today.AddDays(2));
+    
+    var quotes = new[] { quote1, quote2, quote3, quote4, quote5, quote6, quote7, quote8, quote9, quote10, quote11};
 
     // Save to db
     context.Equipments.AddRange(equipment);

@@ -2,22 +2,22 @@
 
 public class PersonalDetailsState
 {
-  public string Naam { get; set; } = "";
-  public string Voornaam { get; set; } = "";
+  public string FirstName { get; set; } = "";
+  public string LastName { get; set; } = "";
   public string Email { get; set; } = "";
-  public string TelefoonNummer { get; set; } = "";
+  public string PhoneNumber { get; set; } = "";
 
-  public string Straat { get; set; } = "";
-  public string Huisnummer { get; set; } = "";
-  public string Gemeente { get; set; } = "";
-  public string Postcode { get; set; } = "";
+  public string Street { get; set; } = "";
+  public string Housenumber { get; set; } = "";
+  public string City { get; set; } = "";
+  public string PostalCode { get; set; } = "";
 
-  public string BtwNummer { get; set; } = "";
+  public string BtwNumber { get; set; } = "";
 
-  public string FacturatieStraat { get; set; } = "";
-  public string FacturatieHuisnummer { get; set; } = "";
-  public string FacturatieGemeente { get; set; } = "";
-  public string FacturatiePostcode { get; set; } = "";
+  public string BillingStreet { get; set; } = "";
+  public string BillingHouseNumber { get; set; } = "";
+  public string BillingCity { get; set; } = "";
+  public string BillingPostalCode { get; set; } = "";
 
   public bool SwitchValue { get; set; } = true;
 }

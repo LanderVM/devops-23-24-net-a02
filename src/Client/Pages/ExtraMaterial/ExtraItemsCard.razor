@@ -2,7 +2,7 @@
 
 <MudCard Style="height: 100%;">
     <div style="height: 100%; display: flex; flex-direction: column;">
-        <MudCardMedia Image=@ImageUrl Height="250"/>
+        <MudCardMedia Image=@ImageUrl Height="250" />
         <MudCardContent>
             <MudText Typo="Typo.h5" Class="mb-2">@Title</MudText>
             @foreach (string i in Attributes)
@@ -19,7 +19,7 @@
                     </MudItem>
                     <MudItem lg="6" md="6" sm="6" xs="6">
                         <MudIconButton Class="mt-1 mr-16" Icon="@Icons.Material.Filled.Delete" Variant="Variant.Filled" Color="Color.Error" Size="Size.Small"
-                                       OnClick="@(() => { ExtraMaterialState.ExtrasAmount[EquipmentId] = 0; })"/>
+                                       OnClick="@(() => { ExtraMaterialState.ExtrasAmount[EquipmentId] = 0; })" />
                     </MudItem>
                 }
             </MudGrid>

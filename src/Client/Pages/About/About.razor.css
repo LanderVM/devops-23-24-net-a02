@@ -1,9 +1,9 @@
 
-.meerInfoBtn{
+.moreInfoBtn {
     text-align: center;
 }
 
-img{
+img {
     padding-right: 10px;
     padding-bottom: 10px;
 }
@@ -11,91 +11,109 @@ img{
 
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
-    img{
-        width: 100%; height: 150px;
+    img {
+        width: 100%;
+        height: 150px;
     }
 
-    h4{
+    h4 {
         font-size: 20px;
     }
-    p{
+
+    p {
         font-size: 18px;
     }
+
     article {
         line-height: 20px;
         text-align: center;
     }
-    li{
+
+    li {
         margin-bottom: 6px;
         font-size: 18px;
     }
-    ul{
+
+    ul {
         margin-top: 12px;
     }
-    .imgLow{
-        width: 100%; height: 150px;
 
+    .imgLow {
+        width: 100%;
+        height: 150px;
     }
 }
 
 
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
-    img{
-        width: 100%; height: 250px;
+    img {
+        width: 100%;
+        height: 250px;
     }
-    h4{
+
+    h4 {
         font-size: 32px;
         margin-bottom: 10px;
     }
-    p{
+
+    p {
         font-size: 25px;
     }
-    article{
+
+    article {
         line-height: 30px;
         text-align: center;
-
     }
-    li{
+
+    li {
         margin-bottom: 12px;
         font-size: 25px;
     }
-    ul{
+
+    ul {
         margin-top: 15px;
     }
-    .imgLow{
-        width: 32%; height: 100px;
-    }
 
+    .imgLow {
+        width: 32%;
+        height: 100px;
+    }
 }
 
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
 @media only screen and (min-width: 1200px) {
 
-    img{
-        width: 100%; height: 350px;
+    img {
+        width: 100%;
+        height: 350px;
     }
-    h4{
+
+    h4 {
         font-size: 32px;
         margin-bottom: 10px;
     }
-    p{
+
+    p {
         font-size: 28px;
     }
-    article{
-        line-height: 35px;
 
+    article {
+        line-height: 35px;
     }
-    li{
+
+    li {
         margin-bottom: 18px;
         font-size: 28px;
     }
-    ul{
+
+    ul {
         margin-top: 20px;
     }
-    .imgLow{
-        width: 32%; height: 150px;
-    }
 
+    .imgLow {
+        width: 32%;
+        height: 150px;
+    }
 }

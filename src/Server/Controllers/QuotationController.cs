@@ -30,4 +30,11 @@ public class QuotationController : ControllerBase
       model.EventLocation, (model.Customer.FirstName + model.Customer.LastName));
     return CreatedAtAction(nameof(RegisterQuotationRequest), new QuotationResponse.Create { QuotationId = quotationId});
   }
+  
+  [HttpGet]
+  [SwaggerOperation("Gets a list of all the quotations")]
+  public async Task<QuotationResult.Index> GetQuotations()
+  {
+    return await _quotationService.GetIndexAsync();
+  }
 }

@@ -56,7 +56,7 @@
                 <MudSelect T="String" MultiSelection="true" Label="Materiaal" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter">
                     @foreach (EquipmentDto.Index item in Extras)
                     {
-                        <MudSelectItem T="String" Value="item.Title" />
+                        <MudSelectItem T="String" Value=@item.Title />
                     }
                 </MudSelect>
             </MudItem>
@@ -95,8 +95,6 @@
     public bool _showExtraItems { get; set; } = false;
 
     private SidepanelComponent sidepanel;
-    private DateRange _dateRange = new DateRange(DateTime.Now.Date, DateTime.Now.AddDays(3).Date);
-
 
     [Inject] public IFormulaService FormulaService { get; set; } = default!;
     private IEnumerable<FormulaDto.Index> Formulas;
@@ -119,20 +117,17 @@
             }
         }
 
-
         Formulas = response.Formulas;
 
         await Task.Delay(1000);
         ToggleOpen();
     }
 
-    // Pop-up
     public void ToggleOpen()
     {
         _isOpen = !_isOpen;
     }
 
-    // Sidesheet
     public void OpenSideSheet()
     {
         sidepanel.Open();
@@ -143,9 +138,8 @@
         sidepanel.Close();
     }
 
-    // Navigate
     private void ToFormulas()
     {
-        NavigationManager.NavigateTo("/formulas");
+        NavigationManager.NavigateTo(Routes.Formula);
     }
 }

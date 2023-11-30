@@ -3,28 +3,28 @@
 
 <div style="display: flex; flex-direction: column;">
 
-    <MudPaper Square="true" Style="background-color: #E5D8C1; margin-top: auto;">
+    <MudPaper Square="true" Style="background-color: #E5D8C1;">
         <MudContainer MaxWidth="MaxWidth.ExtraLarge">
             <MudGrid Justify="Justify.SpaceEvenly" Spacing="5" Style="margin-bottom: 0; display: flex; align-items:center; justify-content: center">
-            <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="true">
+                <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="true">
                     <MudItem lg="2" md="2" xs="12" Style="padding-top: 30px; padding-bottom: 10px; mix-blend-mode: multiply;">
-                    <img src="images/foodtruck.jpg" alt="foodtruck" width="120px">
+                        <img src="images/foodtruck.jpg" alt="foodtruck" width="120px">
+                    </MudItem>
+                </MudHidden>
+
+                <MudItem lg="8" md="8" xs="12" Style="text-align: center;">
+                    <MudLink Typo="Typo.subtitle1" Color="Color.Dark" Href=@Routes.Formula Style="margin-right: 4vw">Formules</MudLink>
+                    <MudLink Typo="Typo.subtitle1" Color="Color.Dark" Href=@Routes.Home Style="margin-right: 4vw">Producten</MudLink>
+                    <MudLink Typo="Typo.subtitle1" Color="Color.Dark" Href=@Routes.About Style="margin-right: 4vw">Over Ons</MudLink>
+                    <AccessControl />
                 </MudItem>
-            </MudHidden>
 
-            <MudItem lg="8" md="8" xs="12" Style="text-align: center;">
-                <MudLink Typo="Typo.subtitle1" Color="Color.Dark" Href="/formulas" Style="margin-right: 4vw">Formules</MudLink>
-                <MudLink Typo="Typo.subtitle1" Color="Color.Dark" Href="/" Style="margin-right: 4vw">Producten</MudLink>
-                <MudLink Typo="Typo.subtitle1" Color="Color.Dark" Href="/OverOns" Style="margin-right: 4vw">Over Ons</MudLink>
-                <AccessControl />
-            </MudItem>
                 <MudItem lg="2" md="2" xs="12" Style="text-align: center;">
-                <MudIcon Icon="@Icons.Custom.Brands.Gmail" Title="Mail"/>
-                <MudIcon Icon="@Icons.Custom.Brands.Facebook" Title="Facebook"/>
-                <MudIcon Icon="@Icons.Custom.Brands.Instagram" Title="Instagram"/>
-            </MudItem>
-        </MudGrid>
-    </MudContainer>
-</MudPaper>
+                    <MudIcon Icon="@Icons.Custom.Brands.Gmail" Title="Mail" />
+                    <MudIcon Icon="@Icons.Custom.Brands.Facebook" Title="Facebook" />
+                    <MudIcon Icon="@Icons.Custom.Brands.Instagram" Title="Instagram" />
+                </MudItem>
+            </MudGrid>
+        </MudContainer>
+    </MudPaper>
 </div>
-

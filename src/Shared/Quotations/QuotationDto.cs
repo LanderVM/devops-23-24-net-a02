@@ -1,10 +1,19 @@
-﻿using FluentValidation;
+﻿using Domain.Customers;
+using FluentValidation;
 using Shared.Common;
 
 namespace Shared.Quotations;
 
 public static class QuotationDto
 {
+
+  public class Index
+  {
+    public int QuotationId { get; set; }
+    public CustomerDto.Index Customer { get; set; }
+    public String CreatedAt { get; set; }
+    
+  }
   public class Create
   {
     public int FormulaId { get; set; }

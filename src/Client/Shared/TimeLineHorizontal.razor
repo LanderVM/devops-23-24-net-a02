@@ -1,4 +1,4 @@
-﻿@if (@step == 1)
+﻿@if (step == 1)
 {
     <MudTimeline TimelineOrientation="TimelineOrientation.Horizontal" TimelinePosition="TimelinePosition.Bottom">
         <MudTimelineItem Color=Color.Primary Size="Size.Large" Variant="Variant.Filled">
@@ -27,7 +27,7 @@
         </MudTimelineItem>
     </MudTimeline>
 }
-else if (@step == 2)
+else if (step == 2)
 {
     <MudTimeline TimelineOrientation="TimelineOrientation.Horizontal" TimelinePosition="TimelinePosition.Bottom">
         <MudTimelineItem Color=Color.Primary Size="Size.Large" Variant="Variant.Filled">
@@ -55,7 +55,8 @@ else if (@step == 2)
             </ItemContent>
         </MudTimelineItem>
     </MudTimeline>
-} else if (@step==3)
+}
+else if (step == 3)
 {
     <MudTimeline TimelineOrientation="TimelineOrientation.Horizontal" TimelinePosition="TimelinePosition.Bottom">
         <MudTimelineItem Color=Color.Primary Size="Size.Large" Variant="Variant.Filled">

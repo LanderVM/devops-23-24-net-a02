@@ -3,14 +3,17 @@
         <p id="navBarText">Blanche</p>
         <MudSpacer />
         <div class="nav-items">
-            <NavLink href="/">
+            <NavLink href=@Routes.Home>
                 <p class="appBarNavItem">Home</p>
             </NavLink>
-            <NavLink href="/formulas">
+            <NavLink href=@Routes.Formula>
                 <p class="appBarNavItem">Verhuur</p>
             </NavLink>
-            <NavLink href="/OverOns">
+            <NavLink href=@Routes.About>
                 <p class="appBarNavItem">Over ons</p>
+            </NavLink>
+            <NavLink href="/offertes">
+                <p class="appBarNavItem">Offertes</p>
             </NavLink>
         </div>
     </MudAppBar>
