@@ -9,10 +9,4 @@ public static class QuotationResult
 
     public int TotalAmount { get; set; }
   }
-
-  public class Create
-  {
-    public int QuotationId { get; set; }
-    public string UploadUri { get; set; } = default!;
-  }
 }

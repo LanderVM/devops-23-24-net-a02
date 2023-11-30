@@ -32,7 +32,7 @@ public class QuotationController : ControllerBase
   }
   
   [HttpGet]
-  [SwaggerOperation("Gets a list of all the quotations")] 
+  [SwaggerOperation("Gets a list of all the quotations")]
   public async Task<QuotationResult.Index> GetQuotations()
   {
     return await _quotationService.GetIndexAsync();

@@ -13,10 +13,9 @@ public class QuotationService : IQuotationService
     this.client = client;
   }
 
-  public async Task<int> CreateAsync(QuotationDto.Create request)
+  public async Task<int> CreateAsync(QuotationDto.Create model)
   {
-    var response = await client.PostAsJsonAsync(endpoint,request);
-    return await response.Content.ReadFromJsonAsync<int>();
+    throw new NotImplementedException();
   }
 
   public async Task<QuotationResult.Index> GetIndexAsync()
