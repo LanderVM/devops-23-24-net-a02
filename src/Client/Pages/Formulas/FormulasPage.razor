@@ -31,7 +31,7 @@
                         {
                             <MudItem xs="4">
                                 <FormulaCard BackgroundColor="#EBEBEB"
-                                             Titel=@item.Title
+                                             Title=@item.Title
                                              Click=@(() =>{ FormulaState.ChosenFormulaId = item.Id; FormulaState.Title = item.Title; FormulaState.Attributes = item.Attributes; FormulaState.PricePerDayExtra = item.PricePerDayExtra; FormulaState.BasePrice = item.BasePrice; NavigateToEventdetails(); })
                                              MarginTop="mt-16"
                                              Attributes=@item.Attributes>
