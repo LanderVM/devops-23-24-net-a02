@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using Domain.Common;
 using Domain.Customers;
 using Domain.Formulas;
@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using shared.Equipment;
 using shared.Formulas;
 using Shared.Common;
+using Shared.Customer;
 using Shared.Quotations;
 
 

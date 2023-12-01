@@ -1,4 +1,5 @@
-﻿using devops_23_24_net_a02.Shared.DTOs;
+﻿
+using devops_23_24_net_a02.Shared.Emails;
 using FluentValidation;
 using Shared.Common;
 
@@ -7,6 +8,12 @@ namespace Shared.Customer;
 public static class CustomerDto
 {
   public class Index
+  {
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public String Email { get; set; } = default!;
+  }
+  public class Details
   {
     public int Id { get; set; }
     public string FirstName { get; set; }

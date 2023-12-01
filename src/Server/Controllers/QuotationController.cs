@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Shared.Quotations;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -27,7 +27,8 @@ public class QuotationController : ControllerBase
   [SwaggerOperation("Calculates a estimate on how much a offer would cost")]
   public async Task<decimal> GetEstimatedQuotationPrice([FromQuery] QuotationDto.Estimate model)
   {
-    return await _quotationService.GetPriceEstimationPrice(model);
+    //return await _quotationService.GetPriceEstimationPrice(model);
+    throw new NotImplementedException();
   }
 
   [HttpPost]

@@ -1,4 +1,4 @@
-using Domain.Customers;
+﻿using Domain.Customers;
 using FluentValidation;
 using shared.Equipment;
 using shared.Formulas;

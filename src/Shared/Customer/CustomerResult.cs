@@ -6,7 +6,7 @@ public abstract class CustomerResult
 {
     public class Index
     {
-        public IEnumerable<CustomerDto.Index>? Customers { get; set; }
+        public IEnumerable<CustomerDto.Details>? Customers { get; set; }
         public int TotalAmount { get; set; }
     }
 }

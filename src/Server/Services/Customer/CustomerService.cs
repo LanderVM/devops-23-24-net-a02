@@ -36,7 +36,7 @@ public class CustomerService : ICustomerService
        .Skip((request.Page - 1) * request.PageSize)
        .Take(request.PageSize)
        .OrderBy(x => x.Id)
-       .Select(x => new CustomerDto.Index
+       .Select(x => new CustomerDto.Details
        {
          Id = x.Id,
          FirstName = x.FirstName,

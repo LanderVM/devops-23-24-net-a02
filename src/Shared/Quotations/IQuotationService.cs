@@ -1,8 +1,8 @@
-namespace Shared.Quotations;
+﻿namespace Shared.Quotations;
 
 public interface IQuotationService
 {
   Task<int> CreateAsync(QuotationDto.Create model);
-  public Task<QuotationDto.Details> GetPriceEstimationDetails();
+  Task<QuotationDto.Details> GetPriceEstimationDetails();
   Task<QuotationResult.Index> GetIndexAsync();
 }

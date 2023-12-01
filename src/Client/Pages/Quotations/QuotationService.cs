@@ -23,4 +23,11 @@ public class QuotationService : IQuotationService
     var response = await client.GetFromJsonAsync<QuotationResult.Index>(endpoint);
     return response;
   }
+
+  public async Task<QuotationDto.Details> GetPriceEstimationDetails()
+  {
+    /*var response = await client.GetFromJsonAsync<QuotationResult.Details>($"{endpoint}/priceEstimation");
+    return response;*/
+    throw new NotImplementedException();
+  }
 }

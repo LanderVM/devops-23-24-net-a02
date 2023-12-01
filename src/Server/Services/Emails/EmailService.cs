@@ -1,5 +1,6 @@
-using Api.Data;
+﻿using Api.Data;
 using devops_23_24_net_a02.Shared.Emails;
+using Domain.Common;
 using Domain.Customers;
 using Microsoft.Extensions.Options;
 
