@@ -36,7 +36,7 @@
 
         <MudItem lg="4" md="10" sm="12" Style="max-width: 500px">
             <GoogleMap @ref="@Map" Id="map1" Options="@_options" Height="410px" OnAfterInit="async () => await OnAfterMapInit()"></GoogleMap>
-            <MudTextField @ref="_addressSearch" Class="ml-16 mr-16 mb-4 pt-2" Label="Adres" Variant="Variant.Outlined" T="string" ErrorText="Gelieve een volledig adres in te geven" Error="@AddressError" />
+            <MudTextField @ref="_addressSearch" Class="ml-16 mr-16 mb-4 pt-2" Label="Adres" Variant="Variant.Outlined" T="string" ErrorText="Gelieve een volledig adres in te geven" Error="@addressError" TextChanged="@(()=>{addressError=false;})" />
         </MudItem>
         <MudItem lg="4" md="10" sm="12" Style="max-width: 770px">
             <MudDateRangePicker Color="Color.Primary"
@@ -78,7 +78,7 @@
 
 
 @code {
-    private bool AddressError = false;
+    private bool addressError = false;
     private bool hasValidAdress = false;
 
     private List<DateTime> DateTimes { get; set; } = new List<DateTime>();
@@ -89,7 +89,15 @@
 
     private void ClickNext()
     {
-        NavigationManager.NavigateTo(Routes.PersonalDetails);
+        if (hasValidAdress)
+        {
+            addressError = false;
+            NavigationManager.NavigateTo(Routes.PersonalDetails);
+        } else
+        {
+            addressError = true; 
+        }
+
     }
 
     protected override async Task OnInitializedAsync()
@@ -141,6 +149,8 @@
 
         await _autocomplete.AddListener("place_changed", async () =>
         {
+            //addressError = false;
+
             PlaceResult place = await _autocomplete.GetPlace();
             //Console.WriteLine("size adrscomp:" + place.AddressComponents.Count());
 
@@ -165,15 +175,15 @@
             }
             
             if (place.AddressComponents is not null)
-                {
+            {
                     if (place.AddressComponents.Count() < 7)
-                        {
-                            AddressError = true;
-                        } else
-                            {
-                                AddressError = false;
-                            }
-                }
+                    {
+                            hasValidAdress = false;
+                    } else
+                    {
+                                hasValidAdress = true;
+                    }
+            }
             
             
             else if (place.Geometry.Viewport is not null)
