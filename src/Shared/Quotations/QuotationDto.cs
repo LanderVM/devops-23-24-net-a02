@@ -1,6 +1,9 @@
-﻿using Domain.Customers;
+using Domain.Customers;
 using FluentValidation;
+using shared.Equipment;
+using shared.Formulas;
 using Shared.Common;
+using Shared.Customer;
 
 namespace Shared.Quotations;
 
@@ -22,6 +25,24 @@ public static class QuotationDto
     public DateTime EndTime { get; set; }
     public CustomerDto.Create Customer { get; set; }
     public bool IsTripelBier { get; set; }
+  }
+
+  public class Estimate
+  {
+    public int FormulaId { get; set; }
+    public AddressDto? EventLocation { get; set; } = default!;
+    public List<int>? EquipmentIds { get; set; } = default!;
+    public DateTime StartTime { get; set; }
+    public DateTime EndTime { get; set; }
+    public int EstimatedNumberOfPeople { get; set; }
+    public bool IsTripelBier { get; set; }
+  }
+
+  public class Details
+  {
+    public IEnumerable<FormulaDto.Select> Formulas { get; set; } = default!;
+    public IEnumerable<EquipmentDto.Select> Equipment { get; set; } = default!;
+    public IEnumerable<DateDto> UnavailableDates { get; set; } = default!;
   }
 
   public class Validator : AbstractValidator<Create>

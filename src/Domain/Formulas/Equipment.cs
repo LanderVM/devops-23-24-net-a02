@@ -5,8 +5,8 @@ namespace Domain.Formulas;
 public class Equipment : Entity
 {
   private decimal _price;
-
   private int _stock;
+
   private Equipment() { } // EF Core constructor
 
   public Equipment(string title, List<string> description, decimal price, int stock)
@@ -15,6 +15,12 @@ public class Equipment : Entity
     Price = price;
     Stock = stock;
   }
+  public Equipment(decimal price)
+  {
+    // Description = new Description(title, description);
+    Price = price;
+  }
+
 
   public List<Formula> Formulas { get; set; } = default!;
 

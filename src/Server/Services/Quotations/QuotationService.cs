@@ -1,7 +1,12 @@
-﻿using Domain.Common;
+using System.Linq;
+using Domain.Common;
 using Domain.Customers;
+using Domain.Formulas;
 using Domain.Quotations;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using shared.Equipment;
+using shared.Formulas;
 using Shared.Common;
 using Shared.Quotations;
 
@@ -125,5 +130,88 @@ public class QuotationService : IQuotationService
            && customerFromDb.BillingAddress.HouseNumber == model.Customer.BillingAddress.HouseNumber
            && customerFromDb.BillingAddress.PostalCode == model.Customer.BillingAddress.PostalCode
            && customerFromDb.BillingAddress.City == model.Customer.BillingAddress.City;
+  }
+
+  public async Task<QuotationDto.Details> GetPriceEstimationDetails()
+  {
+    var queryFormulas = _dbContext.Formulas.AsQueryable();
+
+    IEnumerable<FormulaDto.Select> itemsFormulas = await queryFormulas.OrderBy(x => x.Id).Select(
+      x => new FormulaDto.Select
+      {
+        Id = x.Id,
+        Title = x.Description.Title,
+      }
+      ).ToListAsync();
+
+
+    var queryEquipment = _dbContext.Equipments.AsQueryable();
+
+    IEnumerable<EquipmentDto.Select> itemsEquipment = await queryEquipment.OrderBy(x => x.Id).Select(
+      x => new EquipmentDto.Select
+      {
+        Id = x.Id,
+        Title = x.Description.Title,
+      }
+      ).ToListAsync();
+
+
+    var queryDates = _dbContext.Quotations.AsQueryable();
+
+    IEnumerable<DateDto> unavailableDates = await queryDates.OrderBy(x => x.StartTime).Select(
+      x => new DateDto
+      {
+        StartTime = x.StartTime.Ticks,
+        EndTime = x.EndTime.Ticks
+      }
+      ).ToListAsync();
+
+    var result = new QuotationDto.Details
+    {
+      Formulas = itemsFormulas,
+      Equipment = itemsEquipment,
+      UnavailableDates = unavailableDates,
+    };
+
+    return result;
+  }
+
+  public async Task<QuotationDto.Estimate> GetPriceEstimationTest(QuotationDto.Estimate model)
+  {
+    return model;
+  }
+
+  public async Task<decimal> GetPriceEstimationPrice(QuotationDto.Estimate model)
+  {
+    decimal totalPrice = 0;
+
+    var chosenFormula = _dbContext.Formulas.FirstOrDefault(formula => formula.Id == model.FormulaId);
+    if (chosenFormula is null)
+      throw new ArgumentException($"Formula with id {model.FormulaId} does not exist!");
+    if (chosenFormula.IsActive is false)
+      throw new ArgumentException($"Formula with id {chosenFormula.Id} is not active!"); var queryEquipment = _dbContext.Equipments.AsQueryable();
+
+    List<EquipmentDto.Index>? equipmentDtoQuery = new List<EquipmentDto.Index>();
+
+    if (model.EquipmentIds != null && model.EquipmentIds.Any())
+    {
+      equipmentDtoQuery = await queryEquipment
+          .Where(x => model.EquipmentIds.Contains(x.Id))
+          .Select(z => new EquipmentDto.Index
+          {
+            Id = z.Id,
+            Price = z.Price,
+          }).ToListAsync();
+    }
+
+    List<Equipment> equipmentList = new();
+    foreach (var item in equipmentDtoQuery)
+    {
+      Equipment equipment = new(item.Price);
+      equipmentList.Add(equipment);
+    }
+
+    Quotation quotation = new Quotation(new Formula(equipmentList), chosenFormula.Id, model.StartTime, model.EndTime, model.EstimatedNumberOfPeople, model.IsTripelBier) ;
+    return quotation.GetEstimatedPrice();
   }
 }
