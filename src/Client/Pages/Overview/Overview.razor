@@ -144,12 +144,23 @@
                 <MudItem xs="12">
                     @if (@Extras != null)
                     {
-                        <OverviewCostComponent Title="@FormulaState.Title"
-                                               PriceFormula="@GetPriceFormula()"
-                                               PriceFormulaWithBtw="@GetPriceFormulaWithBtw()"
-                                               TotalWithoutBtw="@BerekenTotaalZonderBtw()"
-                                               BtwOnTotal="BerekenBtwOpTotaal()"
-                                               TotalWithBtw="@(Decimal.Round(BerekenTotaalZonderBtw(), 2) + Decimal.Round(BerekenBtwOpTotaal(), 2))" />
+                        <MudHidden Breakpoint="Breakpoint.Xs" Invert="true">
+                            <OverviewCostSmallFontsizeComponent Title="@FormulaState.Title"
+                                                   PriceFormula="@GetPriceFormula()"
+                                                   PriceFormulaWithBtw="@GetPriceFormulaWithBtw()"
+                                                   TotalWithoutBtw="@BerekenTotaalZonderBtw()"
+                                                   BtwOnTotal="BerekenBtwOpTotaal()"
+                                                   TotalWithBtw="@(Decimal.Round(BerekenTotaalZonderBtw(), 2) + Decimal.Round(BerekenBtwOpTotaal(), 2))" />
+                        </MudHidden>
+                        <MudHidden Breakpoint="Breakpoint.Xs">
+                            <OverviewCostComponent Title="@FormulaState.Title"
+                                                   PriceFormula="@GetPriceFormula()"
+                                                   PriceFormulaWithBtw="@GetPriceFormulaWithBtw()"
+                                                   TotalWithoutBtw="@BerekenTotaalZonderBtw()"
+                                                   BtwOnTotal="BerekenBtwOpTotaal()"
+                                                   TotalWithBtw="@(Decimal.Round(BerekenTotaalZonderBtw(), 2) + Decimal.Round(BerekenBtwOpTotaal(), 2))" />
+                        </MudHidden>
+                        
                     }
                 </MudItem>
             </MudGrid>

@@ -54,7 +54,7 @@
                 {
                     <MudSwitch @bind-Checked="@EventDetailsState.HasTripleBeer" Label="Bestel trippel bier i.p.v. blond" Color="Color.Primary" UnCheckedColor="Color.Secondary" />
                 }
-                <MudTextField Class="d-inline-flex" @bind-Value="@EventDetailsState.NumberOfPeople" Label="Aantal Personen" />
+                <MudNumericField Class="d-inline-flex" @bind-Value="@EventDetailsState.NumberOfPeople" Label="Aantal Personen"Min="0" Max="50000" Error="@numberOfPeopleError" ErrorText="Gelieve een geldig nummer op te geven" />
             </div>
 
 
@@ -79,6 +79,7 @@
 
 @code {
     private bool addressError = false;
+    private bool numberOfPeopleError = false;
     private bool hasValidAdress = false;
 
     private List<DateTime> DateTimes { get; set; } = new List<DateTime>();
@@ -89,13 +90,25 @@
 
     private void ClickNext()
     {
-        if (hasValidAdress)
+        if (!hasValidAdress && EventDetailsState.NumberOfPeople == 0)
         {
+            addressError = true;
+            numberOfPeopleError = true;
+        }
+        else if (!hasValidAdress)
+        {
+            addressError = true;
+            numberOfPeopleError = false;
+        }
+        else if (EventDetailsState.NumberOfPeople == 0)
+        {
+            numberOfPeopleError = true;
             addressError = false;
-            NavigationManager.NavigateTo(Routes.PersonalDetails);
         } else
         {
-            addressError = true; 
+            numberOfPeopleError = false;
+            addressError = false;
+            NavigationManager.NavigateTo(Routes.PersonalDetails);
         }
 
     }
@@ -149,7 +162,6 @@
 
         await _autocomplete.AddListener("place_changed", async () =>
         {
-            //addressError = false;
 
             PlaceResult place = await _autocomplete.GetPlace();
             //Console.WriteLine("size adrscomp:" + place.AddressComponents.Count());
