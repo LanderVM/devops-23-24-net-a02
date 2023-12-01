@@ -241,11 +241,11 @@
         Console.WriteLine("initial price: "+initialPrice);
         if (FormulaState.ChosenFormulaId == 2)
         {
-            endPrice = initialPrice + (1.5M * EventDetailsState.NumberOfPeople);
+            endPrice = initialPrice + ((EventDetailsState.HasTripleBeer ? 3.0M : 1.5M) * EventDetailsState.NumberOfPeople);
         }
         else if (FormulaState.ChosenFormulaId == 3)
         {
-            endPrice = initialPrice + ((1.5M * EventDetailsState.NumberOfPeople) + (12.0M * EventDetailsState.NumberOfPeople));
+            endPrice = initialPrice + (((EventDetailsState.HasTripleBeer ? 3.0M : 1.5M) * EventDetailsState.NumberOfPeople) + (12.0M * EventDetailsState.NumberOfPeople));
         }
         else
         {
@@ -280,13 +280,13 @@
             int extraDays = amountOfDaysDiff - 2;
             initialPrice = FormulaState.PricePerDayExtra * extraDays + FormulaState.BasePrice[2];
         }
-        if (FormulaState.Title.Equals("Extended"))
+        if (FormulaState.ChosenFormulaId == 2)
         {
-            additionalPrice = (1.5M * EventDetailsState.NumberOfPeople);
+            additionalPrice = ((EventDetailsState.HasTripleBeer ? 3.0M : 1.5M) * EventDetailsState.NumberOfPeople);
         }
-        if (FormulaState.Title.Equals("All-in"))
+        if (FormulaState.ChosenFormulaId == 3)
         {
-            additionalPrice = ((1.5M * EventDetailsState.NumberOfPeople) + (12.0M * EventDetailsState.NumberOfPeople));
+            additionalPrice = (((EventDetailsState.HasTripleBeer ? 3.0M : 1.5M) * EventDetailsState.NumberOfPeople) + (12.0M * EventDetailsState.NumberOfPeople));
         }
         return ((initialPrice) + (initialPrice * 0.21M)) + ((additionalPrice) + (additionalPrice * 0.12M));
     }
@@ -320,11 +320,11 @@
         }
         if (FormulaState.Title.Equals("Extended"))
         {
-            additionalPrice = (1.5M * EventDetailsState.NumberOfPeople);
+            additionalPrice = ((EventDetailsState.HasTripleBeer ? 3.0M : 1.5M) * EventDetailsState.NumberOfPeople);
         }
         if (FormulaState.Title.Equals("All-in"))
         {
-            additionalPrice = ((1.5M * EventDetailsState.NumberOfPeople) + (12.0M * EventDetailsState.NumberOfPeople));
+            additionalPrice = (((EventDetailsState.HasTripleBeer ? 3.0M : 1.5M) * EventDetailsState.NumberOfPeople) + (12.0M * EventDetailsState.NumberOfPeople));
         }
 
         initialBtw = initialPrice * 0.21M;
