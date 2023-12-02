@@ -14,6 +14,15 @@
     color: black;
 }
 
+.appBarNavItemDropDown {
+    font-family: 'Source Sans Pro Bold', 'Arial Narrow', Arial, sans-serif;
+    font-size: 1.5em;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    margin-right: 10px;
+    color: black;
+}
+
 .nav-items {
     display: flex;
     gap: 20px;

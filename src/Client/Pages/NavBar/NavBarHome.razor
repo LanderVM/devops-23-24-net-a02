@@ -13,10 +13,36 @@
                 <NavLink href=@Routes.About>
                     <p class="appBarNavItem">Over ons</p>
                 </NavLink>
-                <NavLink href="/offertes">
-                    <p class="appBarNavItem">Offertes</p>
-                </NavLink>
+                <AuthorizeView>
+                <MudToggleIconButton @bind-Toggled="@_isOpen" Icon="@Icons.Material.Filled.ModeEdit" Color="Color.Tertiary" ToggledIcon="@Icons.Material.Filled.ModeEdit" ToggledColor="Color.Tertiary" />  
+
+                <MudPopover Open="@_isOpen" Fixed="true" Class="px-4 pt-4" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight">
+                    <div class="d-flex flex-column">
+                        <NavLink href=@Routes.Quotations @onclick="ToggleOpen">
+                            <p class="appBarNavItemDropDown">Offertes</p>
+                        </NavLink>
+                        <NavLink href=@Routes.ExtraMaterialAdmin  @onclick="ToggleOpen">
+                            <p class="appBarNavItemDropDown">Extra Items</p>
+                        </NavLink>
+                    </div>
+                </MudPopover>
+                </AuthorizeView>
+                
+                    
+                
             </div>
         </div>
     </MudContainer>
 </div>
+
+@code{
+    public bool _isOpen;
+
+    public void ToggleOpen()
+    {
+        if (_isOpen)
+            _isOpen = false;
+        else
+            _isOpen = true;
+    }
+}
