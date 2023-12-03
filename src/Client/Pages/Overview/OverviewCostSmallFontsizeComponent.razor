@@ -234,7 +234,9 @@
     [Parameter, EditorRequired]
     public decimal PriceFormula { get; set; }
     [Parameter]
-    public decimal TransportCost { get; set; }
+    public decimal PricePerKilometer { get; set; }
+    [Parameter]
+    public decimal AmountOfKilometers { get; set; }
     [Parameter, EditorRequired]
     public decimal TotalWithoutBtw { get; set; }
     [Parameter, EditorRequired]
