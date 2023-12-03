@@ -8,7 +8,6 @@ public static class EmailDto
   public class Create
   {
     public string Email { get; set; }
-    public string QuotationId { get; set; }
   }
 
   public class Validator : AbstractValidator<Create>

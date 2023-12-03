@@ -16,19 +16,18 @@ public class QuotationController : ControllerBase
     _logger = logger;
     _quotationService = quotationService;
   }
-  [HttpGet("/api/PriceEstimation/Details")]
+  [HttpGet("DetailsEstimation")]
   [SwaggerOperation("Returns all required data to set up the calculation for a quotation")]
-  public async Task<QuotationDto.Details> GetEstimatedQuotationDetails()
+  public async Task<QuotationResult.Detail> GetEstimatedQuotationDetails()
   {
-    return await _quotationService.GetPriceEstimationDetails();
+    return await _quotationService.GetPriceEstimationDetailsAsync();
   }
 
-  [HttpGet("/api/PriceEstimation/Calculate")]
+  [HttpGet("CalculateEstimation")]
   [SwaggerOperation("Calculates a estimate on how much a offer would cost")]
-  public async Task<decimal> GetEstimatedQuotationPrice([FromQuery] QuotationDto.Estimate model)
+  public async Task<decimal> GetEstimatedQuotationPrice([FromQuery] QuotationResponse.Estimate model)
   {
-    //return await _quotationService.GetPriceEstimationPrice(model);
-    throw new NotImplementedException();
+    return await _quotationService.GetPriceEstimationPrice(model);
   }
 
   [HttpPost]
@@ -44,7 +43,7 @@ public class QuotationController : ControllerBase
       model.EventLocation, (model.Customer.FirstName + model.Customer.LastName));
     return CreatedAtAction(nameof(RegisterQuotationRequest), new QuotationResponse.Create { QuotationId = quotationId});
   }
-  
+
   [HttpGet]
   [SwaggerOperation("Gets a list of all the quotations")]
   public async Task<QuotationResult.Index> GetQuotations()

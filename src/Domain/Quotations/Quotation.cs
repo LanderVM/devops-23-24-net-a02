@@ -64,7 +64,7 @@ public class Quotation : Entity
   }
   private decimal GetPriceDays()
   {
-    var days = (EndTime - StartTime).Days;
+    var days = (EndTime - StartTime).Days + 1;
     var hasExtraDays = days > 3;
 
     var basePrice = OriginalFormulaPricePerDay[hasExtraDays ? 2 : days - 1];
@@ -89,7 +89,7 @@ public class Quotation : Entity
     }
     else
     {
-      return GetPriceDays() ;
+      return GetPriceDays() + Formula.getPriceForEquipment();
     }
   }
 }

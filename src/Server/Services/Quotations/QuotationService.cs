@@ -133,7 +133,7 @@ public class QuotationService : IQuotationService
            && customerFromDb.BillingAddress.City == model.Customer.BillingAddress.City;
   }
 
-  public async Task<QuotationDto.Details> GetPriceEstimationDetails()
+  public async Task<QuotationResult.Detail> GetPriceEstimationDetailsAsync()
   {
     var queryFormulas = _dbContext.Formulas.AsQueryable();
 
@@ -167,7 +167,7 @@ public class QuotationService : IQuotationService
       }
       ).ToListAsync();
 
-    var result = new QuotationDto.Details
+    var result = new QuotationResult.Detail
     {
       Formulas = itemsFormulas,
       Equipment = itemsEquipment,
@@ -177,12 +177,7 @@ public class QuotationService : IQuotationService
     return result;
   }
 
-  public async Task<QuotationDto.Estimate> GetPriceEstimationTest(QuotationDto.Estimate model)
-  {
-    return model;
-  }
-
-  public async Task<decimal> GetPriceEstimationPrice(QuotationDto.Estimate model)
+  public async Task<decimal> GetPriceEstimationPrice(QuotationResponse.Estimate model)
   {
     decimal totalPrice = 0;
 
@@ -212,7 +207,7 @@ public class QuotationService : IQuotationService
       equipmentList.Add(equipment);
     }
 
-    Quotation quotation = new Quotation(new Formula(equipmentList), chosenFormula.Id, model.StartTime, model.EndTime, model.EstimatedNumberOfPeople, model.IsTripelBier) ;
+    Quotation quotation = new Quotation(new Formula(equipmentList), chosenFormula.Id, new DateTime(model.StartTime), new DateTime(model.EndTime), model.EstimatedNumberOfPeople, model.IsTripelBier) ;
     return quotation.GetEstimatedPrice();
   }
 }
