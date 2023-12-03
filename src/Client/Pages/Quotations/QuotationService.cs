@@ -28,7 +28,7 @@ public class QuotationService : IQuotationService
 
   public async Task<QuotationResult.Detail> GetPriceEstimationDetailsAsync()
   {
-    QuotationResult.Detail response = await client.GetFromJsonAsync<QuotationResult.Detail>($"{endpoint}/DetailsEstimation");
+    QuotationResult.Detail response = await client.GetFromJsonAsync<QuotationResult.Detail>($"{endpoint}/Estimation/Details");
     return response;
   }
 
@@ -51,7 +51,7 @@ public class QuotationService : IQuotationService
         queryString.Append($"&EquipmentIds={equipmentId}");
       }
     }
-    var response = await client.GetFromJsonAsync<decimal>($"{endpoint}/CalculateEstimation?{queryString}");
+    var response = await client.GetFromJsonAsync<decimal>($"{endpoint}/Estimation/Calculate?{queryString}");
 
     return response;
   }

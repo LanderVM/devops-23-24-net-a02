@@ -18,14 +18,14 @@ public class QuotationController : ControllerBase
     _logger = logger;
     _quotationService = quotationService;
   }
-  [HttpGet("DetailsEstimation")]
+  [HttpGet("Estimation/Details")]
   [SwaggerOperation("Returns all required data to set up the calculation for a quotation")]
   public async Task<QuotationResult.Detail> GetEstimatedQuotationDetails()
   {
     return await _quotationService.GetPriceEstimationDetailsAsync();
   }
 
-  [HttpGet("CalculateEstimation")]
+  [HttpGet("Estimation/Calculate")]
   [SwaggerOperation("Calculates a estimate on how much a offer would cost")]
   public async Task<decimal> GetEstimatedQuotationPrice([FromQuery] QuotationResponse.Estimate model)
   {
