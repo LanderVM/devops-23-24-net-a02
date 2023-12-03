@@ -2,6 +2,7 @@
 using Domain.Customers;
 using Domain.Formulas;
 using Domain.Quotations;
+using Microsoft.EntityFrameworkCore;
 
 namespace Api.Data;
 
@@ -9,6 +10,7 @@ public static class DbInitializer
 {
   public static void Initialize(BlancheDbContext context)
   {
+
     if (context.Formulas.Any()
         && context.Equipments.Any()
         && context.Customers.Any()

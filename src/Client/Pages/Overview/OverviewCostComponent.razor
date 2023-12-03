@@ -1,5 +1,7 @@
 ﻿@using shared.Equipment
 @inject ExtraMaterialState ExtraMaterialState
+@inject EventDetailsState EventDetailsState
+@inject FormulaState FormulaState
 
 <MudPaper Class="" Elevation="3" Style="background-color:#EDE7DB">
     <MudGrid>
@@ -56,6 +58,62 @@
                 @(Decimal.Round(PriceFormulaWithBtw, 2))
             </MudText>
         </MudItem>
+        @if (FormulaState.ChosenFormulaId!=1)
+        {
+            <MudItem lg="8" md="4" sm="4" xs="3">
+                <MudText Class="ml-6 mt-n4 mb-n4">
+                    Bier in formule
+                </MudText>
+            </MudItem>
+            <MudItem lg="1" md="2" sm="2" xs="2">
+                <MudText Class="ml-4 mt-n4 mb-n4">
+                    @(EventDetailsState.NumberOfPeople)
+                </MudText>
+            </MudItem>
+            <MudItem lg="1" md="2" sm="2" xs="2">
+                <MudText Class="mt-n4 mb-n4">
+                    @(Decimal.Round(EventDetailsState.HasTripleBeer? 3.0M:1.5M,2))
+                </MudText>
+            </MudItem>
+            <MudItem lg="1" md="2" sm="2" xs="2">
+                <MudText Class="mt-n4 mb-n4">
+                    12%
+                </MudText>
+            </MudItem>
+            <MudItem lg="1" md="2" sm="2" xs="3">
+                <MudText Class="mr-6 mt-n4 mb-n4">
+                    @(Decimal.Round((EventDetailsState.HasTripleBeer ? 3.0M : 1.5M) * EventDetailsState.NumberOfPeople, 2))
+                </MudText>
+            </MudItem>
+        }
+        @if (FormulaState.ChosenFormulaId == 3)
+        {
+            <MudItem lg="8" md="4" sm="4" xs="3">
+                <MudText Class="ml-6 mt-n4 mb-n4">
+                    Barbeque in formule
+                </MudText>
+            </MudItem>
+            <MudItem lg="1" md="2" sm="2" xs="2">
+                <MudText Class="ml-4 mt-n4 mb-n4">
+                    @(EventDetailsState.NumberOfPeople)
+                </MudText>
+            </MudItem>
+            <MudItem lg="1" md="2" sm="2" xs="2">
+                <MudText Class="mt-n4 mb-n4">
+                    @(12.00M)
+                </MudText>
+            </MudItem>
+            <MudItem lg="1" md="2" sm="2" xs="2">
+                <MudText Class="mt-n4 mb-n4">
+                    12%
+                </MudText>
+            </MudItem>
+            <MudItem lg="1" md="2" sm="2" xs="3">
+                <MudText Class="mr-6 mt-n4 mb-n4">
+                    @(Decimal.Round(12.0M * EventDetailsState.NumberOfPeople, 2))
+                </MudText>
+            </MudItem>
+        }
         @if (Extras != null)
         {
             @foreach (var item in ExtraMaterialState.ExtrasAmount)
@@ -187,7 +245,7 @@
     public decimal BtwOnTotal { get; set; }
     [Parameter, EditorRequired]
     public decimal TotalWithBtw { get; set; }
-
+   
     private IEnumerable<EquipmentDto.Index>? Extras = default!;
 
     protected override async Task OnInitializedAsync()
