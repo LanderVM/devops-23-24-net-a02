@@ -9,7 +9,7 @@ using shared.Equipment;
 using shared.Formulas;
 using Shared.Common;
 using Shared.Customer;
-using Shared.Quotations;
+using shared.Quotations;
 
 
 namespace Api.Data.Services.Quotations;
@@ -207,8 +207,9 @@ public class QuotationService : IQuotationService
       equipmentList.Add(equipment);
     }
 
-    Quotation quotation = new Quotation(new Formula(equipmentList), chosenFormula.Id, new DateTime(model.StartTime), new DateTime(model.EndTime), model.EstimatedNumberOfPeople, model.IsTripelBier) ;
+    Quotation quotation = new Quotation(new Formula(equipmentList), chosenFormula.Id, new DateTime(model.StartTime), new DateTime(model.EndTime), model.EstimatedNumberOfPeople, model.IsTripelBier);
     return quotation.GetEstimatedPrice();
+  }
   public async Task<List<DateTime>> GetDatesAsync()
   {
     var query = _dbContext.Quotations.AsQueryable();

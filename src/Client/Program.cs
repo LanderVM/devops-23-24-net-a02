@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using devops_23_24_net_a02.Client.Shared;
 using shared.Formulas;
 using devops_23_24_net_a02.Client.Pages.Formulas;
-using Shared.Quotations;
+using shared.Quotations;
 using devops_23_24_net_a02.Client.Pages.Quotations;
 using Append.Blazor.Sidepanel;
 

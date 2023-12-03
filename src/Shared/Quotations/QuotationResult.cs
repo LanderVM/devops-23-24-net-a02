@@ -2,7 +2,7 @@
 using shared.Equipment;
 using shared.Formulas;
 
-namespace Shared.Quotations;
+namespace shared.Quotations;
 
 public static class QuotationResult
 {

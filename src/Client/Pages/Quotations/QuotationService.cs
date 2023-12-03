@@ -1,7 +1,7 @@
 ﻿using System.Net.Http.Json;
 using System.Text;
 using devops_23_24_net_a02.Client.Extensions;
-using Shared.Quotations;
+using shared.Quotations;
 
 namespace devops_23_24_net_a02.Client.Pages.Quotations;
 
@@ -54,5 +54,11 @@ public class QuotationService : IQuotationService
     var response = await client.GetFromJsonAsync<decimal>($"{endpoint}/CalculateEstimation?{queryString}");
 
     return response;
+  }
+
+  public async Task<List<DateTime>> GetDatesAsync()
+  {
+    List<DateTime>? response = await client.GetFromJsonAsync<List<DateTime>>($"/dates");
+    return response!;
   }
 }

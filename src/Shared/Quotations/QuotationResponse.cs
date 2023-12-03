@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using Shared.Common;
 
-namespace Shared.Quotations;
+namespace shared.Quotations;
 
 public static class QuotationResponse
 {
