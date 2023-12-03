@@ -147,16 +147,16 @@
                         <MudHidden Breakpoint="Breakpoint.Xs" Invert="true">
                             <OverviewCostSmallFontsizeComponent Title="@FormulaState.Title"
                                                    PriceFormula="@GetPriceFormulaWithoutBeerAndBarbeque()"
-                                                   TotalWithoutBtw="@BerekenTotaalZonderBtw()"
-                                                   BtwOnTotal="BerekenBtwOpTotaal()"
-                                                   TotalWithBtw="@(Decimal.Round(BerekenTotaalZonderBtw(), 2) + Decimal.Round(BerekenBtwOpTotaal(), 2))" />
+                                                                TotalWithoutBtw="@CalculateTotalWithoutBtw()"
+                                                   BtwOnTotal="CalculateBtwOnTotal()"
+                                                                TotalWithBtw="@(Decimal.Round(CalculateTotalWithoutBtw(), 2) + Decimal.Round(CalculateBtwOnTotal(), 2))" />
                         </MudHidden>
                         <MudHidden Breakpoint="Breakpoint.Xs">
                             <OverviewCostComponent Title="@FormulaState.Title"
                                                    PriceFormula="@GetPriceFormulaWithoutBeerAndBarbeque()"
-                                                   TotalWithoutBtw="@BerekenTotaalZonderBtw()"
-                                                   BtwOnTotal="BerekenBtwOpTotaal()"
-                                                   TotalWithBtw="@(Decimal.Round(BerekenTotaalZonderBtw(), 2) + Decimal.Round(BerekenBtwOpTotaal(), 2))" />
+                                                   TotalWithoutBtw="@CalculateTotalWithoutBtw()"
+                                                   BtwOnTotal="CalculateBtwOnTotal()"
+                                                   TotalWithBtw="@(Decimal.Round(CalculateTotalWithoutBtw(), 2) + Decimal.Round(CalculateBtwOnTotal(), 2))" />
                         </MudHidden>
                         
                     }
@@ -176,7 +176,7 @@
 
         </MudItem>
         <MudItem lg="2" md="2" sm="7" xs="7">
-            <MudButton Class="mt-4 mb-4" Variant="Variant.Filled" Size="MudBlazor.Size.Large" Color="Color.Primary" OnClick="@ClickVolgende">Offerte aanvraag verzenden</MudButton>
+            <MudButton Class="mt-4 mb-4" Variant="Variant.Filled" Size="MudBlazor.Size.Large" Color="Color.Primary" OnClick="@ClickSend">Offerte aanvraag verzenden</MudButton>
         </MudItem>
     </MudGrid>
 
@@ -272,11 +272,11 @@
         }
     }
    
-    private decimal BerekenVervoersKosten()
+    private decimal CalculateTransportCost()
     {
         return 0M;
     }
-    private decimal BerekenTotaalZonderBtw()
+    private decimal CalculateTotalWithoutBtw()
     {
 
         decimal extrasKosten = 0M;
@@ -287,26 +287,26 @@
                 extrasKosten += (Extras.FirstOrDefault(x => x.Id == item.Key).Price * item.Value);
             }
         }
-        return BerekenVervoersKosten() + GetPriceFormulaWithoutBeerAndBarbeque()+GetPriceBeer()+GetPriceBarbeque() + extrasKosten;
+        return CalculateTransportCost() + GetPriceFormulaWithoutBeerAndBarbeque()+GetPriceBeer()+GetPriceBarbeque() + extrasKosten;
 
     }
-    private decimal BerekenBtwOpTotaal()
+    private decimal CalculateBtwOnTotal()
     {
-        decimal extrasKostenBtw = 0M;
+        decimal extrasCostBtw = 0M;
 
         foreach (var item in ExtraMaterialState.ExtrasAmount)
         {
             if (item.Value != 0)
             {
-                extrasKostenBtw += ((Extras.FirstOrDefault(x => x.Id == item.Key).Price * item.Value) * 0.21M);
+                extrasCostBtw += ((Extras.FirstOrDefault(x => x.Id == item.Key).Price * item.Value) * 0.21M);
             }
         }
-        return (BerekenVervoersKosten() * 0.21M) + (GetPriceFormulaWithoutBeerAndBarbeque() * 0.21M) + (GetPriceBeer() * 0.12M) + (GetPriceBarbeque()*0.12M) + extrasKostenBtw;
+        return (CalculateTransportCost() * 0.21M) + (GetPriceFormulaWithoutBeerAndBarbeque() * 0.21M) + (GetPriceBeer() * 0.12M) + (GetPriceBarbeque()*0.12M) + extrasCostBtw;
     }
 
 
 
-    private void ClickVolgende()
+    private void ClickSend()
     {
 
     }
