@@ -55,7 +55,7 @@
                         <MudItem xs="7">
                             <MudPaper Class="ma-1" Elevation="3" Style="background-color:#EDE7DB">
                                 <MudText Class="mt-1 ml-3">Locatie</MudText>
-                                <MudText Class="ml-3">@EventDetailsState.Address</MudText>
+                                <MudText Class="ml-3">@EventDetailsState.FormattedAddress</MudText>
                             </MudPaper>
                         </MudItem>
                         <MudHidden Breakpoint="Breakpoint.MdAndUp">
@@ -69,37 +69,38 @@
                             <MudItem xs="12">
                                 <MudText Typo="Typo.h5" Class="ml-3">Contact en facturatie gegevens</MudText>
                             </MudItem>
+                            
                             <MudItem xs="12">
                                 <MudPaper Class="ma-1" Elevation="3" Style="background-color:#EDE7DB">
                                     <MudText Class="mt-1 ml-3">Naam</MudText>
-                                    <MudText Class="ml-3">@(@PersonalDetailsState.LastName + " " + PersonalDetailsState.FirstName)</MudText>
+                                    <MudText Class="ml-3">@(@PersonalDetailsState.PersonalDetailsObject.LastName + " " + PersonalDetailsState.PersonalDetailsObject.FirstName)</MudText>
                                 </MudPaper>
                             </MudItem>
                             <MudItem xs="12">
                                 <MudPaper Class="ma-1" Elevation="3" Style="background-color:#EDE7DB">
                                     <MudText Class="mt-1 ml-3">Email</MudText>
-                                    <MudText Class="ml-3">@PersonalDetailsState.Email</MudText>
+                                    <MudText Class="ml-3">@PersonalDetailsState.PersonalDetailsObject.Email</MudText>
                                 </MudPaper>
                             </MudItem>
                             <MudItem xs="12">
                                 <MudPaper Class="ma-1" Elevation="3" Style="background-color:#EDE7DB">
                                     <MudText Class="mt-1 ml-3">Telefoon</MudText>
-                                    <MudText Class="ml-3">@PersonalDetailsState.PhoneNumber</MudText>
+                                    <MudText Class="ml-3">@PersonalDetailsState.PersonalDetailsObject.PhoneNumber</MudText>
                                 </MudPaper>
                             </MudItem>
                             <MudItem xs="12">
                                 <MudPaper Class="ma-1" Elevation="3" Style="background-color:#EDE7DB">
                                     <MudText Class="mt-1 ml-3">Adres</MudText>
-                                    <MudText Class="ml-3">@($"{@PersonalDetailsState.Street} {@PersonalDetailsState.Housenumber} {@PersonalDetailsState.PostalCode} {@PersonalDetailsState.City}")</MudText>
+                                    <MudText Class="ml-3">@($"{@PersonalDetailsState.PersonalDetailsObject.Street} {@PersonalDetailsState.PersonalDetailsObject.Housenumber} {@PersonalDetailsState.PersonalDetailsObject.PostalCode} {@PersonalDetailsState.PersonalDetailsObject.City}")</MudText>
                                 </MudPaper>
                             </MudItem>
                             <MudItem xs="12">
                                 <MudPaper Class="ma-1" Elevation="3" Style="background-color:#EDE7DB">
                                     <MudText Class="mt-1 ml-3">Btw-nummer</MudText>
-                                    <MudText Class="ml-3">@PersonalDetailsState.BtwNumber</MudText>
+                                    <MudText Class="ml-3">@(CheckIfBtwNumberIsEmpty())</MudText>
                                 </MudPaper>
                             </MudItem>
-
+                            
                         </MudGrid>
                     </MudItem>
                     <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="true">
@@ -118,12 +119,7 @@
                 }
                 <MudItem xs="12">
                     <MudGrid>
-                        @if (Extras is null)
-                        {
-                            <MudText>Loading...</MudText>
-                        }
-                        else
-                        {
+                        <Loader IsLoading=@(Extras == null)>
                             @foreach (var item in ExtraMaterialState.ExtrasAmount)
                             {
                                 @if (item.Value != 0)
@@ -141,7 +137,7 @@
                                     </MudItem>
                                 }
                             }
-                        }
+                        </Loader>
                     </MudGrid>
                 </MudItem>
                 <MudItem xs="12">
@@ -150,12 +146,21 @@
                 <MudItem xs="12">
                     @if (@Extras != null)
                     {
-                        <OverviewCostComponent Title="@FormulaState.Title"
-                                               PriceFormula="@GetPriceFormula()"
-                                               PriceFormulaWithBtw="@GetPriceFormulaWithBtw()"
-                                               TotalWithoutBtw="@BerekenTotaalZonderBtw()"
-                                               BtwOnTotal="BerekenBtwOpTotaal()"
-                                               TotalWithBtw="@(Decimal.Round(BerekenTotaalZonderBtw(), 2) + Decimal.Round(BerekenBtwOpTotaal(), 2))" />
+                        <MudHidden Breakpoint="Breakpoint.Xs" Invert="true">
+                            <OverviewCostSmallFontsizeComponent Title="@FormulaState.Title"
+                                                   PriceFormula="@GetPriceFormulaWithoutBeerAndBarbeque()"
+                                                                TotalWithoutBtw="@CalculateTotalWithoutBtw()"
+                                                   BtwOnTotal="CalculateBtwOnTotal()"
+                                                                TotalWithBtw="@(Decimal.Round(CalculateTotalWithoutBtw(), 2) + Decimal.Round(CalculateBtwOnTotal(), 2))" />
+                        </MudHidden>
+                        <MudHidden Breakpoint="Breakpoint.Xs">
+                            <OverviewCostComponent Title="@FormulaState.Title"
+                                                   PriceFormula="@GetPriceFormulaWithoutBeerAndBarbeque()"
+                                                   TotalWithoutBtw="@CalculateTotalWithoutBtw()"
+                                                   BtwOnTotal="CalculateBtwOnTotal()"
+                                                   TotalWithBtw="@(Decimal.Round(CalculateTotalWithoutBtw(), 2) + Decimal.Round(CalculateBtwOnTotal(), 2))" />
+                        </MudHidden>
+                        
                     }
                 </MudItem>
             </MudGrid>
@@ -164,7 +169,7 @@
     </MudGrid>
     <MudGrid>
         <MudItem lg="2" md="2" sm="12" xs="12">
-
+            
         </MudItem>
         <MudItem lg="4" md="4" sm="12" xs="12">
 
@@ -215,15 +220,16 @@
 
     }
 
-    private decimal GetPriceFormula()
+    private decimal GetPriceFormulaWithoutBeerAndBarbeque()
     {
         decimal initialPrice = 0M;
-        decimal endPrice = 0M;
 
         DateTime? start = EventDetailsState.dateRange.Start;
         DateTime? end = EventDetailsState.dateRange.End;
         TimeSpan? dif = end - start;
+
         int amountOfDaysDiff = (int)dif.Value.TotalDays;
+        Console.WriteLine("timedif: " + amountOfDaysDiff);
         if (amountOfDaysDiff == 0)
         {
             initialPrice = FormulaState.BasePrice[0];
@@ -241,100 +247,39 @@
             int extraDays = amountOfDaysDiff - 2;
             initialPrice = FormulaState.PricePerDayExtra * extraDays + FormulaState.BasePrice[2];
         }
-        if (FormulaState.Title.Equals("Extended"))
-        {
-            endPrice = initialPrice + (1.5M * EventDetailsState.NumberOfPeople);
-        }
-        if (FormulaState.Title.Equals("All-in"))
-        {
-            endPrice = initialPrice + ((1.5M * EventDetailsState.NumberOfPeople) + (12.0M * EventDetailsState.NumberOfPeople));
-        }
-        return endPrice;
-    }
-    private decimal GetPriceFormulaWithBtw()
-    {
-        decimal initialPrice = 0M;
-        decimal additionalPrice = 0M;
 
-        DateTime? start = EventDetailsState.dateRange.Start;
-        DateTime? end = EventDetailsState.dateRange.End;
-        TimeSpan? dif = end - start;
-        int amountOfDaysDiff = (int)dif.Value.TotalDays;
-        if (amountOfDaysDiff == 0)
+        return initialPrice;
+    }
+   
+    private decimal GetPriceBeer()
+    {
+        if (FormulaState.ChosenFormulaId == 1)
         {
-            initialPrice = FormulaState.BasePrice[0];
+            return 0.0M;
+        } else
+        {
+            return EventDetailsState.NumberOfPeople * (EventDetailsState.HasTripleBeer?3.0M:1.5M);
         }
-        else if (amountOfDaysDiff == 1)
+    }
+    private decimal GetPriceBarbeque()
+    {
+        if (FormulaState.ChosenFormulaId != 3)
         {
-            initialPrice = FormulaState.BasePrice[1];
-        }
-        else if (amountOfDaysDiff == 2)
-        {
-            initialPrice = FormulaState.BasePrice[2];
+            return 0.0M;
         }
         else
         {
-            int extraDays = amountOfDaysDiff - 2;
-            initialPrice = FormulaState.PricePerDayExtra * extraDays + FormulaState.BasePrice[2];
+            return EventDetailsState.NumberOfPeople * 12.0M;
         }
-        if (FormulaState.Title.Equals("Extended"))
-        {
-            additionalPrice = (1.5M * EventDetailsState.NumberOfPeople);
-        }
-        if (FormulaState.Title.Equals("All-in"))
-        {
-            additionalPrice = ((1.5M * EventDetailsState.NumberOfPeople) + (12.0M * EventDetailsState.NumberOfPeople));
-        }
-        return ((initialPrice) + (initialPrice * 0.21M)) + ((additionalPrice) + (additionalPrice * 0.12M));
     }
-    private decimal GetFormulaBtw()
-    {
-        decimal initialPrice = 0M;
-        decimal additionalPrice = 0M;
-        decimal initialBtw = 0M;
-        decimal additionalBtw = 0M;
-
-        DateTime? start = EventDetailsState.dateRange.Start;
-        DateTime? end = EventDetailsState.dateRange.End;
-        TimeSpan? dif = end - start;
-        int amountOfDaysDiff = (int)dif.Value.TotalDays;
-        if (amountOfDaysDiff == 0)
-        {
-            initialPrice = FormulaState.BasePrice[0];
-        }
-        else if (amountOfDaysDiff == 1)
-        {
-            initialPrice = FormulaState.BasePrice[1];
-        }
-        else if (amountOfDaysDiff == 2)
-        {
-            initialPrice = FormulaState.BasePrice[2];
-        }
-        else
-        {
-            int extraDays = amountOfDaysDiff - 2;
-            initialPrice = FormulaState.PricePerDayExtra * extraDays + FormulaState.BasePrice[2];
-        }
-        if (FormulaState.Title.Equals("Extended"))
-        {
-            additionalPrice = (1.5M * EventDetailsState.NumberOfPeople);
-        }
-        if (FormulaState.Title.Equals("All-in"))
-        {
-            additionalPrice = ((1.5M * EventDetailsState.NumberOfPeople) + (12.0M * EventDetailsState.NumberOfPeople));
-        }
-
-        initialBtw = initialPrice * 0.21M;
-        additionalBtw = additionalPrice * 0.12M;
-
-        return initialBtw + additionalBtw;
-    }
-    private decimal BerekenVervoersKosten()
+   
+    private decimal CalculateTransportCost()
     {
         return 0M;
     }
-    private decimal BerekenTotaalZonderBtw()
+    private decimal CalculateTotalWithoutBtw()
     {
+
         decimal extrasKosten = 0M;
         foreach (var item in ExtraMaterialState.ExtrasAmount)
         {
@@ -343,21 +288,21 @@
                 extrasKosten += (Extras.FirstOrDefault(x => x.Id == item.Key).Price * item.Value);
             }
         }
-        return BerekenVervoersKosten() + GetPriceFormula() + extrasKosten;
+        return CalculateTransportCost() + GetPriceFormulaWithoutBeerAndBarbeque()+GetPriceBeer()+GetPriceBarbeque() + extrasKosten;
 
     }
-    private decimal BerekenBtwOpTotaal()
+    private decimal CalculateBtwOnTotal()
     {
-        decimal extrasKostenBtw = 0M;
-        decimal formuleBtw = 0M;
+        decimal extrasCostBtw = 0M;
+
         foreach (var item in ExtraMaterialState.ExtrasAmount)
         {
             if (item.Value != 0)
             {
-                extrasKostenBtw += ((Extras.FirstOrDefault(x => x.Id == item.Key).Price * item.Value) * 0.21M);
+                extrasCostBtw += ((Extras.FirstOrDefault(x => x.Id == item.Key).Price * item.Value) * 0.21M);
             }
         }
-        return (BerekenVervoersKosten() * 0.21M) + GetFormulaBtw() + extrasKostenBtw;
+        return (CalculateTransportCost() * 0.21M) + (GetPriceFormulaWithoutBeerAndBarbeque() * 0.21M) + (GetPriceBeer() * 0.12M) + (GetPriceBarbeque()*0.12M) + extrasCostBtw;
     }
         
     private async Task CreateQuotationAsync()
@@ -405,6 +350,18 @@
     private string GetEventLocationTitle()
     {
         return EventDetailsState.PlaceTitle;
+    }
+
+    private string CheckIfBtwNumberIsEmpty()
+    {
+        if (PersonalDetailsState.PersonalDetailsObject.BtwNumber is null || string.IsNullOrWhiteSpace(PersonalDetailsState.PersonalDetailsObject.BtwNumber))
+        {
+            return "Geen Btw-nummer opgegeven";
+        }
+        else
+        {
+            return PersonalDetailsState.PersonalDetailsObject.BtwNumber;
+        }
     }
 
 }

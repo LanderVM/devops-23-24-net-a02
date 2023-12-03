@@ -1,4 +1,4 @@
-﻿namespace Shared.Quotations;
+﻿namespace shared.Quotations;
 
 public interface IQuotationService
 {
@@ -6,4 +6,6 @@ public interface IQuotationService
   Task<QuotationResult.Detail> GetPriceEstimationDetailsAsync();
   Task<decimal> GetPriceEstimationPrice(QuotationResponse.Estimate model);
   Task<QuotationResult.Index> GetIndexAsync();
+
+  Task<List<DateTime>> GetDatesAsync();
 }

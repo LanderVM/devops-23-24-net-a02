@@ -2,7 +2,7 @@
 using Shared.Common;
 using Shared.Customer;
 
-namespace Shared.Quotations;
+namespace shared.Quotations;
 
 public static class QuotationDto
 {

@@ -1,0 +1,17 @@
+﻿@if (IsLoading)
+{
+    <div style="position: relative; display: inline-block;">
+        <MudProgressCircular Color="Color.Primary" Style="height:100px; width:100px;" Indeterminate="true" />
+        <MudText style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -70%);">Loading</MudText>
+    </div>
+}
+else
+{
+    @ChildContent
+}
+
+@code {
+    [Parameter] public bool IsLoading { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+}

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using server.Services;
 using shared.Equipment;
 using Server.Services;
-using Shared.Quotations;
+using shared.Quotations;
 using shared.Formulas;
 
 namespace Api.Data;

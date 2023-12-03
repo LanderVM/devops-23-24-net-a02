@@ -3,8 +3,12 @@
 @using GoogleMapsComponents.Maps
 @using GoogleMapsComponents.Maps.Places
 @using Size = MudBlazor.Size
+@using shared.Quotations;
 @inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager
 @inject EventDetailsState EventDetailsState
+@inject FormulaState FormulaState
+
+
 
 <PageTitle>Stap 1</PageTitle>
 
@@ -32,7 +36,7 @@
 
         <MudItem lg="4" md="10" sm="12" Style="max-width: 500px">
             <GoogleMap @ref="@Map" Id="map1" Options="@_options" Height="410px" OnAfterInit="async () => await OnAfterMapInit()"></GoogleMap>
-            <MudTextField @ref="_addressSearch" Class="ml-16 mr-16 mb-4 pt-2" Label="Adres" Variant="Variant.Outlined" T="string" />
+            <MudTextField @ref="_addressSearch" Class="ml-16 mr-16 mb-4 pt-2" Label="Adres" Variant="Variant.Outlined" T="string" ErrorText="Gelieve een volledig adres in te geven" Error="@addressError" TextChanged="@(()=>{addressError=false;})" />
         </MudItem>
         <MudItem lg="4" md="10" sm="12" Style="max-width: 770px">
             <MudDateRangePicker Color="Color.Primary"
@@ -44,11 +48,13 @@
                                 PlaceholderEnd="End Date"
                                 Date="@(DateTime.Today.AddDays(1))"
                                 PickerVariant="PickerVariant.Static"
-                                IsDateDisabledFunc="@((DateTime dt) => dt.Date < DateTime.Now.Date || (int)dt.DayOfWeek == 0 || (int)dt.DayOfWeek == 6)" />
+                                IsDateDisabledFunc="@((DateTime dt) => dt.Date < DateTime.Now.Date || (int)dt.DayOfWeek == 0 || (int)dt.DayOfWeek == 6 || DateTimes.Contains(dt.Date))" />
             <div style="width: 100%">
-                <MudTimePicker Class="d-inline-flex" Label="Start Uur" @bind-Time="@EventDetailsState.startTime" Editable="true" />
-                <MudTimePicker Class="d-inline-flex" Label="Eind Uur" @bind-Time="@EventDetailsState.endTime" Editable="true" />
-                <MudTextField Class="d-inline-flex" @bind-Value="@EventDetailsState.NumberOfPeople" Label="Aantal Personen" />
+                @if (FormulaState.ChosenFormulaId!=1)
+                {
+                    <MudSwitch @bind-Checked="@EventDetailsState.HasTripleBeer" Label="Bestel trippel bier i.p.v. blond" Color="Color.Primary" UnCheckedColor="Color.Secondary" />
+                }
+                <MudNumericField Class="d-inline-flex" @bind-Value="@EventDetailsState.NumberOfPeople" Label="Aantal Personen"Min="0" Max="50000" Error="@numberOfPeopleError" ErrorText="Gelieve een geldig nummer op te geven" />
             </div>
 
 
@@ -65,16 +71,58 @@
 
         </MudItem>
         <MudItem lg="2" md="2" sm="7" xs="7">
-            <MudButton Variant="Variant.Filled" Size="Size.Large" Color="Color.Primary" OnClick="@ClickNext">Volgende</MudButton>
+            <MudButton Class="mb-2" Variant="Variant.Filled" Size="Size.Large" Color="Color.Primary" OnClick="@ClickNext">Volgende</MudButton>
         </MudItem>
     </MudGrid>
 </MudContainer>
 
 
 @code {
+    private bool addressError = false;
+    private bool numberOfPeopleError = false;
+    private bool hasValidAdress = false;
+
+    private List<DateTime> DateTimes { get; set; } = new List<DateTime>();
+
+    [Inject]
+    public IQuotationService QuotationService { get; set; } = default!;
+
+
     private void ClickNext()
     {
-        NavigationManager.NavigateTo(Routes.PersonalDetails);
+        if (!hasValidAdress && EventDetailsState.NumberOfPeople == 0)
+        {
+            addressError = true;
+            numberOfPeopleError = true;
+        }
+        else if (!hasValidAdress)
+        {
+            addressError = true;
+            numberOfPeopleError = false;
+        }
+        else if (EventDetailsState.NumberOfPeople == 0)
+        {
+            numberOfPeopleError = true;
+            addressError = false;
+        } else
+        {
+            numberOfPeopleError = false;
+            addressError = false;
+            NavigationManager.NavigateTo(Routes.PersonalDetails);
+        }
+
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        List<DateTime> list = await QuotationService.GetDatesAsync();
+        IEnumerable<DateTime> times = list.Select(x => x.Date);
+        foreach (DateTime item in times)
+        {
+            DateTimes.Add(item);
+        }
+
     }
 
     private GoogleMap Map { get; set; } = default!;
@@ -110,11 +158,13 @@
                 ComponentRestrictions = new ComponentRestrictions { Country = new[] { "be" } }
             });
 
-        await _autocomplete.SetFields(new[] { "address_components", "geometry", "name" });
+        await _autocomplete.SetFields(new[] { "ALL" });
 
         await _autocomplete.AddListener("place_changed", async () =>
         {
+
             PlaceResult place = await _autocomplete.GetPlace();
+            //Console.WriteLine("size adrscomp:" + place.AddressComponents.Count());
 
             if (place.Geometry.Location is not null)
             {
@@ -131,6 +181,23 @@
                 EventDetailsState.PlaceTitle = place.Name;
                 EventDetailsState.PlaceGeometry = place.Geometry;
             }
+            if (place.FormattedAddress is not null)
+            {
+                EventDetailsState.FormattedAddress = place.FormattedAddress;
+            }
+            
+            if (place.AddressComponents is not null)
+            {
+                    if (place.AddressComponents.Count() < 7)
+                    {
+                            hasValidAdress = false;
+                    } else
+                    {
+                                hasValidAdress = true;
+                    }
+            }
+            
+            
             else if (place.Geometry.Viewport is not null)
             {
                 await Map.InteropObject.FitBounds(place.Geometry.Viewport, 5);

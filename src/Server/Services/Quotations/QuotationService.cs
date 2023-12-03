@@ -209,5 +209,26 @@ public class QuotationService : IQuotationService
 
     Quotation quotation = new Quotation(new Formula(equipmentList), chosenFormula.Id, new DateTime(model.StartTime), new DateTime(model.EndTime), model.EstimatedNumberOfPeople, model.IsTripelBier) ;
     return quotation.GetEstimatedPrice();
+  public async Task<List<DateTime>> GetDatesAsync()
+  {
+    var query = _dbContext.Quotations.AsQueryable();
+
+    IEnumerable <Quotation> quotations = await query.Where(x=>x.Status == QuotationStatus.Read).ToListAsync();
+
+    List<DateTime> dateTimes = new List<DateTime>();
+
+    foreach (var item in quotations)
+    {
+      DateTime startDate = item.StartTime;
+      DateTime endDate = item.EndTime;
+
+      while (startDate <= endDate)
+      {
+        dateTimes.Add(startDate);
+        startDate = startDate.AddDays(1);
+      }
+    }
+
+    return dateTimes;
   }
 }
