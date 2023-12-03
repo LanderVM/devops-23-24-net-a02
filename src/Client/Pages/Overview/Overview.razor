@@ -147,7 +147,6 @@
                         <MudHidden Breakpoint="Breakpoint.Xs" Invert="true">
                             <OverviewCostSmallFontsizeComponent Title="@FormulaState.Title"
                                                    PriceFormula="@GetPriceFormulaWithoutBeerAndBarbeque()"
-                                                                PriceFormulaWithBtw="@GetPriceFormulaWithBtwWithoutBeerAndBarbeque()"
                                                    TotalWithoutBtw="@BerekenTotaalZonderBtw()"
                                                    BtwOnTotal="BerekenBtwOpTotaal()"
                                                    TotalWithBtw="@(Decimal.Round(BerekenTotaalZonderBtw(), 2) + Decimal.Round(BerekenBtwOpTotaal(), 2))" />
@@ -155,7 +154,6 @@
                         <MudHidden Breakpoint="Breakpoint.Xs">
                             <OverviewCostComponent Title="@FormulaState.Title"
                                                    PriceFormula="@GetPriceFormulaWithoutBeerAndBarbeque()"
-                                                   PriceFormulaWithBtw="@GetPriceFormulaWithBtwWithoutBeerAndBarbeque()"
                                                    TotalWithoutBtw="@BerekenTotaalZonderBtw()"
                                                    BtwOnTotal="BerekenBtwOpTotaal()"
                                                    TotalWithBtw="@(Decimal.Round(BerekenTotaalZonderBtw(), 2) + Decimal.Round(BerekenBtwOpTotaal(), 2))" />
@@ -188,7 +186,7 @@
 </MudContainer>
 
 
-    @code {
+@code {
 
     [Inject] public IEquipmentService EquipmentService { get; set; } = default!;
 
@@ -248,117 +246,113 @@
             int extraDays = amountOfDaysDiff - 2;
             initialPrice = FormulaState.PricePerDayExtra * extraDays + FormulaState.BasePrice[2];
         }
-        
+
         return initialPrice;
     }
+    /*
     private decimal GetPriceFormulaWithBeerAndBarbeque()
     {
-        decimal initialPrice = 0M;
-        decimal endPrice = 0M;
+    decimal initialPrice = 0M;
+    decimal endPrice = 0M;
 
-        DateTime? start = EventDetailsState.dateRange.Start;
-        DateTime? end = EventDetailsState.dateRange.End;
-        TimeSpan? dif = end - start;
+    DateTime? start = EventDetailsState.dateRange.Start;
+    DateTime? end = EventDetailsState.dateRange.End;
+    TimeSpan? dif = end - start;
 
-        int amountOfDaysDiff = (int)dif.Value.TotalDays;
-        Console.WriteLine("timedif: " + amountOfDaysDiff);
-        if (amountOfDaysDiff == 0)
-        {
-            initialPrice = FormulaState.BasePrice[0];
-        }
-        else if (amountOfDaysDiff == 1)
-        {
-            initialPrice = FormulaState.BasePrice[1];
-        }
-        else if (amountOfDaysDiff == 2)
-        {
-            initialPrice = FormulaState.BasePrice[2];
-        }
-        else
-        {
-            int extraDays = amountOfDaysDiff - 2;
-            initialPrice = FormulaState.PricePerDayExtra * extraDays + FormulaState.BasePrice[2];
-        }
-        Console.WriteLine("initial price: " + initialPrice);
-        if (FormulaState.ChosenFormulaId == 2)
-        {
-            endPrice = initialPrice + ((EventDetailsState.HasTripleBeer ? 3.0M : 1.5M) * EventDetailsState.NumberOfPeople);
-        }
-        else if (FormulaState.ChosenFormulaId == 3)
-        {
-            endPrice = initialPrice + (((EventDetailsState.HasTripleBeer ? 3.0M : 1.5M) * EventDetailsState.NumberOfPeople) + (12.0M * EventDetailsState.NumberOfPeople));
-        }
-        else
-        {
-            endPrice = initialPrice;
-        }
-        Console.WriteLine("initial price: " + endPrice);
-        return endPrice;
-    }
-    private decimal GetPriceFormulaWithBtwWithoutBeerAndBarbeque()
+    int amountOfDaysDiff = (int)dif.Value.TotalDays;
+    Console.WriteLine("timedif: " + amountOfDaysDiff);
+    if (amountOfDaysDiff == 0)
     {
-        decimal initialPrice = 0M;
-        decimal additionalPrice = 0M;
-
-        DateTime? start = EventDetailsState.dateRange.Start;
-        DateTime? end = EventDetailsState.dateRange.End;
-        TimeSpan? dif = end - start;
-        int amountOfDaysDiff = (int)dif.Value.TotalDays;
-        if (amountOfDaysDiff == 0)
-        {
-            initialPrice = FormulaState.BasePrice[0];
-        }
-        else if (amountOfDaysDiff == 1)
-        {
-            initialPrice = FormulaState.BasePrice[1];
-        }
-        else if (amountOfDaysDiff == 2)
-        {
-            initialPrice = FormulaState.BasePrice[2];
-        }
-        else
-        {
-            int extraDays = amountOfDaysDiff - 2;
-            initialPrice = FormulaState.PricePerDayExtra * extraDays + FormulaState.BasePrice[2];
-        }
-        return ((initialPrice)*1.21M);
+    initialPrice = FormulaState.BasePrice[0];
     }
+    else if (amountOfDaysDiff == 1)
+    {
+    initialPrice = FormulaState.BasePrice[1];
+    }
+    else if (amountOfDaysDiff == 2)
+    {
+    initialPrice = FormulaState.BasePrice[2];
+    }
+    else
+    {
+    int extraDays = amountOfDaysDiff - 2;
+    initialPrice = FormulaState.PricePerDayExtra * extraDays + FormulaState.BasePrice[2];
+    }
+    Console.WriteLine("initial price: " + initialPrice);
+    if (FormulaState.ChosenFormulaId == 2)
+    {
+    endPrice = initialPrice + ((EventDetailsState.HasTripleBeer ? 3.0M : 1.5M) * EventDetailsState.NumberOfPeople);
+    }
+    else if (FormulaState.ChosenFormulaId == 3)
+    {
+    endPrice = initialPrice + (((EventDetailsState.HasTripleBeer ? 3.0M : 1.5M) * EventDetailsState.NumberOfPeople) + (12.0M * EventDetailsState.NumberOfPeople));
+    }
+    else
+    {
+    endPrice = initialPrice;
+    }
+    Console.WriteLine("initial price: " + endPrice);
+    return endPrice;
+    }*/
+    /*
     private decimal GetPriceFormulaWithBtwWithBeerAndBarbeque()
     {
-        decimal initialPrice = 0M;
-        decimal additionalPrice = 0M;
+    decimal initialPrice = 0M;
+    decimal additionalPrice = 0M;
 
-        DateTime? start = EventDetailsState.dateRange.Start;
-        DateTime? end = EventDetailsState.dateRange.End;
-        TimeSpan? dif = end - start;
-        int amountOfDaysDiff = (int)dif.Value.TotalDays;
-        if (amountOfDaysDiff == 0)
+    DateTime? start = EventDetailsState.dateRange.Start;
+    DateTime? end = EventDetailsState.dateRange.End;
+    TimeSpan? dif = end - start;
+    int amountOfDaysDiff = (int)dif.Value.TotalDays;
+    if (amountOfDaysDiff == 0)
+    {
+    initialPrice = FormulaState.BasePrice[0];
+    }
+    else if (amountOfDaysDiff == 1)
+    {
+    initialPrice = FormulaState.BasePrice[1];
+    }
+    else if (amountOfDaysDiff == 2)
+    {
+    initialPrice = FormulaState.BasePrice[2];
+    }
+    else
+    {
+    int extraDays = amountOfDaysDiff - 2;
+    initialPrice = FormulaState.PricePerDayExtra * extraDays + FormulaState.BasePrice[2];
+    }
+    if (FormulaState.ChosenFormulaId == 2)
+    {
+    additionalPrice = ((EventDetailsState.HasTripleBeer ? 3.0M : 1.5M) * EventDetailsState.NumberOfPeople);
+    }
+    if (FormulaState.ChosenFormulaId == 3)
+    {
+    additionalPrice = (((EventDetailsState.HasTripleBeer ? 3.0M : 1.5M) * EventDetailsState.NumberOfPeople) + (12.0M * EventDetailsState.NumberOfPeople));
+    }
+    return ((initialPrice) + (initialPrice * 0.21M)) + ((additionalPrice) + (additionalPrice * 0.12M));
+    }*/
+    private decimal GetPriceBeer()
+    {
+        if (FormulaState.ChosenFormulaId == 1)
         {
-            initialPrice = FormulaState.BasePrice[0];
+            return 0.0M;
+        } else
+        {
+            return EventDetailsState.NumberOfPeople * (EventDetailsState.HasTripleBeer?3.0M:1.5M);
         }
-        else if (amountOfDaysDiff == 1)
+    }
+    private decimal GetPriceBarbeque()
+    {
+        if (FormulaState.ChosenFormulaId != 3)
         {
-            initialPrice = FormulaState.BasePrice[1];
-        }
-        else if (amountOfDaysDiff == 2)
-        {
-            initialPrice = FormulaState.BasePrice[2];
+            return 0.0M;
         }
         else
         {
-            int extraDays = amountOfDaysDiff - 2;
-            initialPrice = FormulaState.PricePerDayExtra * extraDays + FormulaState.BasePrice[2];
+            return EventDetailsState.NumberOfPeople * 12.0M;
         }
-        if (FormulaState.ChosenFormulaId == 2)
-        {
-            additionalPrice = ((EventDetailsState.HasTripleBeer ? 3.0M : 1.5M) * EventDetailsState.NumberOfPeople);
-        }
-        if (FormulaState.ChosenFormulaId == 3)
-        {
-            additionalPrice = (((EventDetailsState.HasTripleBeer ? 3.0M : 1.5M) * EventDetailsState.NumberOfPeople) + (12.0M * EventDetailsState.NumberOfPeople));
-        }
-        return ((initialPrice) + (initialPrice * 0.21M)) + ((additionalPrice) + (additionalPrice * 0.12M));
     }
+    /*
     private decimal GetFormulaBtwWithBeerAndBarbeque()
     {
         decimal initialPrice = 0M;
@@ -400,13 +394,14 @@
         additionalBtw = additionalPrice * 0.12M;
 
         return initialBtw + additionalBtw;
-    }
+    }*/
     private decimal BerekenVervoersKosten()
     {
         return 0M;
     }
     private decimal BerekenTotaalZonderBtw()
     {
+
         decimal extrasKosten = 0M;
         foreach (var item in ExtraMaterialState.ExtrasAmount)
         {
@@ -415,13 +410,13 @@
                 extrasKosten += (Extras.FirstOrDefault(x => x.Id == item.Key).Price * item.Value);
             }
         }
-        return BerekenVervoersKosten() + GetPriceFormulaWithBeerAndBarbeque() + extrasKosten;
+        return BerekenVervoersKosten() + GetPriceFormulaWithoutBeerAndBarbeque()+GetPriceBeer()+GetPriceBarbeque() + extrasKosten;
 
     }
     private decimal BerekenBtwOpTotaal()
     {
         decimal extrasKostenBtw = 0M;
-        decimal formuleBtw = 0M;
+
         foreach (var item in ExtraMaterialState.ExtrasAmount)
         {
             if (item.Value != 0)
@@ -429,7 +424,7 @@
                 extrasKostenBtw += ((Extras.FirstOrDefault(x => x.Id == item.Key).Price * item.Value) * 0.21M);
             }
         }
-        return (BerekenVervoersKosten() * 0.21M) + GetFormulaBtwWithBeerAndBarbeque() + extrasKostenBtw;
+        return (BerekenVervoersKosten() * 0.21M) + (GetPriceFormulaWithoutBeerAndBarbeque() * 0.21M) + (GetPriceBeer() * 0.12M) + (GetPriceBarbeque()*0.12M) + extrasKostenBtw;
     }
 
 

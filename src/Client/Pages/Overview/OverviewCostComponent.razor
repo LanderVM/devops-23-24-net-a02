@@ -55,7 +55,7 @@
         </MudItem>
         <MudItem lg="1" md="2" sm="2" xs="3">
             <MudText Class="mr-6 mt-n4 mb-n4">
-                @(Decimal.Round(PriceFormulaWithBtw, 2))
+                @(Decimal.Round(PriceFormula*1.21M, 2))
             </MudText>
         </MudItem>
         @if (FormulaState.ChosenFormulaId!=1)
@@ -233,8 +233,6 @@
     public string Title { get; set; }
     [Parameter, EditorRequired]
     public decimal PriceFormula { get; set; }
-    [Parameter, EditorRequired]
-    public decimal PriceFormulaWithBtw { get; set; }
     [Parameter]
     public decimal DistanceInKilometer { get; set; }
     [Parameter]
