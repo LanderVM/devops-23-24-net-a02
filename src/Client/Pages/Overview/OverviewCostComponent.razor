@@ -82,7 +82,7 @@
             </MudItem>
             <MudItem lg="1" md="2" sm="2" xs="3">
                 <MudText Class="mr-6 mt-n4 mb-n4">
-                    @(Decimal.Round((EventDetailsState.HasTripleBeer ? 3.0M : 1.5M) * EventDetailsState.NumberOfPeople, 2))
+                    @(Decimal.Round((EventDetailsState.HasTripleBeer ? 3.0M : 1.5M) * EventDetailsState.NumberOfPeople *1.12M, 2))
                 </MudText>
             </MudItem>
         }
@@ -110,7 +110,7 @@
             </MudItem>
             <MudItem lg="1" md="2" sm="2" xs="3">
                 <MudText Class="mr-6 mt-n4 mb-n4">
-                    @(Decimal.Round(12.0M * EventDetailsState.NumberOfPeople, 2))
+                    @(Decimal.Round((12.0M * EventDetailsState.NumberOfPeople) *1.12M, 2))
                 </MudText>
             </MudItem>
         }
