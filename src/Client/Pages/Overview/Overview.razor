@@ -1,4 +1,4 @@
-﻿@page "/Overzicht"
+@page "/Overzicht"
 @using shared.Equipment
 @using shared.Quotations
 @using Size = MudBlazor.Size
@@ -69,25 +69,25 @@
                             <MudItem xs="12">
                                 <MudPaper Class="ma-1" Elevation="3" Style="background-color:#EDE7DB">
                                     <MudText Class="mt-1 ml-3">Naam</MudText>
-                                    <MudText Class="ml-3">@(@PersonalDetailsState.PersonalDetailsObject.LastName + " " + PersonalDetailsState.PersonalDetailsObject.FirstName)</MudText>
+                                    <MudText Class="ml-3">@(@PersonalDetailsState.customer.LastName + " " + PersonalDetailsState.customer.FirstName)</MudText>
                                 </MudPaper>
                             </MudItem>
                             <MudItem xs="12">
                                 <MudPaper Class="ma-1" Elevation="3" Style="background-color:#EDE7DB">
                                     <MudText Class="mt-1 ml-3">Email</MudText>
-                                    <MudText Class="ml-3">@PersonalDetailsState.PersonalDetailsObject.Email</MudText>
+                                    <MudText Class="ml-3">@PersonalDetailsState.customer.Email.Email</MudText>
                                 </MudPaper>
                             </MudItem>
                             <MudItem xs="12">
                                 <MudPaper Class="ma-1" Elevation="3" Style="background-color:#EDE7DB">
                                     <MudText Class="mt-1 ml-3">Telefoon</MudText>
-                                    <MudText Class="ml-3">@PersonalDetailsState.PersonalDetailsObject.PhoneNumber</MudText>
+                                    <MudText Class="ml-3">@PersonalDetailsState.customer.PhoneNumber</MudText>
                                 </MudPaper>
                             </MudItem>
                             <MudItem xs="12">
                                 <MudPaper Class="ma-1" Elevation="3" Style="background-color:#EDE7DB">
                                     <MudText Class="mt-1 ml-3">Adres</MudText>
-                                    <MudText Class="ml-3">@($"{@PersonalDetailsState.PersonalDetailsObject.Street} {@PersonalDetailsState.PersonalDetailsObject.Housenumber} {@PersonalDetailsState.PersonalDetailsObject.PostalCode} {@PersonalDetailsState.PersonalDetailsObject.City}")</MudText>
+                                    <MudText Class="ml-3">@($"{@PersonalDetailsState.customer.BillingAddress.Street} {@PersonalDetailsState.customer.BillingAddress.HouseNumber} {@PersonalDetailsState.customer.BillingAddress.PostalCode} {@PersonalDetailsState.customer.BillingAddress.City}")</MudText>
                                 </MudPaper>
                             </MudItem>
                             <MudItem xs="12">
@@ -191,7 +191,7 @@
     [Inject] public PersonalDetailsState PersonalDetailsState { get; set; } = default!;
     [Inject] public IDialogService DialogService { get; set; } = default!;
 
-    
+
     private IEnumerable<EquipmentDto.Index>? Extras = default!;
 
     protected override async Task OnInitializedAsync()
@@ -235,7 +235,7 @@
         TimeSpan? dif = end - start;
 
         int amountOfDaysDiff = (int)dif.Value.TotalDays;
-        
+
         if (amountOfDaysDiff == 0)
         {
             initialPrice = FormulaState.BasePrice[0];
@@ -256,7 +256,7 @@
 
         return initialPrice;
     }
-   
+
     private decimal GetPriceBeer()
     {
         if (FormulaState.ChosenFormulaId == 1)
@@ -278,7 +278,7 @@
             return EventDetailsState.NumberOfPeople * 12.0M;
         }
     }
-   
+
     private decimal CalculateTransportCost()
     {
         return 0M;
@@ -344,10 +344,10 @@
                         Amount = item.Value,
                     }); 
                 }
-                
+
             }   
         }
-        
+
         QuotationDto.Create quotation = new QuotationDto.Create
         {
             FormulaId = FormulaState.ChosenFormulaId,
@@ -368,20 +368,17 @@
                 LastName = PersonalDetailsState.PersonalDetailsObject.LastName,
                 Email = new()
                 {
-                    Email = PersonalDetailsState.PersonalDetailsObject.Email
+                    Street = "merelzanglaan",
+                    HouseNumber = "23",
+                    PostalCode = "1700",
+                    City = "Dilbeek"
                 },
-                BillingAddress = new()
-                {
-                    Street = PersonalDetailsState.PersonalDetailsObject.Street,
-                    HouseNumber = PersonalDetailsState.PersonalDetailsObject.Housenumber,
-                    PostalCode = PersonalDetailsState.PersonalDetailsObject.PostalCode,
-                    City = PersonalDetailsState.PersonalDetailsObject.City,
-                },
-                PhoneNumber = PersonalDetailsState.PersonalDetailsObject.PhoneNumber,
-                VatNumber = PersonalDetailsState.PersonalDetailsObject.BtwNumber
-            },
-            IsTripelBier = EventDetailsState.HasTripleBeer,
-            NumberOfPeople = EventDetailsState.NumberOfPeople
+                StartTime = (DateTime)EventDetailsState.dateRange.Start,
+                EndTime = (DateTime)EventDetailsState.dateRange.End,
+                Equipments = equipments,
+                Customer = PersonalDetailsState.customer,
+                IsTripelBier = EventDetailsState.HasTripleBeer,
+                NumberOfPeople = EventDetailsState.NumberOfPeople
         };
 
         
@@ -441,13 +438,13 @@
 
     private string CheckIfBtwNumberIsEmpty()
     {
-        if (PersonalDetailsState.PersonalDetailsObject.BtwNumber is null || string.IsNullOrWhiteSpace(PersonalDetailsState.PersonalDetailsObject.BtwNumber))
+        if (PersonalDetailsState.customer.VatNumber is null || string.IsNullOrWhiteSpace(PersonalDetailsState.customer.VatNumber))
         {
             return "Geen Btw-nummer opgegeven";
         }
         else
         {
-            return PersonalDetailsState.PersonalDetailsObject.BtwNumber;
+            return PersonalDetailsState.customer.VatNumber;
         }
     }
 

@@ -37,11 +37,11 @@ public static class CustomerDto
   {
     public Validator()
     {
-      RuleFor(model => model.FirstName).NotEmpty();
-      RuleFor(model => model.LastName).NotEmpty();
-      RuleFor(model => model.Email).NotEmpty();
-      RuleFor(model => model.BillingAddress).NotEmpty();
-      RuleFor(model => model.PhoneNumber).NotEmpty();
+      RuleFor(model => model.FirstName).NotEmpty().MaximumLength(200);
+      RuleFor(model => model.LastName).NotEmpty().MaximumLength(200);
+      RuleFor(model => model.Email).NotEmpty().SetValidator(new EmailDto.Create.Validator());
+      RuleFor(model => model.BillingAddress).NotEmpty().SetValidator(new AddressDto.Validator());
+      RuleFor(model => model.PhoneNumber).NotEmpty().MaximumLength(200);
       RuleFor(model => model.VatNumber)
         .Must(vat => vat.Substring(0, 2).Any(char.IsLetter))
         .WithMessage("First two letters of VAT number must be your country code!");

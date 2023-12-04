@@ -5,7 +5,7 @@
 
 <PageTitle>Persoonlijke gegevens</PageTitle>
 
-<EditForm>
+<EditForm Model="PersonalDetailsState.customer" OnValidSubmit="Submit">
     <Blazored.FluentValidation.FluentValidationValidator />
     <MudPaper Width="100%" Class="pt-16" Height="100%" Elevation="0">
         <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge">
@@ -74,13 +74,6 @@
 
     private async Task Submit()
     {
-        /*
-        await form.Validate();
-
-        if (form.IsValid)
-        {
-            GoNext();
-        }
-        */
+        NavigationManager.NavigateTo(Routes.ExtraMaterial);
     }
 }

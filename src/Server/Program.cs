@@ -20,7 +20,7 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddServices();
 
-builder.Services.AddValidatorsFromAssemblyContaining<EmailDto.Validator>();
+builder.Services.AddValidatorsFromAssemblyContaining<EmailDto.Create.Validator>();
 builder.Services.AddFluentValidationAutoValidation();
 
 builder.Services.AddControllersWithViews();
