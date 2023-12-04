@@ -87,33 +87,24 @@ public static class DbInitializer
 
     // Quotations
     var quote1 = new Quotation(formulas[0], customers[0], eventLoc1, new List<QuotationLine>(),
-      DateTime.Today, DateTime.Today.AddDays(2));
+      DateTime.Today.AddDays(45), DateTime.Today.AddDays(48));
     var quote2 = new Quotation(formulas[2], customers[1], eventLoc2,
       new List<QuotationLine> { new(equipment[5], 30), new(equipment[8], 1), },
-      DateTime.Today, DateTime.Today.AddDays(2));
+      DateTime.Today.AddDays(4), DateTime.Today.AddDays(6));
     var quote3 = new Quotation(formulas[0], customers[0], eventLoc3, new List<QuotationLine>(),
-      DateTime.Today, DateTime.Today.AddDays(2));
+      DateTime.Today.AddDays(10), DateTime.Today.AddDays(13));
     var quote4 = new Quotation(formulas[0], customers[0], eventLoc4, new List<QuotationLine>(),
-      DateTime.Today, DateTime.Today.AddDays(2));
+      DateTime.Today.AddDays(17), DateTime.Today.AddDays(20));
     var quote5 = new Quotation(formulas[2], customers[1], eventLoc5,
       new List<QuotationLine> { new(equipment[5], 30), new(equipment[8], 1), },
-      DateTime.Today, DateTime.Today.AddDays(2));
+      DateTime.Today.AddDays(22), DateTime.Today.AddDays(25));
     var quote6 = new Quotation(formulas[0], customers[0], eventLoc6, new List<QuotationLine>(),
-      DateTime.Today, DateTime.Today.AddDays(2));
+      DateTime.Today.AddDays(30), DateTime.Today.AddDays(31));
     var quote7 = new Quotation(formulas[0], customers[0], eventLoc7, new List<QuotationLine>(),
-      DateTime.Today, DateTime.Today.AddDays(2));
-    var quote8 = new Quotation(formulas[2], customers[1], eventLoc8,
-      new List<QuotationLine> { new(equipment[5], 30), new(equipment[8], 1), },
-      DateTime.Today, DateTime.Today.AddDays(2));
-    var quote9 = new Quotation(formulas[0], customers[0], eventLoc9, new List<QuotationLine>(),
-      DateTime.Today, DateTime.Today.AddDays(2));
-    var quote10 = new Quotation(formulas[2], customers[1], eventLoc10,
-      new List<QuotationLine> { new(equipment[5], 30), new(equipment[8], 1), },
-      DateTime.Today, DateTime.Today.AddDays(2));
-    var quote11 = new Quotation(formulas[0], customers[0], eventLoc11, new List<QuotationLine>(),
-      DateTime.Today, DateTime.Today.AddDays(2));
+      DateTime.Today.AddDays(35), DateTime.Today.AddDays(38));
     
-    var quotes = new[] { quote1, quote2, quote3, quote4, quote5, quote6, quote7, quote8, quote9, quote10, quote11};
+    
+    var quotes = new[] { quote1, quote2, quote3, quote4, quote5, quote6, quote7};
 
     // Save to db
     context.Equipments.AddRange(equipment);

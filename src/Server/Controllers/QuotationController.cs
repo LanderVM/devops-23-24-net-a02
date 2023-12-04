@@ -54,8 +54,8 @@ public class QuotationController : ControllerBase
   }
   [HttpGet("/dates")]
   [SwaggerOperation("Gets all the dates for which there is an approved quotation")]
-  public async Task<List<DateTime>> GetApprovedQuotationsDates() { 
-    List<DateTime> dateTimes = await _quotationService.GetDatesAsync();
+  public async Task<QuotationResult.Dates> GetApprovedQuotationsDates() { 
+    var dateTimes = await _quotationService.GetDatesAsync();
     return dateTimes;
   }
 

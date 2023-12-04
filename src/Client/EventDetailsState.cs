@@ -13,9 +13,7 @@ public class EventDetailsState
   public bool HasTripleBeer = false;
 
   public DateRange dateRange = new DateRange(DateTime.Now.Date, DateTime.Now.AddDays(3).Date);
-
-  public TimeSpan? startTime = new TimeSpan();
-  public TimeSpan? endTime = new TimeSpan();
+  
 
 }
 

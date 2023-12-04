@@ -14,10 +14,27 @@ public static class EquipmentDto
     public List<int>? FormulaIds { get; set; }
       
   }
+
+  public class Lines
+  {
+    public int EquipmentId { get; set; }
+    public int Amount { get; set; }
+    public bool IsActive { get; set; }
+    
+    public class Validator : AbstractValidator<EquipmentDto.Lines>
+    {
+      public Validator()
+      {
+        RuleFor(x => x.Amount).NotEmpty();
+      }
+
+    }
+  }
   public class ImageData {
       public string ImageUrl { get; set; }
 
       public string AltText { get; set; }
+      
   }
 
   public class Select

@@ -14,6 +14,12 @@ public static class QuotationResult
     public int TotalAmount { get; set; }
   }
 
+  public class Dates
+  {
+    public IEnumerable<QuotationDto.Dates>? DateRanges { get; set; }
+    
+  }
+
   public class Detail
   {
     public IEnumerable<FormulaDto.Select> Formulas { get; set; } = default!;

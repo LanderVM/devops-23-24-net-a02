@@ -48,7 +48,8 @@
                                 PlaceholderEnd="End Date"
                                 Date="@(DateTime.Today.AddDays(1))"
                                 PickerVariant="PickerVariant.Static"
-                                IsDateDisabledFunc="@((DateTime dt) => dt.Date < DateTime.Now.Date || (int)dt.DayOfWeek == 0 || (int)dt.DayOfWeek == 6 || DateTimes.Contains(dt.Date))" />
+                                IsDateDisabledFunc="@((DateTime dt) => DateRange != null && (dt.Date < DateTime.Now.Date || DateRange.Any(d => d.StartTime.Date <= dt.Date && dt.Date <= d.EndTime.Date)))"
+ />
             <div style="width: 100%">
                 @if (FormulaState.ChosenFormulaId!=1)
                 {
@@ -83,6 +84,7 @@
     private bool hasValidAdress = false;
 
     private List<DateTime> DateTimes { get; set; } = new List<DateTime>();
+    private IEnumerable<QuotationDto.Dates>? DateRange = default!;
 
     [Inject]
     public IQuotationService QuotationService { get; set; } = default!;
@@ -113,17 +115,15 @@
 
     }
 
+    
+
     protected override async Task OnInitializedAsync()
     {
-
-        List<DateTime> list = await QuotationService.GetDatesAsync();
-        IEnumerable<DateTime> times = list.Select(x => x.Date);
-        foreach (DateTime item in times)
-        {
-            DateTimes.Add(item);
-        }
-
+        var response = await QuotationService.GetDatesAsync();
+        DateRange = response.DateRanges;
+        Console.WriteLine(DateRange);
     }
+
 
     private GoogleMap Map { get; set; } = default!;
     private readonly MapOptions _options = new()

@@ -7,5 +7,5 @@ public interface IQuotationService
   Task<decimal> GetPriceEstimationPrice(QuotationResponse.Estimate model);
   Task<QuotationResult.Index> GetIndexAsync();
 
-  Task<List<DateTime>> GetDatesAsync();
+  Task<QuotationResult.Dates> GetDatesAsync();
 }

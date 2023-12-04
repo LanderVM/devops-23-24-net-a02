@@ -20,13 +20,13 @@ public class FormulaService: IFormulaService
 
     int totalAmount = await query.CountAsync();
 
-    IEnumerable<FormulaDto.Index> items = await query.OrderBy(x => x.Id).Select(
-      x=> new FormulaDto.Index { 
-        Id = x.Id,
-        Title = x.Description.Title,
-        Attributes = x.Description.Attributes,
-        PricePerDayExtra = x.PricePerDayExtra,
-        BasePrice = x.BasePrice,
+      IEnumerable<FormulaDto.Index> items = await query.OrderBy(x => x.Id).Select(
+        x=> new FormulaDto.Index { 
+          Id = x.Id,
+          Title = x.Description.Title,
+          Attributes = x.Description.Attributes,
+          PricePerDayExtra = x.PricePerDayExtra,
+          BasePrice = x.BasePrice,
       }
       ).ToListAsync();
 

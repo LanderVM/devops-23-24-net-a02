@@ -17,7 +17,8 @@ public class QuotationService : IQuotationService
 
   public async Task<int> CreateAsync(QuotationDto.Create model)
   {
-    throw new NotImplementedException();
+    var response = await client.PostAsJsonAsync(endpoint,model);
+    return await response.Content.ReadFromJsonAsync<int>();
   }
 
   public async Task<QuotationResult.Index> GetIndexAsync()
@@ -56,9 +57,9 @@ public class QuotationService : IQuotationService
     return response;
   }
 
-  public async Task<List<DateTime>> GetDatesAsync()
+  public async Task<QuotationResult.Dates> GetDatesAsync()
   {
-    List<DateTime>? response = await client.GetFromJsonAsync<List<DateTime>>($"/dates");
-    return response!;
+    var response = await client.GetFromJsonAsync<QuotationResult.Dates>($"/dates");
+    return response;
   }
 }

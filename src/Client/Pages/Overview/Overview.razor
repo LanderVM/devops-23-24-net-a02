@@ -4,11 +4,7 @@
 @using GoogleMapsComponents.Maps
 @using GoogleMapsComponents
 @using global::shared.Quotations
-@inject ExtraMaterialState ExtraMaterialState
-@inject FormulaState FormulaState
-@inject EventDetailsState EventDetailsState
-@inject PersonalDetailsState PersonalDetailsState
-@inject IDialogService DialogService
+
 
 
 <PageTitle>Overzicht</PageTitle>
@@ -189,8 +185,13 @@
     [Inject] public IEquipmentService EquipmentService { get; set; } = default!;
     [Inject] public IQuotationService QuotationService { get; set; } = default!;
     [Inject] public NavigationManager NavigationManager { get; set; } = default!;
+    [Inject] public ExtraMaterialState ExtraMaterialState { get; set; } = default!;
+    [Inject] public FormulaState FormulaState { get; set; } = default!;
+    [Inject] public EventDetailsState EventDetailsState { get; set; } = default!;
+    [Inject] public PersonalDetailsState PersonalDetailsState { get; set; } = default!;
+    [Inject] public IDialogService DialogService { get; set; } = default!;
 
-    private QuotationDto.Create quotation = new();
+    
     private IEnumerable<EquipmentDto.Index>? Extras = default!;
 
     protected override async Task OnInitializedAsync()
@@ -307,8 +308,65 @@
         
     private async Task CreateQuotationAsync()
     {
+
+        List<EquipmentDto.Lines> equipments = new();
+        if (ExtraMaterialState.ExtrasAmount.Count != 0)
+        {
+            foreach (var item in ExtraMaterialState.ExtrasAmount)
+            {
+                if (item.Value != 0)
+                {
+                    equipments.Add(new EquipmentDto.Lines()
+                    {
+                        EquipmentId = item.Key,
+                        Amount = item.Value,
+                        IsActive = true
+                    }); 
+                }
+                
+            }   
+        }
+        
+        QuotationDto.Create quotation = new QuotationDto.Create
+        {
+            FormulaId = FormulaState.ChosenFormulaId,
+            EventLocation = new()
+            {
+                Street = "merelzanglaan",
+                HouseNumber = "23",
+                PostalCode = "1700",
+                City = "Dilbeek"
+            },
+            StartTime = (DateTime) EventDetailsState.dateRange.Start ,
+            EndTime = (DateTime) EventDetailsState.dateRange.End,
+            Equipments = equipments,
+            Customer = new()
+            {
+                FirstName = PersonalDetailsState.PersonalDetailsObject.FirstName,
+                LastName = PersonalDetailsState.PersonalDetailsObject.LastName,
+                Email = new()
+                {
+                    Email = PersonalDetailsState.PersonalDetailsObject.Email
+                },
+                BillingAddress = new()
+                {
+                    Street = PersonalDetailsState.PersonalDetailsObject.Street,
+                    HouseNumber = PersonalDetailsState.PersonalDetailsObject.Housenumber,
+                    PostalCode = PersonalDetailsState.PersonalDetailsObject.PostalCode,
+                    City = PersonalDetailsState.PersonalDetailsObject.City,
+                },
+                PhoneNumber = PersonalDetailsState.PersonalDetailsObject.PhoneNumber,
+                VatNumber = PersonalDetailsState.PersonalDetailsObject.BtwNumber
+            },
+            IsTripelBier = EventDetailsState.HasTripleBeer,
+            NumberOfPeople = EventDetailsState.NumberOfPeople
+        };
+
+        
+
+        
         int result = await QuotationService.CreateAsync(quotation);
-        //NavigationManager.NavigateTo($"Quotation/{result}"); TODO uncomment when pages are implemented
+        //NavigationManager.NavigateTo($"Quotation/{result}");
         OpenDialog();
     }
     

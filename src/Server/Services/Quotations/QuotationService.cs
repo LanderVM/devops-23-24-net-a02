@@ -22,6 +22,18 @@ public class QuotationService : IQuotationService
   {
     _dbContext = dbContext;
   }
+  
+  public async Task<QuotationResult.Dates> GetDatesAsync()
+  {
+    var query = _dbContext.Quotations
+      .Select(q => new QuotationDto.Dates { StartTime = q.StartTime, EndTime = q.EndTime });
+
+    var dates = await query.ToListAsync();  
+
+    var result = new QuotationResult.Dates { DateRanges = dates };
+    return result;
+    
+  }
 
   public async Task<QuotationResult.Index> GetIndexAsync()
   {
@@ -59,7 +71,7 @@ public class QuotationService : IQuotationService
       throw new ArgumentException($"Formula with id {model.FormulaId} does not exist!");
     if (chosenFormula.IsActive is false)
       throw new ArgumentException($"Formula with id {chosenFormula.Id} is not active!");
-
+    
     var customer = _dbContext.Customers
       .Include(customer => customer.Email)
       .AsEnumerable()
@@ -81,7 +93,17 @@ public class QuotationService : IQuotationService
         model.Customer.VatNumber);
       _dbContext.Customers.Add(customer);
     }
-
+    
+    
+    var quotationLines = new List<QuotationLine>();
+    foreach (var lines in model.Equipments)
+    {
+      var equipment = _dbContext.Equipments.FirstOrDefault(equipment => equipment.Id == lines.EquipmentId);
+      if (equipment is null)
+        throw new ArgumentException($"Equipment with id {lines.EquipmentId} does not exist!");
+      
+      quotationLines.Add(new QuotationLine(equipment, lines.Amount));
+    }
     if (customer.Email.IsActive is false)
       customer.Email.IsActive = true; // TODO nieuwe maken of gewoon terug actief zetten?
 
@@ -94,9 +116,11 @@ public class QuotationService : IQuotationService
         model.EventLocation.City,
         model.EventLocation.PostalCode
       ),
-      new List<QuotationLine>(),
+      quotationLines,
       model.StartTime,
-      model.EndTime);
+      model.EndTime,
+      model.IsTripelBier
+     );
 
     _dbContext.Quotations.Add(quotation);
     await _dbContext.SaveChangesAsync();
@@ -210,26 +234,5 @@ public class QuotationService : IQuotationService
     Quotation quotation = new Quotation(new Formula(equipmentList), chosenFormula.Id, new DateTime(model.StartTime), new DateTime(model.EndTime), model.EstimatedNumberOfPeople, model.IsTripelBier);
     return quotation.GetEstimatedPrice();
   }
-  public async Task<List<DateTime>> GetDatesAsync()
-  {
-    var query = _dbContext.Quotations.AsQueryable();
-
-    IEnumerable <Quotation> quotations = await query.Where(x=>x.Status == QuotationStatus.Read).ToListAsync();
-
-    List<DateTime> dateTimes = new List<DateTime>();
-
-    foreach (var item in quotations)
-    {
-      DateTime startDate = item.StartTime;
-      DateTime endDate = item.EndTime;
-
-      while (startDate <= endDate)
-      {
-        dateTimes.Add(startDate);
-        startDate = startDate.AddDays(1);
-      }
-    }
-
-    return dateTimes;
-  }
+  
 }
