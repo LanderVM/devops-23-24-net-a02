@@ -49,8 +49,9 @@ public static class QuotationDto
      RuleFor(model => new { model.StartTime, model.EndTime })
         .Must(model => (model.EndTime - model.StartTime).TotalSeconds > 0)
         .WithMessage("End time cannot be before start time!");
-      RuleFor(model => model.Customer).NotEmpty();
-      //RuleFor(model => model.IsTripelBier).NotEmpty(); TODO
+     RuleFor(model => model.Customer).NotEmpty();
+     //RuleFor(model => model.Customer).SetValidator(new CustomerDto.Validator());
+     //RuleFor(model => model.IsTripelBier).NotEmpty(); TODO
     }
   }
 }

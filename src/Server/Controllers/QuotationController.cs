@@ -43,7 +43,7 @@ public class QuotationController : ControllerBase
     _logger.Log(LogLevel.Information,
       "Registered new quotation request at {model} for {(model.Customer.FirstName + model.Customer.LastName)}",
       model.EventLocation, (model.Customer.FirstName + model.Customer.LastName));
-    return CreatedAtAction(nameof(RegisterQuotationRequest), new QuotationResponse.Create { QuotationId = quotationId });
+    return CreatedAtAction(nameof(RegisterQuotationRequest), quotationId);
   }
 
   [HttpGet]
