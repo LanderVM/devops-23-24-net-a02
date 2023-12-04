@@ -125,6 +125,7 @@ public class EquipmentService : IEquipmentService
       Attributes = attributes,
       Price = equipment.Price,
       Stock= equipment.Stock,
+      IsActive = equipment.IsActive,
       ImageData = new EquipmentDto.ImageData
       {
         ImageUrl = "https://via.placeholder.com/350x300",
@@ -157,6 +158,7 @@ public class EquipmentService : IEquipmentService
     equipment.Description = description;
     equipment.Stock = model.Stock;
     equipment.Price = model.Price;
+    equipment.IsActive = model.IsActive;
 
     await _dbContext.SaveChangesAsync();
   }

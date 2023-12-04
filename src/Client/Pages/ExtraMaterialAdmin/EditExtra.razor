@@ -34,6 +34,13 @@
                       Variant="Variant.Outlined"
                       Lines="3" />
 
+        <MudCheckBox @bind-Checked="@Model.IsActive"
+                     For="@(() => Model.IsActive)"
+                     Label="Is actief"
+                     Color="Color.Primary"
+                     Size="Size.Medium">
+        </MudCheckBox>
+
         <MudGrid Class="mt-6">
             <MudItem xs="1">
 
@@ -69,7 +76,7 @@
     private EquipmentDto.Mutate Model { get; set; } = new EquipmentDto.Mutate();
     /*
     private void AddAttribute()
-    {
+        {
         AmountOfAttributes += 1;
     }*/
 
@@ -89,6 +96,7 @@
         Model.Price = Decimal.Round(response.Price,2);
         Model.Attributes = response.Attributes;
         Model.ImageData = response.ImageData;
+        Model.IsActive = response.IsActive;
         StateHasChanged();
 
     }
