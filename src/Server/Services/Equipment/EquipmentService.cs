@@ -30,6 +30,7 @@ public class EquipmentService : IEquipmentService
     }
     
     Equipment equipment = new Equipment(model.Title,attributes,model.Price,model.Stock);
+    equipment.IsActive = model.IsActive;
 
     _dbContext.Equipments.Add(equipment);
 

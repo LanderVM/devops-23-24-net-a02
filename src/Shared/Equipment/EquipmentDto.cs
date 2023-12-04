@@ -55,7 +55,9 @@ public static class EquipmentDto
     public int Stock { get; set; }
     public ImageData ImageData { get; set; }
 
-    
+    public bool IsActive { get; set; }
+
+
 
     public class Validator : AbstractValidator<EquipmentDto.Create>
     {

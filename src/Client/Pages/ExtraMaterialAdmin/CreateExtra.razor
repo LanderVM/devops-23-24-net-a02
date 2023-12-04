@@ -37,6 +37,14 @@
                       Variant="Variant.Outlined" 
                       Lines="3"
                       />
+
+        <MudCheckBox @bind-Checked="@CreateEquipment.IsActive"
+                     For="@(() => CreateEquipment.IsActive)"
+                     Label="Is actief"
+                     Color="Color.Primary"
+                     Size="Size.Medium">
+        </MudCheckBox>
+
         <MudGrid Class="mt-2 mb-2">
             <MudItem xs ="12">
                 <div class="input-group mb-3">
