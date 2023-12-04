@@ -23,14 +23,10 @@ public static class DbInitializer
     // Extra Items
     var equipment = new[]
     {
-      new Equipment("Saladette",
-        new List<string> { "34cm x 120cm x 28 cm", "Inclusief 5 st GN 1/4 bakken met deksels" }, 65M,
-        2),
-      new Equipment("GN bak 1/4", new List<string> { "diepte 150mm", "Inclusief deksel" }, 3M, 20),
-      new Equipment("GN bak 1/6", new List<string> { "diepte 150mm", "Inclusief deksel" }, 3M, 10), new Equipment(
-        "Barkoeler 320l",
-        new List<string> { "50cm x 135cm x 87cm", "3x glazen schuifdeuren", "Kleur zwart" }, 65M,
-        1),
+      new Equipment("Saladette", new List<string> { "34cm x 120cm x 28 cm", "Inclusief 5 st GN 1/4 bakken met deksels" }, 65M, 2, "https://a2blanchestorage.blob.core.windows.net/images/Saladette.jpg"),
+      new Equipment("GN bak 1/4", new List<string> { "diepte 150mm", "Inclusief deksel" }, 3M, 20, "https://a2blanchestorage.blob.core.windows.net/images/Saladette.jpg"),
+      new Equipment("GN bak 1/6", new List<string> { "diepte 150mm", "Inclusief deksel" }, 3M, 10, "https://a2blanchestorage.blob.core.windows.net/images/Saladette.jpg"), 
+      /* new Equipment("Barkoeler 320l", new List<string> { "50cm x 135cm x 87cm", "3x glazen schuifdeuren", "Kleur zwart" }, 65M, 1),
       new Equipment("Cocktail glas gouden rand", new List<string> { "330ml" }, 0.50M, 100),
       new Equipment("Cocktail glas gemiddeld", new List<string> { "330ml" }, 0.20M, 100),
       new Equipment("Cocktail glas klein", new List<string> { "250ml" }, 0.15M, 100),
@@ -48,13 +44,14 @@ public static class DbInitializer
       new Equipment("Schapenvacht", new List<string> { "ongev. 100cm x 50cm" }, 12M, 10),
       new Equipment("Biertafelset", new List<string> { "220cm x 130cm x 48cm", "1 tafel met 2 banken" }, 15M, 5),
       new Equipment("Fruitkist", new List<string> { "50cm x 41cm x 31cm" }, 5M, 20)
+      */
     };
     
     // Items included in Formula's
-    var vatenBier = new Equipment("Vaten bier", new List<string> { "Inbegrepen in formule" }, 1.5M, 999);
-    var glazen = new Equipment("Glazen", new List<string> { "Inbegrepen in formule" }, 1.5M, 999);
+    var vatenBier = new Equipment("Vaten bier", new List<string> { "Inbegrepen in formule" }, 1.5M, 999, "https://a2blanchestorage.blob.core.windows.net/images/Saladette.jpg");
+    var glazen = new Equipment("Glazen", new List<string> { "Inbegrepen in formule" }, 1.5M, 999, "https://a2blanchestorage.blob.core.windows.net/images/Saladette.jpg");
     var bbq = new Equipment("Bbq met bbq-kit", new List<string> { "Inbegrepen in formule", "Inclusief hout voor bbq" },
-      12M, 999);
+      12M, 999 , "https://a2blanchestorage.blob.core.windows.net/images/Saladette.jpg");
 
     // Formula's
     var formulas = new Formula[]

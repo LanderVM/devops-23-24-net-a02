@@ -25,10 +25,10 @@ public class EquipmentService : IEquipmentService
     return await response.Content.ReadFromJsonAsync<int>();
   }
 
-  public async Task<int> CreateAsync(EquipmentDto.Create model)
+  public async Task<EquipmentResult.Create> CreateAsync(EquipmentDto.Create model)
   {
     var response = await client.PostAsJsonAsync(endpoint,model);
-    return await response.Content.ReadFromJsonAsync<int>();
+    return await response.Content.ReadFromJsonAsync<EquipmentResult.Create>();
   }
 
   public async Task UpdateAsync(int equipmentId, EquipmentDto.Mutate model)

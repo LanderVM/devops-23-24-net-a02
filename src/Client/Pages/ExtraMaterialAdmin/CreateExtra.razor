@@ -1,4 +1,5 @@
 ﻿@using shared.Equipment;
+@using Client.Files;
 @using Microsoft.AspNetCore.Components;
 @using Microsoft.AspNetCore.Components.Forms;
 @using FluentValidation;
@@ -77,37 +78,22 @@
     public EventCallback Refresh { get; set; } = default!;
 
     private IBrowserFile image;
-
-    //private int AmountOfAttributes { get; set; } = 2;
-
     private string Attributes { get; set; } = default!;
-
     private EquipmentDto.Create CreateEquipment { get; set; } = new EquipmentDto.Create();
 
-    /*
-    private void AddAttribute()
-    {
-        AmountOfAttributes += 1;    
-    }*/
+    [Inject] public IStorageService StorageService { get; set; }
 
     protected override void OnInitialized()
     {
-        //CreateEquipment.Attributes = new List<string> { "",""};
-        CreateEquipment.ImageData = new EquipmentDto.ImageData
-            {
-                ImageUrl = "https://via.placeholder.com/350x300",
-                AltText = "placeholder txt",
-            };
+        
     }
 
     private async Task CreateEquipmentAsync()
     {
-        
-
-        await EquipmentService.CreateAsync(CreateEquipment);
+        EquipmentResult.Create result = await EquipmentService.CreateAsync(CreateEquipment);
+        await StorageService.UploadImageAsync(result.Image.ImageUrl, image!);
         await Close.InvokeAsync();
-        await Refresh.InvokeAsync();
-        
+        await Refresh.InvokeAsync();   
     }
 
     private void Cancel()

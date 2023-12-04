@@ -57,10 +57,10 @@ public class EquipmentController : ControllerBase
 
   [SwaggerOperation("Creates equipment and adds it to the catalog.")]
   [HttpPost]
-  public async Task<int> Create(EquipmentDto.Create model)
+  public async Task<EquipmentResult.Create> Create(EquipmentDto.Create model)
   {
-    int id = await _equipmentService.CreateAsync(model);
-    return id;
+    EquipmentResult.Create item = await _equipmentService.CreateAsync(model);
+    return item;
   }
 }
 

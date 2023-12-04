@@ -2,25 +2,30 @@
 using Domain.Formulas;
 using Microsoft.EntityFrameworkCore;
 using shared.Equipment;
+using devops_23_24_net_a02.Services.Files;
+using devops_23_24_net_a02.Domain.Files;
 
 namespace server.Services;
 public class EquipmentService : IEquipmentService
 {
 
   private readonly BlancheDbContext _dbContext;
+  private readonly IStorageService _storageService;
 
-  public EquipmentService(BlancheDbContext blancheDbContext)
+  public EquipmentService(BlancheDbContext blancheDbContext, IStorageService storageService)
   {
     _dbContext = blancheDbContext;
+    _storageService = storageService;
   }
 
-  public async Task<int> CreateAsync(EquipmentDto.Create model)
+  public async Task<EquipmentResult.Create> CreateAsync(EquipmentDto.Create model)
   {
     Equipment? e = await _dbContext.Equipments.SingleOrDefaultAsync(x => x.Description.Title.Equals(model.Title));
 
     if (e is not null)
       throw new Exception($"equipment with title: {model.Title} already exists");
 
+    Image image = new Image(_storageService.BasePath, model.ImageContentType!);
     List<string> list = model.Attributes.Split(';').ToList();
     List<string> attributes = new List<string>();
 
@@ -29,13 +34,26 @@ public class EquipmentService : IEquipmentService
       attributes.Add(s2);
     }
     
-    Equipment equipment = new Equipment(model.Title,attributes,model.Price,model.Stock);
+    Equipment equipment = new Equipment(model.Title,attributes,model.Price,model.Stock,model.ImageContentType);
 
     _dbContext.Equipments.Add(equipment);
 
     await _dbContext.SaveChangesAsync();
 
-    return equipment.Id;
+
+    Uri uploadSas = _storageService.GenerateImageUploadSas(image);
+
+    EquipmentResult.Create result = new EquipmentResult.Create
+    {
+      Image = new ImageData
+      {
+        ImageUrl = equipment.ImageUrl,
+        AltText = equipment.Description.Title
+      },
+      Id = equipment.Id
+    };
+
+    return result;
   }
 
   public async Task<int> DeleteAsync(int equipmentId)
@@ -69,7 +87,7 @@ public class EquipmentService : IEquipmentService
          Attributes = x.Description.Attributes,
          Price = x.Price,
          Stock = x.Stock,
-         ImageData = new EquipmentDto.ImageData { 
+         ImageData = new ImageData { 
            ImageUrl = "https://via.placeholder.com/350x300",
            AltText = "placeholder txt",
          },
@@ -93,7 +111,7 @@ public class EquipmentService : IEquipmentService
       Attributes = x.Description.Attributes,
       Price = x.Price,
       Stock = x.Stock,
-      ImageData = new EquipmentDto.ImageData
+      ImageData = new ImageData
       {
         ImageUrl = "https://via.placeholder.com/350x300",
         AltText = "placeholder txt",
@@ -123,7 +141,7 @@ public class EquipmentService : IEquipmentService
       Attributes = attributes,
       Price = equipment.Price,
       Stock= equipment.Stock,
-      ImageData = new EquipmentDto.ImageData
+      ImageData = new ImageData
       {
         ImageUrl = "https://via.placeholder.com/350x300",
         AltText = "placeholder txt",

@@ -8,7 +8,7 @@ public interface IEquipmentService
 
   public Task<int> DeleteAsync(int equipmentId);
 
-  public Task<int> CreateAsync(EquipmentDto.Create model);
+  public Task<EquipmentResult.Create> CreateAsync(EquipmentDto.Create model);
 
   public Task UpdateAsync(int equipmentId, EquipmentDto.Mutate model);
 

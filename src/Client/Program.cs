@@ -11,6 +11,7 @@ using devops_23_24_net_a02.Client.Pages.Formulas;
 using shared.Quotations;
 using devops_23_24_net_a02.Client.Pages.Quotations;
 using Append.Blazor.Sidepanel;
+using devops_23_24_net_a02.Client.Files;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -28,14 +29,15 @@ builder.Services.AddScoped<ExtraMaterialState>();
 builder.Services.AddScoped<QuotationEstimateState>();
 builder.Services.AddScoped<FormulaState>();
 builder.Services.AddScoped<EventDetailsState>();
+
 builder.Services.AddSidepanel();
+builder.Services.AddHttpClient<IStorageService,
+                               AzureBlobStorageService>();
 
 builder.Services.AddMudServices(options =>
 {
   options.PopoverOptions.ThrowOnDuplicateProvider = false;
 });
-
-builder.Services.AddSidepanel();
 
 builder.Services.AddScoped<IEquipmentService, EquipmentService>();
 builder.Services.AddScoped<IFormulaService, FormulaService>();
