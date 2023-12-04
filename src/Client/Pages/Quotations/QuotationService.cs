@@ -1,4 +1,4 @@
-﻿using System.Net.Http.Json;
+using System.Net.Http.Json;
 using System.Text;
 using devops_23_24_net_a02.Client.Extensions;
 using shared.Quotations;
@@ -59,7 +59,7 @@ public class QuotationService : IQuotationService
 
   public async Task<QuotationResult.Dates> GetDatesAsync()
   {
-    var response = await client.GetFromJsonAsync<QuotationResult.Dates>($"/dates");
+    var response = await client.GetFromJsonAsync<QuotationResult.Dates>($"{endpoint}/Dates");
     return response;
   }
 }
