@@ -52,7 +52,7 @@ public class QuotationController : ControllerBase
   {
     return await _quotationService.GetIndexAsync();
   }
-  [HttpGet("/dates")]
+  [HttpGet("Dates")]
   [SwaggerOperation("Gets all the dates for which there is an approved quotation")]
   public async Task<QuotationResult.Dates> GetApprovedQuotationsDates() { 
     var dateTimes = await _quotationService.GetDatesAsync();
