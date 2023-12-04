@@ -69,6 +69,7 @@ public class EquipmentService : IEquipmentService
          Attributes = x.Description.Attributes,
          Price = x.Price,
          Stock = x.Stock,
+         IsActive = x.IsActive,
          ImageData = new EquipmentDto.ImageData { 
            ImageUrl = "https://via.placeholder.com/350x300",
            AltText = "placeholder txt",
@@ -93,6 +94,7 @@ public class EquipmentService : IEquipmentService
       Attributes = x.Description.Attributes,
       Price = x.Price,
       Stock = x.Stock,
+      IsActive = x.IsActive,
       ImageData = new EquipmentDto.ImageData
       {
         ImageUrl = "https://via.placeholder.com/350x300",
@@ -135,9 +137,9 @@ public class EquipmentService : IEquipmentService
 
   public async Task UpdateAsync(int equipmentId, EquipmentDto.Mutate model)
   {
-    Equipment? eq = await _dbContext.Equipments.FirstOrDefaultAsync(x=>x.Id == equipmentId);
+    Equipment? equipment = await _dbContext.Equipments.FirstOrDefaultAsync(x=>x.Id == equipmentId);
 
-    if (eq is null)
+    if (equipment is null)
     {
       throw new Exception($"Equipment with id: {equipmentId} doesn't exists");
     }
@@ -151,10 +153,10 @@ public class EquipmentService : IEquipmentService
       attributes.Add(s2);
     }
 
-    Description des = new Description(model.Title, attributes);
-    eq.Description = des;
-    eq.Stock = model.Stock;
-    eq.Price = model.Price;
+    Description description = new Description(model.Title, attributes);
+    equipment.Description = description;
+    equipment.Stock = model.Stock;
+    equipment.Price = model.Price;
 
     await _dbContext.SaveChangesAsync();
   }

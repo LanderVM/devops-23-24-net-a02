@@ -1,4 +1,4 @@
-using FluentValidation;
+﻿using FluentValidation;
 
 namespace shared.Equipment;
 
@@ -12,6 +12,8 @@ public static class EquipmentDto
     public int Stock { get; set; }
     public ImageData ImageData { get; set; }
     public List<int>? FormulaIds { get; set; }
+
+    public bool IsActive { get; set; }
       
   }
 
