@@ -230,7 +230,7 @@
         TimeSpan? dif = end - start;
 
         int amountOfDaysDiff = (int)dif.Value.TotalDays;
-        Console.WriteLine("timedif: " + amountOfDaysDiff);
+        
         if (amountOfDaysDiff == 0)
         {
             initialPrice = FormulaState.BasePrice[0];
@@ -366,6 +366,7 @@
 
         
         int result = await QuotationService.CreateAsync(quotation);
+        
         //NavigationManager.NavigateTo($"Quotation/{result}");
         OpenDialog();
     }

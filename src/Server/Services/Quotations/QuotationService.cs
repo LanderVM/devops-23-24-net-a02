@@ -98,11 +98,12 @@ public class QuotationService : IQuotationService
     var quotationLines = new List<QuotationLine>();
     foreach (var lines in model.Equipments)
     {
-      var equipment = _dbContext.Equipments.FirstOrDefault(equipment => equipment.Id == lines.EquipmentId);
-      if (equipment is null)
-        throw new ArgumentException($"Equipment with id {lines.EquipmentId} does not exist!");
       
-      quotationLines.Add(new QuotationLine(equipment, lines.Amount));
+        var equipment = _dbContext.Equipments.FirstOrDefault(equipment => equipment.Id == lines.EquipmentId);
+        quotationLines.Add(new QuotationLine(equipment, lines.Amount));
+     
+      
+      
     }
     if (customer.Email.IsActive is false)
       customer.Email.IsActive = true; // TODO nieuwe maken of gewoon terug actief zetten?
