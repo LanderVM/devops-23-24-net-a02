@@ -81,7 +81,7 @@
     {
         EquipmentResult.Index response = await EquipmentService.GetIndexAsync();
 
-        Extras = response.Equipment;
+        Extras = response.Equipment.Where(x=>x.IsActive==true);
 
         if (ExtraMaterialState.ExtrasAmount.Count == 0)
         {
