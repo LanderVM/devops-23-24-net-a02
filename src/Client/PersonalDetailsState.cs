@@ -1,9 +1,14 @@
 ﻿using FluentValidation;
+using shared;
+using Shared.Customer;
 
 namespace devops_23_24_net_a02.Client;
 
 public class PersonalDetailsState
 {
+  public CustomerDto.Create customer = new();
+
+  /*
   public PersonalDetailsClass PersonalDetailsObject = new();
 
   public PersonalDetailsClassValidator personalDetailsClassValidator = new();
@@ -62,5 +67,5 @@ public class PersonalDetailsState
       return result.Errors.Select(e => e.ErrorMessage);
     };
   }
-
+  */
 }
