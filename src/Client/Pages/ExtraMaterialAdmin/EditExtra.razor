@@ -69,16 +69,7 @@
     [Parameter]
     public EventCallback Refresh { get; set; } = default!;
 
-    //private int AmountOfAttributes { get; set; } = 2;
-
-    //private string Attributes { get; set; } = default!;
-
     private EquipmentDto.Mutate Model { get; set; } = new EquipmentDto.Mutate();
-    /*
-    private void AddAttribute()
-        {
-        AmountOfAttributes += 1;
-    }*/
 
     protected override async Task OnParametersSetAsync()
     {
@@ -88,7 +79,6 @@
                 AltText = "a google image"
 
             };
-        //Model.Attributes = new List<string> { "", "" };
 
         EquipmentDto.Mutate response = await EquipmentService.GetSpecificMutateAsync(EquipmentId);
         Model.Title = response.Title;

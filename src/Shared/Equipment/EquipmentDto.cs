@@ -91,7 +91,7 @@ public static class EquipmentDto
         RuleFor(x => x.Attributes).NotEmpty().MaximumLength(100);
         RuleFor(x => x.Price).NotEmpty().InclusiveBetween(0, 5000);
         RuleFor(x => x.Stock).NotEmpty().InclusiveBetween(1, 1000);
-        //RuleFor(x => x.IsActive).NotEmpty();
+        
       }
 
     }
