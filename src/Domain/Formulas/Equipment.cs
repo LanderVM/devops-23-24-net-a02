@@ -10,7 +10,7 @@ public class Equipment : Entity
 
   private Equipment() { } // EF Core constructor
 
-  public Equipment(string title, List<string> description, decimal price, int stock, string imageUrl)
+  public Equipment(string title, List<string> description, decimal price, int stock, string imageUrl = "https://via.placeholder.com/350x300")
   {
     Description = new Description(title, description);
     Price = price;

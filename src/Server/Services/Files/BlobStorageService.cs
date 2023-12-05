@@ -11,7 +11,7 @@ public class BlobStorageService : IStorageService
 {
   private readonly string connectionString;
 
-  public Uri BasePath => new Uri("https://hogentdemostorage.blob.core.windows.net/images");
+  public Uri BasePath => new Uri("https://a2blanchestorage.blob.core.windows.net/images");
 
   public BlobStorageService(IConfiguration configuration)
   {

@@ -31,8 +31,6 @@ builder.Services.AddScoped<FormulaState>();
 builder.Services.AddScoped<EventDetailsState>();
 
 builder.Services.AddSidepanel();
-builder.Services.AddHttpClient<IStorageService,
-                               AzureBlobStorageService>();
 
 builder.Services.AddMudServices(options =>
 {
@@ -42,6 +40,8 @@ builder.Services.AddMudServices(options =>
 builder.Services.AddScoped<IEquipmentService, EquipmentService>();
 builder.Services.AddScoped<IFormulaService, FormulaService>();
 builder.Services.AddScoped<IQuotationService, QuotationService>();
+builder.Services.AddHttpClient<IStorageService,
+                               AzureBlobStorageService>();
 
 //Authentication
 builder.Services.AddOidcAuthentication(options =>

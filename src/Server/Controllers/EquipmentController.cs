@@ -42,11 +42,18 @@ public class EquipmentController : ControllerBase
 
   [SwaggerOperation("Edites an equipment item in the catalog.")]
   [HttpPut("{equipmentId}")]
-  public async Task<IActionResult> Edit(int equipmentId, EquipmentDto.Mutate model)
+  public async Task<EquipmentResult.Create> Edit(int equipmentId, EquipmentDto.Mutate model)
   {
-    await _equipmentService.UpdateAsync(equipmentId, model);
-    return NoContent();
+    return await _equipmentService.UpdateAsync(equipmentId, model);
   }
+
+  [SwaggerOperation("Edites an equipment item with an image in the catalog.")]
+  [HttpPut("WithImage/{equipmentId}")]
+  public async Task<EquipmentResult.CreateWithImage> EditWithImage(int equipmentId, EquipmentDto.Mutate model)
+  {
+    return await _equipmentService.UpdateWithImageAsync(equipmentId, model);
+  }
+
   [SwaggerOperation("Deletes equipment item from catalog.")]
   [HttpDelete("{equipmentId}")]
   public async Task<int> Delete(int equipmentId)
@@ -60,6 +67,14 @@ public class EquipmentController : ControllerBase
   public async Task<EquipmentResult.Create> Create(EquipmentDto.Create model)
   {
     EquipmentResult.Create item = await _equipmentService.CreateAsync(model);
+    return item;
+  }
+
+  [HttpPost("WithImage")]
+  [SwaggerOperation("Creates equipment with a image and adds it to the catalog.")]
+  public async Task<EquipmentResult.CreateWithImage> CreateWithImage(EquipmentDto.Create model)
+  {
+    EquipmentResult.CreateWithImage item = await _equipmentService.CreateWithImageAsync(model);
     return item;
   }
 }
