@@ -4,9 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace devops-23-24-net-a02.Domain.Excpetions
+namespace Domain.Exceptions;
+
+
+public class EntityAlreadyExistsException : ApplicationException
 {
-    internal class EntityAlreadyExistsException
-{
+  /// <param name="entityName">Name / type of the <see cref="Entity"/>.</param>
+  /// <param name="parameterName">Name of the property that is invalid.</param>
+  /// <param name="parameterValue">The value that was marked as a duplicate.</param>
+  public EntityAlreadyExistsException(string entityName, string parameterName, string? parameterValue) : base($"'{entityName}' with '{parameterName}':'{parameterValue}' already exists.")
+  {
+  }
 }
-}
+
+
