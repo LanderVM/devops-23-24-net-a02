@@ -37,6 +37,14 @@
                       Variant="Variant.Outlined" 
                       Lines="3"
                       />
+
+        <MudCheckBox @bind-Checked="@CreateEquipment.IsActive"
+                     For="@(() => CreateEquipment.IsActive)"
+                     Label="Is actief"
+                     Color="Color.Primary"
+                     Size="Size.Medium">
+        </MudCheckBox>
+
         <MudGrid Class="mt-2 mb-2">
             <MudItem xs ="12">
                 <div class="input-group mb-3">
@@ -78,21 +86,12 @@
 
     private IBrowserFile image;
 
-    //private int AmountOfAttributes { get; set; } = 2;
-
     private string Attributes { get; set; } = default!;
 
     private EquipmentDto.Create CreateEquipment { get; set; } = new EquipmentDto.Create();
 
-    /*
-    private void AddAttribute()
-    {
-        AmountOfAttributes += 1;    
-    }*/
-
     protected override void OnInitialized()
     {
-        //CreateEquipment.Attributes = new List<string> { "",""};
         CreateEquipment.ImageData = new EquipmentDto.ImageData
             {
                 ImageUrl = "https://via.placeholder.com/350x300",

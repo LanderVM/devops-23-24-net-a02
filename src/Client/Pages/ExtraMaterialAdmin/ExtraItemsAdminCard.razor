@@ -10,8 +10,15 @@
                 <MudText Typo="Typo.body2" Class="mb-3">@i</MudText>
             }
             <MudText Typo="Typo.body2" Class="mb-3">€ @(Decimal.Round(Price, 2))/72uur</MudText>
-            <MudText Typo="Typo.body2" Class="mb-1">@Stock in stock</MudText>
-            
+            <MudText Typo="Typo.body2" Class="mb-3">@Stock in stock</MudText>
+            @if (IsActive==true)
+            {
+                <MudText Typo="Typo.body2" Class="mb-1">Is actief</MudText>
+            }else
+            {
+                <MudText Typo="Typo.body2" Class="mb-1">Is niet actief</MudText>
+            }
+
         </MudCardContent>
         <MudCardActions Class="mt-auto">
             <MudGrid>
@@ -60,6 +67,9 @@
 
     [Parameter]
     public decimal Price { get; set; }
+
+    [Parameter]
+    public bool IsActive { get; set; }
 
     [Parameter]
     public EventCallback UpdateItem { get; set; }
