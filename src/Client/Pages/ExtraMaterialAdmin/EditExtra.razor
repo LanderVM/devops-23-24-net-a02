@@ -46,10 +46,11 @@
                                    Hidden="@false"
                                    InputClass="absolute mud-width-full mud-height-full overflow-hidden z-20"
                                    InputStyle="opacity:0"
+                                   Context="InputFile"
                     @ondragenter="@SetDragClass"
                     @ondragleave="@ClearDragClass"
                     @ondragend="@ClearDragClass">
-                        <ButtonTemplate Context="Inputfield">
+                        <ButtonTemplate>
                             <MudPaper Height="150px"
                                       Outlined="true"
                                       Class="@_dragClass">
@@ -65,8 +66,8 @@
                                         Class="relative d-flex justify-end gap-4 z-30">
                                 <MudButton HtmlTag="label"
                                            Color="Color.Primary"
-                                           for="@context"
-                                           Variant="Variant.Filled">
+                                           Variant="Variant.Filled"
+                                           for="@InputFile">
                                     Open een bestand
                                 </MudButton>
                                 <MudButton OnClick="@Clear"
@@ -113,16 +114,7 @@
 
     private IBrowserFile? image;
 
-    //private int AmountOfAttributes { get; set; } = 2;
-
-    //private string Attributes { get; set; } = default!;
-
     private EquipmentDto.Mutate Model { get; set; } = new EquipmentDto.Mutate();
-    /*
-    private void AddAttribute()
-        {
-        AmountOfAttributes += 1;
-    }*/
 
     protected override async Task OnParametersSetAsync()
     {
@@ -180,10 +172,11 @@
     {
         ClearDragClass();
         var files = e.GetMultipleFiles();
-        foreach (var file in files)
+        _fileNames[0] = files.First().Name;
+        /* foreach (var file in files)
         {
-            _fileNames.Add(file.Name);
-        }
+            _fileNames.Put(file.Name);
+        } */
         image = e.File;
         Model.ImageContentType = image.ContentType;
     }
