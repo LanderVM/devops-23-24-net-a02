@@ -30,7 +30,6 @@ public class EquipmentService : IEquipmentService
     }
     
     Equipment equipment = new Equipment(model.Title,attributes,model.Price,model.Stock);
-    equipment.IsActive = model.IsActive;
 
     _dbContext.Equipments.Add(equipment);
 
@@ -70,7 +69,6 @@ public class EquipmentService : IEquipmentService
          Attributes = x.Description.Attributes,
          Price = x.Price,
          Stock = x.Stock,
-         IsActive = x.IsActive,
          ImageData = new EquipmentDto.ImageData { 
            ImageUrl = "https://via.placeholder.com/350x300",
            AltText = "placeholder txt",
@@ -95,7 +93,6 @@ public class EquipmentService : IEquipmentService
       Attributes = x.Description.Attributes,
       Price = x.Price,
       Stock = x.Stock,
-      IsActive = x.IsActive,
       ImageData = new EquipmentDto.ImageData
       {
         ImageUrl = "https://via.placeholder.com/350x300",
@@ -126,7 +123,6 @@ public class EquipmentService : IEquipmentService
       Attributes = attributes,
       Price = equipment.Price,
       Stock= equipment.Stock,
-      IsActive = equipment.IsActive,
       ImageData = new EquipmentDto.ImageData
       {
         ImageUrl = "https://via.placeholder.com/350x300",
@@ -139,9 +135,9 @@ public class EquipmentService : IEquipmentService
 
   public async Task UpdateAsync(int equipmentId, EquipmentDto.Mutate model)
   {
-    Equipment? equipment = await _dbContext.Equipments.FirstOrDefaultAsync(x=>x.Id == equipmentId);
+    Equipment? eq = await _dbContext.Equipments.FirstOrDefaultAsync(x=>x.Id == equipmentId);
 
-    if (equipment is null)
+    if (eq is null)
     {
       throw new Exception($"Equipment with id: {equipmentId} doesn't exists");
     }
@@ -155,11 +151,10 @@ public class EquipmentService : IEquipmentService
       attributes.Add(s2);
     }
 
-    Description description = new Description(model.Title, attributes);
-    equipment.Description = description;
-    equipment.Stock = model.Stock;
-    equipment.Price = model.Price;
-    equipment.IsActive = model.IsActive;
+    Description des = new Description(model.Title, attributes);
+    eq.Description = des;
+    eq.Stock = model.Stock;
+    eq.Price = model.Price;
 
     await _dbContext.SaveChangesAsync();
   }
