@@ -8,6 +8,7 @@ namespace devops_23_24_net_a02.Client;
 
 public class PersonalDetailsState
 {
+  /*
   public CustomerDto.Create customer = new CustomerDto.Create { 
     FirstName="",
     LastName="",
@@ -23,6 +24,7 @@ public class PersonalDetailsState
      HouseNumber = "",
     }
 
-  };
+  };*/
+  public CustomerDto.Create customer = new();
 
 }

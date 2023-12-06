@@ -43,7 +43,7 @@ public static class CustomerDto
       RuleFor(model => model.BillingAddress).NotEmpty().SetValidator(new AddressDto.Validator());
       RuleFor(model => model.PhoneNumber).NotEmpty().MaximumLength(200);
       RuleFor(model => model.VatNumber)
-        .Must(vat => vat.Substring(0, 2).Any(char.IsLetter))
+        .Must(vat => vat.Substring(0, 2).Any(char.IsLetter)).When(create => string.IsNullOrWhiteSpace(create.VatNumber))
         .WithMessage("First two letters of VAT number must be your country code!");
     }
   }
