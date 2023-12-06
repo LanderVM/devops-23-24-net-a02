@@ -1,4 +1,4 @@
-using FluentValidation;
+﻿using FluentValidation;
 
 namespace shared.Equipment;
 
@@ -12,6 +12,8 @@ public static class EquipmentDto
     public int Stock { get; set; }
     public ImageData ImageData { get; set; }
     public List<int>? FormulaIds { get; set; }
+
+    public bool IsActive { get; set; }
       
   }
 
@@ -53,7 +55,9 @@ public static class EquipmentDto
     public int Stock { get; set; }
     public ImageData ImageData { get; set; }
 
-    
+    public bool IsActive { get; set; }
+
+
 
     public class Validator : AbstractValidator<EquipmentDto.Create>
     {
@@ -77,6 +81,8 @@ public static class EquipmentDto
     public int Stock { get; set; }
     public ImageData ImageData { get; set; }
 
+    public bool IsActive { get; set; }
+
     public class Validator : AbstractValidator<EquipmentDto.Mutate>
     {
       public Validator()
@@ -85,6 +91,7 @@ public static class EquipmentDto
         RuleFor(x => x.Attributes).NotEmpty().MaximumLength(100);
         RuleFor(x => x.Price).NotEmpty().InclusiveBetween(0, 5000);
         RuleFor(x => x.Stock).NotEmpty().InclusiveBetween(1, 1000);
+        
       }
 
     }
