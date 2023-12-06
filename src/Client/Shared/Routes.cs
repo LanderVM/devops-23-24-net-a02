@@ -10,4 +10,5 @@ public static class Routes
   public const string ExtraMaterial = "/ExtraMateriaal";
   public const string Quotations = "/Offertes";
   public const string ExtraMaterialAdmin = "/ExtraMaterialAdmin";
+  public const string ExtraMaterialReadOnly = "/ExtraMaterialReadOnly";
 }
