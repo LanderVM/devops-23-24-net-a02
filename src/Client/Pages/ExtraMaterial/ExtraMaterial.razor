@@ -81,13 +81,22 @@
     {
         EquipmentResult.Index response = await EquipmentService.GetIndexAsync();
 
-        Extras = response.Equipment;
+        Extras = response.Equipment.Where(x=>x.IsActive==true);
 
         if (ExtraMaterialState.ExtrasAmount.Count == 0)
         {
             foreach (EquipmentDto.Index item in Extras)
             {
                 ExtraMaterialState.ExtrasAmount.Add(item.Id, 0);
+            }
+        } else if (Extras.Count()>ExtraMaterialState.ExtrasAmount.Count)
+        {
+            foreach (EquipmentDto.Index item in Extras)
+            {
+                if (!ExtraMaterialState.ExtrasAmount.ContainsKey(item.Id))
+                {
+                    ExtraMaterialState.ExtrasAmount.Add(item.Id, 0);
+                }
             }
         }
     }
