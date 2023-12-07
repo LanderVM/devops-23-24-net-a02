@@ -72,9 +72,7 @@ public class EquipmentService : IEquipmentService
     
     Equipment equipment = new Equipment(model.Title,attributes,model.Price,model.Stock);
     equipment.IsActive = model.IsActive;
-
-    Equipment equipment = new Equipment(model.Title, attributes, model.Price, model.Stock);
-
+    
     _dbContext.Equipments.Add(equipment);
     await _dbContext.SaveChangesAsync();
 
@@ -120,7 +118,7 @@ public class EquipmentService : IEquipmentService
          Price = x.Price,
          Stock = x.Stock,
          IsActive = x.IsActive,
-         ImageData = new ImageData { 
+         ImageData = new EquipmentDto.ImageData { 
            ImageUrl = x.ImageUrl,
            AltText = x.Description.Title,
          },
@@ -145,7 +143,7 @@ public class EquipmentService : IEquipmentService
       Price = x.Price,
       Stock = x.Stock,
       IsActive = x.IsActive,
-      ImageData = new ImageData
+      ImageData = new EquipmentDto.ImageData
       {
         ImageUrl = "https://via.placeholder.com/350x300",
         AltText = "placeholder txt",
@@ -176,7 +174,7 @@ public class EquipmentService : IEquipmentService
       Price = equipment.Price,
       Stock= equipment.Stock,
       IsActive = equipment.IsActive,
-      ImageData = new ImageData
+      ImageData = new EquipmentDto.ImageData
       {
         ImageUrl = "https://via.placeholder.com/350x300",
         AltText = "placeholder txt",
@@ -211,7 +209,7 @@ public class EquipmentService : IEquipmentService
     equipment.Stock = model.Stock;
     equipment.Price = model.Price;
     equipment.IsActive = model.IsActive;
-    eq.ImageUrl = image.FileUri.ToString();
+    equipment.ImageUrl = image.FileUri.ToString();
 
     await _dbContext.SaveChangesAsync();
 
@@ -222,9 +220,9 @@ public class EquipmentService : IEquipmentService
       Image = new ImageData
       {
         ImageUrl = uploadSas.ToString(),
-        AltText = eq.Description.Title
+        AltText = equipment.Description.Title
       },
-      Id = eq.Id
+      Id = equipment.Id
     };
 
     return result;

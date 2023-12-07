@@ -54,7 +54,6 @@ public static class EquipmentDto
     public decimal Price { get; set; }
     public int Stock { get; set; }
     public string? ImageContentType { get; set; }
-
     public bool IsActive { get; set; }
 
 

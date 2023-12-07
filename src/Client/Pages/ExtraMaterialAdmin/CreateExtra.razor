@@ -136,7 +136,7 @@
         await Refresh.InvokeAsync();   
     }
 
-    private string Attributes { get; set; } = default!;
+   
 
     private void Cancel()
     {
@@ -150,18 +150,10 @@
 
 
     private async Task Clear()
-    private EquipmentDto.Create CreateEquipment { get; set; } = new EquipmentDto.Create();
-
-    protected override void OnInitialized()
     {
         _fileNames.Clear();
         ClearDragClass();
         await Task.Delay(100);
-        CreateEquipment.ImageData = new EquipmentDto.ImageData
-            {
-                ImageUrl = "https://via.placeholder.com/350x300",
-                AltText = "placeholder txt",
-            };
     }
 
     private void SetDragClass() => _dragClass = $"{DefaultDragClass} mud-border-primary";
