@@ -26,7 +26,7 @@ public class QuotationService : IQuotationService
   public async Task<QuotationResult.Dates> GetDatesAsync()
   {
     var query = _dbContext.Quotations
-      .Select(q => new QuotationDto.Dates { StartTime = q.StartTime, EndTime = q.EndTime });
+      .Select(q => new QuotationDto.Dates { StartTime = q.StartTime.ToUniversalTime(), EndTime = q.EndTime.ToUniversalTime() });
 
     var dates = await query.ToListAsync();  
 
