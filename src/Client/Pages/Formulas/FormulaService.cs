@@ -19,5 +19,11 @@ namespace devops_23_24_net_a02.Client.Pages.Formulas
       FormulaResult.Index response = await client.GetFromJsonAsync<FormulaResult.Index>(endpoint);
       return response;
     }
+
+    public async Task<FormulaResult.Edit> UpdateAsync(int formulaId, FormulaDto.Mutate model)
+    {
+      var response = await client.PutAsJsonAsync($"{endpoint}/{formulaId}", model);
+      return await response.Content.ReadFromJsonAsync<FormulaResult.Edit>();
+    }
   }
 }

@@ -1,5 +1,8 @@
 ﻿using Api.Data;
+using devops_23_24_net_a02.Client.Pages.Home;
+using Domain.Formulas;
 using Microsoft.EntityFrameworkCore;
+using Shared.Common;
 using shared.Equipment;
 using shared.Formulas;
 
@@ -34,6 +37,33 @@ public class FormulaService: IFormulaService
     {
       Formulas = items,
       TotalAmount = totalAmount,
+    };
+
+    return result;
+  }
+
+  public async Task<FormulaResult.Edit> UpdateAsync(int formulaId, FormulaDto.Mutate model)
+  {
+    
+    Formula? formula = await _dbContext.Formulas.FirstOrDefaultAsync(x => x.Id == formulaId);
+
+    if (formula is null)
+    {
+      throw new Exception($"Equipment with id: {formulaId} doesn't exists");
+    }
+
+
+    formula.Description = model.Description;
+    formula.BasePrice = model.BasePrice;
+    formula.PricePerDayExtra = model.PricePerDayExtra;
+    
+    
+    
+    await _dbContext.SaveChangesAsync();
+
+    FormulaResult.Edit result = new FormulaResult.Edit
+    {
+      Id = formula.Id
     };
 
     return result;

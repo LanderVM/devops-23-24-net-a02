@@ -25,6 +25,13 @@ public class FormulaController : ControllerBase
     return await _formulaService.GetIndexAsync();
   }
   
+  [SwaggerOperation("Edits a formula item in the catalog.")]
+  [HttpPut("{formulaId}")]
+  public async Task<FormulaResult.Edit> Edit(int formulaId, FormulaDto.Mutate model)
+  {
+    return await _formulaService.UpdateAsync(formulaId, model);
+  }
+  
 }
 
 

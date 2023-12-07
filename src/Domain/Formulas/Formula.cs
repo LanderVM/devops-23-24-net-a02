@@ -20,7 +20,7 @@ public class Formula : Entity
 
   public List<Equipment> Equipment { get; } = new();
   public Description Description { get; set; } = default!;
-  public decimal PricePerDayExtra { get; protected set; } = 50M;
+  public decimal PricePerDayExtra { get; set; } = 50M;
 
   public List<decimal> BasePrice { get; set; } = new() { 350, 450, 520 };
 
