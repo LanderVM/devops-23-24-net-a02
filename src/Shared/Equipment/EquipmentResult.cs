@@ -9,4 +9,15 @@ public static class EquipmentResult
 
     public int TotalAmount { get; set; }
   }
+
+  public class Create
+  {
+    public int Id { get; set; }
+  }
+
+  public class CreateWithImage
+  {
+    public ImageData? Image { get; set; }
+    public int Id { get; set; }
+  }
 }

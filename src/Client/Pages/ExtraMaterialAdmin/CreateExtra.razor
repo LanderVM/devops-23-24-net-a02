@@ -1,36 +1,41 @@
-﻿@using shared.Equipment;
+@using shared.Equipment;
+@using Client.Files;
 @using Microsoft.AspNetCore.Components;
 @using Microsoft.AspNetCore.Components.Forms;
 @using FluentValidation;
-@inject IEquipmentService EquipmentService;
-<div style="width:600px;">
-<EditForm Model="@CreateEquipment" OnValidSubmit="CreateEquipmentAsync">
-<Blazored.FluentValidation.FluentValidationValidator/>
 
-        <MudTextField @bind-Value="CreateEquipment.Title" 
+@inject IStorageService StorageService;
+@inject IEquipmentService EquipmentService;
+
+<div style="width:600px;">
+    <EditForm Model="@CreateEquipment" OnValidSubmit="CreateEquipmentAsync">
+        <Blazored.FluentValidation.FluentValidationValidator />
+
+        <MudTextField @bind-Value="CreateEquipment.Title"
                       For="@(() => CreateEquipment.Title)"
                       Immediate="true"
-                      Label="Titel" 
-                      Variant="Variant.Outlined"/>
+                      Label="Titel"
+                      Variant="Variant.Outlined" />
+
 
         <MudNumericField @bind-Value="CreateEquipment.Price"
-        Class="mt-3"
-        Label="Prijs" 
-        For="@(() => CreateEquipment.Price)" 
-        Variant="Variant.Outlined" 
-        Step="0.01M" 
-        Min="0.0M" />
+                         Class="mt-3"
+                         Label="Prijs"
+                         For="@(() => CreateEquipment.Price)"
+                         Variant="Variant.Outlined"
+                         Step="0.01M"
+                         Min="0.0M" />
 
         <MudNumericField @bind-Value="CreateEquipment.Stock"
                          Class="mt-3"
-        Label="Stock" 
-        For="@(() => CreateEquipment.Stock)" 
-        Variant="Variant.Outlined" 
-        Step="1" 
-        Min="0" />
+                         Label="Stock"
+                         For="@(() => CreateEquipment.Stock)"
+                         Variant="Variant.Outlined"
+                         Step="1"
+                         Min="0" />
 
         <MudText Class="mt-5 mb-1" Typo="Typo.body2">Onderscheid je attributen in de text met een ";"</MudText>
-        
+
         <MudTextField @bind-Value="CreateEquipment.Attributes"
                       For="@(() => CreateEquipment.Attributes)"
                       Label="Attributen"
@@ -46,17 +51,49 @@
         </MudCheckBox>
 
         <MudGrid Class="mt-2 mb-2">
-            <MudItem xs ="12">
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text" id="inputGroupFileAddon01">Upload afbeelding</span>
-                    </div>
-                    <div class="custom-file">
-                        <InputFile class="custom-file-input" accept="image/*" OnChange="@LoadImage"></InputFile>
-                    </div>
-                </div>
+            <MudItem xs="12">
+                <MudStack Style="width: 100%">
+                    <MudFileUpload T="IBrowserFile"
+                                   OnFilesChanged="OnInputFileChanged"
+                                   Hidden="@false"
+                                   InputClass="absolute mud-width-full mud-height-full overflow-hidden z-20"
+                                   InputStyle="opacity:0"
+                                   Context="InputFile"
+                                   @ondragenter="@SetDragClass"
+                                   @ondragleave="@ClearDragClass"
+                                   @ondragend="@ClearDragClass">
+                        <ButtonTemplate>
+                            <MudPaper Height="150px"
+                                      Outlined="true"
+                                      Class="@_dragClass">
+                                <MudText Typo="Typo.h6">
+                                    Laad een foto op
+                                </MudText>
+                                @foreach (var file in _fileNames)
+                                {
+                                    <MudChip Color="Color.Dark" Text="@file" />
+                                }
+                            </MudPaper>
+                            <MudToolBar DisableGutters="true"
+                                        Class="relative d-flex justify-end gap-4 z-30">
+                                <MudButton HtmlTag="label"
+                                           Color="Color.Primary"
+                                           Variant="Variant.Filled"
+                                           for="@InputFile">
+                                    Open een bestand
+                                </MudButton>
+                                <MudButton OnClick="@Clear"
+                                           Color="Color.Error"
+                                           Disabled="@(!_fileNames.Any())"
+                                           Variant="Variant.Filled">
+                                    Verwijder foto
+                                </MudButton>
+                            </MudToolBar>
+                        </ButtonTemplate>
+                    </MudFileUpload>
+                </MudStack>
             </MudItem>
-            
+
         </MudGrid>
         <MudGrid Class="mt-6">
             <MudItem xs="1">
@@ -72,42 +109,34 @@
 
             </MudItem>
         </MudGrid>
-
-</EditForm>
+    </EditForm>
 </div>
 
 
 @code {
-
     [Parameter]
     public EventCallback Close { get; set; } = default!;
     [Parameter]
     public EventCallback Refresh { get; set; } = default!;
 
-    private IBrowserFile image;
-
+    private IBrowserFile? image;
     private string Attributes { get; set; } = default!;
-
-    private EquipmentDto.Create CreateEquipment { get; set; } = new EquipmentDto.Create();
-
-    protected override void OnInitialized()
-    {
-        CreateEquipment.ImageData = new EquipmentDto.ImageData
-            {
-                ImageUrl = "https://via.placeholder.com/350x300",
-                AltText = "placeholder txt",
-            };
-    }
+    private EquipmentDto.Create CreateEquipment { get; set; } = new();
 
     private async Task CreateEquipmentAsync()
     {
-        
-
-        await EquipmentService.CreateAsync(CreateEquipment);
+        if (image == null) {
+            await EquipmentService.CreateAsync(CreateEquipment);
+        } else
+        {
+            EquipmentResult.CreateWithImage result = await EquipmentService.CreateWithImageAsync(CreateEquipment);
+            await StorageService.UploadImageAsync(result.Image.ImageUrl, image!);
+        }
         await Close.InvokeAsync();
-        await Refresh.InvokeAsync();
-        
+        await Refresh.InvokeAsync();   
     }
+
+    private string Attributes { get; set; } = default!;
 
     private void Cancel()
     {
@@ -115,8 +144,51 @@
     }
 
 
+    private const string DefaultDragClass = "relative rounded-lg border-2 pa-4 mt-4 mud-width-full mud-height-full z-10";
+    private string _dragClass = DefaultDragClass;
+    private readonly List<string> _fileNames = new();
+
+
+    private async Task Clear()
+    private EquipmentDto.Create CreateEquipment { get; set; } = new EquipmentDto.Create();
+
+    protected override void OnInitialized()
+    {
+        _fileNames.Clear();
+        ClearDragClass();
+        await Task.Delay(100);
+        CreateEquipment.ImageData = new EquipmentDto.ImageData
+            {
+                ImageUrl = "https://via.placeholder.com/350x300",
+                AltText = "placeholder txt",
+            };
+    }
+
+    private void SetDragClass() => _dragClass = $"{DefaultDragClass} mud-border-primary";
+
+
+    private void ClearDragClass()
+    {
+        image = null;
+        _dragClass = DefaultDragClass;
+    }
+
+    private void OnInputFileChanged(InputFileChangeEventArgs e)
+    {
+        ClearDragClass();
+        var files = e.GetMultipleFiles();
+        _fileNames[0] = files.First().Name;
+        /* foreach (var file in files)
+        {
+            _fileNames.Put(file.Name);
+        } */
+        image = e.File;
+        CreateEquipment.ImageContentType = image.ContentType;
+    }
+
     private void LoadImage(InputFileChangeEventArgs e)
     {
         image = e.File;
+        CreateEquipment.ImageContentType = image.ContentType;
     }
 }

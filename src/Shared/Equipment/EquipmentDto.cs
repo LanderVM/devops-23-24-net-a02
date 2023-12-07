@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 
 namespace shared.Equipment;
 
@@ -53,7 +53,7 @@ public static class EquipmentDto
     public string Attributes { get; set; }
     public decimal Price { get; set; }
     public int Stock { get; set; }
-    public ImageData ImageData { get; set; }
+    public string? ImageContentType { get; set; }
 
     public bool IsActive { get; set; }
 
@@ -68,10 +68,7 @@ public static class EquipmentDto
         RuleFor(x => x.Price).NotEmpty().InclusiveBetween(0, 5000);
         RuleFor(x => x.Stock).NotEmpty().InclusiveBetween(1, 1000);
       }
-
     }
-
-
   }
 
   public class Mutate {
@@ -79,6 +76,7 @@ public static class EquipmentDto
     public string Attributes { get; set; }
     public decimal Price { get; set; }
     public int Stock { get; set; }
+    public string? ImageContentType { get; set; }
     public ImageData ImageData { get; set; }
 
     public bool IsActive { get; set; }

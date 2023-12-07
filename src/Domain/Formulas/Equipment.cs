@@ -6,14 +6,16 @@ public class Equipment : Entity
 {
   private decimal _price;
   private int _stock;
+  private string _imageUrl = default!;
 
   private Equipment() { } // EF Core constructor
 
-  public Equipment(string title, List<string> description, decimal price, int stock)
+  public Equipment(string title, List<string> description, decimal price, int stock, string imageUrl = "https://via.placeholder.com/350x300")
   {
     Description = new Description(title, description);
     Price = price;
     Stock = stock;
+    ImageUrl = imageUrl;
   }
   public Equipment(decimal price)
   {
@@ -36,5 +38,11 @@ public class Equipment : Entity
   {
     get => _stock;
     set => _stock = Guard.Against.Negative(value);
+  }
+
+  public string ImageUrl
+  {
+    get => _imageUrl;
+    set => _imageUrl = Guard.Against.NullOrWhiteSpace(value, nameof(ImageUrl));
   }
 }

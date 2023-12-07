@@ -5,6 +5,7 @@ using shared.Equipment;
 using Server.Services;
 using shared.Quotations;
 using shared.Formulas;
+using devops_23_24_net_a02.Services.Files;
 
 namespace Api.Data;
 
@@ -30,6 +31,7 @@ public static class Extensions
     services.AddScoped<IQuotationService, QuotationService>();
     services.AddScoped<IFormulaService, FormulaService>();
     services.AddScoped<ICustomerService, CustomerService>();
+    services.AddScoped<IStorageService, BlobStorageService>();
     return services;
   }
 }

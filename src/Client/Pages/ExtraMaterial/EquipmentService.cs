@@ -25,17 +25,30 @@ public class EquipmentService : IEquipmentService
     return await response.Content.ReadFromJsonAsync<int>();
   }
 
-  public async Task<int> CreateAsync(EquipmentDto.Create model)
+  public async Task<EquipmentResult.Create> CreateAsync(EquipmentDto.Create model)
   {
     var response = await client.PostAsJsonAsync(endpoint,model);
-    return await response.Content.ReadFromJsonAsync<int>();
+    return await response.Content.ReadFromJsonAsync<EquipmentResult.Create>();
   }
 
-  public async Task UpdateAsync(int equipmentId, EquipmentDto.Mutate model)
+  public async Task<EquipmentResult.CreateWithImage> CreateWithImageAsync(EquipmentDto.Create model)
+  {
+    var response = await client.PostAsJsonAsync($"{endpoint}/WithImage", model);
+    return await response.Content.ReadFromJsonAsync<EquipmentResult.CreateWithImage>();
+  }
+
+  public async Task<EquipmentResult.Create> UpdateAsync(int equipmentId, EquipmentDto.Mutate model)
   {
     var response = await client.PutAsJsonAsync($"{endpoint}/{equipmentId}", model);
+    return await response.Content.ReadFromJsonAsync<EquipmentResult.Create>();
   }
-  
+
+  public async Task<EquipmentResult.CreateWithImage> UpdateWithImageAsync(int equipmentId, EquipmentDto.Mutate model)
+  {
+    var response = await client.PutAsJsonAsync($"{endpoint}/WithImage/{equipmentId}", model);
+    return await response.Content.ReadFromJsonAsync<EquipmentResult.CreateWithImage>();
+  }
+
   public async Task<EquipmentDto.Index> GetSpecificIndexAsync(int equipmentId)
   {
     EquipmentDto.Index? response = await client.GetFromJsonAsync<EquipmentDto.Index>($"{endpoint}/{equipmentId}");

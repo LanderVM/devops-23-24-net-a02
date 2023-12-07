@@ -1,6 +1,10 @@
-﻿@using shared.Equipment;
+@using shared.Equipment;
 @using Microsoft.AspNetCore.Components;
+@using Client.Files;
+
 @inject IEquipmentService EquipmentService;
+@inject IStorageService StorageService;
+
 <div style="width:600px;">
     <EditForm Model="@Model" OnValidSubmit="UpdateEquipmentAsync">
         <Blazored.FluentValidation.FluentValidationValidator />
@@ -41,6 +45,52 @@
                      Size="Size.Medium">
         </MudCheckBox>
 
+        <MudGrid Class="mt-2 mb-2">
+            <MudItem xs="12">
+                <MudStack Style="width: 100%">
+                    <MudFileUpload T="IBrowserFile"
+                                   OnFilesChanged="OnInputFileChanged"
+                                   Hidden="@false"
+                                   InputClass="absolute mud-width-full mud-height-full overflow-hidden z-20"
+                                   InputStyle="opacity:0"
+                                   Context="InputFile"
+                    @ondragenter="@SetDragClass"
+                    @ondragleave="@ClearDragClass"
+                    @ondragend="@ClearDragClass">
+                        <ButtonTemplate>
+                            <MudPaper Height="150px"
+                                      Outlined="true"
+                                      Class="@_dragClass">
+                                <MudText Typo="Typo.h6">
+                                    Laad een foto op
+                                </MudText>
+                                @foreach (var file in _fileNames)
+                                {
+                                    <MudChip Color="Color.Dark" Text="@file" />
+                                }
+                            </MudPaper>
+                            <MudToolBar DisableGutters="true"
+                                        Class="relative d-flex justify-end gap-4 z-30">
+                                <MudButton HtmlTag="label"
+                                           Color="Color.Primary"
+                                           Variant="Variant.Filled"
+                                           for="@InputFile">
+                                    Open een bestand
+                                </MudButton>
+                                <MudButton OnClick="@Clear"
+                                           Color="Color.Error"
+                                           Disabled="@(!_fileNames.Any())"
+                                           Variant="Variant.Filled">
+                                    Verwijder foto
+                                </MudButton>
+                            </MudToolBar>
+                        </ButtonTemplate>
+                    </MudFileUpload>
+                </MudStack>
+            </MudItem>
+
+        </MudGrid>
+
         <MudGrid Class="mt-6">
             <MudItem xs="1">
 
@@ -69,6 +119,8 @@
     [Parameter]
     public EventCallback Refresh { get; set; } = default!;
 
+    private IBrowserFile? image;
+
     private EquipmentDto.Mutate Model { get; set; } = new EquipmentDto.Mutate();
 
     protected override async Task OnParametersSetAsync()
@@ -88,12 +140,19 @@
         Model.ImageData = response.ImageData;
         Model.IsActive = response.IsActive;
         StateHasChanged();
-
     }
 
     private async Task UpdateEquipmentAsync()
     {
-        await EquipmentService.UpdateAsync(EquipmentId,Model);
+        if (image == null)
+        {
+            await EquipmentService.UpdateAsync(EquipmentId, Model);
+        }
+        else
+        {
+            EquipmentResult.CreateWithImage result = await EquipmentService.UpdateWithImageAsync(EquipmentId, Model);
+            await StorageService.UploadImageAsync(result.Image.ImageUrl, image!);
+        }
         await Close.InvokeAsync();
         await Refresh.InvokeAsync();
     }
@@ -101,6 +160,46 @@
     private void Cancel()
     {
         Close.InvokeAsync();
+    }
+
+
+    private const string DefaultDragClass = "relative rounded-lg border-2 pa-4 mt-4 mud-width-full mud-height-full z-10";
+    private string _dragClass = DefaultDragClass;
+    private readonly List<string> _fileNames = new();
+
+    private async Task Clear()
+    {
+        _fileNames.Clear();
+        ClearDragClass();
+        await Task.Delay(100);
+    }
+
+    private void SetDragClass()
+        => _dragClass = $"{DefaultDragClass} mud-border-primary";
+
+    private void ClearDragClass()
+    {
+        image = null;
+        _dragClass = DefaultDragClass;
+    }
+
+    private void OnInputFileChanged(InputFileChangeEventArgs e)
+    {
+        ClearDragClass();
+        var files = e.GetMultipleFiles();
+        _fileNames[0] = files.First().Name;
+        /* foreach (var file in files)
+        {
+            _fileNames.Put(file.Name);
+        } */
+        image = e.File;
+        Model.ImageContentType = image.ContentType;
+    }
+
+    private void LoadImage(InputFileChangeEventArgs e)
+    {
+        image = e.File;
+        Model.ImageContentType = image.ContentType;
     }
 
 }

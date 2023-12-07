@@ -20,41 +20,37 @@ public static class DbInitializer
     }
 
 
-    // Extra Items
+    // Extra Items 
     var equipment = new[]
     {
-      new Equipment("Saladette",
-        new List<string> { "34cm x 120cm x 28 cm", "Inclusief 5 st GN 1/4 bakken met deksels" }, 65M,
-        2),
-      new Equipment("GN bak 1/4", new List<string> { "diepte 150mm", "Inclusief deksel" }, 3M, 20),
-      new Equipment("GN bak 1/6", new List<string> { "diepte 150mm", "Inclusief deksel" }, 3M, 10), new Equipment(
-        "Barkoeler 320l",
-        new List<string> { "50cm x 135cm x 87cm", "3x glazen schuifdeuren", "Kleur zwart" }, 65M,
-        1),
-      new Equipment("Cocktail glas gouden rand", new List<string> { "330ml" }, 0.50M, 100),
-      new Equipment("Cocktail glas gemiddeld", new List<string> { "330ml" }, 0.20M, 100),
-      new Equipment("Cocktail glas klein", new List<string> { "250ml" }, 0.15M, 100),
-      new Equipment("Lichtslinger", new List<string> { "guirlandes 10m" }, 15M, 4),
-      new Equipment("Ijsemmer", new List<string> { "7l" }, 10M, 1),
-      new Equipment("Vuurschaal", new List<string> { "diameter 120cm" }, 40M, 1),
-      new Equipment("Driepoot met BBQ rooster", new List<string> { "Inclusief vuurschaal" }, 100M, 1),
-      new Equipment("Diepvries 80l", new List<string> { "60cm x 60cm x 80cm" }, 50M, 1),
-      new Equipment("Dienblad", new List<string> { "diameter 35cm", "Anti-slip", "Kleur zwart" }, 1.5M, 10),
-      new Equipment("Snijplank", new List<string> { "60cm x 40cm", "Kleur groen" }, 4M, 3),
-      new Equipment("Spoelbak klein", new List<string> { "100cm x 50cm x 80cm", "Type camping" }, 10M, 1),
-      new Equipment("Drankendispenser", new List<string>(), 10M, 1),
-      new Equipment("Soepketel", new List<string> { "10l", "Inclusief pollepel" }, 15M, 2),
-      new Equipment("Strobaal", new List<string> { "80cm x 45cm x 45cm" }, 4M, 10),
-      new Equipment("Schapenvacht", new List<string> { "ongev. 100cm x 50cm" }, 12M, 10),
-      new Equipment("Biertafelset", new List<string> { "220cm x 130cm x 48cm", "1 tafel met 2 banken" }, 15M, 5),
-      new Equipment("Fruitkist", new List<string> { "50cm x 41cm x 31cm" }, 5M, 20)
+      new Equipment("Saladette", new List<string> { "34cm x 120cm x 28 cm", "Inclusief 5 st GN 1/4 bakken met deksels" }, 65M, 2, "https://a2blanchestorage.blob.core.windows.net/images/Saladette.jpg"),
+      new Equipment("GN bak 1/4", new List<string> { "diepte 150mm", "Inclusief deksel" }, 3M, 20, "https://a2blanchestorage.blob.core.windows.net/images/GN bakken 1-4.jpg"),
+      new Equipment("GN bak 1/6", new List<string> { "diepte 150mm", "Inclusief deksel" }, 3M, 10, "https://a2blanchestorage.blob.core.windows.net/images/GN bakken 1-6.jpg"), 
+      new Equipment("Barkoeler 320l", new List<string> { "50cm x 135cm x 87cm", "3x glazen schuifdeuren", "Kleur zwart" }, 65M, 1, "https://a2blanchestorage.blob.core.windows.net/images/Barkoeler 320 liter.jpg"),
+      new Equipment("Cocktail glas gouden rand", new List<string> { "330ml" }, 0.50M, 100, "https://a2blanchestorage.blob.core.windows.net/images/Cocktail glas gouden rand.jpg"),
+      new Equipment("Cocktail glas gemiddeld", new List<string> { "330ml" }, 0.20M, 100, "https://a2blanchestorage.blob.core.windows.net/images/Cocktail glas type rand.jpg"),
+      new Equipment("Cocktail glas klein", new List<string> { "250ml" }, 0.15M, 100, "https://a2blanchestorage.blob.core.windows.net/images/Cocktailglazen.jpg"),
+      new Equipment("Lichtslinger", new List<string> { "guirlandes 10m" }, 15M, 4, "https://a2blanchestorage.blob.core.windows.net/images/Lichtslinger.jpg"),
+      new Equipment("Ijsemmer", new List<string> { "7l" }, 10M, 1, "https://a2blanchestorage.blob.core.windows.net/images/Ijsemmer.jpg"),
+      new Equipment("Vuurschaal", new List<string> { "diameter 120cm" }, 40M, 1, "https://a2blanchestorage.blob.core.windows.net/images/Vuurschaal.jpg"),
+      new Equipment("Driepoot met BBQ rooster", new List<string> { "Inclusief vuurschaal" }, 100M, 1, "https://a2blanchestorage.blob.core.windows.net/images/Driepoot met BBQ.jpg"),
+      new Equipment("Diepvries 80l", new List<string> { "60cm x 60cm x 80cm" }, 50M, 1, "https://a2blanchestorage.blob.core.windows.net/images/Diepvries.jpg"),
+      new Equipment("Dienblad", new List<string> { "diameter 35cm", "Anti-slip", "Kleur zwart" }, 1.5M, 10, "https://a2blanchestorage.blob.core.windows.net/images/Plateaus.jpg"),
+      new Equipment("Snijplank", new List<string> { "60cm x 40cm", "Kleur groen" }, 4M, 3, "https://a2blanchestorage.blob.core.windows.net/images/Snijplank.jpg"),
+      new Equipment("Spoelbak klein", new List<string> { "100cm x 50cm x 80cm", "Type camping" }, 10M, 1, "https://a2blanchestorage.blob.core.windows.net/images/Spoelbak.jpg"),
+      new Equipment("Drankendispenser", new List<string>(), 10M, 1, "https://a2blanchestorage.blob.core.windows.net/images/Drankendispenser.jpg"),
+      new Equipment("Soepketel", new List<string> { "10l", "Inclusief pollepel" }, 15M, 2, "https://a2blanchestorage.blob.core.windows.net/images/Soepketel.png"),
+      new Equipment("Strobaal", new List<string> { "80cm x 45cm x 45cm" }, 4M, 10, "https://a2blanchestorage.blob.core.windows.net/images/Strobalen.jpg"),
+      new Equipment("Schapenvacht", new List<string> { "ongev. 100cm x 50cm" }, 12M, 10, "https://a2blanchestorage.blob.core.windows.net/images/Schapenvacht.jpg"),
+      new Equipment("Biertafelset", new List<string> { "220cm x 130cm x 48cm", "1 tafel met 2 banken" }, 15M, 5, "https://a2blanchestorage.blob.core.windows.net/images/Biertafel.png"),
+      new Equipment("Fruitkist", new List<string> { "50cm x 41cm x 31cm" }, 5M, 20, "https://a2blanchestorage.blob.core.windows.net/images/Fruitkisten.jpg")
     };
     
     // Items included in Formula's
-    var vatenBier = new Equipment("Vaten bier", new List<string> { "Inbegrepen in formule" }, 1.5M, 999);
-    var glazen = new Equipment("Glazen", new List<string> { "Inbegrepen in formule" }, 1.5M, 999);
+    var vatenBier = new Equipment("Vaten bier", new List<string> { "Inbegrepen in formule" }, 1.5M, 999, "https://a2blanchestorage.blob.core.windows.net/images/bier-vat.jpg");
+    var glazen = new Equipment("Glazen", new List<string> { "Inbegrepen in formule" }, 1.5M, 999, "https://a2blanchestorage.blob.core.windows.net/images/Cocktailglazen.jpg");
     var bbq = new Equipment("Bbq met bbq-kit", new List<string> { "Inbegrepen in formule", "Inclusief hout voor bbq" },
-      12M, 999);
+      12M, 999 , "https://a2blanchestorage.blob.core.windows.net/images/BBQ.jpg");
 
     // Formula's
     var formulas = new Formula[]
