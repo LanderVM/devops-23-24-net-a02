@@ -1,4 +1,4 @@
-using Api.Data;
+﻿using Api.Data;
 using Domain.Formulas;
 using Microsoft.EntityFrameworkCore;
 using shared.Equipment;
@@ -230,9 +230,9 @@ public class EquipmentService : IEquipmentService
 
   public async Task<EquipmentResult.Create> UpdateAsync(int equipmentId, EquipmentDto.Mutate model)
   {
-    Equipment? eq = await _dbContext.Equipments.FirstOrDefaultAsync(x => x.Id == equipmentId);
+    Equipment? equipment = await _dbContext.Equipments.FirstOrDefaultAsync(x => x.Id == equipmentId);
 
-    if (eq is null)
+    if (equipment is null)
     {
       throw new Exception($"Equipment with id: {equipmentId} doesn't exists");
     }
@@ -246,16 +246,17 @@ public class EquipmentService : IEquipmentService
       attributes.Add(s2);
     }
 
-    Description des = new Description(model.Title, attributes);
-    eq.Description = des;
-    eq.Stock = model.Stock;
-    eq.Price = model.Price;
+    Description description = new Description(model.Title, attributes);
+    equipment.Description = description;
+    equipment.Stock = model.Stock;
+    equipment.Price = model.Price;
+    equipment.IsActive = model.IsActive;
 
     await _dbContext.SaveChangesAsync();
 
     EquipmentResult.Create result = new EquipmentResult.Create
     {
-      Id = eq.Id
+      Id = equipment.Id
     };
 
     return result;
