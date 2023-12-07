@@ -132,6 +132,39 @@ public class EquipmentService : IEquipmentService
     };
     return result;
   }
+  public async Task<EquipmentResult.ActiveEquipment> GetActiveEquipmentAsync()
+  {
+    var query = _dbContext.Equipments.AsQueryable().Where(x=>x.IsActive==true);
+
+    int totalAmount = await query.CountAsync();
+
+    string noImageUrl = "https://via.placeholder.com/350x300";
+
+    var items = await query
+       .OrderBy(x => x.Id)
+       .Select(x => new EquipmentDto.Index
+       {
+         Id = x.Id,
+         Title = x.Description.Title,
+         Attributes = x.Description.Attributes,
+         Price = x.Price,
+         Stock = x.Stock,
+         IsActive = x.IsActive,
+         ImageData = new EquipmentDto.ImageData
+         {
+           ImageUrl = x.ImageUrl,
+           AltText = x.Description.Title,
+         },
+         FormulaIds = x.Formulas.Select(x => x.Id).ToList(),
+       }).ToListAsync();
+
+    var result = new EquipmentResult.ActiveEquipment
+    {
+      Equipment = items,
+      TotalAmount = totalAmount
+    };
+    return result;
+  }
 
   public async Task<EquipmentDto.Index> GetSpecificIndexAsync(int equipmentId)
   {
@@ -261,4 +294,6 @@ public class EquipmentService : IEquipmentService
 
     return result;
   }
+
+  
 }

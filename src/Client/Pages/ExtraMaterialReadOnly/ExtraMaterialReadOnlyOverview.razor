@@ -68,7 +68,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        EquipmentResult.Index response = await EquipmentService.GetIndexAsync();
+        EquipmentResult.ActiveEquipment response = await EquipmentService.GetActiveEquipmentAsync();
 
         Extras = response.Equipment;
 
