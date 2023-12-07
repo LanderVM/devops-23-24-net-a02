@@ -187,13 +187,15 @@
     {
         ClearDragClass();
         var files = e.GetMultipleFiles();
-        _fileNames[0] = files.First().Name;
-        /* foreach (var file in files)
+        _fileNames.Clear();
+        if (files.Any())
         {
-            _fileNames.Put(file.Name);
-        } */
-        image = e.File;
-        Model.ImageContentType = image.ContentType;
+            var newestFile = files.First();
+            _fileNames.Add(newestFile.Name);
+
+            image = e.File;
+            Model.ImageContentType = image.ContentType;
+        }  
     }
 
     private void LoadImage(InputFileChangeEventArgs e)
