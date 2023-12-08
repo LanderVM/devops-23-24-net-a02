@@ -25,6 +25,8 @@ public class PersonalDetailsState
     }
 
   };*/
-  public CustomerDto.Create customer = new();
+  //public CustomerDto.Create customer = new();
+
+  public CustomerDto.Create Customer { get; set; } = new CustomerDto.Create();
 
 }

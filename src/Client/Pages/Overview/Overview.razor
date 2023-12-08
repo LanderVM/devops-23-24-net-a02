@@ -69,25 +69,25 @@
                             <MudItem xs="12">
                                 <MudPaper Class="ma-1" Elevation="3" Style="background-color:#EDE7DB">
                                     <MudText Class="mt-1 ml-3">Naam</MudText>
-                                    <MudText Class="ml-3">@(@PersonalDetailsState.customer.LastName + " " + PersonalDetailsState.customer.FirstName)</MudText>
+                                    <MudText Class="ml-3">@(@PersonalDetailsState.Customer.LastName + " " + PersonalDetailsState.Customer.FirstName)</MudText>
                                 </MudPaper>
                             </MudItem>
                             <MudItem xs="12">
                                 <MudPaper Class="ma-1" Elevation="3" Style="background-color:#EDE7DB">
                                     <MudText Class="mt-1 ml-3">Email</MudText>
-                                    <MudText Class="ml-3">@PersonalDetailsState.customer.Email.Email</MudText>
+                                    <MudText Class="ml-3">@PersonalDetailsState.Customer.Email.Email</MudText>
                                 </MudPaper>
                             </MudItem>
                             <MudItem xs="12">
                                 <MudPaper Class="ma-1" Elevation="3" Style="background-color:#EDE7DB">
                                     <MudText Class="mt-1 ml-3">Telefoon</MudText>
-                                    <MudText Class="ml-3">@PersonalDetailsState.customer.PhoneNumber</MudText>
+                                    <MudText Class="ml-3">@PersonalDetailsState.Customer.PhoneNumber</MudText>
                                 </MudPaper>
                             </MudItem>
                             <MudItem xs="12">
                                 <MudPaper Class="ma-1" Elevation="3" Style="background-color:#EDE7DB">
                                     <MudText Class="mt-1 ml-3">Adres</MudText>
-                                    <MudText Class="ml-3">@($"{@PersonalDetailsState.customer.BillingAddress.Street} {@PersonalDetailsState.customer.BillingAddress.HouseNumber} {@PersonalDetailsState.customer.BillingAddress.PostalCode} {@PersonalDetailsState.customer.BillingAddress.City}")</MudText>
+                                    <MudText Class="ml-3">@($"{@PersonalDetailsState.Customer.BillingAddress.Street} {@PersonalDetailsState.Customer.BillingAddress.HouseNumber} {@PersonalDetailsState.Customer.BillingAddress.PostalCode} {@PersonalDetailsState.Customer.BillingAddress.City}")</MudText>
                                 </MudPaper>
                             </MudItem>
                             <MudItem xs="12">
@@ -376,7 +376,7 @@
                 StartTime = (DateTime)EventDetailsState.dateRange.Start,
                 EndTime = (DateTime)EventDetailsState.dateRange.End,
                 Equipments = equipments,
-                Customer = PersonalDetailsState.customer,
+                Customer = PersonalDetailsState.Customer,
                 IsTripelBier = EventDetailsState.HasTripleBeer,
                 NumberOfPeople = EventDetailsState.NumberOfPeople
         };
@@ -438,13 +438,13 @@
 
     private string CheckIfBtwNumberIsEmpty()
     {
-        if (PersonalDetailsState.customer.VatNumber is null || string.IsNullOrWhiteSpace(PersonalDetailsState.customer.VatNumber))
+        if (PersonalDetailsState.Customer.VatNumber is null || string.IsNullOrWhiteSpace(PersonalDetailsState.Customer.VatNumber))
         {
             return "Geen Btw-nummer opgegeven";
         }
         else
         {
-            return PersonalDetailsState.customer.VatNumber;
+            return PersonalDetailsState.Customer.VatNumber;
         }
     }
 
