@@ -53,7 +53,8 @@ public class FormulaService: IFormulaService
     }
 
 
-    formula.Description = model.Description;
+
+    formula.Description = new Description(model.Title, model.Attributes);
     formula.BasePrice = model.BasePrice;
     formula.PricePerDayExtra = model.PricePerDayExtra;
     

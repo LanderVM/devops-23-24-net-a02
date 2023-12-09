@@ -27,7 +27,8 @@ public class FormulaDto {
   
   public class Mutate {
     
-    public Description Description { get; set; }
+    public string Title { get; set; }
+    public List<string> Attributes { get; set;}
     public decimal PricePerDayExtra { get; set; }
     public List<decimal> BasePrice { get; set; }
 
@@ -35,7 +36,8 @@ public class FormulaDto {
     {
       public Validator()
       {
-        RuleFor(x => x.Description).NotEmpty();
+        RuleFor(x => x.Title).NotEmpty();
+        RuleFor(x => x.Attributes).NotEmpty();
         RuleFor(x => x.PricePerDayExtra).NotEmpty().InclusiveBetween(0, 5000);
         RuleFor(x => x.BasePrice).NotEmpty();
 
