@@ -14,7 +14,7 @@ public static class EmailDto
       public Validator()
       {
         RuleFor(email => email.Email).NotEmpty().EmailAddress();
-        RuleFor(email => email.Email).Must(x => !x.EndsWith(".")).WithMessage("'Email' may not end on a period.");
+        //RuleFor(email => email.Email).Must(x => !x.EndsWith(".")).WithMessage("'Email' may not end on a period.");
       }
     }
   }

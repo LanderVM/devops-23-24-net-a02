@@ -2,10 +2,11 @@
 @inject PersonalDetailsState PersonalDetailsState
 @inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager
 @using FluentValidation
+@using global::Shared.Customer
 
 <PageTitle>Persoonlijke gegevens</PageTitle>
 
-<EditForm Model="PersonalDetailsState.Customer" OnValidSubmit="Submit">
+<EditForm Model="Create" OnValidSubmit="Submit">
     <Blazored.FluentValidation.FluentValidationValidator />
     <MudPaper Width="100%" Class="pt-16" Height="100%" Elevation="0">
         <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge">
@@ -27,23 +28,23 @@
                 <MudItem lg="10" md="10" sm="12" xs="12">
                     <MudGrid Spacing="@Spacing">
                         <MudItem lg="6" md="6" sm="12" xs="12">
-                            <MudTextField @bind-Value="PersonalDetailsState.Customer.FirstName" For="@(() => PersonalDetailsState.Customer.FirstName)" Class=" ml-16 mr-16 mb-6 pt-2" Label="Voornaam" Variant="Variant.Outlined"></MudTextField>
-                            <MudTextField @bind-Value="PersonalDetailsState.Customer.Email.Email" For="@(() => PersonalDetailsState.Customer.Email.Email)" Class="ml-16 mr-16 pt-2" Label="Email" Variant="Variant.Outlined"></MudTextField>
+                            <MudTextField @bind-Value="Create.FirstName" For="@(() => Create.FirstName)" Class=" ml-16 mr-16 mb-6 pt-2" Label="Voornaam" Variant="Variant.Outlined"></MudTextField>
+                            <MudTextField @bind-Value="Create.Email.Email" For="@(() => Create.Email.Email)" Class="ml-16 mr-16 pt-2" Label="Email" Variant="Variant.Outlined"></MudTextField>
                         </MudItem>
                         <MudItem lg="6" md="6" sm="12" xs="12">
-                            <MudTextField @bind-Value="PersonalDetailsState.Customer.LastName" For="@(() => PersonalDetailsState.Customer.LastName)"  Class="ml-16 mr-16 mb-6 pt-2" Label="Naam" Variant="Variant.Outlined"></MudTextField>
-                            <MudTextField @bind-Value="PersonalDetailsState.Customer.PhoneNumber" For="@(() => PersonalDetailsState.Customer.PhoneNumber)" Class=" ml-16 mr-16 pt-2" Label="Telefoonnummer" Variant="Variant.Outlined"></MudTextField>
+                            <MudTextField @bind-Value="Create.LastName" For="@(() => Create.LastName)" Class="ml-16 mr-16 mb-6 pt-2" Label="Naam" Variant="Variant.Outlined"></MudTextField>
+                            <MudTextField @bind-Value="Create.PhoneNumber" For="@(() =>Create.PhoneNumber)" Class=" ml-16 mr-16 pt-2" Label="Telefoonnummer" Variant="Variant.Outlined"></MudTextField>
                         </MudItem>
                         <MudItem lg="6" md="6" sm="12" xs="12">
-                            <MudTextField @bind-Value="PersonalDetailsState.Customer.BillingAddress.Street" For="@(() => PersonalDetailsState.Customer.BillingAddress.Street)" Class="ml-16 mr-16 mb-6 pt-2" Label="Straat" Variant="Variant.Outlined"></MudTextField>
-                            <MudTextField @bind-Value="PersonalDetailsState.Customer.BillingAddress.City" For="@(() => PersonalDetailsState.Customer.BillingAddress.City)"  Class="ml-16 mr-16 mb-4 pt-2" Label="Gemeente" Variant="Variant.Outlined"></MudTextField>
+                            <MudTextField @bind-Value="Create.BillingAddress.Street" For="@(() => Create.BillingAddress.Street)" Class="ml-16 mr-16 mb-6 pt-2" Label="Straat" Variant="Variant.Outlined"></MudTextField>
+                            <MudTextField @bind-Value="Create.BillingAddress.City" For="@(() =>Create.BillingAddress.City)" Class="ml-16 mr-16 mb-4 pt-2" Label="Gemeente" Variant="Variant.Outlined"></MudTextField>
                         </MudItem>
                         <MudItem lg="6" md="6" sm="12" xs="12">
-                            <MudTextField @bind-Value="PersonalDetailsState.Customer.BillingAddress.HouseNumber" For="@(() => PersonalDetailsState.Customer.BillingAddress.HouseNumber)"  Class="ml-16 mr-16 mb-6 pt-2" Label="Huisnummer" Variant="Variant.Outlined"></MudTextField>
-                            <MudTextField @bind-Value="PersonalDetailsState.Customer.BillingAddress.PostalCode" For="@(() => PersonalDetailsState.Customer.BillingAddress.PostalCode)"   Class="ml-16 mr-16 pt-2" Label="Postcode" Variant="Variant.Outlined"></MudTextField>
+                            <MudTextField @bind-Value="Create.BillingAddress.HouseNumber" For="@(() => Create.BillingAddress.HouseNumber)" Class="ml-16 mr-16 mb-6 pt-2" Label="Huisnummer" Variant="Variant.Outlined"></MudTextField>
+                            <MudTextField @bind-Value="Create.BillingAddress.PostalCode" For="@(() => Create.BillingAddress.PostalCode)" Class="ml-16 mr-16 pt-2" Label="Postcode" Variant="Variant.Outlined"></MudTextField>
                         </MudItem>
                         <MudItem lg="6" md="6" sm="12" xs="12">
-                            <MudTextField @bind-Value="PersonalDetailsState.Customer.VatNumber" For="@(() => PersonalDetailsState.Customer.VatNumber)"  Class="ml-16 mr-16 mb-6 pt-2" Label="Btw-nummer" Variant="Variant.Outlined"></MudTextField>
+                            <MudTextField @bind-Value="Create.VatNumber" For="@(() => Create.VatNumber)"  Class="ml-16 mr-16 mb-6 pt-2" Label="Btw-nummer" Variant="Variant.Outlined"></MudTextField>
 
                         </MudItem>
                     </MudGrid>
@@ -65,6 +66,8 @@
 @code {
 
     private int Spacing { get; set; } = 2;
+
+    private CustomerDto.Create Create { get; set; } = new CustomerDto.Create();
 
     private async Task Submit()
     {
