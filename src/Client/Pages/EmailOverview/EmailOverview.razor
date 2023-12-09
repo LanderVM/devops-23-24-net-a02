@@ -1,52 +1,48 @@
 ﻿@page "/EmailOverview"
 @using devops_23_24_net_a02.Shared.Emails;
+@inject IEmailService EmailService;
 
 
 <PageTitle>Overzicht email adressen</PageTitle>
 
-<MudContainer MaxWidth="MaxWidth.Medium">
-    <MudGrid>
-        <MudItem lg="1" md="1" sm="12" xs="12">
-
-        </MudItem>
-        <MudItem lg="4" md="5" sm="12" xs="12">
+<MudContainer MaxWidth="MaxWidth.Small">
+    <MudGrid Class="mt-2 mb-2">
+       
+        <MudItem lg="10" md="10" sm="12" xs="12">
             <MudText Class="mt-6" Typo="Typo.h4">Overzicht emails klanten</MudText>
         </MudItem>
-        <MudItem lg="7" md="6" sm="12" xs="12">
-
-        </MudItem>
-        <MudItem lg="1" md="12" sm="12" xs="12">
+        <MudItem lg="2" md="2" sm="12" xs="12">
 
         </MudItem>
     </MudGrid>
-    <!--
-    <MudTable Items="@Elements.Take(4)" Hover="true" Loading="@_loading" LoadingProgressColor="Color.Info">
+    
+    <MudTable Items="@EmailAddresses" Hover="true" Loading="@Loading" LoadingProgressColor="Color.Info">
         <HeaderContent>
-            <MudTh>Nr</MudTh>
-            <MudTh>Sign</MudTh>
-            <MudTh>Name</MudTh>
-            <MudTh>Position</MudTh>
-            <MudTh>Molar mass</MudTh>
+            <MudTh>Email adressen</MudTh>
         </HeaderContent>
         <RowTemplate>
-            <MudTd DataLabel="Nr">@context.Number</MudTd>
-            <MudTd DataLabel="Sign">@context.Sign</MudTd>
-            <MudTd DataLabel="Name">@context.Name</MudTd>
-            <MudTd DataLabel="Position" HideSmall="_hidePosition">@context.Position</MudTd>
-            <MudTd DataLabel="Molar mass">@context.Molar</MudTd>
+            <MudTd DataLabel="Email adres">@context.EmailAddress</MudTd>
         </RowTemplate>
+        <PagerContent>
+            <MudTablePager />
+        </PagerContent>
     </MudTable>
 
-    <MudSwitch @bind-Checked="_hidePosition">Hide <b>position</b> when Breakpoint=Xs</MudSwitch>
-    <MudSwitch @bind-Checked="_loading">Show Loading</MudSwitch>
-    -->
+    
+    
+   
 </MudContainer>
 
 @code {
+    private bool Loading { get; set; } = true;
+
     private IEnumerable<EmailDto.Index>? EmailAddresses { get; set; } = default;
 
     protected override async Task OnInitializedAsync()
     {
-        
+        EmailResult.Index result = await EmailService.GetEmailsAsync();
+        EmailAddresses = result.EmailAddresses;
+
+        Loading = false;
     }
 }
