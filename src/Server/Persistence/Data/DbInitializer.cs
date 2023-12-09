@@ -83,21 +83,21 @@ public static class DbInitializer
 
     // Quotations
     var quote1 = new Quotation(formulas[0], customers[0], eventLoc1, new List<QuotationLine>(),
-      DateTime.Today.AddDays(45), DateTime.Today.AddDays(48));
+      DateTime.Today.AddDays(45), DateTime.Today.AddDays(48), false, 20);
     var quote2 = new Quotation(formulas[2], customers[1], eventLoc2,
       new List<QuotationLine> { new(equipment[5], 30), new(equipment[8], 1), },
-      DateTime.Today.AddDays(4), DateTime.Today.AddDays(6));
+      DateTime.Today.AddDays(4), DateTime.Today.AddDays(6), true, 30);
     var quote3 = new Quotation(formulas[0], customers[0], eventLoc3, new List<QuotationLine>(),
-      DateTime.Today.AddDays(10), DateTime.Today.AddDays(13));
+      DateTime.Today.AddDays(10), DateTime.Today.AddDays(13), false, 30);
     var quote4 = new Quotation(formulas[0], customers[0], eventLoc4, new List<QuotationLine>(),
-      DateTime.Today.AddDays(17), DateTime.Today.AddDays(20));
+      DateTime.Today.AddDays(17), DateTime.Today.AddDays(20), false, 10);
     var quote5 = new Quotation(formulas[2], customers[1], eventLoc5,
       new List<QuotationLine> { new(equipment[5], 30), new(equipment[8], 1), },
-      DateTime.Today.AddDays(22), DateTime.Today.AddDays(25));
+      DateTime.Today.AddDays(22), DateTime.Today.AddDays(25), false, 40);
     var quote6 = new Quotation(formulas[0], customers[0], eventLoc6, new List<QuotationLine>(),
-      DateTime.Today.AddDays(30), DateTime.Today.AddDays(31));
+      DateTime.Today.AddDays(30), DateTime.Today.AddDays(31), false, 12);
     var quote7 = new Quotation(formulas[0], customers[0], eventLoc7, new List<QuotationLine>(),
-      DateTime.Today.AddDays(35), DateTime.Today.AddDays(38));
+      DateTime.Today.AddDays(35), DateTime.Today.AddDays(38), false, 23);
     
     
     var quotes = new[] { quote1, quote2, quote3, quote4, quote5, quote6, quote7};
