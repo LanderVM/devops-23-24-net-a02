@@ -5,18 +5,20 @@
 <PageTitle>Formules Admin</PageTitle>
 <MudContainer Fixed="true" Class="mt-15">
     
-    <MudTable Items="Formulas" Hover="true" Breakpoint="Breakpoint.Sm" >
+    <MudTable Items="Formulas" Hover="true" Breakpoint="Breakpoint.Sm">
         <HeaderContent>
-            <MudTh>Titel</MudTh>
-            <MudTh>Kenmerken</MudTh>
-            <MudTh>Prijs/Dag</MudTh>
-            <MudTh>Extra/dag</MudTh>
+            <MudTh Style=@styleTh>Titel</MudTh>
+            <MudTh Style=@styleTh>Kenmerken</MudTh>
+            <MudTh Style=@styleTh>Prijs/Dag</MudTh>
+            <MudTh Style=@styleTh>Extra/dag</MudTh>
+            <MudTh Style="color: white"> Wijzigen </MudTh>
         </HeaderContent>
         <RowTemplate>
-            <MudTd DataLabel="Titel">@context.Title</MudTd>
-            <MudTd DataLabel="Kenmerken">@string.Join(", ", @context.Attributes)</MudTd>
-            <MudTd DataLabel="Prijs/Dag">@string.Join(" / ", @context.BasePrice )</MudTd>
-            <MudTd DataLabel="Extra/dag" >@Math.Round(@context.PricePerDayExtra)</MudTd>
+            <MudTd DataLabel="Titel" Style=@styleTd>@context.Title</MudTd>
+            <MudTd DataLabel="Kenmerken" Style=@styleTd>@string.Join(", ", @context.Attributes)</MudTd>
+            <MudTd DataLabel="Prijs/Dag" Style=@styleTd>@string.Join(" / ", @context.BasePrice )</MudTd>
+            <MudTd DataLabel="Extra/dag" Style=@styleTd >@Math.Round(@context.PricePerDayExtra)</MudTd>
+            <MudTd DataLabel="Wijzigen" Style=@styleTd><MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" /></MudTd>
             
         </RowTemplate>
     </MudTable>
@@ -26,8 +28,11 @@
 
 @code {
 
-    [Inject]
-    public IFormulaService FormulaService { get; set; } = default!;
+    [Inject] public IFormulaService FormulaService { get; set; } = default!;
+    
+
+    private String styleTd = "text-align: center";
+    private String styleTh = "font-weight: bold;text-align: center";
     
     private IEnumerable<FormulaDto.Index>? Formulas;
 
@@ -41,5 +46,7 @@
 
        
     }
+
+    
 
 }
