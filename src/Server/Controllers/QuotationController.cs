@@ -1,6 +1,4 @@
-﻿using System.Reflection.Metadata.Ecma335;
-using Api.Data.Services.Quotations;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using shared.Quotations;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -39,25 +37,11 @@ public class QuotationController : ControllerBase
     _logger.Log(LogLevel.Information,
       "Registering new quotation request at {model} for {(model.Customer.FirstName + model.Customer.LastName)}",
       model.EventLocation, (model.Customer.FirstName + model.Customer.LastName));
-    int quotationId = await _quotationService.CreateAsync(model);
+    QuotationResult.Create quotation = await _quotationService.CreateAsync(model);
     _logger.Log(LogLevel.Information,
       "Registered new quotation request at {model} for {(model.Customer.FirstName + model.Customer.LastName)}",
       model.EventLocation, (model.Customer.FirstName + model.Customer.LastName));
-    return CreatedAtAction(nameof(RegisterQuotationRequest), quotationId); // TODO new QuotationResult.Create { QuotationId = quotationId}); eens dit gebruikt kan worden op web
-  }
-  
-  [HttpPost("TempAndroid")]
-  [SwaggerOperation("TEMPORARY, FIX")]
-  public async Task<IActionResult> RegisterQuotationRequestTempAndroid(QuotationDto.Create model)
-  {
-    _logger.Log(LogLevel.Information,
-      "Registering new quotation request at {model} for {(model.Customer.FirstName + model.Customer.LastName)}",
-      model.EventLocation, (model.Customer.FirstName + model.Customer.LastName));
-    int quotationId = await _quotationService.CreateAsync(model);
-    _logger.Log(LogLevel.Information,
-      "Registered new quotation request at {model} for {(model.Customer.FirstName + model.Customer.LastName)}",
-      model.EventLocation, (model.Customer.FirstName + model.Customer.LastName));
-    return CreatedAtAction(nameof(RegisterQuotationRequest), new QuotationResult.Create { QuotationId = quotationId});
+    return CreatedAtAction(nameof(RegisterQuotationRequest), quotation); // TODO QuotationResponse ipv QuotationResult teruggeven
   }
 
   [HttpGet]

@@ -9,7 +9,7 @@ public class Quotation : Entity
   private Quotation() { } // EF Core Constructor
 
   public Quotation(Formula formula, Customer orderedBy, EventLocation eventLocation, List<QuotationLine> quotationLines,
-    DateTime startTime, DateTime endTime, bool isTripelBier = false)
+    DateTime startTime, DateTime endTime, bool isTripelBier = false, int numberOfPeople = 0) // TODO numberofpeople nooit null
   {
     if ((endTime - startTime).TotalSeconds <= 0)
       throw new ArgumentException("End time cannot be before start time!");
@@ -23,10 +23,11 @@ public class Quotation : Entity
     Status = QuotationStatus.Unread;
     StartTime = Guard.Against.Null(startTime);
     EndTime = Guard.Against.Null(endTime);
+    NumberOfPeople = Guard.Against.NegativeOrZero(numberOfPeople);
     IsTripelBier = isTripelBier;
   }
   public Quotation(Formula formula, int formulaId, DateTime startTime, DateTime endTime, int estimatedNumberPeople, bool isTripelBier = false)
-  {
+  { // todo ??
     if ((endTime - startTime).TotalSeconds <= 0)
       throw new ArgumentException("End time cannot be before start time!");
 
