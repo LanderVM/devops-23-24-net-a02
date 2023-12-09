@@ -1,8 +1,45 @@
 @page "/FormulesAdmin"
+@using shared.Formulas
 
-<MudContainer MaxWidth="MaxWidth.Small">
+
+<PageTitle>Formules Admin</PageTitle>
+<MudContainer Fixed="true" Class="mt-15">
     
+    <MudTable Items="Formulas" Hover="true" Breakpoint="Breakpoint.Sm" >
+        <HeaderContent>
+            <MudTh>Titel</MudTh>
+            <MudTh>Kenmerken</MudTh>
+            <MudTh>Prijs/Dag</MudTh>
+            <MudTh>Extra/dag</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Titel">@context.Title</MudTd>
+            <MudTd DataLabel="Kenmerken">@string.Join(", ", @context.Attributes)</MudTd>
+            <MudTd DataLabel="Prijs/Dag">@string.Join(" / ", @context.BasePrice )</MudTd>
+            <MudTd DataLabel="Extra/dag" >@Math.Round(@context.PricePerDayExtra)</MudTd>
+            
+        </RowTemplate>
+    </MudTable>
 </MudContainer>
+
+
+
 @code {
+
+    [Inject]
+    public IFormulaService FormulaService { get; set; } = default!;
     
+    private IEnumerable<FormulaDto.Index>? Formulas;
+
+    private String _attributes;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        FormulaResult.Index response = await FormulaService.GetIndexAsync();
+
+        Formulas = response.Formulas;
+
+       
+    }
+
 }

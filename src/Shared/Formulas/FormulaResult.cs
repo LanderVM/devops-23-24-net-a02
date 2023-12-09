@@ -13,5 +13,7 @@ public class FormulaResult
   {
     public int Id { get; set; }
   }
+  
+  
 }
 
