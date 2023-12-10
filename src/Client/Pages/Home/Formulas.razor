@@ -7,18 +7,22 @@
         <Loader IsLoading=@(FormulasList == null)>
             @foreach (FormulaDto.Index item in FormulasList)
             {
-                <MudItem lg="3" md="3" sm="6" xs="12" Class="mudItem">
-                    <MudLink OnClick="@(() =>{ FormulaState.ChosenFormulaId = item.Id; FormulaState.Title = item.Title; FormulaState.Attributes = item.Attributes; FormulaState.PricePerDayExtra = item.PricePerDayExtra; FormulaState.BasePrice = item.BasePrice; NavigateToEventdetails(); })" Underline="Underline.None">
-                        <MudCard Style="border: 1px solid #C8A86E">
-                            <MudCardMedia Image="images/5.jpg" Height="200" />
-                            <MudCardContent>
-                                <MudText Color="Color.Primary" Style="text-align: center" Typo="Typo.h5">
-                                    @item.Title <MudIconButton Href=@Routes.Formula Style="padding: 0; color: #9D9D9D" Icon="@Icons.Material.Filled.HelpOutline" aria-label="help"></MudIconButton>
-                                </MudText>
-                            </MudCardContent>
-                        </MudCard>
-                    </MudLink>
-                </MudItem>
+                if (item.IsActive)
+                {
+                    <MudItem lg="3" md="3" sm="6" xs="12" Class="mudItem">
+                        <MudLink OnClick="@(() =>{ FormulaState.ChosenFormulaId = item.Id; FormulaState.Title = item.Title; FormulaState.Attributes = item.Attributes; FormulaState.PricePerDayExtra = item.PricePerDayExtra; FormulaState.BasePrice = item.BasePrice; NavigateToEventdetails(); })" Underline="Underline.None">
+                            <MudCard Style="border: 1px solid #C8A86E">
+                                <MudCardMedia Image="images/5.jpg" Height="200" />
+                                <MudCardContent>
+                                    <MudText Color="Color.Primary" Style="text-align: center" Typo="Typo.h5">
+                                        @item.Title <MudIconButton Href=@Routes.Formula Style="padding: 0; color: #9D9D9D" Icon="@Icons.Material.Filled.HelpOutline" aria-label="help"></MudIconButton>
+                                    </MudText>
+                                </MudCardContent>
+                            </MudCard>
+                        </MudLink>
+                    </MudItem> 
+                }
+                
             }
 
             <MudItem lg="3" md="3" sm="6" xs="12" Class="mudItem">

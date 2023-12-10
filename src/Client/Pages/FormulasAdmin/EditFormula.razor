@@ -1,0 +1,98 @@
+@using shared.Formulas
+@using devops_23_24_net_a02.Client.Pages.Formulas
+
+
+<EditForm Model="@formula" OnValidSubmit="UpdateFormulaAsync">
+    <Blazored.FluentValidation.FluentValidationValidator />
+
+    <MudTextField @bind-Value="formula.Title"
+                  For="@(() => formula.Title)"
+                  Label="Titel"
+                  Variant="Variant.Outlined" />
+        
+    <MudNumericField @bind-Value="formula.PricePerDayExtra"
+                     Class="mt-3"
+                     Label="Prijs extra dagen"
+                     For="@(() => formula.PricePerDayExtra)"
+                     Variant="Variant.Outlined"
+                     Step="1"
+                     Min="0" />
+        
+    <MudText Class="mt-5 mb-1" Typo="Typo.body2">Plaats elk element op een nieuwe lijn</MudText>
+        
+    <MudTextField @bind-Value="formula.BasePrice"
+                  Label="Basisprijs"
+                  For="@(() => formula.BasePrice)"
+                  Variant="Variant.Outlined"
+                  Lines="3"
+    />
+
+    <MudTextField @bind-Value="formula.Attributes"
+                  Label="Kenmerken"
+                  Variant="Variant.Outlined"
+                  Lines="5" />
+
+    <MudCheckBox @bind-Checked="@formula.IsActive"
+                     For="@(() => formula.IsActive)"
+                     Label="Is Actief"
+                     Color="Color.Primary"
+                     Size="Size.Medium">
+        </MudCheckBox>
+    
+
+    <MudGrid Class="mt-6">
+        <MudItem xs="1">
+
+        </MudItem>
+        <MudItem xs="5">
+            <MudButton Class="mr-1" Variant="Variant.Filled" FullWidth="true" Color="Color.Primary" ButtonType="ButtonType.Submit">Pas aan</MudButton>
+        </MudItem>
+        <MudItem xs="5">
+            <MudButton Class="ml-1" Variant="Variant.Filled" FullWidth="true" Color="Color.Primary" OnClick="Close">Annuleren</MudButton>
+        </MudItem>
+        <MudItem xs="1">
+
+        </MudItem>
+    </MudGrid>
+
+</EditForm>
+
+
+
+@code {
+    [Inject] public IFormulaService FormulaService { get; set; } = default!;
+    
+    [Parameter] public int FormulaId { get; set; } = default!;
+    [Parameter] public EventCallback Close { get; set; } = default!;
+    [Parameter] public EventCallback Refresh { get; set; } = default!;
+    
+    
+    private FormulaDto.Mutate formula { get; set; } = new ();
+    
+    protected override async Task OnParametersSetAsync()
+    {
+        var response = await FormulaService.GetSpecificMutateAsync(FormulaId);
+
+        formula.Title = response.Title;
+        formula.Attributes = response.Attributes;
+        formula.BasePrice = response.BasePrice;
+        formula.PricePerDayExtra = Math.Round(response.PricePerDayExtra, 0);
+        formula.IsActive = response.IsActive;
+        StateHasChanged();
+        
+    }
+    
+    private async Task UpdateFormulaAsync()
+    {
+        
+        FormulaResult.Edit result = await FormulaService.UpdateAsync(FormulaId, formula);
+        await Close.InvokeAsync();
+        await Refresh.InvokeAsync();
+    }
+
+    private void Cancel()
+    {
+        Close.InvokeAsync();
+    }
+    
+}

@@ -5,109 +5,108 @@
 @inject IEquipmentService EquipmentService;
 @inject IStorageService StorageService;
 
-<div style="width:600px;">
-    <EditForm Model="@Model" OnValidSubmit="UpdateEquipmentAsync">
-        <Blazored.FluentValidation.FluentValidationValidator />
 
-        <MudTextField @bind-Value="Model.Title"
-                      For="@(() => Model.Title)"
-                      Label="Titel"
-                      Variant="Variant.Outlined" />
+<EditForm Model="@Model" OnValidSubmit="UpdateEquipmentAsync">
+    <Blazored.FluentValidation.FluentValidationValidator />
 
-        <MudNumericField @bind-Value="Model.Price"
-                         Class="mt-3"
-                         Label="Prijs"
-                         For="@(() => Model.Price)"
-                         Variant="Variant.Outlined"
-                         Step="0.01M"
-                         Min="0.0M" />
+    <MudTextField @bind-Value="Model.Title"
+                  For="@(() => Model.Title)"
+                  Label="Titel"
+                  Variant="Variant.Outlined" />
 
-        <MudNumericField @bind-Value="Model.Stock"
-                         Class="mt-3"
-                         Label="Stock"
-                         For="@(() => Model.Stock)"
-                         Variant="Variant.Outlined"
-                         Step="1"
-                         Min="0" />
+    <MudNumericField @bind-Value="Model.Price"
+                     Class="mt-3"
+                     Label="Prijs"
+                     For="@(() => Model.Price)"
+                     Variant="Variant.Outlined"
+                     Step="0.01M"
+                     Min="0.0M" />
 
-        <MudText Class="mt-5 mb-1" Typo="Typo.body2">Onderscheid je attributen in de text met een ";"</MudText>
+    <MudNumericField @bind-Value="Model.Stock"
+                     Class="mt-3"
+                     Label="Stock"
+                     For="@(() => Model.Stock)"
+                     Variant="Variant.Outlined"
+                     Step="1"
+                     Min="0" />
 
-        <MudTextField @bind-Value="Model.Attributes"
-                      For="@(() => Model.Attributes)"
-                      Label="Attributen"
-                      Variant="Variant.Outlined"
-                      Lines="3" />
+    <MudText Class="mt-5 mb-1" Typo="Typo.body2">Onderscheid je attributen in de text met een ";"</MudText>
 
-        <MudCheckBox @bind-Checked="@Model.IsActive"
-                     For="@(() => Model.IsActive)"
-                     Label="Is actief"
-                     Color="Color.Primary"
-                     Size="Size.Medium">
-        </MudCheckBox>
+    <MudTextField @bind-Value="Model.Attributes"
+                  For="@(() => Model.Attributes)"
+                  Label="Attributen"
+                  Variant="Variant.Outlined"
+                  Lines="3" />
 
-        <MudGrid Class="mt-1 mb-1">
-            <MudItem xs="12">
-                <MudStack Style="width: 100%">
-                    <MudFileUpload T="IBrowserFile"
-                                   OnFilesChanged="OnInputFileChanged"
-                                   Hidden="@false"
-                                   InputClass="absolute mud-width-full mud-height-full overflow-hidden z-20"
-                                   InputStyle="opacity:0"
-                                   Context="InputFile"
-                    @ondragenter="@SetDragClass"
-                    @ondragleave="@ClearDragClass"
-                    @ondragend="@ClearDragClass">
-                        <ButtonTemplate>
-                            <MudPaper Height="150px"
-                                      Outlined="true"
-                                      Class="@_dragClass">
-                                <MudText Typo="Typo.h6">
-                                    Laad een foto op
-                                </MudText>
-                                @foreach (var file in _fileNames)
-                                {
-                                    <MudChip Color="Color.Dark" Text="@file" />
-                                }
-                            </MudPaper>
-                            <MudToolBar DisableGutters="true"
-                                        Class="relative d-flex justify-end gap-4 z-30">
-                                <MudButton HtmlTag="label"
-                                           Color="Color.Primary"
-                                           Variant="Variant.Filled"
-                                           for="@InputFile">
-                                    Open een bestand
-                                </MudButton>
-                                <MudButton OnClick="@Clear"
-                                           Color="Color.Error"
-                                           Disabled="@(!_fileNames.Any())"
-                                           Variant="Variant.Filled">
-                                    Verwijder foto
-                                </MudButton>
-                            </MudToolBar>
-                        </ButtonTemplate>
-                    </MudFileUpload>
-                </MudStack>
-            </MudItem>
+    <MudCheckBox @bind-Checked="@Model.IsActive"
+                 For="@(() => Model.IsActive)"
+                 Label="Is actief"
+                 Color="Color.Primary"
+                 Size="Size.Medium">
+    </MudCheckBox>
 
-        </MudGrid>
+    <MudGrid Class="mt-2 mb-2">
+        <MudItem xs="12">
+            <MudStack Style="width: 100%">
+                <MudFileUpload T="IBrowserFile"
+                               OnFilesChanged="OnInputFileChanged"
+                               Hidden="@false"
+                               InputClass="absolute mud-width-full mud-height-full overflow-hidden z-20"
+                               InputStyle="opacity:0"
+                               Context="InputFile"
+                               @ondragenter="@SetDragClass"
+                               @ondragleave="@ClearDragClass"
+                               @ondragend="@ClearDragClass">
+                    <ButtonTemplate>
+                        <MudPaper Height="150px"
+                                  Outlined="true"
+                                  Class="@_dragClass">
+                            <MudText Typo="Typo.h6">
+                                Laad een foto op
+                            </MudText>
+                            @foreach (var file in _fileNames)
+                            {
+                                <MudChip Color="Color.Dark" Text="@file" />
+                            }
+                        </MudPaper>
+                        <MudToolBar DisableGutters="true"
+                                    Class="relative d-flex justify-end gap-4 z-30">
+                            <MudButton HtmlTag="label"
+                                       Color="Color.Primary"
+                                       Variant="Variant.Filled"
+                                       for="@InputFile">
+                                Open een bestand
+                            </MudButton>
+                            <MudButton OnClick="@Clear"
+                                       Color="Color.Error"
+                                       Disabled="@(!_fileNames.Any())"
+                                       Variant="Variant.Filled">
+                                Verwijder foto
+                            </MudButton>
+                        </MudToolBar>
+                    </ButtonTemplate>
+                </MudFileUpload>
+            </MudStack>
+        </MudItem>
 
-        <MudGrid Class="mt-2 mb-10">
-            <MudItem xs="1">
+    </MudGrid>
 
-            </MudItem>
-            <MudItem xs="5">
-                <MudButton Class="mr-1" Variant="Variant.Filled" FullWidth="true" Color="Color.Primary" ButtonType="ButtonType.Submit">Pas aan</MudButton>
-            </MudItem>
-            <MudItem xs="5">
-                <MudButton Class="ml-1" Variant="Variant.Filled" FullWidth="true" Color="Color.Primary" OnClick="Close">Annuleren</MudButton>
-            </MudItem>
-            <MudItem xs="1">
+    <MudGrid Class="mt-6">
+        <MudItem xs="1">
 
-            </MudItem>
-        </MudGrid>
+        </MudItem>
+        <MudItem xs="5">
+            <MudButton Class="mr-1" Variant="Variant.Filled" FullWidth="true" Color="Color.Primary" ButtonType="ButtonType.Submit">Pas aan</MudButton>
+        </MudItem>
+        <MudItem xs="5">
+            <MudButton Class="ml-1" Variant="Variant.Filled" FullWidth="true" Color="Color.Primary" OnClick="Close">Annuleren</MudButton>
+        </MudItem>
+        <MudItem xs="1">
 
-    </EditForm>
-</div>
+        </MudItem>
+    </MudGrid>
+
+</EditForm>
 
 
 @code {
