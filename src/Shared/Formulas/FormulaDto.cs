@@ -28,9 +28,9 @@ public class FormulaDto {
   public class Mutate {
     
     public string Title { get; set; }
-    public List<string> Attributes { get; set;}
+    public string Attributes { get; set;}
     public decimal PricePerDayExtra { get; set; }
-    public List<decimal> BasePrice { get; set; }
+    public string BasePrice { get; set; }
 
     public class Validator : AbstractValidator<FormulaDto.Mutate>
     {

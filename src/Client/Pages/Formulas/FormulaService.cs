@@ -20,6 +20,12 @@ namespace devops_23_24_net_a02.Client.Pages.Formulas
       return response;
     }
 
+    public async Task<FormulaDto.Mutate> GetSpecificMutateAsync(int formulaId)
+    {
+      FormulaDto.Mutate? response = await client.GetFromJsonAsync<FormulaDto.Mutate>($"{endpoint}/{formulaId}");
+      return response;
+    }
+
     public async Task<FormulaResult.Edit> UpdateAsync(int formulaId, FormulaDto.Mutate model)
     {
       var response = await client.PutAsJsonAsync($"{endpoint}/{formulaId}", model);

@@ -4,6 +4,8 @@ public interface IFormulaService
 {
   public Task<FormulaResult.Index> GetIndexAsync();
   
-  public Task<FormulaResult.Edit> UpdateAsync(int equipmentId, FormulaDto.Mutate model);
+  public Task<FormulaDto.Mutate> GetSpecificMutateAsync(int formulaId);
+  
+  public Task<FormulaResult.Edit> UpdateAsync(int formulaId, FormulaDto.Mutate model);
 }
 
