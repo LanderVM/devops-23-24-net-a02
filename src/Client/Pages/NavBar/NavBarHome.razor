@@ -4,48 +4,73 @@
             <p id="navBarText">Blanche</p>
             <MudSpacer />
             <div class="nav-items">
-                <NavLink href=@Routes.Home>
-                    <p class="appBarNavItem">Home</p>
-                </NavLink>
-                <NavLink href=@Routes.Formula>
-                    <p class="appBarNavItem">Verhuur</p>
-                </NavLink>
-                <NavLink href=@Routes.About>
-                    <p class="appBarNavItem">Over ons</p>
-                </NavLink>
-                <AuthorizeView>
-                <MudToggleIconButton @bind-Toggled="@_isOpen" Icon="@Icons.Material.Filled.ModeEdit" Color="Color.Tertiary" ToggledIcon="@Icons.Material.Filled.ModeEdit" ToggledColor="Color.Tertiary" />  
+                <div class="menu-button">
+                    <MudToggleIconButton @bind-Toggled="@_isMenuOpen" Icon="@Icons.Material.Filled.Menu" Color="Color.Tertiary" ToggledIcon="@Icons.Material.Filled.Menu" ToggledColor="Color.Tertiary" @onclick="ToggleMenuOpen" />
+                    <MudPopover Open="@_isMenuOpen" Fixed="true" Class="px-4 pt-4" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight">
+                        <div class="d-flex flex-column">
+                            <NavLink href=@Routes.Quotations @onclick="ToggleMenuOpen">
+                                <p class="appBarNavItemDropDown">Offertes</p>
+                            </NavLink>
+                            <NavLink href=@Routes.ExtraMaterialAdmin @onclick="ToggleMenuOpen">
+                                <p class="appBarNavItemDropDown">Extra Items</p>
+                            </NavLink>
+                            <NavLink href=@Routes.FormulasAdmin @onclick="ToggleMenuOpen">
+                                <p class="appBarNavItemDropDown">Formules</p>
+                            </NavLink>
+                        </div>
+                    </MudPopover>
+                </div>
 
-                <MudPopover Open="@_isOpen" Fixed="true" Class="px-4 pt-4" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight">
-                    <div class="d-flex flex-column">
-                        <NavLink href=@Routes.Quotations @onclick="ToggleOpen">
-                            <p class="appBarNavItemDropDown">Offertes</p>
-                        </NavLink>
-                        <NavLink href=@Routes.ExtraMaterialAdmin  @onclick="ToggleOpen">
-                            <p class="appBarNavItemDropDown">Extra Items</p>
-                        </NavLink>
-                        <NavLink href=@Routes.FormulasAdmin  @onclick="ToggleOpen">
-                            <p class="appBarNavItemDropDown">Formules</p>
-                        </NavLink>
-                    </div>
-                </MudPopover>
+                <div class="navivgation">
+                    <NavLink href=@Routes.Home>
+                        <p class="appBarNavItem">Home</p>
+                    </NavLink>
+                    <NavLink href=@Routes.Formula>
+                        <p class="appBarNavItem">Verhuur</p>
+                    </NavLink>
+                    <NavLink href=@Routes.About>
+                        <p class="appBarNavItem">Over ons</p>
+                    </NavLink>
+                </div>
+
+                <AuthorizeView>
+                    <MudToggleIconButton @bind-Toggled="@_isEditOpen" Icon="@Icons.Material.Filled.ModeEdit" Color="Color.Tertiary" ToggledIcon="@Icons.Material.Filled.ModeEdit" ToggledColor="Color.Tertiary" @onclick="ToggleEditOpen" />
+
+                    <MudPopover Open="@_isEditOpen" Fixed="true" Class="px-4 pt-4" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight">
+                        <div class="d-flex flex-column">
+                            <NavLink href=@Routes.Quotations @onclick="ToggleEditOpen">
+                                <p class="appBarNavItemDropDown">Offertes</p>
+                            </NavLink>
+                            <NavLink href=@Routes.ExtraMaterialAdmin @onclick="ToggleEditOpen">
+                                <p class="appBarNavItemDropDown">Extra Items</p>
+                            </NavLink>
+                            <NavLink href=@Routes.FormulasAdmin @onclick="ToggleEditOpen">
+                                <p class="appBarNavItemDropDown">Formules</p>
+                            </NavLink>
+                        </div>
+                    </MudPopover>
                 </AuthorizeView>
-                
-                    
-                
+
+
+
             </div>
         </div>
     </MudContainer>
 </div>
 
-@code{
-    public bool _isOpen;
+@code {
+    public bool _isEditOpen;
+    public bool _isMenuOpen;
 
-    public void ToggleOpen()
+    public void ToggleEditOpen()
     {
-        if (_isOpen)
-            _isOpen = false;
-        else
-            _isOpen = true;
+        _isMenuOpen = false;
+        _isEditOpen = !_isEditOpen;
+    }
+
+    public void ToggleMenuOpen()
+    {
+        _isEditOpen = false;
+        _isMenuOpen = !_isMenuOpen;
     }
 }
