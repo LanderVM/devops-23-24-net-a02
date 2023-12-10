@@ -15,6 +15,8 @@ public class FormulaDto {
     public decimal PricePerDayExtra { get; set; }
 
     public List<decimal> BasePrice { get; set; }
+    
+    public bool IsActive { get; set; }
 
   }
 
@@ -31,6 +33,7 @@ public class FormulaDto {
     public string Attributes { get; set;}
     public decimal PricePerDayExtra { get; set; }
     public string BasePrice { get; set; }
+    public bool IsActive { get; set; }
 
     public class Validator : AbstractValidator<FormulaDto.Mutate>
     {

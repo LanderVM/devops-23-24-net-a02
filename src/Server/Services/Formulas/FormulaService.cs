@@ -30,6 +30,7 @@ public class FormulaService: IFormulaService
           Attributes = x.Description.Attributes,
           PricePerDayExtra = x.PricePerDayExtra,
           BasePrice = x.BasePrice,
+          IsActive = x.IsActive
       }
       ).ToListAsync();
 
@@ -57,6 +58,7 @@ public class FormulaService: IFormulaService
       Attributes = attributes,
       PricePerDayExtra = formula.PricePerDayExtra,
       BasePrice= basePrice,
+      IsActive = formula.IsActive
     };
 
     return mutate;
@@ -75,8 +77,9 @@ public class FormulaService: IFormulaService
 
 
     formula.Description = new Description(model.Title, model.Attributes.Split('\n').ToList());
-    formula.BasePrice = model.BasePrice.Split('\n').Select(decimal.Parse).ToList();;
+    formula.BasePrice = model.BasePrice.Split('\n').Select(decimal.Parse).ToList();
     formula.PricePerDayExtra = model.PricePerDayExtra;
+    formula.IsActive = model.IsActive;
     
     
     

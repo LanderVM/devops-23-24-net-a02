@@ -32,6 +32,13 @@
                   Variant="Variant.Outlined"
                   Lines="5" />
 
+    <MudCheckBox @bind-Checked="@formula.IsActive"
+                     For="@(() => formula.IsActive)"
+                     Label="Is Actief"
+                     Color="Color.Primary"
+                     Size="Size.Medium">
+        </MudCheckBox>
+    
 
     <MudGrid Class="mt-6">
         <MudItem xs="1">
@@ -70,6 +77,7 @@
         formula.Attributes = response.Attributes;
         formula.BasePrice = response.BasePrice;
         formula.PricePerDayExtra = Math.Round(response.PricePerDayExtra, 0);
+        formula.IsActive = response.IsActive;
         StateHasChanged();
         
     }
