@@ -58,7 +58,7 @@ public static class DbInitializer
       new(new List<Equipment>(), "Basic", new List<string> { "De foodtruck", "Twee tapkranen", "Barkoeler van 320 liter", "Vriezer van 80 liter", "Dubbele afwasbak","100 bierglazen (multifunctioneel)" }),
       new(new List<Equipment>(), "Extended", new List<string> { "incl. Basic formule", "Met bier (keuze uit pils of tripel)", "Glazen inbegrepen" }),
       new(new List<Equipment>(), "All-in",
-        new List<string> { "De foodtruck", "Met bier (keuze uit pils of tripel)", "Glazen inbegrepen", "Inclusief barbecue", "Inclusief hout & eten voor de bbq", "Bbq-kit ingebegrepen" })
+        new List<string> { "incl. Basic formule", "Met bier (keuze uit pils of tripel)", "Glazen inbegrepen", "Inclusief barbecue", "Inclusief hout & eten voor de bbq", "Bbq-kit ingebegrepen" })
     };
 
     // Customers
