@@ -76,9 +76,9 @@ public class FormulaTests
 
   [Theory]
   [InlineData("-50")]
-  [InlineData("-23.50")]
-  [InlineData("-0.0000000001")]
-  [InlineData("-70.23581629000")]
+  [InlineData("-23,50")]
+  [InlineData("-0,0000000001")]
+  [InlineData("-70,23581629000")]
   public void Create_new_formula_equipmentPrice_invalid(string number)
   {
     var price = Convert.ToDecimal(number);
