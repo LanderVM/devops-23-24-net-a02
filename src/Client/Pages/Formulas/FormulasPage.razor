@@ -14,7 +14,7 @@
                     {
                         @if (counter % 2 == 0)
                         {
-                            <MudItem xs="4">
+                            <MudItem xs="12" md="4">
                                 <FormulaCard Title=@item.Title
                                              BackgroundColor="#EDE7DB"
                                              Attributes=@item.Attributes
@@ -24,7 +24,7 @@
                         }
                         else
                         {
-                            <MudItem xs="4">
+                            <MudItem xs="12" md="4">
                                 <FormulaCard BackgroundColor="#EBEBEB"
                                              Title=@item.Title
                                              Click=@(() =>{ FormulaState.ChosenFormulaId = item.Id; FormulaState.Title = item.Title; FormulaState.Attributes = item.Attributes; FormulaState.PricePerDayExtra = item.PricePerDayExtra; FormulaState.BasePrice = item.BasePrice; NavigateToEventdetails(); })
