@@ -14,6 +14,15 @@ public class EventDetailsState
 
   public DateRange dateRange = new DateRange(DateTime.Now.Date, DateTime.Now.AddDays(3).Date);
   
-
+  public void Clear()
+  {
+    FormattedAddress = null;
+    PlaceGeometry = null;
+    PlaceTitle = null;
+    NumberOfPeople = 0;
+    HasTripleBeer = false;
+    dateRange = new DateRange(DateTime.Now.Date, DateTime.Now.AddDays(3).Date);
+  }
+  
 }
 
