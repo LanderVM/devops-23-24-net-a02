@@ -1,10 +1,9 @@
 ﻿@page "/Overzicht"
 @using shared.Equipment
+@using shared.Quotations
 @using Size = MudBlazor.Size
 @using GoogleMapsComponents.Maps
 @using GoogleMapsComponents
-@using global::shared.Quotations
-
 
 
 <PageTitle>Overzicht</PageTitle>
@@ -174,7 +173,7 @@
 
         </MudItem>
         <MudItem lg="2" md="2" sm="7" xs="7">
-            <MudButton Class="mt-4 mb-4" Variant="Variant.Filled" Size="MudBlazor.Size.Large" Color="Color.Primary" OnClick="@CreateQuotationAsync">Offerte aanvraag verzenden</MudButton>
+            <MudButton Class="mt-4 mb-4" Variant="Variant.Filled" Size="Size.Large" Color="Color.Primary" OnClick="@CreateQuotationAsync">Offerte aanvraag verzenden</MudButton>
         </MudItem>
     </MudGrid>
 </MudContainer>
@@ -320,7 +319,6 @@
                     {
                         EquipmentId = item.Key,
                         Amount = item.Value,
-                        IsActive = true
                     }); 
                 }
                 
@@ -365,7 +363,7 @@
         
 
         
-        int result = await QuotationService.CreateAsync(quotation);
+        int result = (await QuotationService.CreateAsync(quotation)).QuotationId;
         
         //NavigationManager.NavigateTo($"Quotation/{result}");
         OpenDialog();

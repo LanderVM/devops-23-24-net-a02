@@ -1,10 +1,9 @@
-﻿using System.Linq;
+﻿using devops_23_24_net_a02.Shared.Emails;
 using Domain.Common;
 using Domain.Customers;
 using Domain.Formulas;
 using Domain.Quotations;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using shared.Equipment;
 using shared.Formulas;
 using Shared.Common;
@@ -26,7 +25,7 @@ public class QuotationService : IQuotationService
   public async Task<QuotationResult.Dates> GetDatesAsync()
   {
     var query = _dbContext.Quotations
-      .Select(q => new QuotationDto.Dates { StartTime = q.StartTime, EndTime = q.EndTime });
+      .Select(q => new QuotationDto.Dates { StartTime = q.StartTime.ToUniversalTime(), EndTime = q.EndTime.ToUniversalTime() });
 
     var dates = await query.ToListAsync();  
 
@@ -64,7 +63,7 @@ public class QuotationService : IQuotationService
 
     
   }
-  public async Task<int> CreateAsync(QuotationDto.Create model)
+  public async Task<QuotationResult.Create> CreateAsync(QuotationDto.Create model)
   {
     var chosenFormula = _dbContext.Formulas.FirstOrDefault(formula => formula.Id == model.FormulaId);
     if (chosenFormula is null)
@@ -78,7 +77,6 @@ public class QuotationService : IQuotationService
       .FirstOrDefault(customerFromDb => EqualsCustomer(model, customerFromDb));
     if (customer is null)
     {
-      // TODO als customer enkel nieuw adres of telefoonnummer heeft, oude op inactief zetten & nieuwe maken, of gewoon updaten?
       customer = new Customer(
         model.Customer.FirstName,
         model.Customer.LastName,
@@ -120,12 +118,47 @@ public class QuotationService : IQuotationService
       quotationLines,
       model.StartTime,
       model.EndTime,
-      model.IsTripelBier
+      model.IsTripelBier,
+      model.NumberOfPeople
      );
 
     _dbContext.Quotations.Add(quotation);
     await _dbContext.SaveChangesAsync();
-    return quotation.Id;
+    QuotationResult.Create result = new QuotationResult.Create
+    {
+      QuotationId = quotation.Id,
+      FormulaId = quotation.FormulaId,
+      EventLocation = new AddressDto
+      {
+        Street = quotation.EventLocation.Street,
+        HouseNumber = quotation.EventLocation.HouseNumber,
+        City = quotation.EventLocation.City,
+        PostalCode = quotation.EventLocation.PostalCode
+      },
+      StartTime = quotation.StartTime,
+      EndTime = quotation.EndTime,
+      Equipments = quotation.QuotationLines
+        .Select(line => new EquipmentDto.Lines { EquipmentId = line.Id, Amount = line.AmountOrdered }).ToList(),
+      Customer = new CustomerDto.Details
+      {
+        Id = quotation.OrderedBy.Id,
+        FirstName = quotation.OrderedBy.FirstName,
+        LastName = quotation.OrderedBy.LastName,
+        Email = new EmailDto.Create { Email = quotation.OrderedBy.Email.Value },
+        PhoneNumber = quotation.OrderedBy.PhoneNumber.Value,
+        VatNumber = quotation.OrderedBy.VatNumber,
+        BillingAddress = new AddressDto
+        {
+          Street = quotation.OrderedBy.BillingAddress.Street,
+          HouseNumber = quotation.OrderedBy.BillingAddress.HouseNumber,
+          City = quotation.OrderedBy.BillingAddress.City,
+          PostalCode = quotation.OrderedBy.BillingAddress.PostalCode,
+        }
+      },
+      IsTripelBier = quotation.IsTripelBier,
+      NumberOfPeople = quotation.NumberOfPeople
+    };
+    return result;
   }
 
  
@@ -137,12 +170,13 @@ public class QuotationService : IQuotationService
 
   private BillingAddress? GetCustomerAddress(QuotationDto.Create model)
   {
-    return _dbContext.Customers.Include(customer => customer.BillingAddress)
+    var result = _dbContext.Customers.Include(customer => customer.BillingAddress)
       .FirstOrDefault(customerFromDb =>
         customerFromDb.BillingAddress.Street == model.Customer.BillingAddress.Street
         && customerFromDb.BillingAddress.HouseNumber == model.Customer.BillingAddress.HouseNumber
         && customerFromDb.BillingAddress.PostalCode == model.Customer.BillingAddress.PostalCode
         && customerFromDb.BillingAddress.City == model.Customer.BillingAddress.City)?.BillingAddress;
+    return null;
   }
 
   private static bool EqualsCustomer(QuotationDto.Create model, Customer customerFromDb)
