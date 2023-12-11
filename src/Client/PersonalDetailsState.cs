@@ -10,4 +10,8 @@ public class PersonalDetailsState
 { 
   public CustomerDto.Create Customer { get; set; } = new CustomerDto.Create();
 
+  public void Clear() {
+    Customer = new CustomerDto.Create();
+  }
+
 }
