@@ -184,7 +184,7 @@
 
     [Inject] public IEquipmentService EquipmentService { get; set; } = default!;
     [Inject] public IQuotationService QuotationService { get; set; } = default!;
-    
+    [Inject] public NavigationManager NavigationManager { get; set; } = default!;
     [Inject] public ExtraMaterialState ExtraMaterialState { get; set; } = default!;
     [Inject] public FormulaState FormulaState { get; set; } = default!;
     [Inject] public EventDetailsState EventDetailsState { get; set; } = default!;
@@ -196,6 +196,11 @@
 
     protected override async Task OnInitializedAsync()
     {
+        if (PersonalDetailsState.PersonalDetailsObject.Email == null)
+        {
+            NavigationManager.NavigateTo("/");
+            
+        }
         EquipmentResult.Index response = await EquipmentService.GetIndexAsync();
 
         Extras = response.Equipment;

@@ -6,13 +6,13 @@
 <MudContainer Fixed="true" Class="mt-15">
     <Loader IsLoading=@(Formulas == null)>
 
-    <MudTable Items="Formulas" Hover="true" Breakpoint="Breakpoint.Sm">
+    <MudTable Elevation="2" Items="Formulas" Hover="true" Breakpoint="Breakpoint.Sm">
         <HeaderContent>
             <MudTh Style=@styleTh>Titel</MudTh>
             <MudTh Style=@styleTh>Kenmerken</MudTh>
             <MudTh Style=@styleTh>Basisprijs</MudTh>
             <MudTh Style=@styleTh>Prijs extra dagen</MudTh>
-            <MudTh Style="color: white"> Wijzigen </MudTh>
+            <MudTh Style="color: #FAf6F1;background-color: #FAf6F1"> Wijzigen </MudTh>
         </HeaderContent>
         <RowTemplate>
             <MudTd DataLabel="Titel" Style=@styleTd>
@@ -44,8 +44,8 @@
     
     private bool Loading { get; set; } = true;
     
-    private String styleTd = "text-align: center";
-    private String styleTh = "font-weight: bold;text-align: center";
+    private String styleTd = "text-align: center; background-color: #FAf6F1";
+    private String styleTh = "font-weight: bold;text-align: center;background-color: #FAf6F1";
     
     protected override async Task OnInitializedAsync()
     {

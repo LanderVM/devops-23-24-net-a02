@@ -11,6 +11,7 @@ using devops_23_24_net_a02.Client.Pages.Formulas;
 using shared.Quotations;
 using devops_23_24_net_a02.Client.Pages.Quotations;
 using Append.Blazor.Sidepanel;
+using Blazored.Toast;
 using devops_23_24_net_a02.Client.Files;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
@@ -31,6 +32,7 @@ builder.Services.AddScoped<FormulaState>();
 builder.Services.AddScoped<EventDetailsState>();
 
 builder.Services.AddSidepanel();
+builder.Services.AddBlazoredToast();
 
 builder.Services.AddMudServices(options =>
 {
