@@ -16,18 +16,20 @@ public class QuotationController : ControllerBase
     _logger = logger;
     _quotationService = quotationService;
   }
-  [HttpGet("Estimation/Details")]
-  [SwaggerOperation("Returns all required data to set up the calculation for a quotation")]
-  public async Task<QuotationResult.Detail> GetEstimatedQuotationDetails()
+
+  [HttpGet]
+  [SwaggerOperation("Gets a list of all the quotations")]
+  public async Task<QuotationResult.Index> GetQuotations()
   {
-    return await _quotationService.GetPriceEstimationDetailsAsync();
+    return await _quotationService.GetIndexAsync();
   }
 
-  [HttpGet("Estimation/Calculate")]
-  [SwaggerOperation("Calculates a estimate on how much a offer would cost")]
-  public async Task<decimal> GetEstimatedQuotationPrice([FromQuery] QuotationResponse.Estimate model)
+  [HttpGet("Dates")]
+  [SwaggerOperation("Gets all the dates for which there is an approved quotation")]
+  public async Task<QuotationResult.Dates> GetApprovedQuotationsDates()
   {
-    return await _quotationService.GetPriceEstimationPrice(model);
+    var dateTimes = await _quotationService.GetDatesAsync();
+    return dateTimes;
   }
 
   [HttpPost]
@@ -44,17 +46,26 @@ public class QuotationController : ControllerBase
     return CreatedAtAction(nameof(RegisterQuotationRequest), quotation); // TODO QuotationResponse ipv QuotationResult teruggeven
   }
 
-  [HttpGet]
-  [SwaggerOperation("Gets a list of all the quotations")]
-  public async Task<QuotationResult.Index> GetQuotations()
+  [HttpPut]
+  [SwaggerOperation("Changes a quotation offer and send a mail to the costumer")]
+  public async Task<QuotationResponse.Edit> UpdateQuotationRequest(int QuotationId, QuotationDto.Edit model)
   {
-    return await _quotationService.GetIndexAsync();
+    return await _quotationService.UpdateAsync(QuotationId, model);
   }
-  [HttpGet("Dates")]
-  [SwaggerOperation("Gets all the dates for which there is an approved quotation")]
-  public async Task<QuotationResult.Dates> GetApprovedQuotationsDates() { 
-    var dateTimes = await _quotationService.GetDatesAsync();
-    return dateTimes;
+
+
+  [HttpGet("Estimation/Details")]
+  [SwaggerOperation("Returns all required data to set up the calculation for a quotation")]
+  public async Task<QuotationResult.Detail> GetEstimatedQuotationDetails()
+  {
+    return await _quotationService.GetPriceEstimationDetailsAsync();
+  }
+
+  [HttpGet("Estimation/Calculate")]
+  [SwaggerOperation("Calculates a estimate on how much a offer would cost")]
+  public async Task<decimal> GetEstimatedQuotationPrice([FromQuery] QuotationResponse.Estimate model)
+  {
+    return await _quotationService.GetPriceEstimationPrice(model);
   }
 
 }

@@ -49,11 +49,13 @@ public class Quotation : Entity
   public Customer OrderedBy { get; set; } = default!;
   public EventLocation EventLocation { get; set; } = default!;
   public List<QuotationLine> QuotationLines { get; set; } = new();
-  public QuotationStatus Status { get; set; } = QuotationStatus.Unread;
   public DateTime StartTime { get; set; }
   public DateTime EndTime { get; set; }
   public int NumberOfPeople { get; protected set; }
   public bool IsTripelBier { get; set; }
+
+  public QuotationStatus Status { get; set; } = QuotationStatus.Unread;
+  public string? Opmerking { get; set; } = default!;
 
   public decimal GetPrice()
   {

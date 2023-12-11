@@ -33,4 +33,9 @@ public static class QuotationResponse
     public int EstimatedNumberOfPeople { get; set; }
     public bool IsTripelBier { get; set; } = false;
   }
+
+  public class Edit
+  {
+    public int QuotationId { get; set; }
+  }
 }

@@ -270,4 +270,31 @@ public class QuotationService : IQuotationService
     return quotation.GetEstimatedPrice();
   }
   
+  public async Task<QuotationResponse.Edit> UpdateAsync(int QuotationId, QuotationDto.Edit model)
+  {
+    var quotation = _dbContext.Quotations.FirstOrDefault(quotation => quotation.Id == QuotationId);
+    if (quotation is null)
+    {
+      throw new Exception($"No quotation found with Id: {QuotationId}");
+    }
+
+    quotation.Opmerking = model.Opmerking;
+    var quotationLines = new List<QuotationLine>();
+    foreach (var lines in model.EquipmentList)
+    {
+      var equipment = _dbContext.Equipments.FirstOrDefault(equipment => equipment.Id == lines.EquipmentId);
+      quotationLines.Add(new QuotationLine(equipment, lines.Amount));
+    }
+    quotation.QuotationLines = quotationLines;
+    quotation.Status = model.Status;
+
+    await _dbContext.SaveChangesAsync();
+
+    QuotationResponse.Edit result = new QuotationResponse.Edit
+    {
+      QuotationId = QuotationId
+    };
+
+    return result;
+  }
 }
