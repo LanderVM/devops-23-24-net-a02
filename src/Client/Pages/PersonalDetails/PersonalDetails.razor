@@ -44,7 +44,7 @@
                             <MudTextField @bind-Value="Create.BillingAddress.PostalCode" For="@(() => Create.BillingAddress.PostalCode)" Class="ml-16 mr-16 pt-2" Label="Postcode" Variant="Variant.Outlined"></MudTextField>
                         </MudItem>
                         <MudItem lg="6" md="6" sm="12" xs="12">
-                            <MudTextField @bind-Value="Create.VatNumber" For="@(() => Create.VatNumber)"  Class="ml-16 mr-16 mb-6 pt-2" Label="Btw-nummer" Variant="Variant.Outlined"></MudTextField>
+                            <MudTextField @bind-Value="Create.VatNumber" For="@(() => Create.VatNumber)" Class="ml-16 mr-16 mb-6 pt-2" Label="Btw-nummer" Variant="Variant.Outlined"></MudTextField>
 
                         </MudItem>
                     </MudGrid>
@@ -54,7 +54,7 @@
             <MudGrid>
                 <MudItem lg="10" md="10" sm="5" xs="5" />
                 <MudItem lg="2" md="2" sm="7" xs="7">
-                    <MudButton Class="mb-2" Variant="Variant.Filled" Size="Size.Large" Color="Color.Primary" OnClick="@(async () => await Submit())">Volgende</MudButton>
+                    <MudButton Class="mb-2" Variant="Variant.Filled" Size="Size.Large" Color="Color.Primary" ButtonType="ButtonType.Submit">Volgende</MudButton>
                 </MudItem>
             </MudGrid>
 
@@ -67,10 +67,58 @@
 
     private int Spacing { get; set; } = 2;
 
-    private CustomerDto.Create Create { get; set; } = new CustomerDto.Create();
+    private CustomerDto.Create Create { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Create = new CustomerDto.Create();
+        if (!string.IsNullOrWhiteSpace(PersonalDetailsState.Customer.FirstName))
+        {
+            AdjustCreate();
+        }
+
+    }
+
 
     private async Task Submit()
     {
+        AdjustPersonalDetailsState();
         NavigationManager.NavigateTo(Routes.ExtraMaterial);
+    }
+
+    private void AdjustPersonalDetailsState()
+    {
+        PersonalDetailsState.Customer.FirstName = Create.FirstName;
+        PersonalDetailsState.Customer.LastName = Create.LastName;
+        PersonalDetailsState.Customer.Email.Email = Create.Email.Email;
+        PersonalDetailsState.Customer.PhoneNumber = Create.PhoneNumber;
+        PersonalDetailsState.Customer.BillingAddress.Street = Create.BillingAddress.Street;
+        PersonalDetailsState.Customer.BillingAddress.HouseNumber = Create.BillingAddress.HouseNumber;
+        PersonalDetailsState.Customer.BillingAddress.PostalCode = Create.BillingAddress.PostalCode;
+        PersonalDetailsState.Customer.BillingAddress.City = Create.BillingAddress.City;
+        if (!string.IsNullOrWhiteSpace(Create.VatNumber))
+        {
+            PersonalDetailsState.Customer.VatNumber = Create.VatNumber;
+        }
+        else
+        {
+            PersonalDetailsState.Customer.VatNumber = "";
+        }
+    }
+
+    private void AdjustCreate()
+    {
+        Create.FirstName = PersonalDetailsState.Customer.FirstName;
+        Create.LastName = PersonalDetailsState.Customer.LastName;
+        Create.Email.Email = PersonalDetailsState.Customer.Email.Email;
+        Create.PhoneNumber = PersonalDetailsState.Customer.PhoneNumber;
+        Create.BillingAddress.Street = PersonalDetailsState.Customer.BillingAddress.Street;
+        Create.BillingAddress.HouseNumber = PersonalDetailsState.Customer.BillingAddress.HouseNumber;
+        Create.BillingAddress.PostalCode = PersonalDetailsState.Customer.BillingAddress.PostalCode;
+        Create.BillingAddress.City = PersonalDetailsState.Customer.BillingAddress.City;
+        if (!string.IsNullOrWhiteSpace(PersonalDetailsState.Customer.VatNumber))
+        {
+            Create.VatNumber = PersonalDetailsState.Customer.VatNumber;
+        }
     }
 }
