@@ -18,6 +18,11 @@ public class EquipmentService : IEquipmentService
     var response = await client.GetFromJsonAsync<EquipmentResult.Index>(endpoint);
     return response;
   }
+  public async Task<EquipmentResult.ActiveEquipment> GetActiveEquipmentAsync()
+  {
+    var response = await client.GetFromJsonAsync<EquipmentResult.ActiveEquipment>($"{endpoint}/active");
+    return response;
+  }
 
   public async Task<int> DeleteAsync(int equipmentId)
   {
@@ -60,5 +65,7 @@ public class EquipmentService : IEquipmentService
     EquipmentDto.Mutate? response = await client.GetFromJsonAsync<EquipmentDto.Mutate>($"{endpoint}/{equipmentId}");
     return response!;
   }
+
+  
 }
 

@@ -9,6 +9,7 @@ using shared.Formulas;
 using Shared.Common;
 using Shared.Customer;
 using shared.Quotations;
+using Domain.Exceptions;
 
 
 namespace Api.Data.Services.Quotations;
@@ -65,11 +66,11 @@ public class QuotationService : IQuotationService
   }
   public async Task<QuotationResult.Create> CreateAsync(QuotationDto.Create model)
   {
-    var chosenFormula = _dbContext.Formulas.FirstOrDefault(formula => formula.Id == model.FormulaId);
+    Formula? chosenFormula = _dbContext.Formulas.FirstOrDefault(formula => formula.Id == model.FormulaId);
     if (chosenFormula is null)
-      throw new ArgumentException($"Formula with id {model.FormulaId} does not exist!");
+      throw new EntityNotFoundException(nameof(Formula),model.FormulaId);
     if (chosenFormula.IsActive is false)
-      throw new ArgumentException($"Formula with id {chosenFormula.Id} is not active!");
+      throw new ApplicationException($"Formula with id {chosenFormula.Id} is not active!");
     
     var customer = _dbContext.Customers
       .Include(customer => customer.Email)
@@ -240,11 +241,13 @@ public class QuotationService : IQuotationService
   {
     decimal totalPrice = 0;
 
-    var chosenFormula = _dbContext.Formulas.FirstOrDefault(formula => formula.Id == model.FormulaId);
+    Formula? chosenFormula = _dbContext.Formulas.FirstOrDefault(formula => formula.Id == model.FormulaId);
     if (chosenFormula is null)
-      throw new ArgumentException($"Formula with id {model.FormulaId} does not exist!");
+      throw new EntityNotFoundException(nameof(Formula),model.FormulaId);
     if (chosenFormula.IsActive is false)
-      throw new ArgumentException($"Formula with id {chosenFormula.Id} is not active!"); var queryEquipment = _dbContext.Equipments.AsQueryable();
+      throw new ApplicationException($"Formula with id {chosenFormula.Id} is not active!"); 
+    
+    var queryEquipment = _dbContext.Equipments.AsQueryable();
 
     List<EquipmentDto.Index>? equipmentDtoQuery = new List<EquipmentDto.Index>();
 

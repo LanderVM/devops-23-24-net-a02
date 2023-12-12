@@ -19,5 +19,8 @@ public static class EmailDto
     }
   }
 
-  
+  public class Index {
+    public string EmailAddress { get; set; }
+
+  }
 }
