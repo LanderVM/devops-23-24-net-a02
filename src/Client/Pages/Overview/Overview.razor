@@ -1,4 +1,5 @@
-﻿@page "/Overzicht"
+@page "/Overzicht"
+@using devops_23_24_net_a02.Client.Pages.EventDetails;
 @using shared.Equipment
 @using shared.Quotations
 @using Size = MudBlazor.Size
@@ -69,25 +70,25 @@
                             <MudItem xs="12">
                                 <MudPaper Class="ma-1" Elevation="3" Style="background-color:#EDE7DB">
                                     <MudText Class="mt-1 ml-3">Naam</MudText>
-                                    <MudText Class="ml-3">@(@PersonalDetailsState.PersonalDetailsObject.LastName + " " + PersonalDetailsState.PersonalDetailsObject.FirstName)</MudText>
+                                    <MudText Class="ml-3">@(@PersonalDetailsState.Customer.LastName + " " + PersonalDetailsState.Customer.FirstName)</MudText>
                                 </MudPaper>
                             </MudItem>
                             <MudItem xs="12">
                                 <MudPaper Class="ma-1" Elevation="3" Style="background-color:#EDE7DB">
                                     <MudText Class="mt-1 ml-3">Email</MudText>
-                                    <MudText Class="ml-3">@PersonalDetailsState.PersonalDetailsObject.Email</MudText>
+                                    <MudText Class="ml-3">@PersonalDetailsState.Customer.Email.Email</MudText>
                                 </MudPaper>
                             </MudItem>
                             <MudItem xs="12">
                                 <MudPaper Class="ma-1" Elevation="3" Style="background-color:#EDE7DB">
                                     <MudText Class="mt-1 ml-3">Telefoon</MudText>
-                                    <MudText Class="ml-3">@PersonalDetailsState.PersonalDetailsObject.PhoneNumber</MudText>
+                                    <MudText Class="ml-3">@PersonalDetailsState.Customer.PhoneNumber</MudText>
                                 </MudPaper>
                             </MudItem>
                             <MudItem xs="12">
                                 <MudPaper Class="ma-1" Elevation="3" Style="background-color:#EDE7DB">
                                     <MudText Class="mt-1 ml-3">Adres</MudText>
-                                    <MudText Class="ml-3">@($"{@PersonalDetailsState.PersonalDetailsObject.Street} {@PersonalDetailsState.PersonalDetailsObject.Housenumber} {@PersonalDetailsState.PersonalDetailsObject.PostalCode} {@PersonalDetailsState.PersonalDetailsObject.City}")</MudText>
+                                    <MudText Class="ml-3">@($"{@PersonalDetailsState.Customer.BillingAddress.Street} {@PersonalDetailsState.Customer.BillingAddress.HouseNumber} {@PersonalDetailsState.Customer.BillingAddress.PostalCode} {@PersonalDetailsState.Customer.BillingAddress.City}")</MudText>
                                 </MudPaper>
                             </MudItem>
                             <MudItem xs="12">
@@ -122,12 +123,12 @@
                                 {
                                     <MudItem lg="3" md="4" sm="6" xs="12">
                                         <OverviewExtraItemsCard ImageUrl="@(Extras.FirstOrDefault(x => x.Id == item.Key).ImageData.ImageUrl)"
-                                                                Title="@(Extras.FirstOrDefault(x => x.Id == item.Key).Title)"
-                                                                Attributes="@(Extras.FirstOrDefault(x => x.Id == item.Key).Attributes)"
-                                                                EquipmentId="@(Extras.FirstOrDefault(x => x.Id == item.Key).Id)"
-                                                                Amount="@item.Value"
-                                                                Price="@(Extras.FirstOrDefault(x => x.Id == item.Key).Price)"
-                                                                ExternalMethod="@RefreshPage">
+                                        Title="@(Extras.FirstOrDefault(x => x.Id == item.Key).Title)"
+                                        Attributes="@(Extras.FirstOrDefault(x => x.Id == item.Key).Attributes)"
+                                        EquipmentId="@(Extras.FirstOrDefault(x => x.Id == item.Key).Id)"
+                                        Amount="@item.Value"
+                                        Price="@(Extras.FirstOrDefault(x => x.Id == item.Key).Price)"
+                                        ExternalMethod="@RefreshPage">
 
                                         </OverviewExtraItemsCard>
                                     </MudItem>
@@ -144,19 +145,18 @@
                     {
                         <MudHidden Breakpoint="Breakpoint.Xs" Invert="true">
                             <OverviewCostSmallFontsizeComponent Title="@FormulaState.Title"
-                                                   PriceFormula="@GetPriceFormulaWithoutBeerAndBarbeque()"
-                                                                TotalWithoutBtw="@CalculateTotalWithoutBtw()"
-                                                   BtwOnTotal="CalculateBtwOnTotal()"
-                                                                TotalWithBtw="@(Decimal.Round(CalculateTotalWithoutBtw(), 2) + Decimal.Round(CalculateBtwOnTotal(), 2))" />
+                            PriceFormula="@GetPriceFormulaWithoutBeerAndBarbeque()"
+                            TotalWithoutBtw="@CalculateTotalWithoutBtw()"
+                            BtwOnTotal="CalculateBtwOnTotal()"
+                            TotalWithBtw="@(Decimal.Round(CalculateTotalWithoutBtw(), 2) + Decimal.Round(CalculateBtwOnTotal(), 2))" />
                         </MudHidden>
                         <MudHidden Breakpoint="Breakpoint.Xs">
                             <OverviewCostComponent Title="@FormulaState.Title"
-                                                   PriceFormula="@GetPriceFormulaWithoutBeerAndBarbeque()"
-                                                   TotalWithoutBtw="@CalculateTotalWithoutBtw()"
-                                                   BtwOnTotal="CalculateBtwOnTotal()"
-                                                   TotalWithBtw="@(Decimal.Round(CalculateTotalWithoutBtw(), 2) + Decimal.Round(CalculateBtwOnTotal(), 2))" />
+                            PriceFormula="@GetPriceFormulaWithoutBeerAndBarbeque()"
+                            TotalWithoutBtw="@CalculateTotalWithoutBtw()"
+                            BtwOnTotal="CalculateBtwOnTotal()"
+                            TotalWithBtw="@(Decimal.Round(CalculateTotalWithoutBtw(), 2) + Decimal.Round(CalculateBtwOnTotal(), 2))" />
                         </MudHidden>
-                        
                     }
                 </MudItem>
             </MudGrid>
@@ -165,7 +165,7 @@
     </MudGrid>
     <MudGrid>
         <MudItem lg="2" md="2" sm="12" xs="12">
-            
+
         </MudItem>
         <MudItem lg="4" md="4" sm="12" xs="12">
 
@@ -183,29 +183,37 @@
 @code {
 
     [Inject] public IEquipmentService EquipmentService { get; set; } = default!;
+
     [Inject] public IQuotationService QuotationService { get; set; } = default!;
     [Inject] public NavigationManager NavigationManager { get; set; } = default!;
     [Inject] public ExtraMaterialState ExtraMaterialState { get; set; } = default!;
     [Inject] public FormulaState FormulaState { get; set; } = default!;
-    [Inject] public EventDetailsState EventDetailsState { get; set; } = default!;
+
+    [Inject]
+    public EventDetailsState EventDetailsState { get; set; }
+
+
     [Inject] public PersonalDetailsState PersonalDetailsState { get; set; } = default!;
+
     [Inject] public IDialogService DialogService { get; set; } = default!;
 
-    
+
     private IEnumerable<EquipmentDto.Index>? Extras = default!;
 
     protected override async Task OnInitializedAsync()
     {
-        if (PersonalDetailsState.PersonalDetailsObject.Email == null)
+        if (PersonalDetailsState.Customer.Email.Email == null)
         {
             NavigationManager.NavigateTo("/");
-            
+
         }
         EquipmentResult.Index response = await EquipmentService.GetIndexAsync();
 
         Extras = response.Equipment;
 
     }
+
+
 
     private bool NoExtraMaterial()
     {
@@ -220,11 +228,13 @@
         return thereIsNoExtraMaterial;
     }
 
+
     private void RefreshPage()
     {
         StateHasChanged();
 
     }
+
 
     private decimal GetPriceFormulaWithoutBeerAndBarbeque()
     {
@@ -235,7 +245,7 @@
         TimeSpan? dif = end - start;
 
         int amountOfDaysDiff = (int)dif.Value.TotalDays;
-        
+
         if (amountOfDaysDiff == 0)
         {
             initialPrice = FormulaState.BasePrice[0];
@@ -256,7 +266,7 @@
 
         return initialPrice;
     }
-   
+
     private decimal GetPriceBeer()
     {
         if (FormulaState.ChosenFormulaId == 1)
@@ -264,9 +274,10 @@
             return 0.0M;
         } else
         {
-            return EventDetailsState.NumberOfPeople * (EventDetailsState.HasTripleBeer?3.0M:1.5M);
+            return EventDetailsState.NumberOfPeople * (EventDetailsState.HasTripleBeer ? 3.0M : 1.5M);
         }
     }
+
     private decimal GetPriceBarbeque()
     {
         if (FormulaState.ChosenFormulaId != 3)
@@ -278,11 +289,12 @@
             return EventDetailsState.NumberOfPeople * 12.0M;
         }
     }
-   
+
     private decimal CalculateTransportCost()
     {
         return 0M;
     }
+
     private decimal CalculateTotalWithoutBtw()
     {
 
@@ -294,9 +306,10 @@
                 extrasKosten += (Extras.FirstOrDefault(x => x.Id == item.Key).Price * item.Value);
             }
         }
-        return CalculateTransportCost() + GetPriceFormulaWithoutBeerAndBarbeque()+GetPriceBeer()+GetPriceBarbeque() + extrasKosten;
+        return CalculateTransportCost() + GetPriceFormulaWithoutBeerAndBarbeque() + GetPriceBeer() + GetPriceBarbeque() + extrasKosten;
 
     }
+
     private decimal CalculateBtwOnTotal()
     {
         decimal extrasCostBtw = 0M;
@@ -308,29 +321,29 @@
                 extrasCostBtw += ((Extras.FirstOrDefault(x => x.Id == item.Key).Price * item.Value) * 0.21M);
             }
         }
-        return (CalculateTransportCost() * 0.21M) + (GetPriceFormulaWithoutBeerAndBarbeque() * 0.21M) + (GetPriceBeer() * 0.12M) + (GetPriceBarbeque()*0.12M) + extrasCostBtw;
+        return (CalculateTransportCost() * 0.21M) + (GetPriceFormulaWithoutBeerAndBarbeque() * 0.21M) + (GetPriceBeer() * 0.12M) + (GetPriceBarbeque() * 0.12M) + extrasCostBtw;
     }
-        
-     public EventLocation ParseAddress(string addressString)
+
+    public EventLocation ParseAddress(string addressString)
     {
         var parts = addressString.Split(',');
         var streetHouseNumber = parts[0].Trim().Split(' ');
-        
+
         var street = string.Join(" ", streetHouseNumber.Take(streetHouseNumber.Length - 1));
         var houseNumber = streetHouseNumber.Last();
-        
+
         var postalCodeCity = parts[1].Trim().Split(' ');
         var postalCode = postalCodeCity[0];
         var city = postalCodeCity.Last();
-        
+
 
         return new EventLocation(street, houseNumber, city, postalCode);
     }
-        
+
     private async Task CreateQuotationAsync()
     {
 
-       var eventLocation =  ParseAddress(EventDetailsState.FormattedAddress);
+        var eventLocation = ParseAddress(EventDetailsState.FormattedAddress);
         List<EquipmentDto.Lines> equipments = new();
         if (ExtraMaterialState.ExtrasAmount.Count != 0)
         {
@@ -339,65 +352,47 @@
                 if (item.Value != 0)
                 {
                     equipments.Add(new EquipmentDto.Lines()
-                    {
-                        EquipmentId = item.Key,
-                        Amount = item.Value,
-                    }); 
+                        {
+                            EquipmentId = item.Key,
+                            Amount = item.Value,
+                        });
                 }
-                
-            }   
-        }
-        
-        QuotationDto.Create quotation = new QuotationDto.Create
-        {
-            FormulaId = FormulaState.ChosenFormulaId,
-            
-            EventLocation = new()
-            {
-                Street = eventLocation.Street,
-                HouseNumber = eventLocation.HouseNumber,
-                PostalCode = eventLocation.PostalCode,
-                City = eventLocation.City
-            },
-            StartTime = (DateTime) EventDetailsState.dateRange.Start ,
-            EndTime = (DateTime) EventDetailsState.dateRange.End,
-            Equipments = equipments,
-            Customer = new()
-            {
-                FirstName = PersonalDetailsState.PersonalDetailsObject.FirstName,
-                LastName = PersonalDetailsState.PersonalDetailsObject.LastName,
-                Email = new()
-                {
-                    Email = PersonalDetailsState.PersonalDetailsObject.Email
-                },
-                BillingAddress = new()
-                {
-                    Street = PersonalDetailsState.PersonalDetailsObject.Street,
-                    HouseNumber = PersonalDetailsState.PersonalDetailsObject.Housenumber,
-                    PostalCode = PersonalDetailsState.PersonalDetailsObject.PostalCode,
-                    City = PersonalDetailsState.PersonalDetailsObject.City,
-                },
-                PhoneNumber = PersonalDetailsState.PersonalDetailsObject.PhoneNumber,
-                VatNumber = PersonalDetailsState.PersonalDetailsObject.BtwNumber
-            },
-            IsTripelBier = EventDetailsState.HasTripleBeer,
-            NumberOfPeople = EventDetailsState.NumberOfPeople
-        };
 
-        
+            }
+        }
+
+
+        QuotationDto.Create quotation = new QuotationDto.Create
+            {
+                FormulaId = FormulaState.ChosenFormulaId,
+
+                EventLocation = new()
+                {
+                    Street = eventLocation.Street,
+                    HouseNumber = eventLocation.HouseNumber,
+                    PostalCode = eventLocation.PostalCode,
+                    City = eventLocation.City
+                },
+                StartTime = (DateTime)EventDetailsState.dateRange.Start,
+                EndTime = (DateTime)EventDetailsState.dateRange.End,
+                Equipments = equipments,
+                Customer = PersonalDetailsState.Customer,
+
+            };
 
         
         var result = await QuotationService.CreateAsync(quotation);
         ClearAllStates();
         OpenDialog();
     }
+    
 
     private void ClearAllStates()
     {
         EventDetailsState.Clear();
         FormulaState.Clear();
         ExtraMaterialState.Clear();
-        PersonalDetailsState.PersonalDetailsObject.Clear();
+        PersonalDetailsState.Clear();
     }
     private void OpenDialog()
     {
@@ -441,13 +436,13 @@
 
     private string CheckIfBtwNumberIsEmpty()
     {
-        if (PersonalDetailsState.PersonalDetailsObject.BtwNumber is null || string.IsNullOrWhiteSpace(PersonalDetailsState.PersonalDetailsObject.BtwNumber))
+        if (PersonalDetailsState.Customer.VatNumber is null || string.IsNullOrWhiteSpace(PersonalDetailsState.Customer.VatNumber))
         {
             return "Geen Btw-nummer opgegeven";
         }
         else
         {
-            return PersonalDetailsState.PersonalDetailsObject.BtwNumber;
+            return PersonalDetailsState.Customer.VatNumber;
         }
     }
 
