@@ -8,22 +8,35 @@ public class PersonalDetailsState
 
   public PersonalDetailsClassValidator personalDetailsClassValidator = new();
 
-  public class PersonalDetailsClass
-  {
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
-    public string Email { get; set; }
-    public string PhoneNumber { get; set; }
+    public class PersonalDetailsClass
+    {
+      public string FirstName { get; set; }
+      public string LastName { get; set; }
+      public string Email { get; set; }
+      public string PhoneNumber { get; set; }
 
-    public string Street { get; set; }
-    public string Housenumber { get; set; }
-    public string City { get; set; }
-    public string PostalCode { get; set; }
+      public string Street { get; set; }
+      public string Housenumber { get; set; }
+      public string City { get; set; }
+      public string PostalCode { get; set; }
 
-    public string BtwNumber { get; set; }
+      public string BtwNumber { get; set; }
+      
+      
+      public void Clear()
+      {
+        FirstName = null;
+        LastName = null;
+        Email = null;
+        PhoneNumber = null;
+        Street = null;
+        Housenumber = null;
+        City = null;
+        PostalCode = null;
+        BtwNumber = null;
+      }
 
-
-  }
+    }
   public class PersonalDetailsClassValidator : AbstractValidator<PersonalDetailsClass>
   {
     public PersonalDetailsClassValidator()

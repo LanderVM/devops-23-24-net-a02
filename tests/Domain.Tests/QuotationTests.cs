@@ -37,7 +37,7 @@ public class QuotationTests
   public void Create_new_quotation_without_extra_equipment_happyFlow(int days)
   {
     var quotation = new Quotation(_formula, _customer, _eventLocation, _quotationLines, DateTime.Now,
-      DateTime.Today.AddDays(days));
+      DateTime.Today.AddDays(days), numberOfPeople: 20);
 
     decimal totalPrice = days > 3
       ? _formula.BasePrice[2] + _formula.PricePerDayExtra * (days - 3)
@@ -69,7 +69,7 @@ public class QuotationTests
     _quotationLines.Add(new QuotationLine(_equipment[1], 5));
 
     var quotation = new Quotation(_formula, _customer, _eventLocation, _quotationLines, DateTime.Now,
-      DateTime.Today.AddDays(days));
+      DateTime.Today.AddDays(days), numberOfPeople: 20);
 
 
     decimal totalPrice = days > 3
@@ -93,7 +93,7 @@ public class QuotationTests
     Should.Throw<ArgumentException>(() =>
     {
       new Quotation(_formula, _customer, _eventLocation, _quotationLines, startTime,
-        endTime);
+        endTime, numberOfPeople: 20);
     });
   }
 }

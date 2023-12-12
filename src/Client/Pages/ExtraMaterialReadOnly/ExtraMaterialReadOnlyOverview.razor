@@ -19,13 +19,8 @@
 
         </MudItem>
         <MudItem lg="10" md="12" sm="12" xs="12">
-            <MudGrid>
-                @if (Extras is null)
-                {
-                    <MudText>Loading...</MudText>
-                }
-                else
-                {
+            <MudGrid>                
+                <Loader IsLoading=@(Extras == null)>
                     @foreach (EquipmentDto.Index item in Extras)
                     {
                         <MudItem lg="3" md="4" sm="6" xs="12">
@@ -35,12 +30,10 @@
                               Price="@item.Price"
                               Stock="@item.Stock"
                               ImageUrl="@item.ImageData.ImageUrl"
-                            >
-
-                            </ExtraItemsReadOnlyCard>
+                            />
                         </MudItem>
                     }
-                }
+                </Loader>
             </MudGrid>
         </MudItem>
         <MudItem lg="1" md="12" sm="12" xs="12">
@@ -64,16 +57,11 @@
 
     private IEnumerable<EquipmentDto.Index>? Extras = default!;
 
-    private bool Loading { get; set; } = true;
-
     protected override async Task OnInitializedAsync()
     {
         EquipmentResult.ActiveEquipment response = await EquipmentService.GetActiveEquipmentAsync();
 
         Extras = response.Equipment;
-
-        Loading = false;
-
     }
 
     private void GoToHomePage()

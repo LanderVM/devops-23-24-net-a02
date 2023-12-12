@@ -21,7 +21,6 @@ public static class EquipmentDto
   {
     public int EquipmentId { get; set; }
     public int Amount { get; set; }
-    public bool IsActive { get; set; }
     
     public class Validator : AbstractValidator<EquipmentDto.Lines>
     {

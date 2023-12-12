@@ -32,3 +32,23 @@
     display: flex;
     align-items: center;
 }
+
+@media (max-width: 649px) {
+    .navivgation {
+        display: none;
+    }
+
+    .menu-button {
+        display: block;
+    }
+}
+
+@media (min-width: 650px) {
+    .navivgation {
+        display: flex;
+    }
+
+    .menu-button {
+        display: none;
+    }
+}

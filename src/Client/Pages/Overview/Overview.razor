@@ -1,10 +1,10 @@
 ﻿@page "/Overzicht"
 @using shared.Equipment
+@using shared.Quotations
 @using Size = MudBlazor.Size
 @using GoogleMapsComponents.Maps
 @using GoogleMapsComponents
-@using global::shared.Quotations
-
+@using global::Domain.Common
 
 
 <PageTitle>Overzicht</PageTitle>
@@ -174,7 +174,7 @@
 
         </MudItem>
         <MudItem lg="2" md="2" sm="7" xs="7">
-            <MudButton Class="mt-4 mb-4" Variant="Variant.Filled" Size="MudBlazor.Size.Large" Color="Color.Primary" OnClick="@CreateQuotationAsync">Offerte aanvraag verzenden</MudButton>
+            <MudButton Class="mt-4 mb-4" Variant="Variant.Filled" Size="Size.Large" Color="Color.Primary" OnClick="@CreateQuotationAsync">Offerte aanvraag verzenden</MudButton>
         </MudItem>
     </MudGrid>
 </MudContainer>
@@ -196,6 +196,11 @@
 
     protected override async Task OnInitializedAsync()
     {
+        if (PersonalDetailsState.PersonalDetailsObject.Email == null)
+        {
+            NavigationManager.NavigateTo("/");
+            
+        }
         EquipmentResult.Index response = await EquipmentService.GetIndexAsync();
 
         Extras = response.Equipment;
@@ -306,9 +311,26 @@
         return (CalculateTransportCost() * 0.21M) + (GetPriceFormulaWithoutBeerAndBarbeque() * 0.21M) + (GetPriceBeer() * 0.12M) + (GetPriceBarbeque()*0.12M) + extrasCostBtw;
     }
         
+     public EventLocation ParseAddress(string addressString)
+    {
+        var parts = addressString.Split(',');
+        var streetHouseNumber = parts[0].Trim().Split(' ');
+        
+        var street = string.Join(" ", streetHouseNumber.Take(streetHouseNumber.Length - 1));
+        var houseNumber = streetHouseNumber.Last();
+        
+        var postalCodeCity = parts[1].Trim().Split(' ');
+        var postalCode = postalCodeCity[0];
+        var city = postalCodeCity.Last();
+        
+
+        return new EventLocation(street, houseNumber, city, postalCode);
+    }
+        
     private async Task CreateQuotationAsync()
     {
 
+       var eventLocation =  ParseAddress(EventDetailsState.FormattedAddress);
         List<EquipmentDto.Lines> equipments = new();
         if (ExtraMaterialState.ExtrasAmount.Count != 0)
         {
@@ -320,7 +342,6 @@
                     {
                         EquipmentId = item.Key,
                         Amount = item.Value,
-                        IsActive = true
                     }); 
                 }
                 
@@ -330,12 +351,13 @@
         QuotationDto.Create quotation = new QuotationDto.Create
         {
             FormulaId = FormulaState.ChosenFormulaId,
+            
             EventLocation = new()
             {
-                Street = "merelzanglaan",
-                HouseNumber = "23",
-                PostalCode = "1700",
-                City = "Dilbeek"
+                Street = eventLocation.Street,
+                HouseNumber = eventLocation.HouseNumber,
+                PostalCode = eventLocation.PostalCode,
+                City = eventLocation.City
             },
             StartTime = (DateTime) EventDetailsState.dateRange.Start ,
             EndTime = (DateTime) EventDetailsState.dateRange.End,
@@ -365,12 +387,18 @@
         
 
         
-        int result = await QuotationService.CreateAsync(quotation);
-        
-        //NavigationManager.NavigateTo($"Quotation/{result}");
+        var result = await QuotationService.CreateAsync(quotation);
+        ClearAllStates();
         OpenDialog();
     }
-    
+
+    private void ClearAllStates()
+    {
+        EventDetailsState.Clear();
+        FormulaState.Clear();
+        ExtraMaterialState.Clear();
+        PersonalDetailsState.PersonalDetailsObject.Clear();
+    }
     private void OpenDialog()
     {
         var options = new DialogOptions { CloseOnEscapeKey = true };

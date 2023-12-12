@@ -2,6 +2,7 @@
 using Domain.Formulas;
 using Microsoft.EntityFrameworkCore;
 using shared.Equipment;
+using Domain.Exceptions;
 using devops_23_24_net_a02.Services.Files;
 using devops_23_24_net_a02.Domain.Files;
 
@@ -60,7 +61,7 @@ public class EquipmentService : IEquipmentService
     Equipment? e = await _dbContext.Equipments.SingleOrDefaultAsync(x => x.Description.Title.Equals(model.Title));
 
     if (e is not null)
-      throw new Exception($"equipment with title: {model.Title} already exists");
+      throw new EntityAlreadyExistsException(nameof(Equipment),nameof(Equipment.Description.Title),model.Title);
 
     List<string> list = model.Attributes.Split(';').ToList();
     List<string> attributes = new List<string>();
@@ -89,7 +90,7 @@ public class EquipmentService : IEquipmentService
     Equipment? equipment = await _dbContext.Equipments.SingleOrDefaultAsync(x => x.Id==equipmentId);
 
     if (equipment is null) {
-      throw new Exception($"Equipment with id: {equipmentId} doesnt exist");
+      throw new EntityNotFoundException(nameof(Equipment),equipmentId);
     }
 
     int id = equipment.Id;
@@ -186,7 +187,7 @@ public class EquipmentService : IEquipmentService
 
     if(equipment == null)
     {
-      throw new Exception($"equipment with id: {equipmentId} not found");
+      throw new EntityNotFoundException(nameof(Equipment),equipmentId);
     }
 
     return equipment;
@@ -197,7 +198,7 @@ public class EquipmentService : IEquipmentService
     Equipment? equipment = await _dbContext.Equipments.FirstOrDefaultAsync(x => x.Id == equipmentId);
 
     if (equipment is null)
-      throw new Exception($"equipment with id: {equipmentId} not found");
+      throw new EntityNotFoundException(nameof(Equipment),equipmentId);
 
     string attributes = string.Join(";", equipment.Description.Attributes);
 
@@ -223,7 +224,7 @@ public class EquipmentService : IEquipmentService
 
     if (equipment is null)
     {
-      throw new Exception($"Equipment with id: {equipmentId} doesn't exists");
+      throw new EntityNotFoundException(nameof(Equipment),equipmentId);
     }
 
     Image image = new Image(_storageService.BasePath, model.ImageContentType!);
