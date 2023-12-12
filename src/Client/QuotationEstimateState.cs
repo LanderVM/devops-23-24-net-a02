@@ -21,6 +21,7 @@ public class QuotationEstimateState
     public int EstimatedNumberOfPeople { get; set; } = 1;
     public bool IsTripelBier { get; set; }
     public DateRange DateRange = new DateRange();
+    
   }
 
   public class QuotationEstimateClassValidator : AbstractValidator<QuotationEstimateClass>

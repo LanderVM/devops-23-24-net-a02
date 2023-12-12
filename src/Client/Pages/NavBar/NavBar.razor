@@ -3,46 +3,71 @@
         <p id="navBarText">Blanche</p>
         <MudSpacer />
         <div class="nav-items">
-            <NavLink href=@Routes.Home>
-                <p class="appBarNavItem">Home</p>
-            </NavLink>
-            <NavLink href=@Routes.Formula>
-                <p class="appBarNavItem">Verhuur</p>
-            </NavLink>
-            <NavLink href=@Routes.About>
-                <p class="appBarNavItem">Over ons</p>
-            </NavLink>
+            <div class="menu-button">
+                <MudToggleIconButton @bind-Toggled="@_isMenuOpen" Icon="@Icons.Material.Filled.Menu" Color="Color.Dark" ToggledIcon="@Icons.Material.Filled.Menu" ToggledColor="Color.Dark" @onclick="ToggleMenuOpen" />
+                <MudPopover Open="@_isMenuOpen" Fixed="true" Class="px-4 pt-4" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight">
+                    <div class="d-flex flex-column">
+                        <NavLink href=@Routes.Home>
+                            <p class="appBarNavItemDropDown">Home</p>
+                        </NavLink>
+                        <NavLink href=@Routes.Formula>
+                            <p class="appBarNavItemDropDown">Verhuur</p>
+                        </NavLink>
+                        <NavLink href=@Routes.About>
+                            <p class="appBarNavItemDropDown">Over ons</p>
+                        </NavLink>
+                    </div>
+                </MudPopover>
+            </div>
+
+            <div class="navivgation">
+                <NavLink href=@Routes.Home>
+                    <p class="appBarNavItem">Home</p>
+                </NavLink>
+                <NavLink href=@Routes.Formula>
+                    <p class="appBarNavItem">Verhuur</p>
+                </NavLink>
+                <NavLink href=@Routes.About>
+                    <p class="appBarNavItem">Over ons</p>
+                </NavLink>
+            </div>
 
             <AuthorizeView>
-            <MudToggleIconButton @bind-Toggled="@_isOpen" Icon="@Icons.Material.Filled.ModeEdit" Color="Color.Dark" ToggledIcon="@Icons.Material.Filled.ModeEdit" ToggledColor="Color.Dark" />
-
-            <MudPopover Open="@_isOpen" Fixed="true" Class="px-4 pt-4" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight">
-
-                <div class="d-flex flex-column">
-                    <NavLink href=@Routes.Quotations @onclick="ToggleOpen">
-                        <p class="appBarNavItemDropDown">Offertes</p>
-                    </NavLink>
-                    <NavLink href=@Routes.ExtraMaterialAdmin @onclick="ToggleOpen">
-                        <p class="appBarNavItemDropDown">Extra Items</p>
-                    </NavLink>
+                <MudToggleIconButton @bind-Toggled="@_isEditOpen" Icon="@Icons.Material.Filled.ModeEdit" Color="Color.Dark" ToggledIcon="@Icons.Material.Filled.ModeEdit" ToggledColor="Color.Dark" @onclick="ToggleEditOpen" />
+                <MudPopover Open="@_isEditOpen" Fixed="true" Class="px-4 pt-4" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight">
+                    <div class="d-flex flex-column">
+                        <NavLink href=@Routes.Quotations>
+                            <p class="appBarNavItemDropDown">Offertes</p>
+                        </NavLink>
+                        <NavLink href=@Routes.ExtraMaterialAdmin>
+                            <p class="appBarNavItemDropDown">Extra Items</p>
+                        </NavLink>
+                        <NavLink href=@Routes.FormulasAdmin>
+                            <p class="appBarNavItemDropDown">Formules</p>
+                        </NavLink>
                         <NavLink href=@Routes.EmailOverview @onclick="ToggleOpen">
                             <p class="appBarNavItemDropDown">Email adressen</p>
                         </NavLink>
-                </div>
-            </MudPopover>
-           </AuthorizeView>
+                    </div>
+                </MudPopover>
+            </AuthorizeView>
         </div>
     </MudAppBar>
 </MudContainer>
 
 @code {
-    public bool _isOpen;
+    public bool _isEditOpen;
+    public bool _isMenuOpen;
 
-    public void ToggleOpen()
+    public void ToggleEditOpen()
     {
-        if (_isOpen)
-            _isOpen = false;
-        else
-            _isOpen = true;
+        _isMenuOpen = false;
+        _isEditOpen = !_isEditOpen;
+    }
+
+    public void ToggleMenuOpen()
+    {
+        _isEditOpen = false;
+        _isMenuOpen = !_isMenuOpen;
     }
 }

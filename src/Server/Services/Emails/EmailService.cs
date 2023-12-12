@@ -4,6 +4,7 @@ using Domain.Common;
 using Domain.Customers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Domain.Exceptions;
 
 namespace Server.Services;
 
@@ -20,9 +21,9 @@ public class EmailService : IEmailService
 
   public async Task<int> CreateAsync(EmailDto.Create model)
   {
-    var correspondingEmail = _dbContext.Emails.FirstOrDefault(existingMail => existingMail.Value.Equals(model.Email));
+    Email? correspondingEmail = _dbContext.Emails.FirstOrDefault(existingMail => existingMail.Value.Equals(model.Email));
     if (correspondingEmail is not null)
-      return correspondingEmail.Id;
+      throw new EntityAlreadyExistsException(nameof(Email),nameof(Email.Value),model.Email);
 
     Email email = new Email(model.Email);
     _dbContext.Emails.Add(email);

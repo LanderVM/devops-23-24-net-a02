@@ -38,3 +38,23 @@
     display: flex;
     gap: 20px;
 }
+
+@media (max-width: 699px) {
+    .navivgation {
+        display: none;
+    }
+
+    .menu-button {
+        display: block;
+    }
+}
+
+@media (min-width: 700px) {
+    .navivgation {
+        display: flex;
+    }
+
+    .menu-button {
+        display: none;
+    }
+}

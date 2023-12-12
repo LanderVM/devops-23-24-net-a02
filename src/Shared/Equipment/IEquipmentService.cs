@@ -5,6 +5,8 @@ namespace shared.Equipment;
 public interface IEquipmentService
 {
   public Task<EquipmentResult.Index> GetIndexAsync();
+
+  public Task<EquipmentResult.ActiveEquipment> GetActiveEquipmentAsync();
   public Task<EquipmentDto.Index> GetSpecificIndexAsync(int equipmentId);
   public Task<EquipmentDto.Mutate> GetSpecificMutateAsync(int equipmentId);
 
