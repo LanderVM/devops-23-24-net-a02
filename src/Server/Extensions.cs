@@ -6,6 +6,7 @@ using Server.Services;
 using shared.Quotations;
 using shared.Formulas;
 using devops_23_24_net_a02.Services.Files;
+using devops_23_24_net_a02.Shared.Emails;
 
 namespace Api.Data;
 

@@ -18,4 +18,9 @@ public static class EmailDto
       RuleFor(email => email.Email).Must(x => !x.EndsWith(".")).WithMessage("'Email' may not end on a period.");
     }
   }
+
+  public class Index {
+    public string EmailAddress { get; set; }
+
+  }
 }
