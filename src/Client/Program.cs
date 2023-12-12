@@ -11,6 +11,7 @@ using devops_23_24_net_a02.Client.Pages.Formulas;
 using shared.Quotations;
 using devops_23_24_net_a02.Client.Pages.Quotations;
 using Append.Blazor.Sidepanel;
+using devops_23_24_net_a02.Client.Infrastructure;
 using Blazored.Toast;
 using devops_23_24_net_a02.Client.Files;
 
@@ -18,9 +19,12 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
+builder.Services.AddTransient<CleanErrorHandler>();
+
 // Attaches access token to each HTTP request
 builder.Services.AddHttpClient("FoodtruckAPI", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
-       .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
+       .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>()
+       .AddHttpMessageHandler<CleanErrorHandler>(); ;
 builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>()
        .CreateClient("FoodtruckAPI"));
 
