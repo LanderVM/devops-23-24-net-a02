@@ -36,13 +36,13 @@ public class MailSender
     }
   }
 
-  private string GetMailBody(Quotation quotation, string comment)
+  private string GetMailBody(Quotation quotation)
   {
-    var formula = quotation.Formula;
+    /*var formula = quotation.Formula;
     if (formula == null || !formula.Equipment.Any())
     {
       throw new Exception("There is no Equipment in this formula");
-    }
+    }*/
     StringBuilder contentBuilder = new StringBuilder();
 
     decimal totalPrice = 0;
@@ -99,7 +99,7 @@ public class MailSender
     contentBuilder.Append("<table style='width: 100%; border-collapse: collapse; margin-bottom: 10px;'>");
     contentBuilder.Append("<tr style='background-color: #d8d8d8;'><th style='border: 1px solid #ddd; padding: 10px;'>Aantal</th><th style='border: 1px solid #ddd; padding: 10px;'>Omschrijving</th><th style='border: 1px solid #ddd; padding: 10px;'>Eenhprijs (€)</th><th style='border: 1px solid #ddd; padding: 10px;'>Bedrag (€)</th><th style='border: 1px solid #ddd; padding: 10px;'>BTW</th></tr>");
 
-    foreach (Equipment equipment in formula.Equipment)
+    foreach (Equipment equipment in quotation.QuotationLines.Select(x => x.EquipmentOrdered).ToList())
     {
       int aantal = 2;
       decimal btwPercentageItem = 0.21m;
@@ -135,7 +135,7 @@ public class MailSender
 
     contentBuilder.Append("</table>");
 
-    contentBuilder.Append($"<p style='margin-bottom: 20px;'>Comment: <br>{comment}</p>");
+    contentBuilder.Append($"<p style='margin-bottom: 20px;'>Comment: <br>{quotation.Opmerking}</p>");
     contentBuilder.Append($"<a href='{acceptQuoteUrl}' style='background-color: #4CAF50; color: white; padding: 15px 32px; text-align: center; font-size: 16px; text-decoration: none; border-radius: 10px; display: inline-block;' target='_blank'>Offerte Accepteren</a></div>");
 
     contentBuilder.Append("<p>Met vriendelijke groeten,<br>Blanche</p></div>");
@@ -143,11 +143,11 @@ public class MailSender
     return contentBuilder.ToString();
   }
 
-  public bool SendNewQuote(Quotation quotation, string comment)
+  public bool SendNewQuote(Quotation quotation)
   {    
     mail.Subject = "Offerte Blanche";
-    mail.Body = GetMailBody(quotation, comment);
-    mail.Body = "Dit is een test";
+    mail.Body = GetMailBody(quotation);
+    //mail.Body = "Dit is een test";
     mail.IsBodyHtml = true;
 
     return SendMail();

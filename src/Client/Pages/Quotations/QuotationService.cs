@@ -63,7 +63,7 @@ public class QuotationService : IQuotationService
     return response;
   }
 
-  public Task<QuotationResponse.Update> UpdateAsync(int QuotationId, QuotationDto.Edit model)
+  public Task<QuotationResponse.Create> UpdateAsync(int QuotationId, QuotationDto.Edit model)
   {
     throw new NotImplementedException();
   }

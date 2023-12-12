@@ -26,13 +26,12 @@ public class Quotation : Entity
     NumberOfPeople = Guard.Against.NegativeOrZero(numberOfPeople);
     IsTripelBier = isTripelBier;
   }
-  public Quotation(Formula formula, int formulaId, DateTime startTime, DateTime endTime, int estimatedNumberPeople, bool isTripelBier = false)
+  public Quotation(Formula formula, DateTime startTime, DateTime endTime, int estimatedNumberPeople, bool isTripelBier = false)
   { // todo ??
     if ((endTime - startTime).TotalSeconds <= 0)
       throw new ArgumentException("End time cannot be before start time!");
 
     Formula = Guard.Against.Null(formula);
-    FormulaId = formulaId;
     OriginalFormulaPricePerDay = formula.BasePrice;
     OriginalFormulaPricePerDayExtra = formula.PricePerDayExtra;
     StartTime = Guard.Against.Null(startTime);
@@ -42,7 +41,6 @@ public class Quotation : Entity
   }
   
   public Formula Formula { get; set; } = default!;
-  public int FormulaId { get; set; } = 1;
   public List<decimal> OriginalFormulaPricePerDay { get; protected set; } = new();
   public decimal OriginalFormulaPricePerDayExtra { get; protected set; }
 
@@ -82,11 +80,11 @@ public class Quotation : Entity
     decimal priceBeer = IsTripelBier ? 3.0m : 1.5m;
     decimal priceBbq = 12m;
 
-    if (FormulaId == 3)
+    if (Formula.Id == 3)
     {
       return GetPriceDays() + Formula.getPriceForEquipment() + (NumberOfPeople * priceBeer) + (NumberOfPeople * priceBbq);
     }
-    if (FormulaId == 2)
+    if (Formula.Id == 2)
     {
       return GetPriceDays() + Formula.getPriceForEquipment() + (NumberOfPeople * priceBeer);
     }

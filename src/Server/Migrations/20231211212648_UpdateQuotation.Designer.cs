@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace devops2324neta02.Server.Migrations
 {
     [DbContext(typeof(BlancheDbContext))]
-    [Migration("20231210235452_AddOpmerking")]
-    partial class AddOpmerking
+    [Migration("20231211212648_UpdateQuotation")]
+    partial class UpdateQuotation
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

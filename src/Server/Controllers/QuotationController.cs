@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Server.Services;
 using shared.Quotations;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -10,11 +11,13 @@ public class QuotationController : ControllerBase
 {
   private readonly ILogger<QuotationController> _logger;
   private readonly IQuotationService _quotationService;
+  private readonly IEmailService _emailService;
 
-  public QuotationController(ILogger<QuotationController> logger, IQuotationService quotationService)
+  public QuotationController(ILogger<QuotationController> logger, IQuotationService quotationService, IEmailService emailService)
   {
     _logger = logger;
     _quotationService = quotationService;
+    _emailService = emailService;
   }
 
   [HttpGet]
@@ -50,7 +53,10 @@ public class QuotationController : ControllerBase
   [SwaggerOperation("Changes a quotation offer and send a mail to the costumer")]
   public async Task<QuotationResponse.Edit> UpdateQuotationRequest(int QuotationId, QuotationDto.Edit model)
   {
-    return await _quotationService.UpdateAsync(QuotationId, model);
+    var quotation = await _quotationService.UpdateAsync(QuotationId, model);
+    var result = await _emailService.SendConfirmationMail(quotation);
+
+    return result;
   }
 
 
