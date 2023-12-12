@@ -45,8 +45,8 @@
                         <NavLink href=@Routes.FormulasAdmin>
                             <p class="appBarNavItemDropDown">Formules</p>
                         </NavLink>
-                        <NavLink href=@Routes.EmailOverview @onclick="ToggleOpen">
-                            <p class="appBarNavItemDropDown">Email adressen</p>
+                        <NavLink href=@Routes.EmailOverview>
+                            <p class="appBarNavItemDropDown">Emails</p>
                         </NavLink>
                     </div>
                 </MudPopover>
@@ -54,6 +54,7 @@
         </div>
     </MudAppBar>
 </MudContainer>
+
 
 @code {
     public bool _isEditOpen;
