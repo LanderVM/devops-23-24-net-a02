@@ -1,5 +1,8 @@
 ﻿using Api.Data;
+using devops_23_24_net_a02.Client.Pages.Home;
+using Domain.Formulas;
 using Microsoft.EntityFrameworkCore;
+using Shared.Common;
 using shared.Equipment;
 using shared.Formulas;
 
@@ -27,6 +30,7 @@ public class FormulaService: IFormulaService
           Attributes = x.Description.Attributes,
           PricePerDayExtra = x.PricePerDayExtra,
           BasePrice = x.BasePrice,
+          IsActive = x.IsActive
       }
       ).ToListAsync();
 
@@ -34,6 +38,56 @@ public class FormulaService: IFormulaService
     {
       Formulas = items,
       TotalAmount = totalAmount,
+    };
+
+    return result;
+  }
+
+  public async Task<FormulaDto.Mutate> GetSpecificMutateAsync(int formulaId)
+  {
+    Formula? formula = await _dbContext.Formulas.FirstOrDefaultAsync(x => x.Id == formulaId);
+
+    if (formula is null)
+      throw new Exception($"formula with id: {formulaId} not found");
+    
+    string attributes = string.Join("\n", formula.Description.Attributes);
+    string basePrice = string.Join("\n", formula.BasePrice);
+    
+    FormulaDto.Mutate mutate = new FormulaDto.Mutate{ 
+      Title = formula.Description.Title,
+      Attributes = attributes,
+      PricePerDayExtra = formula.PricePerDayExtra,
+      BasePrice= basePrice,
+      IsActive = formula.IsActive
+    };
+
+    return mutate;
+  }
+
+  public async Task<FormulaResult.Edit> UpdateAsync(int formulaId, FormulaDto.Mutate model)
+  {
+    
+    Formula? formula = await _dbContext.Formulas.FirstOrDefaultAsync(x => x.Id == formulaId);
+
+    if (formula is null)
+    {
+      throw new Exception($"Equipment with id: {formulaId} doesn't exists");
+    }
+
+
+
+    formula.Description = new Description(model.Title, model.Attributes.Split('\n').ToList());
+    formula.BasePrice = model.BasePrice.Split('\n').Select(decimal.Parse).ToList();
+    formula.PricePerDayExtra = model.PricePerDayExtra;
+    formula.IsActive = model.IsActive;
+    
+    
+    
+    await _dbContext.SaveChangesAsync();
+
+    FormulaResult.Edit result = new FormulaResult.Edit
+    {
+      Id = formula.Id
     };
 
     return result;

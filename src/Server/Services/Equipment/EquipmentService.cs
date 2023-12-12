@@ -3,19 +3,60 @@ using Domain.Formulas;
 using Microsoft.EntityFrameworkCore;
 using shared.Equipment;
 using Domain.Exceptions;
+using devops_23_24_net_a02.Services.Files;
+using devops_23_24_net_a02.Domain.Files;
 
 namespace server.Services;
 public class EquipmentService : IEquipmentService
 {
 
   private readonly BlancheDbContext _dbContext;
+  private readonly IStorageService _storageService;
 
-  public EquipmentService(BlancheDbContext blancheDbContext)
+  public EquipmentService(BlancheDbContext blancheDbContext, IStorageService storageService)
   {
     _dbContext = blancheDbContext;
+    _storageService = storageService;
   }
 
-  public async Task<int> CreateAsync(EquipmentDto.Create model)
+  public async Task<EquipmentResult.CreateWithImage> CreateWithImageAsync(EquipmentDto.Create model)
+  {
+    Equipment? e = await _dbContext.Equipments.SingleOrDefaultAsync(x => x.Description.Title.Equals(model.Title));
+
+    if (e is not null)
+      throw new Exception($"equipment with title: {model.Title} already exists");
+
+    Image image = new Image(_storageService.BasePath, model.ImageContentType!);
+    List<string> list = model.Attributes.Split(';').ToList();
+    List<string> attributes = new List<string>();
+
+    foreach (string s in list)
+    {
+      string s2 = s.Trim();
+      attributes.Add(s2);
+    }
+
+    Equipment equipment = new Equipment(model.Title, attributes, model.Price, model.Stock, image.FileUri.ToString());
+
+    _dbContext.Equipments.Add(equipment);
+    await _dbContext.SaveChangesAsync();
+
+    Uri uploadSas = _storageService.GenerateImageUploadSas(image);
+
+    EquipmentResult.CreateWithImage result = new EquipmentResult.CreateWithImage
+    {
+      Image = new ImageData
+      {
+        ImageUrl = uploadSas.ToString(),
+        AltText = equipment.Description.Title
+      },
+      Id = equipment.Id
+    };
+
+    return result;
+  }
+
+  public async Task<EquipmentResult.Create> CreateAsync(EquipmentDto.Create model)
   {
     Equipment? e = await _dbContext.Equipments.SingleOrDefaultAsync(x => x.Description.Title.Equals(model.Title));
 
@@ -32,12 +73,16 @@ public class EquipmentService : IEquipmentService
     
     Equipment equipment = new Equipment(model.Title,attributes,model.Price,model.Stock);
     equipment.IsActive = model.IsActive;
-
+    
     _dbContext.Equipments.Add(equipment);
-
     await _dbContext.SaveChangesAsync();
 
-    return equipment.Id;
+    EquipmentResult.Create result = new EquipmentResult.Create
+    {
+      Id = equipment.Id
+    };
+
+    return result;
   }
 
   public async Task<int> DeleteAsync(int equipmentId)
@@ -62,6 +107,8 @@ public class EquipmentService : IEquipmentService
 
     int totalAmount = await query.CountAsync();
 
+    string noImageUrl = "https://via.placeholder.com/350x300";
+
     var items = await query
        .OrderBy(x => x.Id)
        .Select(x => new EquipmentDto.Index
@@ -73,8 +120,8 @@ public class EquipmentService : IEquipmentService
          Stock = x.Stock,
          IsActive = x.IsActive,
          ImageData = new EquipmentDto.ImageData { 
-           ImageUrl = "https://via.placeholder.com/350x300",
-           AltText = "placeholder txt",
+           ImageUrl = x.ImageUrl,
+           AltText = x.Description.Title,
          },
          FormulaIds = x.Formulas.Select(x => x.Id).ToList(),
        }).ToListAsync();
@@ -138,13 +185,57 @@ public class EquipmentService : IEquipmentService
     return mutate;
   }
 
-  public async Task UpdateAsync(int equipmentId, EquipmentDto.Mutate model)
+  public async Task<EquipmentResult.CreateWithImage> UpdateWithImageAsync(int equipmentId, EquipmentDto.Mutate model)
   {
     Equipment? equipment = await _dbContext.Equipments.FirstOrDefaultAsync(x=>x.Id == equipmentId);
 
     if (equipment is null)
     {
       throw new EntityNotFoundException(nameof(Equipment),equipmentId);
+    }
+
+    Image image = new Image(_storageService.BasePath, model.ImageContentType!);
+
+    List<string> list = model.Attributes.Split(';').ToList();
+    List<string> attributes = new List<string>();
+
+    foreach (string s in list)
+    {
+      string s2 = s.Trim();
+      attributes.Add(s2);
+    }
+
+    Description description = new Description(model.Title, attributes);
+    equipment.Description = description;
+    equipment.Stock = model.Stock;
+    equipment.Price = model.Price;
+    equipment.IsActive = model.IsActive;
+    equipment.ImageUrl = image.FileUri.ToString();
+
+    await _dbContext.SaveChangesAsync();
+
+    Uri uploadSas = _storageService.GenerateImageUploadSas(image);
+
+    EquipmentResult.CreateWithImage result = new EquipmentResult.CreateWithImage
+    {
+      Image = new ImageData
+      {
+        ImageUrl = uploadSas.ToString(),
+        AltText = equipment.Description.Title
+      },
+      Id = equipment.Id
+    };
+
+    return result;
+  }
+
+  public async Task<EquipmentResult.Create> UpdateAsync(int equipmentId, EquipmentDto.Mutate model)
+  {
+    Equipment? equipment = await _dbContext.Equipments.FirstOrDefaultAsync(x => x.Id == equipmentId);
+
+    if (equipment is null)
+    {
+      throw new Exception($"Equipment with id: {equipmentId} doesn't exists");
     }
 
     List<string> list = model.Attributes.Split(';').ToList();
@@ -163,5 +254,12 @@ public class EquipmentService : IEquipmentService
     equipment.IsActive = model.IsActive;
 
     await _dbContext.SaveChangesAsync();
+
+    EquipmentResult.Create result = new EquipmentResult.Create
+    {
+      Id = equipment.Id
+    };
+
+    return result;
   }
 }

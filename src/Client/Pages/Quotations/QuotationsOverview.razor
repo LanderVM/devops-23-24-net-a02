@@ -1,12 +1,10 @@
-
 @page "/offertes"
+
 @using System.Net.Http.Json
-@using Domain.Quotations
 @using global::shared.Quotations
 
-
-
-<MudContainer MaxWidth="MaxWidth.Large" Class="mt-16 mb-16">
+<PageTitle>Offertes Overzicht</PageTitle>
+<MudContainer Fixed="true" Class="mt-16 mb-16">
     <MudDataGrid Items="@Quotations" Filterable="false" SortMode="@SortMode.None" Groupable="false">
         <Columns>
             <PropertyColumn Property="x => x.Customer.FirstName" Title="Voornaam"/>

@@ -15,10 +15,10 @@ public class QuotationService : IQuotationService
     this.client = client;
   }
 
-  public async Task<int> CreateAsync(QuotationDto.Create model)
+  public async Task<QuotationResult.Create> CreateAsync(QuotationDto.Create model)
   {
     var response = await client.PostAsJsonAsync(endpoint,model);
-    return await response.Content.ReadFromJsonAsync<int>();
+    return await response.Content.ReadFromJsonAsync<QuotationResult.Create>();
   }
 
   public async Task<QuotationResult.Index> GetIndexAsync()

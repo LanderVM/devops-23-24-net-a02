@@ -8,28 +8,27 @@
 <Sidepanel />
 
 @if (onHomePage)
-{  
-    <MudLayout>     
-        <MudMainContent Style="padding-top: 0px; background-color: white">
+{
+    <MudLayout Style="display: flex; flex-direction: column; min-height: 100vh;">
+        <MudMainContent Style="padding-top: 0px; flex-grow: 1;">
             <NavBarHome />
             @Body
-            <Footer/>
         </MudMainContent>
-        
+        <Footer />
     </MudLayout>
-}  
-else  
+}
+else
 {
-    <MudLayout>
+    <MudLayout Style="display: flex; flex-direction: column; min-height: 100vh;">
         <MudAppBar Style="z-index: 2">
-            <NavBar />  
+            <NavBar />
         </MudAppBar>
-        <MudMainContent Style="background-color: white; min-height: 89vh">
+        <MudMainContent Style="flex-grow: 1;">
             @Body
         </MudMainContent>
-        <Footer />        
-    </MudLayout>        
- } 
+        <Footer />
+    </MudLayout>
+}
 
 
 @code {
@@ -80,7 +79,7 @@ else
                 TextPrimary = "000000",
 
                 AppbarBackground = "FFFFFF",
-                Background = "F8F8F8",
+                Background = "FFFFFF",
             }
         };
 }

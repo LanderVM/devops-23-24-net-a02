@@ -96,6 +96,10 @@ namespace devops2324neta02.Server.Migrations
                         .HasColumnType("datetime(6)")
                         .HasDefaultValueSql("NOW()");
 
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("tinyint(1)")
                         .HasDefaultValue(true);

@@ -8,5 +8,12 @@ public class FormulaResult
 
     public int TotalAmount { get; set; }
   }
+  
+  public class Edit
+  {
+    public int Id { get; set; }
+  }
+  
+  
 }
 
