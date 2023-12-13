@@ -5,6 +5,7 @@ using Domain.Common;
 using Domain.Customers;
 using Domain.Formulas;
 using Domain.Quotations;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using shared.Quotations;
 using static shared.Equipment.EquipmentDto;
@@ -52,12 +53,28 @@ public class EmailService : IEmailService
     }
 
     var equipmentItems = new List<QuotationLine>();
-    foreach (var items in model.Equipments)
+    foreach (var item in model.Equipments)
     {
-      var equipment = _dbContext.Equipments.FirstOrDefault(equipment => equipment.Id == items.EquipmentId);
-      equipmentItems.Add(new QuotationLine(new Equipment(equipment.Description.Title, equipment.Price), items.Amount));
+      var equipment = _dbContext.Equipments.FirstOrDefault(equipment => equipment.Id == item.EquipmentId);
+      
+      equipmentItems.Add(new QuotationLine(new Equipment(equipment.Description.Title, equipment.Price), item.Amount));
     }
 
+    Customer customer = new(
+      model.Customer.FirstName, 
+      model.Customer.LastName, 
+      new Email(model.Customer.Email.Email), 
+      new BillingAddress(model.Customer.BillingAddress.Street, model.Customer.BillingAddress.HouseNumber, model.Customer.BillingAddress.City, model.Customer.BillingAddress.PostalCode), 
+      new PhoneNumber(model.Customer.PhoneNumber), 
+      model.Customer.VatNumber
+      );
+
+    EventLocation eventLocation = new(
+      model.EventLocation.Street,
+      model.EventLocation.HouseNumber,
+      model.EventLocation.City,
+      model.EventLocation.PostalCode
+      );
 
     EmailConfiguration emailConfig = EmailConfiguration.GetInstance();
     string mail = emailConfig.Mail;
@@ -65,9 +82,14 @@ public class EmailService : IEmailService
 
     MailSender mailSender = new MailSender(mail, model.Customer.Email.Email, new System.Net.NetworkCredential(mail, password));
 
-    Quotation quotation = new Quotation(formule, model.StartTime, model.EndTime, model.NumberOfPeople, model.IsTripelBier);
-    quotation.Opmerking = model.Opmerking;
-    quotation.QuotationLines = equipmentItems;
+    Quotation quotation = new(formule, customer, eventLocation, equipmentItems, model.StartTime, model.EndTime, model.IsTripelBier, model.NumberOfPeople)
+    {
+      Opmerking = model.Opmerking,
+      QuotationLines = equipmentItems
+    };
+
+    Console.WriteLine(model.Opmerking);
+    await Console.Out.WriteLineAsync(quotation.Opmerking);
 
     mailSender.SendNewQuote(quotation);
 

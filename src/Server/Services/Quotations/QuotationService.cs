@@ -266,6 +266,7 @@ public class QuotationService : IQuotationService
   public async Task<QuotationResponse.Create> UpdateAsync(int QuotationId, QuotationDto.Edit model)
   {
     var quotation = _dbContext.Quotations
+      .Include(quotation => quotation.QuotationLines)
       .Include(quotation => quotation.OrderedBy).ThenInclude(customer => customer.Email)
       .Include(quotation => quotation.Formula)
       .FirstOrDefault(quotation => quotation.Id == QuotationId);
@@ -295,11 +296,11 @@ public class QuotationService : IQuotationService
       FormulaId = quotation.Formula.Id,
       EndTime = quotation.EndTime,
       StartTime = quotation.StartTime,
-      Equipments = quotation.QuotationLines
+      Equipments = model.EquipmentList
         .Select(line => new EquipmentDto.Lines
         {
-          EquipmentId = line.Id,
-          Amount = line.AmountOrdered
+          EquipmentId = line.EquipmentId,
+          Amount = line.Amount
         }).ToList(),
       EventLocation = new AddressDto
       {
@@ -325,7 +326,8 @@ public class QuotationService : IQuotationService
         }
       },
       IsTripelBier = quotation.IsTripelBier,
-      NumberOfPeople = quotation.NumberOfPeople
+      NumberOfPeople = quotation.NumberOfPeople,
+      Opmerking = quotation.Opmerking
     };
 
     return result;

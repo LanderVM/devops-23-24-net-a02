@@ -63,7 +63,7 @@ public class Quotation : Entity
 
     return GetPriceDays() + extraEquipmentPrices;
   }
-  private decimal GetPriceDays()
+  public decimal GetPriceDays()
   {
     var days = (EndTime - StartTime).Days + 1;
     var hasExtraDays = days > 3;

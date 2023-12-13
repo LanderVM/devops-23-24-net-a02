@@ -1,6 +1,8 @@
-﻿using System.Net;
+﻿using System.Globalization;
+using System.Net;
 using System.Net.Mail;
 using System.Text;
+using Domain.Customers;
 using Domain.Formulas;
 using Domain.Quotations;
 
@@ -50,23 +52,23 @@ public class MailSender
     // Bedrijfsinformatie
     string bedrijfsnaam = "BLANCHE Mobiele Bar";
     string contactpersoon = "Willem Dewaele";
-    string adres = "Albert Liénartstraat 199, 300 Aalst";
+    string adres = "Albert Liénartstraat 199, 9300 Aalst";
     string btwNummer = "BTW: 0825.292.925";
 
     // Klantinformatie
-    string bedrijfsnaamProvincie = "Provincie West-Vlaanderen";
-    string contactpersoonProvincie = "Boeverbos";
-    string adresProvincie = "Koning Leopold III-laan";
-    string adresStad = "8200 Brugge Sint-Andries";
-    string btwNummerProvincie = "BTW: BE 02 07 725 696";
+    Customer customer = quotation.OrderedBy;
+
+    string bedrijfsnaamProvincie = $"{customer.FirstName} {customer.LastName}";
+    string adresKlant = $"{customer.BillingAddress.Street} {customer.BillingAddress.HouseNumber}, {customer.BillingAddress.PostalCode} {customer.BillingAddress.City}";
+    string btwNummerProvincie = $"BTW: {customer.VatNumber}";
 
     // Oferte
     string factuurNummer = "2023017";
-    string datum = "24/06/2023";
-    string afbeeldingUrl = "";
+    string datum = quotation.StartTime.ToString("dd/M/yyyy", CultureInfo.InvariantCulture);
+    string afbeeldingUrl = "https://a2blanchestorage.blob.core.windows.net/images/foodtruck.jpg";
 
     decimal btw12 = 100m * 0.12m; //replace 100m with price with 12% btw
-    decimal btw21 = 35.99m * 0.21m; //replace 35.99m with price with 12% btw
+    decimal btw21 = totalPrice * 0.21m; //replace 35.99m with price with 12% btw
     decimal totaal = totalPrice + btw12 + btw21;
 
     contentBuilder.Append("<div style='font-family: Arial, sans-serif; padding: 20px;'>");
@@ -84,9 +86,7 @@ public class MailSender
     contentBuilder.Append("<div style='border: 2px solid black; padding: 10px; margin-top: 20px; float: left; text-align: right;'>");
     contentBuilder.Append($"<p style='margin: 0'>AAN:</p>");
     contentBuilder.Append($"<p style='margin: 0'>{bedrijfsnaamProvincie}</p>");
-    contentBuilder.Append($"<p style='margin: 0'>{adresStad}</p>");
-    contentBuilder.Append($"<p style='margin: 0'>{contactpersoonProvincie}</p>");
-    contentBuilder.Append($"<p style='margin: 0'>{adresProvincie}</p>");
+    contentBuilder.Append($"<p style='margin: 0'>{adresKlant}</p>");
     contentBuilder.Append($"<p style='margin: 0'>{btwNummerProvincie}</p>");
     contentBuilder.Append("</div>");
     contentBuilder.Append("</div>");
@@ -99,18 +99,27 @@ public class MailSender
     contentBuilder.Append("<table style='width: 100%; border-collapse: collapse; margin-bottom: 10px;'>");
     contentBuilder.Append("<tr style='background-color: #d8d8d8;'><th style='border: 1px solid #ddd; padding: 10px;'>Aantal</th><th style='border: 1px solid #ddd; padding: 10px;'>Omschrijving</th><th style='border: 1px solid #ddd; padding: 10px;'>Eenhprijs (€)</th><th style='border: 1px solid #ddd; padding: 10px;'>Bedrag (€)</th><th style='border: 1px solid #ddd; padding: 10px;'>BTW</th></tr>");
 
-    foreach (Equipment equipment in quotation.QuotationLines.Select(x => x.EquipmentOrdered).ToList())
-    {
-      int aantal = 2;
-      decimal btwPercentageItem = 0.21m;
+    contentBuilder.Append("<tr>");
+    contentBuilder.Append($"<td style='border: 1px solid #ddd; padding: 10px; text-align: center; width: 12%'>1</td>");
+    contentBuilder.Append($"<td style='border: 1px solid #ddd; padding: 10px; width: 39%;'>Formule: {quotation.Formula.Id}</td>");
+    contentBuilder.Append($"<td style='border: 1px solid #ddd; padding: 10px; text-align: center; width: 14%;'>{quotation.GetPriceDays().ToString("C2")}</td>");
+    contentBuilder.Append($"<td style='border: 1px solid #ddd; padding: 10px; text-align: center; width: 13%;'>{quotation.GetPriceDays().ToString("C2")}</td>");
+    contentBuilder.Append($"<td style='border: 1px solid #ddd; padding: 10px; text-align: center; width: 22%;'>{(quotation.GetPriceDays() * 0.21M).ToString("C2")}</td>");
+    contentBuilder.Append("</tr>");
+    totalPrice += quotation.GetPriceDays();
 
-      decimal eenheidsprijs = equipment.Price;
+    foreach (QuotationLine equipment in quotation.Formula.getQuotationLines(quotation.NumberOfPeople))
+    {
+      int aantal = equipment.AmountOrdered;
+      decimal btwPercentageItem = 0.21M;
+
+      decimal eenheidsprijs = equipment.OriginalEquipmentPrice;
       decimal bedrag = eenheidsprijs * aantal;
       decimal btw = bedrag * btwPercentageItem;
 
       contentBuilder.Append("<tr>");
-      contentBuilder.Append($"<td style='border: 1px solid #ddd; padding: 10px; text-align: center; width: 12%'>{aantal}</td>");
-      contentBuilder.Append($"<td style='border: 1px solid #ddd; padding: 10px; width: 39%;'>{equipment.Description.Title}</td>");
+      contentBuilder.Append($"<td style='border: 1px solid #ddd; padding: 10px; text-align: center; width: 12%'>{equipment.AmountOrdered}</td>");
+      contentBuilder.Append($"<td style='border: 1px solid #ddd; padding: 10px; width: 39%;'>{equipment.EquipmentOrdered.Description.Title}</td>");
       contentBuilder.Append($"<td style='border: 1px solid #ddd; padding: 10px; text-align: center; width: 14%;'>{eenheidsprijs.ToString("C2")}</td>");
       contentBuilder.Append($"<td style='border: 1px solid #ddd; padding: 10px; text-align: center; width: 13%;'>{bedrag.ToString("C2")}</td>");
       contentBuilder.Append($"<td style='border: 1px solid #ddd; padding: 10px; text-align: center; width: 22%;'>{btw.ToString("C2")}</td>");
@@ -119,24 +128,44 @@ public class MailSender
       totalPrice += bedrag;
     }
 
+    foreach (QuotationLine equipment in quotation.QuotationLines)
+    {
+      int aantal = equipment.AmountOrdered;
+      decimal btwPercentageItem = 0.21M;
+
+      decimal eenheidsprijs = equipment.OriginalEquipmentPrice;
+      decimal bedrag = eenheidsprijs * aantal;
+      decimal btw = bedrag * btwPercentageItem;
+
+      contentBuilder.Append("<tr>");
+      contentBuilder.Append($"<td style='border: 1px solid #ddd; padding: 10px; text-align: center; width: 12%'>{equipment.AmountOrdered}</td>");
+      contentBuilder.Append($"<td style='border: 1px solid #ddd; padding: 10px; width: 39%;'>{equipment.EquipmentOrdered.Description.Title}</td>");
+      contentBuilder.Append($"<td style='border: 1px solid #ddd; padding: 10px; text-align: center; width: 14%;'>{eenheidsprijs.ToString("C2")}</td>");
+      contentBuilder.Append($"<td style='border: 1px solid #ddd; padding: 10px; text-align: center; width: 13%;'>{bedrag.ToString("C2")}</td>");
+      contentBuilder.Append($"<td style='border: 1px solid #ddd; padding: 10px; text-align: center; width: 22%;'>{btw.ToString("C2")}</td>");
+      contentBuilder.Append("</tr>");
+
+      totalPrice += bedrag;
+    }
+    btw21 = totalPrice * 0.21m;
     contentBuilder.Append("<tr style='background-color: #d8d8d8; font-weight: bold; text-align: center;'>");
-    contentBuilder.Append("<td style='border: 1px solid #ddd; padding: 10px;'>Belastbaar</td>");
-    contentBuilder.Append("<td style='border: 1px solid #ddd; padding: 10px;'>BTW 12%</td>");
-    contentBuilder.Append("<td style='border: 1px solid #ddd; padding: 10px;'>BTW 21%</td>");
+    contentBuilder.Append("<td style='border: 1px solid #ddd; padding: 10px;' colspan='2'>Belastbaar Totaal</td>");
+    //contentBuilder.Append("<td style='border: 1px solid #ddd; padding: 10px;'>BTW 12%</td>");
     contentBuilder.Append("<td style='border: 1px solid #ddd; padding: 10px;' colspan='2'>TOTAAL</td>");
+    contentBuilder.Append("<td style='border: 1px solid #ddd; padding: 10px;'>BTW 21%</td>");
     contentBuilder.Append("</tr>");
 
     contentBuilder.Append("<tr style='text-align: center;'>");
-    contentBuilder.Append($"<td style='border: 1px solid #ddd; padding: 10px;'>{totalPrice.ToString("C2")}</td>");
-    contentBuilder.Append($"<td style='border: 1px solid #ddd; padding: 10px;'>{btw12.ToString("C2")}</td>");
+    contentBuilder.Append($"<td style='border: 1px solid #ddd; padding: 10px;' colspan='2'>{totalPrice.ToString("C2")}</td>");
+    //contentBuilder.Append($"<td style='border: 1px solid #ddd; padding: 10px;'>{btw12.ToString("C2")}</td>");
+    contentBuilder.Append($"<td style='border: 1px solid #ddd; padding: 10px;' colspan='2'>{(btw21 + totalPrice).ToString("C2")}</td>");
     contentBuilder.Append($"<td style='border: 1px solid #ddd; padding: 10px;'>{btw21.ToString("C2")}</td>");
-    contentBuilder.Append($"<td style='border: 1px solid #ddd; padding: 10px;' colspan='2'>{totaal.ToString("C2")}</td>");
     contentBuilder.Append("</tr>");
 
     contentBuilder.Append("</table>");
 
     contentBuilder.Append($"<p style='margin-bottom: 20px;'>Comment: <br>{quotation.Opmerking}</p>");
-    contentBuilder.Append($"<a href='{acceptQuoteUrl}' style='background-color: #4CAF50; color: white; padding: 15px 32px; text-align: center; font-size: 16px; text-decoration: none; border-radius: 10px; display: inline-block;' target='_blank'>Offerte Accepteren</a></div>");
+    //contentBuilder.Append($"<a href='{acceptQuoteUrl}' style='background-color: #4CAF50; color: white; padding: 15px 32px; text-align: center; font-size: 16px; text-decoration: none; border-radius: 10px; display: inline-block;' target='_blank'>Offerte Accepteren</a></div>");
 
     contentBuilder.Append("<p>Met vriendelijke groeten,<br>Blanche</p></div>");
 
