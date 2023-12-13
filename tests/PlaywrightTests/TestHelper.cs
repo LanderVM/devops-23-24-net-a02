@@ -11,4 +11,6 @@ public static class TestHelper
   public static string BaseUri = "https://localhost:7276";
 
   public static string FormulasPage = $"{BaseUri}/Formules";
+
+  public static string ExtraMaterial = $"{BaseUri}/ExtraMateriaal";
 }
