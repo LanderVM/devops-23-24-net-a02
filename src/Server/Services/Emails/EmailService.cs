@@ -46,6 +46,17 @@ public class EmailService : IEmailService
 
   public async Task<QuotationResponse.Edit> SendConfirmationMail(QuotationResponse.Create model)
   {
+    QuotationResponse.Edit result = new QuotationResponse.Edit
+    {
+      QuotationId = model.QuotationId
+    };
+
+    if (model.Status != QuotationStatus.Accepted)
+    {
+
+      return result;
+    }
+
     var formule = _dbContext.Formulas.FirstOrDefault(formule => formule.Id == model.FormulaId);
     if (formule is null)
     {
@@ -92,11 +103,6 @@ public class EmailService : IEmailService
     await Console.Out.WriteLineAsync(quotation.Opmerking);
 
     mailSender.SendNewQuote(quotation);
-
-    QuotationResponse.Edit result = new QuotationResponse.Edit
-    {
-      QuotationId = model.QuotationId
-    };
 
     return result;
 }

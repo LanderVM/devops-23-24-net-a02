@@ -327,7 +327,8 @@ public class QuotationService : IQuotationService
       },
       IsTripelBier = quotation.IsTripelBier,
       NumberOfPeople = quotation.NumberOfPeople,
-      Opmerking = quotation.Opmerking
+      Opmerking = quotation.Opmerking,
+      Status = quotation.Status
     };
 
     return result;
