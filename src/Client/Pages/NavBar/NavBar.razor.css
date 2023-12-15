@@ -33,7 +33,7 @@
     align-items: center;
 }
 
-@media (max-width: 649px) {
+@media (max-width: 989px) {
     .navivgation {
         display: none;
     }
@@ -43,7 +43,7 @@
     }
 }
 
-@media (min-width: 650px) {
+@media (min-width: 990px) {
     .navivgation {
         display: flex;
     }
