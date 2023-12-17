@@ -18,7 +18,7 @@
 
         </MudItem>
         <MudItem lg="10" md="12" sm="12" xs="12">
-            <MudGrid>
+            <MudGrid data-test-id="extras-admin-card-overview">
                 <Loader IsLoading=@(Extras == null)>
 
                     @foreach (EquipmentDto.Index item in Extras)

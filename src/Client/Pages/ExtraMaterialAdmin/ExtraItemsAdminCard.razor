@@ -1,6 +1,6 @@
 ﻿@using shared.Equipment;
 
-<MudCard Style="height: 100%;">
+<MudCard Style="height: 100%;" data-test-id="extras-admin-extra-card">
     <div style="height: 100%; display: flex; flex-direction: column;">
         <MudCardMedia Image=@ImageUrl Height="250" />
         <MudCardContent>
@@ -28,12 +28,12 @@
                         <MudButton OnClick="UpdateCard" Class="mb-n4" Variant="Variant.Filled" Color="Color.Primary" FullWidth="true">Aanpassen</MudButton>
                     </MudItem>
                     <MudItem xs="12">
-                        <MudButton OnClick="ChangeWantToRemove" Variant="Variant.Filled" Color="Color.Primary" FullWidth="true">Verwijderen</MudButton>
+                        <MudButton OnClick="ChangeWantToRemove" Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" data-test-id="extras-admin-extra-card-remove-button">Verwijderen</MudButton>
                     </MudItem>
                 }else
                 {
                     <MudItem xs="12">
-                        <MudButton OnClick="DeleteEquipment" Class="mb-n4" Variant="Variant.Filled" Color="Color.Error" FullWidth="true">Definitief verwijderen</MudButton>
+                        <MudButton OnClick="DeleteEquipment" Class="mb-n4" Variant="Variant.Filled" Color="Color.Error" FullWidth="true" data-test-id="extras-admin-extra-card-remove-button-definitly">Definitief verwijderen</MudButton>
                     </MudItem>
                     <MudItem xs="12">
                         <MudButton OnClick="ChangeWantToRemove" Variant="Variant.Filled" Color="Color.Primary" FullWidth="true">Annuleren</MudButton>
