@@ -482,3 +482,6 @@ src/Server/appsettings.json
 
 # env file for testing
 *.env
+
+# static class with credentials for testing
+*ClientTestCredentials.cs
