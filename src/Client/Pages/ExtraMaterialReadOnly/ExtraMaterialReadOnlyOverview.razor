@@ -59,9 +59,9 @@
 
     protected override async Task OnInitializedAsync()
     {
-        EquipmentResult.Index response = await EquipmentService.GetIndexAsync();
-        Extras = response.Equipment;
+        EquipmentResult.ActiveEquipment response = await EquipmentService.GetActiveEquipmentAsync();
 
+        Extras = response.Equipment;
     }
 
     private void GoToHomePage()
