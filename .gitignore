@@ -479,3 +479,6 @@ FodyWeavers.xsd
 src/Server/appsettings.Development.json
 src/Client/wwwroot/appsettings.json
 src/Server/appsettings.json
+
+# env file for testing
+*.env

@@ -9,7 +9,7 @@
         <MudButton Variant="Variant.Filled" href="#" @onclick="BeginSignOut">Log out</MudButton>
     </Authorized>
     <NotAuthorized>
-        <MudLink Typo="Typo.subtitle1" Color="Color.Dark" Href="authentication/login" Style="margin-right: 4vw">Admin</MudLink>
+        <MudLink Typo="Typo.subtitle1" Color="Color.Dark" Href="authentication/login" Style="margin-right: 4vw" data-test-id="admin-button">Admin</MudLink>
     </NotAuthorized>
 </AuthorizeView>
 
