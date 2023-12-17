@@ -21,4 +21,10 @@ public static class TestHelper
   public static string Overview = $"{BaseUri}/Overzicht";
 
   public static string EmailOverview = $"{BaseUri}/EmailOverview";
+
+  public static string QuotationsOverview = $"{BaseUri}/offertes";
+
+  public static string ExtraMaterialAdmin = $"{BaseUri}/ExtraMaterialAdmin";
+
+  public static string FormulasAdmin = $"{BaseUri}/FormulesAdmin";
 }

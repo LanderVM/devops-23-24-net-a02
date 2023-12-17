@@ -5,16 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Playwright;
 using Microsoft.Playwright.NUnit;
-using NUnit.Framework.Internal;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Client.PlaywrightTests;
 
-[Parallelizable(ParallelScope.Self)]
-public class AdminEmailsTest : PageTest
+public class AdminQuotationsTest:PageTest
 {
   [Test]
-  public async Task GoToEmailsOverviewCheckEmailsExists()
+  public async Task GoToQuotationsOverviewCheckQuotationsExists()
   {
     string email = ClientTestCredentials.email;
     string password = ClientTestCredentials.password;
@@ -31,8 +28,7 @@ public class AdminEmailsTest : PageTest
 
     await Page.WaitForSelectorAsync("data-test-id=home-cards-overview");
 
-    await Page.GotoAsync(TestHelper.EmailOverview);
-    await Page.WaitForSelectorAsync("data-test-id=email-table");
+    await Page.GotoAsync(TestHelper.QuotationsOverview);
+    await Page.WaitForSelectorAsync("data-test-id=admin-quotations-grid");
   }
-
 }
