@@ -13,4 +13,10 @@ public static class TestHelper
   public static string FormulasPage = $"{BaseUri}/Formules";
 
   public static string ExtraMaterial = $"{BaseUri}/ExtraMateriaal";
+
+  public static string EventDetails = $"{BaseUri}/Event/EventDetails";
+
+  public static string PersonalDetails = $"{BaseUri}/PersoonlijkeDetails";
+
+  public static string Overview = $"{BaseUri}/Overzicht";
 }
