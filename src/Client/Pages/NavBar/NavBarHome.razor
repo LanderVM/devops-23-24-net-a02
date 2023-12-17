@@ -8,20 +8,22 @@
                     <MudToggleIconButton @bind-Toggled="@_isMenuOpen" Icon="@Icons.Material.Filled.Menu" Color="Color.Tertiary" ToggledIcon="@Icons.Material.Filled.Menu" ToggledColor="Color.Tertiary" @onclick="ToggleMenuOpen" />
                     <MudPopover Open="@_isMenuOpen" Fixed="true" Class="px-4 pt-4" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight">
                         <div class="d-flex flex-column">
-                            <NavLink href=@Routes.Quotations @onclick="ToggleMenuOpen">
-                                <p class="appBarNavItemDropDown">Offertes</p>
-                            </NavLink>
-                            <NavLink href=@Routes.ExtraMaterialAdmin @onclick="ToggleMenuOpen">
-                                <p class="appBarNavItemDropDown">Extra Items</p>
-                            </NavLink>
-                            <NavLink href=@Routes.FormulasAdmin @onclick="ToggleMenuOpen">
-                                <p class="appBarNavItemDropDown">Formules</p>
-                            </NavLink>
-                            <NavLink href=@Routes.EmailOverview @onclick="ToggleMenuOpen">
-                                <p class="appBarNavItemDropDown">Emails</p>
-                            </NavLink>
-                            <MudDivider />
-                            <NavLink href=@Routes.Quotations @onclick="ToggleMenuOpen">
+                            <AuthorizeView>
+                                <NavLink href=@Routes.Quotations @onclick="ToggleMenuOpen">
+                                    <p class="appBarNavItemDropDown">Offertes</p>
+                                </NavLink>
+                                <NavLink href=@Routes.ExtraMaterialAdmin @onclick="ToggleMenuOpen">
+                                    <p class="appBarNavItemDropDown">Extra Items</p>
+                                </NavLink>
+                                <NavLink href=@Routes.FormulasAdmin @onclick="ToggleMenuOpen">
+                                    <p class="appBarNavItemDropDown">Formules</p>
+                                </NavLink>
+                                <NavLink href=@Routes.EmailOverview @onclick="ToggleMenuOpen">
+                                    <p class="appBarNavItemDropDown">Emails</p>
+                                </NavLink>
+                                <MudDivider />
+                            </AuthorizeView>
+                            <NavLink href=@Routes.Home @onclick="ToggleMenuOpen">
                                 <p class="appBarNavItemDropDown">Home</p>
                             </NavLink>
                             <NavLink href=@Routes.ExtraMaterialAdmin @onclick="ToggleMenuOpen">
