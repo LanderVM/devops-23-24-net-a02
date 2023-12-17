@@ -19,4 +19,6 @@ public static class TestHelper
   public static string PersonalDetails = $"{BaseUri}/PersoonlijkeDetails";
 
   public static string Overview = $"{BaseUri}/Overzicht";
+
+  public static string EmailOverview = $"{BaseUri}/EmailOverview";
 }

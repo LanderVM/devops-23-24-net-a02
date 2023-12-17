@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Playwright;
 using Microsoft.Playwright.NUnit;
+using NUnit.Framework.Internal;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Client.PlaywrightTests;
 
@@ -14,16 +16,6 @@ public class AdminEmailsTest : PageTest
   [Test]
   public async Task GoToEmailsOverviewCheckEmailsExists()
   {
-    //DotNetEnv.Env.Load();
-
-    //DotNetEnv.Env.Load();
-
-    //string email = System.Environment.GetEnvironmentVariable("EMAIL");
-    //string password = System.Environment.GetEnvironmentVariable("PASSWORD");
-
-    //string email = DotNetEnv.Env.GetString("EMAIL");
-    //string password = DotNetEnv.Env.GetString("PASSWORD");
-
     string email = ClientTestCredentials.email;
     string password = ClientTestCredentials.password;
 
@@ -38,6 +30,8 @@ public class AdminEmailsTest : PageTest
     
     await Page.GetByRole(AriaRole.Button, new() { Name = "Continue" }).ClickAsync();
     await Page.WaitForSelectorAsync("data-test-id=home-cards-overview");
+    await Page.GotoAsync(TestHelper.EmailOverview);
+    await Page.WaitForSelectorAsync("data-test-id=email-table");
   }
 
 }
