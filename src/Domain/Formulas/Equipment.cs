@@ -17,18 +17,12 @@ public class Equipment : Entity
     Stock = stock;
     ImageUrl = imageUrl;
   }
-
-  public Equipment(string title, decimal price)
-  {
-    Description = new Description(title, new List<string>());
-    Price = price;
-  }
-
   public Equipment(decimal price)
   {
     // Description = new Description(title, description);
     Price = price;
   }
+
 
   public List<Formula> Formulas { get; set; } = default!;
 
