@@ -6,7 +6,7 @@
 <MudContainer Fixed="true" Class="mt-15">
     <Loader IsLoading=@(Formulas == null)>
 
-    <MudTable Elevation="2" Items="Formulas" Hover="true" Breakpoint="Breakpoint.Sm">
+    <MudTable Elevation="2" Items="Formulas" Hover="true" Breakpoint="Breakpoint.Sm" data-test-id="formulas-admin-formulastable">
         <HeaderContent>
             <MudTh Style=@styleTh>Titel</MudTh>
             <MudTh Style=@styleTh>Kenmerken</MudTh>
@@ -26,7 +26,7 @@
                 }
             </MudTd>
             <MudTd DataLabel="Prijs extra dagen" Style=@styleTd>@Math.Round(@context.PricePerDayExtra)</MudTd>
-            <MudTd DataLabel="Wijzigen" Style=@styleTd><MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="@(() => UpdateItem(context.Id))"/></MudTd>
+            <MudTd DataLabel="Wijzigen" Style=@styleTd><MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="@(() => UpdateItem(context.Id))" test-data-id="formulas-admin-overview-editbutton"/></MudTd>
 
         </RowTemplate>
     </MudTable>
