@@ -6,9 +6,9 @@
                     <Loader IsAuthenticating=true />
                 </Authorizing>
                 <NotAuthorized>
-                    <div style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 80vh;">
-                        <h1>Sorry</h1>
-                        <p>U hebt geen toestemming om deze pagina te bekijken.</p>
+                    <div style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 70vh;">
+                        <MudText Typo="Typo.h3" GutterBottom="true">Sorry</MudText>
+                        <MudText Typo="Typo.h5">U hebt geen toestemming om deze pagina te bekijken.</MudText>
                     </div>
                 </NotAuthorized>
             </AuthorizeRouteView>
@@ -18,7 +18,7 @@
             <PageTitle>Niet gevonden</PageTitle>
             <LayoutView Layout="@typeof(MainLayout)">
                 <MudContainer>
-                    <div>
+                    <div style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 70vh;">
                         <MudText Typo="Typo.h3" GutterBottom="true">404</MudText>
                         <MudText Typo="Typo.h5">Oeps! De pagina die je zoekt bestaat niet.</MudText>
                         <MudButton Href=@Routes.Home Color="Color.Primary" Variant="Variant.Filled">Ga naar Home</MudButton>
