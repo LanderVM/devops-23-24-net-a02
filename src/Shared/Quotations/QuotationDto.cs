@@ -37,6 +37,13 @@ public static class QuotationDto
     public int NumberOfPeople { get; set; }
   }
 
+  public class Edit
+  {
+    public string? Opmerking { get; set; } = default!;
+    public QuotationStatus Status { get; set; }
+    public List<EquipmentDto.Lines>? EquipmentList { get; set; } = default!;
+  }
+
   public class Validator : AbstractValidator<Create>
   {
     public Validator()

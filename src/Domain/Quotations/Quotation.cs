@@ -26,13 +26,12 @@ public class Quotation : Entity
     NumberOfPeople = Guard.Against.NegativeOrZero(numberOfPeople);
     IsTripelBier = isTripelBier;
   }
-  public Quotation(Formula formula, int formulaId, DateTime startTime, DateTime endTime, int estimatedNumberPeople, bool isTripelBier = false)
+  public Quotation(Formula formula, DateTime startTime, DateTime endTime, int estimatedNumberPeople, bool isTripelBier = false)
   { // todo ??
     if ((endTime - startTime).TotalSeconds <= 0)
       throw new ArgumentException("End time cannot be before start time!");
 
     Formula = Guard.Against.Null(formula);
-    FormulaId = formulaId;
     OriginalFormulaPricePerDay = formula.BasePrice;
     OriginalFormulaPricePerDayExtra = formula.PricePerDayExtra;
     StartTime = Guard.Against.Null(startTime);
@@ -42,18 +41,19 @@ public class Quotation : Entity
   }
   
   public Formula Formula { get; set; } = default!;
-  public int FormulaId { get; set; } = 1;
   public List<decimal> OriginalFormulaPricePerDay { get; protected set; } = new();
   public decimal OriginalFormulaPricePerDayExtra { get; protected set; }
 
   public Customer OrderedBy { get; set; } = default!;
   public EventLocation EventLocation { get; set; } = default!;
   public List<QuotationLine> QuotationLines { get; set; } = new();
-  public QuotationStatus Status { get; set; } = QuotationStatus.Unread;
   public DateTime StartTime { get; set; }
   public DateTime EndTime { get; set; }
   public int NumberOfPeople { get; protected set; }
   public bool IsTripelBier { get; set; }
+
+  public QuotationStatus Status { get; set; } = QuotationStatus.Unread;
+  public string? Opmerking { get; set; } = default!;
 
   public decimal GetPrice()
   {
@@ -63,7 +63,7 @@ public class Quotation : Entity
 
     return GetPriceDays() + extraEquipmentPrices;
   }
-  private decimal GetPriceDays()
+  public decimal GetPriceDays()
   {
     var days = (EndTime - StartTime).Days + 1;
     var hasExtraDays = days > 3;
@@ -80,11 +80,11 @@ public class Quotation : Entity
     decimal priceBeer = IsTripelBier ? 3.0m : 1.5m;
     decimal priceBbq = 12m;
 
-    if (FormulaId == 3)
+    if (Formula.Id == 3)
     {
       return GetPriceDays() + Formula.getPriceForEquipment() + (NumberOfPeople * priceBeer) + (NumberOfPeople * priceBbq);
     }
-    if (FormulaId == 2)
+    if (Formula.Id == 2)
     {
       return GetPriceDays() + Formula.getPriceForEquipment() + (NumberOfPeople * priceBeer);
     }
