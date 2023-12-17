@@ -29,4 +29,11 @@ public class EmailController : ControllerBase
     _logger.Log(LogLevel.Information, "Registered email {model.Email}", model.Email);
     return CreatedAtAction(nameof(RegisterEmail), new EmailResponse.Create { EmailId = emailIid});
   }
+
+  [HttpGet]
+  [SwaggerOperation("Get all email addresses that are known to the server")]
+  public async Task<EmailResult.Index> GetEmail()
+  {
+    return await _emailService.GetEmailsAsync();
+  }
 }

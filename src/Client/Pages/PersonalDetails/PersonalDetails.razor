@@ -2,10 +2,12 @@
 @inject PersonalDetailsState PersonalDetailsState
 @inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager
 @using FluentValidation
+@using global::Shared.Customer
 
 <PageTitle>Persoonlijke gegevens</PageTitle>
 
-<MudForm Model="@PersonalDetailsState.PersonalDetailsObject" @ref="@form" ValidationDelay="0" Validation="@(PersonalDetailsState.personalDetailsClassValidator.ValidateValue)">
+<EditForm Model="Create" OnValidSubmit="Submit">
+    <Blazored.FluentValidation.FluentValidationValidator />
     <MudPaper Width="100%" Class="pt-16" Height="100%" Elevation="0">
         <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge">
             <MudGrid Spacing="@Spacing">
@@ -22,61 +24,101 @@
                     </MudItem>
                     <MudItem lg="2" md="2" sm="2" xs="2" />
                 </MudHidden>
-
+                
                 <MudItem lg="10" md="10" sm="12" xs="12">
                     <MudGrid Spacing="@Spacing">
                         <MudItem lg="6" md="6" sm="12" xs="12">
-                            <MudTextField @bind-Value="PersonalDetailsState.PersonalDetailsObject.FirstName" For="@(() => PersonalDetailsState.PersonalDetailsObject.FirstName)" Immediate="true" Required="true" InputType="InputType.Text" MaxLength="50" Class=" ml-16 mr-16 mb-6 pt-2" Label="Voornaam" Variant="Variant.Outlined"></MudTextField>
-                            <MudTextField @bind-Value="PersonalDetailsState.PersonalDetailsObject.Email" For="@(() => PersonalDetailsState.PersonalDetailsObject.Email)" Immediate="true" Required="true" InputType="InputType.Email" MaxLength="50" Class="ml-16 mr-16 pt-2" Label="Email" Variant="Variant.Outlined"></MudTextField>
+                            <MudTextField @bind-Value="Create.FirstName" For="@(() => Create.FirstName)" Class=" ml-16 mr-16 mb-6 pt-2" Label="Voornaam" Variant="Variant.Outlined"></MudTextField>
+                            <MudTextField @bind-Value="Create.Email.Email" For="@(() => Create.Email.Email)" Class="ml-16 mr-16 pt-2" Label="Email" Variant="Variant.Outlined"></MudTextField>
                         </MudItem>
                         <MudItem lg="6" md="6" sm="12" xs="12">
-                            <MudTextField @bind-Value="PersonalDetailsState.PersonalDetailsObject.LastName" For="@(() => PersonalDetailsState.PersonalDetailsObject.LastName)" Immediate="true" Required="true" InputType="InputType.Text" MaxLength="50" Class="ml-16 mr-16 mb-6 pt-2" Label="Naam" Variant="Variant.Outlined"></MudTextField>
-                            <MudTextField @bind-Value="PersonalDetailsState.PersonalDetailsObject.PhoneNumber" For="@(() => PersonalDetailsState.PersonalDetailsObject.PhoneNumber)" Immediate="true" Required="true" InputType="InputType.Telephone" MaxLength="50" Class=" ml-16 mr-16 pt-2" Label="Telefoonnummer" Variant="Variant.Outlined"></MudTextField>
+                            <MudTextField @bind-Value="Create.LastName" For="@(() => Create.LastName)" Class="ml-16 mr-16 mb-6 pt-2" Label="Naam" Variant="Variant.Outlined"></MudTextField>
+                            <MudTextField @bind-Value="Create.PhoneNumber" For="@(() =>Create.PhoneNumber)" Class=" ml-16 mr-16 pt-2" Label="Telefoonnummer" Variant="Variant.Outlined"></MudTextField>
                         </MudItem>
                         <MudItem lg="6" md="6" sm="12" xs="12">
-                            <MudTextField @bind-Value="PersonalDetailsState.PersonalDetailsObject.Street" For="@(() => PersonalDetailsState.PersonalDetailsObject.Street)" Immediate="true" Required="true" InputType="InputType.Text" MaxLength="50" Class="ml-16 mr-16 mb-6 pt-2" Label="Straat" Variant="Variant.Outlined"></MudTextField>
-                            <MudTextField @bind-Value="PersonalDetailsState.PersonalDetailsObject.City" For="@(() => PersonalDetailsState.PersonalDetailsObject.City)" Immediate="true" Required="true" InputType="InputType.Text" MaxLength="50" Class="ml-16 mr-16 mb-4 pt-2" Label="Gemeente" Variant="Variant.Outlined"></MudTextField>
+                            <MudTextField @bind-Value="Create.BillingAddress.Street" For="@(() => Create.BillingAddress.Street)" Class="ml-16 mr-16 mb-6 pt-2" Label="Straat" Variant="Variant.Outlined"></MudTextField>
+                            <MudTextField @bind-Value="Create.BillingAddress.City" For="@(() =>Create.BillingAddress.City)" Class="ml-16 mr-16 mb-4 pt-2" Label="Gemeente" Variant="Variant.Outlined"></MudTextField>
                         </MudItem>
                         <MudItem lg="6" md="6" sm="12" xs="12">
-                            <MudTextField @bind-Value="PersonalDetailsState.PersonalDetailsObject.Housenumber" For="@(() => PersonalDetailsState.PersonalDetailsObject.Housenumber)" Immediate="true" Required="true" InputType="InputType.Text" MaxLength="15" Class="ml-16 mr-16 mb-6 pt-2" Label="Huisnummer" Variant="Variant.Outlined"></MudTextField>
-                            <MudTextField @bind-Value="PersonalDetailsState.PersonalDetailsObject.PostalCode" For="@(() => PersonalDetailsState.PersonalDetailsObject.PostalCode)" Immediate="true" Required="true" InputType="InputType.Number" MaxLength="50" Class="ml-16 mr-16 pt-2" Label="Postcode" Variant="Variant.Outlined"></MudTextField>
+                            <MudTextField @bind-Value="Create.BillingAddress.HouseNumber" For="@(() => Create.BillingAddress.HouseNumber)" Class="ml-16 mr-16 mb-6 pt-2" Label="Huisnummer" Variant="Variant.Outlined"></MudTextField>
+                            <MudTextField @bind-Value="Create.BillingAddress.PostalCode" For="@(() => Create.BillingAddress.PostalCode)" Class="ml-16 mr-16 pt-2" Label="Postcode" Variant="Variant.Outlined"></MudTextField>
                         </MudItem>
                         <MudItem lg="6" md="6" sm="12" xs="12">
-                            <MudTextField @bind-Value="PersonalDetailsState.PersonalDetailsObject.BtwNumber" For="@(() => PersonalDetailsState.PersonalDetailsObject.BtwNumber)" Immediate="true" InputType="InputType.Text" MaxLength="50" Class="ml-16 mr-16 mb-6 pt-2" Label="Btw-nummer" Variant="Variant.Outlined"></MudTextField>
+                            <MudTextField @bind-Value="Create.VatNumber" For="@(() => Create.VatNumber)" Class="ml-16 mr-16 mb-6 pt-2" Label="Btw-nummer" Variant="Variant.Outlined"></MudTextField>
 
                         </MudItem>
                     </MudGrid>
                 </MudItem>
+            
             </MudGrid>
             <MudGrid>
                 <MudItem lg="10" md="10" sm="5" xs="5" />
                 <MudItem lg="2" md="2" sm="7" xs="7">
-                    <MudButton Class="mb-2" Variant="Variant.Filled" Size="Size.Large" Color="Color.Primary" OnClick="@(async () => await Submit())">Volgende</MudButton>
+                    <MudButton Class="mb-2" Variant="Variant.Filled" Size="Size.Large" Color="Color.Primary" ButtonType="ButtonType.Submit">Volgende</MudButton>
                 </MudItem>
             </MudGrid>
 
         </MudContainer>
     </MudPaper>
-</MudForm>
+</EditForm>
 
 
 @code {
-    private MudForm form;
 
     private int Spacing { get; set; } = 2;
 
-    private void GoNext()
+    private CustomerDto.Create Create { get; set; }
+
+    protected override void OnInitialized()
     {
-        NavigationManager.NavigateTo(Routes.ExtraMaterial);
+        Create = new CustomerDto.Create();
+        if (!string.IsNullOrWhiteSpace(PersonalDetailsState.Customer.FirstName))
+        {
+            AdjustCreate();
+        }
+
     }
+
 
     private async Task Submit()
     {
-        await form.Validate();
+        AdjustPersonalDetailsState();
+        NavigationManager.NavigateTo(Routes.ExtraMaterial);
+    }
 
-        if (form.IsValid)
+    private void AdjustPersonalDetailsState()
+    {
+        PersonalDetailsState.Customer.FirstName = Create.FirstName;
+        PersonalDetailsState.Customer.LastName = Create.LastName;
+        PersonalDetailsState.Customer.Email.Email = Create.Email.Email;
+        PersonalDetailsState.Customer.PhoneNumber = Create.PhoneNumber;
+        PersonalDetailsState.Customer.BillingAddress.Street = Create.BillingAddress.Street;
+        PersonalDetailsState.Customer.BillingAddress.HouseNumber = Create.BillingAddress.HouseNumber;
+        PersonalDetailsState.Customer.BillingAddress.PostalCode = Create.BillingAddress.PostalCode;
+        PersonalDetailsState.Customer.BillingAddress.City = Create.BillingAddress.City;
+        if (!string.IsNullOrWhiteSpace(Create.VatNumber))
         {
-            GoNext();
+            PersonalDetailsState.Customer.VatNumber = Create.VatNumber;
+        }
+        else
+        {
+            PersonalDetailsState.Customer.VatNumber = "";
+        }
+    }
+
+    private void AdjustCreate()
+    {
+        Create.FirstName = PersonalDetailsState.Customer.FirstName;
+        Create.LastName = PersonalDetailsState.Customer.LastName;
+        Create.Email.Email = PersonalDetailsState.Customer.Email.Email;
+        Create.PhoneNumber = PersonalDetailsState.Customer.PhoneNumber;
+        Create.BillingAddress.Street = PersonalDetailsState.Customer.BillingAddress.Street;
+        Create.BillingAddress.HouseNumber = PersonalDetailsState.Customer.BillingAddress.HouseNumber;
+        Create.BillingAddress.PostalCode = PersonalDetailsState.Customer.BillingAddress.PostalCode;
+        Create.BillingAddress.City = PersonalDetailsState.Customer.BillingAddress.City;
+        if (!string.IsNullOrWhiteSpace(PersonalDetailsState.Customer.VatNumber))
+        {
+            Create.VatNumber = PersonalDetailsState.Customer.VatNumber;
         }
     }
 }
