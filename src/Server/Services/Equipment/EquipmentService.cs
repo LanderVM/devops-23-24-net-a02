@@ -2,7 +2,6 @@
 using Domain.Formulas;
 using Microsoft.EntityFrameworkCore;
 using shared.Equipment;
-using Domain.Exceptions;
 using devops_23_24_net_a02.Services.Files;
 using devops_23_24_net_a02.Domain.Files;
 
@@ -61,7 +60,7 @@ public class EquipmentService : IEquipmentService
     Equipment? e = await _dbContext.Equipments.SingleOrDefaultAsync(x => x.Description.Title.Equals(model.Title));
 
     if (e is not null)
-      throw new EntityAlreadyExistsException(nameof(Equipment),nameof(Equipment.Description.Title),model.Title);
+      throw new Exception($"equipment with title: {model.Title} already exists");
 
     List<string> list = model.Attributes.Split(';').ToList();
     List<string> attributes = new List<string>();
@@ -90,7 +89,7 @@ public class EquipmentService : IEquipmentService
     Equipment? equipment = await _dbContext.Equipments.SingleOrDefaultAsync(x => x.Id==equipmentId);
 
     if (equipment is null) {
-      throw new EntityNotFoundException(nameof(Equipment),equipmentId);
+      throw new Exception($"Equipment with id: {equipmentId} doesnt exist");
     }
 
     int id = equipment.Id;
@@ -133,39 +132,6 @@ public class EquipmentService : IEquipmentService
     };
     return result;
   }
-  public async Task<EquipmentResult.ActiveEquipment> GetActiveEquipmentAsync()
-  {
-    var query = _dbContext.Equipments.AsQueryable().Where(x=>x.IsActive==true);
-
-    int totalAmount = await query.CountAsync();
-
-    string noImageUrl = "https://via.placeholder.com/350x300";
-
-    var items = await query
-       .OrderBy(x => x.Id)
-       .Select(x => new EquipmentDto.Index
-       {
-         Id = x.Id,
-         Title = x.Description.Title,
-         Attributes = x.Description.Attributes,
-         Price = x.Price,
-         Stock = x.Stock,
-         IsActive = x.IsActive,
-         ImageData = new EquipmentDto.ImageData
-         {
-           ImageUrl = x.ImageUrl,
-           AltText = x.Description.Title,
-         },
-         FormulaIds = x.Formulas.Select(x => x.Id).ToList(),
-       }).ToListAsync();
-
-    var result = new EquipmentResult.ActiveEquipment
-    {
-      Equipment = items,
-      TotalAmount = totalAmount
-    };
-    return result;
-  }
 
   public async Task<EquipmentDto.Index> GetSpecificIndexAsync(int equipmentId)
   {
@@ -187,7 +153,7 @@ public class EquipmentService : IEquipmentService
 
     if(equipment == null)
     {
-      throw new EntityNotFoundException(nameof(Equipment),equipmentId);
+      throw new Exception($"equipment with id: {equipmentId} not found");
     }
 
     return equipment;
@@ -198,7 +164,7 @@ public class EquipmentService : IEquipmentService
     Equipment? equipment = await _dbContext.Equipments.FirstOrDefaultAsync(x => x.Id == equipmentId);
 
     if (equipment is null)
-      throw new EntityNotFoundException(nameof(Equipment),equipmentId);
+      throw new Exception($"equipment with id: {equipmentId} not found");
 
     string attributes = string.Join(";", equipment.Description.Attributes);
 
@@ -224,7 +190,7 @@ public class EquipmentService : IEquipmentService
 
     if (equipment is null)
     {
-      throw new EntityNotFoundException(nameof(Equipment),equipmentId);
+      throw new Exception($"Equipment with id: {equipmentId} doesn't exists");
     }
 
     Image image = new Image(_storageService.BasePath, model.ImageContentType!);
@@ -295,6 +261,4 @@ public class EquipmentService : IEquipmentService
 
     return result;
   }
-
-  
 }

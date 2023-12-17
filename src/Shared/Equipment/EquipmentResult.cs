@@ -9,11 +9,6 @@ public static class EquipmentResult
 
     public int TotalAmount { get; set; }
   }
-  public class ActiveEquipment {
-    public IEnumerable<EquipmentDto.Index>? Equipment { get; set; }
-
-    public int TotalAmount { get; set; }
-  }
 
   public class Create
   {

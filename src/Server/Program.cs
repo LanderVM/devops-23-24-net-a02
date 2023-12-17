@@ -1,5 +1,4 @@
 ﻿using Api.Data;
-using devops_23_24_net_a02.Middlewares;
 using devops_23_24_net_a02.Shared.Emails;
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -21,7 +20,7 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddServices();
 
-builder.Services.AddValidatorsFromAssemblyContaining<EmailDto.Create.Validator>();
+builder.Services.AddValidatorsFromAssemblyContaining<EmailDto.Validator>();
 builder.Services.AddFluentValidationAutoValidation();
 
 builder.Services.AddControllersWithViews();
@@ -46,7 +45,7 @@ if (app.Environment.IsDevelopment())
 }
 else
 {
-  //app.UseExceptionHandler("/Error");
+  app.UseExceptionHandler("/Error");
   // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
   app.UseHsts();
 }
@@ -55,8 +54,6 @@ app.UseHttpsRedirection();
 
 app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
-
-app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseRouting();
 

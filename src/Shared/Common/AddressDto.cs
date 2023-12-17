@@ -13,10 +13,10 @@ public class AddressDto
   {
     public Validator()
     {
-      RuleFor(model => model.Street).NotEmpty().MaximumLength(200);
-      RuleFor(model => model.HouseNumber).NotEmpty().MaximumLength(200);
-      RuleFor(model => model.PostalCode).NotEmpty().MaximumLength(200);
-      RuleFor(model => model.City).NotEmpty().MaximumLength(200);
+      RuleFor(model => model.Street).NotEmpty();
+      RuleFor(model => model.HouseNumber).NotEmpty();
+      RuleFor(model => model.PostalCode).NotEmpty();
+      RuleFor(model => model.City).NotEmpty();
     }
   }
 }
