@@ -1,6 +1,6 @@
 @using shared.Formulas
 @using devops_23_24_net_a02.Client.Pages.Formulas
-
+@attribute [Authorize]
 
 <EditForm Model="@formula" OnValidSubmit="UpdateFormulaAsync">
     <Blazored.FluentValidation.FluentValidationValidator />
