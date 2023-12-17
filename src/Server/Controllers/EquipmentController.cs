@@ -26,12 +26,6 @@ public class EquipmentController : ControllerBase
     return await _equipmentService.GetIndexAsync();
   }
 
-  [HttpGet("/api/equipment/active")]
-  [SwaggerOperation("Returns a list of equipment available in the extra's catalog that is active.")]
-  public async Task<EquipmentResult.ActiveEquipment> GetActiveEquipment()
-  {
-    return await _equipmentService.GetActiveEquipmentAsync();
-  }
   /*
   [HttpGet("{equipmentId}")]
   [SwaggerOperation("Returns a specific equipment based on id.")]

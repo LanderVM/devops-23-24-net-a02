@@ -79,9 +79,9 @@
 
     protected override async Task OnInitializedAsync()
     {
-        EquipmentResult.ActiveEquipment response = await EquipmentService.GetActiveEquipmentAsync();
+        EquipmentResult.Index response = await EquipmentService.GetIndexAsync();
 
-        Extras = response.Equipment;
+        Extras = response.Equipment.Where(x=>x.IsActive==true);
 
         if (ExtraMaterialState.ExtrasAmount.Count == 0)
         {

@@ -1,10 +1,8 @@
 ﻿using Api.Data;
 using Domain.Customers;
-using Domain.Formulas;
 using Microsoft.EntityFrameworkCore;
 using Shared.Customer;
 using Shared.Customers;
-using Domain.Exceptions;
 
 namespace Server.Services;
 
@@ -18,12 +16,6 @@ public class CustomerService : ICustomerService
   }
   public async Task<int> CreateAsync(CustomerDto.Create model)
   {
-    Customer? c = await _dbContext.Customers.SingleOrDefaultAsync(x => x.Email.Value.Equals(model.Email.Email));
-
-    if (c is not null) {
-      throw new EntityAlreadyExistsException(nameof(Customer),nameof(Customer.Email),model.Email.Email);
-    }
-
     Email email = new Email(model.Email.Email);
     BillingAddress billingAddress = new BillingAddress(model.BillingAddress.Street, model.BillingAddress.HouseNumber, model.BillingAddress.City, model.BillingAddress.PostalCode);
     PhoneNumber phone = new PhoneNumber(model.PhoneNumber);
