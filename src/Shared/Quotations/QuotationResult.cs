@@ -38,5 +38,4 @@ public static class QuotationResult
       public Boolean IsTripelBier { get; set; } = default!;
       public int NumberOfPeople { get; set; } = default!;
     }
- 
 }

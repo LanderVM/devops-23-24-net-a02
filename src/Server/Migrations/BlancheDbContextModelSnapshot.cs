@@ -35,8 +35,7 @@ namespace devops2324neta02.Server.Migrations
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasMaxLength(4000)
-                        .HasColumnType("varchar(4000)");
+                        .HasColumnType("longtext");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("tinyint(1)")
@@ -44,8 +43,7 @@ namespace devops2324neta02.Server.Migrations
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasMaxLength(4000)
-                        .HasColumnType("varchar(4000)");
+                        .HasColumnType("longtext");
 
                     b.Property<DateTime>("UpdatedAt")
                         .IsConcurrencyToken()
@@ -54,8 +52,7 @@ namespace devops2324neta02.Server.Migrations
                         .HasDefaultValueSql("NOW()");
 
                     b.Property<string>("VatNumber")
-                        .HasMaxLength(4000)
-                        .HasColumnType("varchar(4000)");
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
@@ -81,8 +78,7 @@ namespace devops2324neta02.Server.Migrations
 
                     b.Property<string>("Value")
                         .IsRequired()
-                        .HasMaxLength(4000)
-                        .HasColumnType("varchar(4000)");
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
@@ -102,16 +98,14 @@ namespace devops2324neta02.Server.Migrations
 
                     b.Property<string>("ImageUrl")
                         .IsRequired()
-                        .HasMaxLength(4000)
-                        .HasColumnType("varchar(4000)");
+                        .HasColumnType("longtext");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("tinyint(1)")
                         .HasDefaultValue(true);
 
                     b.Property<decimal>("Price")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(65,30)");
 
                     b.Property<int>("Stock")
                         .HasColumnType("int");
@@ -147,8 +141,7 @@ namespace devops2324neta02.Server.Migrations
                         .HasDefaultValue(true);
 
                     b.Property<decimal>("PricePerDayExtra")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(65,30)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .IsConcurrencyToken()
@@ -188,10 +181,6 @@ namespace devops2324neta02.Server.Migrations
                     b.Property<int>("NumberOfPeople")
                         .HasColumnType("int");
 
-                    b.Property<string>("Opmerking")
-                        .HasMaxLength(4000)
-                        .HasColumnType("varchar(4000)");
-
                     b.Property<int>("OrderedById")
                         .HasColumnType("int");
 
@@ -200,8 +189,7 @@ namespace devops2324neta02.Server.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<decimal>("OriginalFormulaPricePerDayExtra")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(65,30)");
 
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("datetime(6)");
@@ -243,8 +231,7 @@ namespace devops2324neta02.Server.Migrations
                         .HasColumnType("tinyint(1)");
 
                     b.Property<decimal>("OriginalEquipmentPrice")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(65,30)");
 
                     b.Property<int>("QuotationId")
                         .HasColumnType("int");
@@ -291,23 +278,19 @@ namespace devops2324neta02.Server.Migrations
 
                             b1.Property<string>("City")
                                 .IsRequired()
-                                .HasMaxLength(4000)
-                                .HasColumnType("varchar(4000)");
+                                .HasColumnType("longtext");
 
                             b1.Property<string>("HouseNumber")
                                 .IsRequired()
-                                .HasMaxLength(4000)
-                                .HasColumnType("varchar(4000)");
+                                .HasColumnType("longtext");
 
                             b1.Property<string>("PostalCode")
                                 .IsRequired()
-                                .HasMaxLength(4000)
-                                .HasColumnType("varchar(4000)");
+                                .HasColumnType("longtext");
 
                             b1.Property<string>("Street")
                                 .IsRequired()
-                                .HasMaxLength(4000)
-                                .HasColumnType("varchar(4000)");
+                                .HasColumnType("longtext");
 
                             b1.HasKey("CustomerId");
 
@@ -324,8 +307,7 @@ namespace devops2324neta02.Server.Migrations
 
                             b1.Property<string>("Value")
                                 .IsRequired()
-                                .HasMaxLength(4000)
-                                .HasColumnType("varchar(4000)");
+                                .HasColumnType("longtext");
 
                             b1.HasKey("CustomerId");
 
@@ -357,8 +339,7 @@ namespace devops2324neta02.Server.Migrations
 
                             b1.Property<string>("Title")
                                 .IsRequired()
-                                .HasMaxLength(4000)
-                                .HasColumnType("varchar(4000)");
+                                .HasColumnType("longtext");
 
                             b1.HasKey("EquipmentId");
 
@@ -385,8 +366,7 @@ namespace devops2324neta02.Server.Migrations
 
                             b1.Property<string>("Title")
                                 .IsRequired()
-                                .HasMaxLength(4000)
-                                .HasColumnType("varchar(4000)");
+                                .HasColumnType("longtext");
 
                             b1.HasKey("FormulaId");
 
@@ -421,23 +401,19 @@ namespace devops2324neta02.Server.Migrations
 
                             b1.Property<string>("City")
                                 .IsRequired()
-                                .HasMaxLength(4000)
-                                .HasColumnType("varchar(4000)");
+                                .HasColumnType("longtext");
 
                             b1.Property<string>("HouseNumber")
                                 .IsRequired()
-                                .HasMaxLength(4000)
-                                .HasColumnType("varchar(4000)");
+                                .HasColumnType("longtext");
 
                             b1.Property<string>("PostalCode")
                                 .IsRequired()
-                                .HasMaxLength(4000)
-                                .HasColumnType("varchar(4000)");
+                                .HasColumnType("longtext");
 
                             b1.Property<string>("Street")
                                 .IsRequired()
-                                .HasMaxLength(4000)
-                                .HasColumnType("varchar(4000)");
+                                .HasColumnType("longtext");
 
                             b1.HasKey("QuotationId");
 

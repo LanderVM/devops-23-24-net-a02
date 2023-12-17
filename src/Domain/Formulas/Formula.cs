@@ -30,16 +30,4 @@ public class Formula : Entity
   { 
     return Equipment.Sum(x => x.Price); 
   }
-
-  public List<QuotationLine> getQuotationLines(int amountOfPeople)
-  {
-    List<QuotationLine> result = new();
-
-    foreach (Equipment equipment in Equipment)
-    {
-      result.Add(new QuotationLine(equipment, amountOfPeople));
-    }
-
-    return result;
-  }
 }

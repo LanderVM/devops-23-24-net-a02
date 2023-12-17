@@ -9,6 +9,8 @@ using shared.Formulas;
 using Shared.Common;
 using Shared.Customer;
 using shared.Quotations;
+using Domain.Exceptions;
+
 
 namespace Api.Data.Services.Quotations;
 
@@ -64,11 +66,11 @@ public class QuotationService : IQuotationService
   }
   public async Task<QuotationResult.Create> CreateAsync(QuotationDto.Create model)
   {
-    var chosenFormula = _dbContext.Formulas.FirstOrDefault(formula => formula.Id == model.FormulaId);
+    Formula? chosenFormula = _dbContext.Formulas.FirstOrDefault(formula => formula.Id == model.FormulaId);
     if (chosenFormula is null)
-      throw new ArgumentException($"Formula with id {model.FormulaId} does not exist!");
+      throw new EntityNotFoundException(nameof(Formula),model.FormulaId);
     if (chosenFormula.IsActive is false)
-      throw new ArgumentException($"Formula with id {chosenFormula.Id} is not active!");
+      throw new ApplicationException($"Formula with id {chosenFormula.Id} is not active!");
     
     var customer = _dbContext.Customers
       .Include(customer => customer.Email)
@@ -94,10 +96,13 @@ public class QuotationService : IQuotationService
     
     var quotationLines = new List<QuotationLine>();
     foreach (var lines in model.Equipments)
-    {  
+    {
+      
         var equipment = _dbContext.Equipments.FirstOrDefault(equipment => equipment.Id == lines.EquipmentId);
-        
-      quotationLines.Add(new QuotationLine(equipment, lines.Amount));   
+        quotationLines.Add(new QuotationLine(equipment, lines.Amount));
+     
+      
+      
     }
     if (customer.Email.IsActive is false)
       customer.Email.IsActive = true; // TODO nieuwe maken of gewoon terug actief zetten?
@@ -123,7 +128,7 @@ public class QuotationService : IQuotationService
     QuotationResult.Create result = new QuotationResult.Create
     {
       QuotationId = quotation.Id,
-      FormulaId = quotation.Formula.Id,
+      FormulaId = quotation.FormulaId,
       EventLocation = new AddressDto
       {
         Street = quotation.EventLocation.Street,
@@ -234,11 +239,15 @@ public class QuotationService : IQuotationService
 
   public async Task<decimal> GetPriceEstimationPrice(QuotationResponse.Estimate model)
   {
-    var chosenFormula = _dbContext.Formulas.Include(formula => formula.Equipment).FirstOrDefault(formula => formula.Id == model.FormulaId);
+    decimal totalPrice = 0;
+
+    Formula? chosenFormula = _dbContext.Formulas.FirstOrDefault(formula => formula.Id == model.FormulaId);
     if (chosenFormula is null)
-      throw new ArgumentException($"Formula with id {model.FormulaId} does not exist!");
+      throw new EntityNotFoundException(nameof(Formula),model.FormulaId);
     if (chosenFormula.IsActive is false)
-      throw new ArgumentException($"Formula with id {chosenFormula.Id} is not active!"); var queryEquipment = _dbContext.Equipments.AsQueryable();
+      throw new ApplicationException($"Formula with id {chosenFormula.Id} is not active!"); 
+    
+    var queryEquipment = _dbContext.Equipments.AsQueryable();
 
     List<EquipmentDto.Index>? equipmentDtoQuery = new List<EquipmentDto.Index>();
 
@@ -246,91 +255,22 @@ public class QuotationService : IQuotationService
     {
       equipmentDtoQuery = await queryEquipment
           .Where(x => model.EquipmentIds.Contains(x.Id))
-          .Select(equipment => new EquipmentDto.Index
+          .Select(z => new EquipmentDto.Index
           {
-            Id = equipment.Id,
-            Price = equipment.Price,
+            Id = z.Id,
+            Price = z.Price,
           }).ToListAsync();
     }
 
+    List<Equipment> equipmentList = new();
     foreach (var item in equipmentDtoQuery)
     {
       Equipment equipment = new(item.Price);
-      chosenFormula.Equipment.Add(equipment);
+      equipmentList.Add(equipment);
     }
 
-    Quotation quotation = new Quotation(chosenFormula, new DateTime(model.StartTime), new DateTime(model.EndTime), model.EstimatedNumberOfPeople, model.IsTripelBier);
+    Quotation quotation = new Quotation(new Formula(equipmentList), chosenFormula.Id, new DateTime(model.StartTime), new DateTime(model.EndTime), model.EstimatedNumberOfPeople, model.IsTripelBier);
     return quotation.GetEstimatedPrice();
   }
   
-  public async Task<QuotationResponse.Create> UpdateAsync(int QuotationId, QuotationDto.Edit model)
-  {
-    var quotation = _dbContext.Quotations
-      .Include(quotation => quotation.QuotationLines)
-      .Include(quotation => quotation.OrderedBy).ThenInclude(customer => customer.Email)
-      .Include(quotation => quotation.Formula)
-      .FirstOrDefault(quotation => quotation.Id == QuotationId);
-    if (quotation is null)
-    {
-      throw new Exception($"No quotation found with Id: {QuotationId}");
-    }
-
-    var quotationLines = new List<QuotationLine>();
-    foreach (var lines in model.EquipmentList)
-    {
-      var equipment = _dbContext.Equipments.FirstOrDefault(equipment => equipment.Id == lines.EquipmentId);
-      if (equipment is not null)
-      {
-        quotationLines.Add(new QuotationLine(equipment, lines.Amount));
-      }
-    }
-    quotation.QuotationLines = quotationLines;
-    quotation.Status = model.Status;
-    quotation.Opmerking = model.Opmerking;
-
-    await _dbContext.SaveChangesAsync();
-
-    QuotationResponse.Create result = new QuotationResponse.Create
-    {
-      QuotationId = QuotationId,
-      FormulaId = quotation.Formula.Id,
-      EndTime = quotation.EndTime,
-      StartTime = quotation.StartTime,
-      Equipments = model.EquipmentList
-        .Select(line => new EquipmentDto.Lines
-        {
-          EquipmentId = line.EquipmentId,
-          Amount = line.Amount
-        }).ToList(),
-      EventLocation = new AddressDto
-      {
-        City = quotation.EventLocation.City,
-        HouseNumber = quotation.EventLocation.HouseNumber,
-        PostalCode = quotation.EventLocation.PostalCode,
-        Street = quotation.EventLocation.Street
-      },
-      Customer = new CustomerDto.Details
-      {
-        Id = quotation.OrderedBy.Id,
-        FirstName = quotation.OrderedBy.FirstName,
-        LastName = quotation.OrderedBy.LastName,
-        Email = new EmailDto.Create { Email = quotation.OrderedBy.Email.Value },
-        PhoneNumber = quotation.OrderedBy.PhoneNumber.Value,
-        VatNumber = quotation.OrderedBy.VatNumber,
-        BillingAddress = new AddressDto
-        {
-          Street = quotation.OrderedBy.BillingAddress.Street,
-          HouseNumber = quotation.OrderedBy.BillingAddress.HouseNumber,
-          City = quotation.OrderedBy.BillingAddress.City,
-          PostalCode = quotation.OrderedBy.BillingAddress.PostalCode,
-        }
-      },
-      IsTripelBier = quotation.IsTripelBier,
-      NumberOfPeople = quotation.NumberOfPeople,
-      Opmerking = quotation.Opmerking,
-      Status = quotation.Status
-    };
-
-    return result;
-  }
 }

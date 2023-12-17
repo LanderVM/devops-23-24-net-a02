@@ -1,4 +1,4 @@
-﻿using System.Net.Http.Json;
+using System.Net.Http.Json;
 using System.Text;
 using devops_23_24_net_a02.Client.Extensions;
 using shared.Quotations;
@@ -61,10 +61,5 @@ public class QuotationService : IQuotationService
   {
     var response = await client.GetFromJsonAsync<QuotationResult.Dates>($"{endpoint}/Dates");
     return response;
-  }
-
-  public Task<QuotationResponse.Create> UpdateAsync(int QuotationId, QuotationDto.Edit model)
-  {
-    throw new NotImplementedException();
   }
 }
