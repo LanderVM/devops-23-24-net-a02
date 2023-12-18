@@ -13,7 +13,6 @@ using shared.GoogleMaps;
 using devops_23_24_net_a02.Client.Pages.Quotations;
 using Append.Blazor.Sidepanel;
 using devops_23_24_net_a02.Client.Infrastructure;
-using Blazored.Toast;
 using devops_23_24_net_a02.Client.Files;
 using devops_23_24_net_a02.Shared.Emails;
 using devops_23_24_net_a02.Client.EmailOverview;
@@ -40,7 +39,6 @@ builder.Services.AddScoped<FormulaState>();
 builder.Services.AddScoped<EventDetailsState>();
 
 builder.Services.AddSidepanel();
-builder.Services.AddBlazoredToast();
 
 builder.Services.AddMudServices(options =>
 {

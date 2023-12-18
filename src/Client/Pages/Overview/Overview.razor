@@ -1,11 +1,11 @@
 @page "/Overzicht"
-@using devops_23_24_net_a02.Client.Pages.EventDetails;
 @using shared.Equipment
 @using shared.Quotations
 @using Size = MudBlazor.Size
 @using GoogleMapsComponents.Maps
 @using GoogleMapsComponents
 @using global::Domain.Common
+
 
 
 <PageTitle>Overzicht</PageTitle>
@@ -184,6 +184,7 @@
 
     [Inject] public IEquipmentService EquipmentService { get; set; } = default!;
 
+    [Inject]public ISnackbar Snackbar { get; set; } = default!;
     [Inject] public IQuotationService QuotationService { get; set; } = default!;
     [Inject] public NavigationManager NavigationManager { get; set; } = default!;
     [Inject] public ExtraMaterialState ExtraMaterialState { get; set; } = default!;
@@ -195,16 +196,17 @@
 
     [Inject] public PersonalDetailsState PersonalDetailsState { get; set; } = default!;
 
-    [Inject] public IDialogService DialogService { get; set; } = default!;
-
 
     private IEnumerable<EquipmentDto.Index>? Extras = default!;
 
     protected override async Task OnInitializedAsync()
     {
-        if (PersonalDetailsState.Customer.Email.Email == null)
+        if (FormulaState.ChosenFormulaId == null  || PersonalDetailsState.Customer.Email.Email == null || EventDetailsState.FormattedAddress == null || EventDetailsState.dateRange == null)
         {
-            NavigationManager.NavigateTo("/");
+            
+            NavigationManager.NavigateTo("/Event/EventDetails");
+            Snackbar.Add("Gelieve de gegevens eerst in te vullen.", Severity.Error);
+            
 
         }
         EquipmentResult.Index response = await EquipmentService.GetIndexAsync();
@@ -360,8 +362,8 @@
 
             }
         }
-
-
+        
+        
         QuotationDto.Create quotation = new QuotationDto.Create
             {
                 FormulaId = FormulaState.ChosenFormulaId,
@@ -377,13 +379,17 @@
                 EndTime = (DateTime)EventDetailsState.dateRange.End,
                 Equipments = equipments,
                 Customer = PersonalDetailsState.Customer,
+                NumberOfPeople = EventDetailsState.NumberOfPeople,
+                IsTripelBier = EventDetailsState.HasTripleBeer
 
             };
 
-        
+
         var result = await QuotationService.CreateAsync(quotation);
+        Snackbar.Add("Je offerte werd succesvol aangemaakt", Severity.Success);
+        NavigationManager.NavigateTo("/");
         ClearAllStates();
-        OpenDialog();
+        
     }
     
 
@@ -394,11 +400,7 @@
         ExtraMaterialState.Clear();
         PersonalDetailsState.Clear();
     }
-    private void OpenDialog()
-    {
-        var options = new DialogOptions { CloseOnEscapeKey = true };
-        DialogService.Show<ConfirmationDialog>("Confirmatie Offerte", options);
-    }
+    
 
     private Marker? _selectedLocation;
 

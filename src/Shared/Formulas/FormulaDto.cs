@@ -39,10 +39,13 @@ public class FormulaDto {
     {
       public Validator()
       {
-        RuleFor(x => x.Title).NotEmpty();
-        RuleFor(x => x.Attributes).NotEmpty();
-        RuleFor(x => x.PricePerDayExtra).NotEmpty().InclusiveBetween(0, 5000);
-        RuleFor(x => x.BasePrice).NotEmpty();
+        RuleFor(x => x.Title).NotEmpty().WithMessage("De titel mag niet leeg zijn")
+          .MaximumLength(100).WithMessage("Gelieve een kortere titel in te geven");
+        RuleFor(x => x.Attributes).NotEmpty().WithMessage("De attributen mogen niet leeg zijn")
+          .MaximumLength(200).WithMessage("Dit zijn te veel attributen");
+        RuleFor(x => x.PricePerDayExtra).NotEmpty().WithMessage("De prijs mag niet leeg zijn")
+          .InclusiveBetween(0, 5000).WithMessage("De prijs moet een getal tussen 0 en 5000 zijn");
+        RuleFor(x => x.BasePrice).NotEmpty().WithMessage("De prijs mag niet leeg zijn");
 
       }
 

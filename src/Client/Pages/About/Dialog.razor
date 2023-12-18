@@ -1,6 +1,7 @@
+@using devops_23_24_net_a02.Shared.Emails
 <MudDialog>
     <DialogContent>
-        <MudTextField @bind-Value="TextValue" Label="E-mail" Variant="Variant.Outlined"></MudTextField>
+        <MudTextField @bind-Value="Email.Email" For="@(() => Email.Email)" Label="E-mail" Variant="Variant.Outlined"></MudTextField>
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel">Cancel</MudButton>
@@ -10,10 +11,25 @@
 
 
 @code {
-    public string TextValue { get; set; }
+    public EmailDto.Create Email  = new EmailDto.Create();
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
-    //TODO sla het email adres op
 
-    void Submit() => MudDialog.Close(DialogResult.Ok(true));
+    [Inject]
+    public IEmailService EmailService { get; set; } = default!;
+
+    [Inject]
+    ISnackbar Snackbar { get; set; } = default!;
+
+    void Submit()
+    {
+        CreateEmailAsync();
+        Snackbar.Add("Meer info werd naar jouw e-mailadres gestuurd", Severity.Info);
+        MudDialog.Close(DialogResult.Ok(true));
+    } 
     void Cancel() => MudDialog.Cancel();
+
+    private async Task CreateEmailAsync()
+    {
+        var result = await EmailService.CreateAsync(Email);
+    }
 }
