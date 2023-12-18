@@ -13,8 +13,9 @@ public static class EmailDto
     {
       public Validator()
       {
-        RuleFor(email => email.Email).NotEmpty().EmailAddress();
-        //RuleFor(email => email.Email).Must(x => !x.EndsWith(".")).WithMessage("'Email' may not end on a period.");
+        RuleFor(email => email.Email).NotEmpty().WithMessage(model => "Gelieve een e-mailadres in te vullen")
+          .EmailAddress().WithMessage(model => "Gelieve een geldig e-mailadres in te vullen");;
+        
       }
     }
   }

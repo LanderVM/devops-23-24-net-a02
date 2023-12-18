@@ -41,14 +41,17 @@ public static class CustomerDto
     {
       public Validator()
       {
-        RuleFor(model => model.FirstName).NotEmpty().MaximumLength(200);
-        RuleFor(model => model.LastName).NotEmpty().MaximumLength(200);
+        RuleFor(model => model.FirstName).NotEmpty().WithMessage(model => "Gelieve een voornaam in te vullen")
+          .MaximumLength(200).WithMessage(model => "Gelieve een voornaam in te vullen");
+        RuleFor(model => model.LastName).NotEmpty().WithMessage(model => "Gelieve een achternaam in te vullen")
+          .MaximumLength(200).WithMessage(model => "Gelieve een geldig achternaam in te vullen");
         RuleFor(model => model.Email).NotEmpty().SetValidator(new EmailDto.Create.Validator());
         RuleFor(model => model.BillingAddress).NotEmpty().SetValidator(new AddressDto.Validator());
-        RuleFor(model => model.PhoneNumber).NotEmpty().MaximumLength(200);
+        RuleFor(model => model.PhoneNumber).NotEmpty().WithMessage(model => "Gelieve een telefoonnummer in te vullen")
+          .Matches("0[1-9][0-9]{8}").MaximumLength(10).WithMessage(model => "Gelieve een geldig telefoonnummer, zonder spaties, in te voeren!");
         When(model => !string.IsNullOrEmpty(model.VatNumber), () =>
         {
-          RuleFor(model => model.VatNumber).Matches("[B][E][0-9]+").WithMessage("First two letters of VAT number must be your country code, next there need to be numbers!").MaximumLength(200);
+          RuleFor(model => model.VatNumber).Matches("[B][E][0-9]+").WithMessage(model =>"De eerste twee letters van het btw-nummer moeten uw landcode zijn, daarna moeten er cijfers volgen!").MaximumLength(200);
         });
       }
     }

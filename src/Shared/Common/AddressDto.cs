@@ -13,10 +13,14 @@ public class AddressDto
   {
     public Validator()
     {
-      RuleFor(model => model.Street).NotEmpty().MaximumLength(200);
-      RuleFor(model => model.HouseNumber).NotEmpty().MaximumLength(200);
-      RuleFor(model => model.PostalCode).NotEmpty().MaximumLength(200);
-      RuleFor(model => model.City).NotEmpty().MaximumLength(200);
+      RuleFor(model => model.Street).NotEmpty().WithMessage(model => "Gelieve een straat in te vullen")
+        .MaximumLength(200).WithMessage(model => "Gelieve een geldige straat in te vullen");
+      RuleFor(model => model.HouseNumber).NotEmpty().WithMessage(model => "Gelieve een huisnummer in te vullen")
+        .MaximumLength(200).WithMessage(model => "Gelieve een geldig huisnummer in te vullen");
+      RuleFor(model => model.PostalCode).NotEmpty().WithMessage(model => "Gelieve een postcode in te vullen")
+        .MaximumLength(200).WithMessage(model => "Gelieve een geldige postcode in te vullen");
+      RuleFor(model => model.City).NotEmpty().WithMessage(model => "Gelieve een stad in te vullen")
+        .MaximumLength(200).WithMessage(model => "Gelieve een geldige stad in te vullen");
     }
   }
 }
