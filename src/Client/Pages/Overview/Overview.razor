@@ -201,7 +201,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        if (PersonalDetailsState.Customer.Email.Email == null)
+        if (PersonalDetailsState.Customer.Email.Email == null || EventDetailsState.FormattedAddress == null)
         {
             Snackbar.Add("Gelieve de gegevens eerst in te vullen.", Severity.Success);
             NavigationManager.NavigateTo("/");

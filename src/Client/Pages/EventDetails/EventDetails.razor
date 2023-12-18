@@ -43,7 +43,7 @@
                                 Elevation="2"
                                 Label="Placeholder"
                                 Editable="true"
-            @bind-DateRange="@EventDetailsState.dateRange"
+                                @bind-DateRange="@EventDetailsState.dateRange"
                                 PlaceholderStart="Start Date"
                                 PlaceholderEnd="End Date"
                                 Date="@(DateTime.Today.AddDays(1))"
@@ -79,39 +79,49 @@
 
 
 @code {
-    private bool addressError = false;
-    private bool numberOfPeopleError = false;
-    private bool hasValidAdress = false;
+    private bool addressError;
+    private bool numberOfPeopleError;
+    private bool hasValidAdress;
 
     private List<DateTime> DateTimes { get; set; } = new List<DateTime>();
-    private IEnumerable<QuotationDto.Dates>? DateRange = default!;
+    private IEnumerable<QuotationDto.Dates>? DateRange;
 
+    [Inject]
+    public ISnackbar Snackbar { get; set; } = default!;
     [Inject]
     public IQuotationService QuotationService { get; set; } = default!;
 
 
     private void ClickNext()
     {
-        if (!hasValidAdress && EventDetailsState.NumberOfPeople == 0)
+        if (!hasValidAdress || EventDetailsState.NumberOfPeople == 0 || EventDetailsState.dateRange == null)
         {
-            addressError = true;
-            numberOfPeopleError = true;
+            if (!hasValidAdress)
+            {
+                addressError = true;
+            }
+
+            if (EventDetailsState.NumberOfPeople == 0)
+            {
+                numberOfPeopleError = true;
+            }
+            else
+            {
+                numberOfPeopleError = false;
+            }
+
+            if (EventDetailsState.dateRange == null)
+            {
+                Snackbar.Add("Gelieve een geldige start- en einddag aan te duiden", Severity.Error);
+            }
         }
-        else if (!hasValidAdress)
-        {
-            addressError = true;
-            numberOfPeopleError = false;
-        }
-        else if (EventDetailsState.NumberOfPeople == 0)
-        {
-            numberOfPeopleError = true;
-            addressError = false;
-        } else
+        else
         {
             numberOfPeopleError = false;
             addressError = false;
             NavigationManager.NavigateTo(Routes.PersonalDetails);
         }
+
 
     }
 
