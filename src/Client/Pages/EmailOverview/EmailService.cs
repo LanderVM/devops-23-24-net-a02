@@ -16,9 +16,10 @@ public class EmailService : IEmailService
   public EmailService(HttpClient client) {
     this.client = client;
   }
-  public Task<int> CreateAsync(EmailDto.Create model)
+  public async Task<int> CreateAsync(EmailDto.Create model)
   {
-    throw new NotImplementedException();
+    var response = await client.PostAsJsonAsync(endpoint,model);
+    return await response.Content.ReadFromJsonAsync<int>();
   }
 
   public async Task<EmailResult.Index> GetEmailsAsync()

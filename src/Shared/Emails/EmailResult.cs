@@ -14,5 +14,7 @@ public class EmailResult
 
     public int TotalAmount { get; set; }
   }
+  
+  
 }
 
