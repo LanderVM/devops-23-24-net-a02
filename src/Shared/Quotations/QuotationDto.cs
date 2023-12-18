@@ -50,7 +50,7 @@ public static class QuotationDto
         .Must(model => (model.EndTime - model.StartTime).TotalSeconds > 0)
         .WithMessage("End time cannot be before start time!");
      RuleFor(model => model.Customer).NotEmpty();
-     RuleFor(model => model.IsTripelBier).NotEmpty(); 
+    
     }
   }
 }

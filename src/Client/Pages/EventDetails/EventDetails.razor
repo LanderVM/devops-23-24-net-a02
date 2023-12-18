@@ -43,7 +43,7 @@
                                 Elevation="2"
                                 Label="Placeholder"
                                 Editable="true"
-                                @bind-DateRange="@EventDetailsState.dateRange"
+                                @bind-DateRange="@_dateRange"
                                 PlaceholderStart="Start Date"
                                 PlaceholderEnd="End Date"
                                 Date="@(DateTime.Today.AddDays(1))"
@@ -82,19 +82,19 @@
     private bool addressError;
     private bool numberOfPeopleError;
     private bool hasValidAdress;
-
-    private List<DateTime> DateTimes { get; set; } = new List<DateTime>();
+    
     private IEnumerable<QuotationDto.Dates>? DateRange;
-
+    
     [Inject]
     public ISnackbar Snackbar { get; set; } = default!;
     [Inject]
     public IQuotationService QuotationService { get; set; } = default!;
-
+    
+    private DateRange _dateRange; 
 
     private void ClickNext()
     {
-        if (!hasValidAdress || EventDetailsState.NumberOfPeople == 0 || EventDetailsState.dateRange == null)
+        if (!hasValidAdress || EventDetailsState.NumberOfPeople == 0 || _dateRange == null)
         {
             if (!hasValidAdress)
             {
@@ -110,7 +110,7 @@
                 numberOfPeopleError = false;
             }
 
-            if (EventDetailsState.dateRange == null)
+            if (_dateRange == null)
             {
                 Snackbar.Add("Gelieve een geldige start- en einddag aan te duiden", Severity.Error);
             }
@@ -119,6 +119,7 @@
         {
             numberOfPeopleError = false;
             addressError = false;
+            EventDetailsState.dateRange = _dateRange;
             NavigationManager.NavigateTo(Routes.PersonalDetails);
         }
 
@@ -129,6 +130,7 @@
 
     protected override async Task OnInitializedAsync()
     {
+        _dateRange = EventDetailsState.dateRange.Start == DateTime.Today ? null: EventDetailsState.dateRange;
         var response = await QuotationService.GetDatesAsync();
         DateRange = response.DateRanges;
         

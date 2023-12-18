@@ -201,10 +201,12 @@
 
     protected override async Task OnInitializedAsync()
     {
-        if (PersonalDetailsState.Customer.Email.Email == null || EventDetailsState.FormattedAddress == null)
+        if (FormulaState.ChosenFormulaId == null  || PersonalDetailsState.Customer.Email.Email == null || EventDetailsState.FormattedAddress == null || EventDetailsState.dateRange == null)
         {
-            Snackbar.Add("Gelieve de gegevens eerst in te vullen.", Severity.Success);
-            NavigationManager.NavigateTo("/");
+            
+            NavigationManager.NavigateTo("/Event/EventDetails");
+            Snackbar.Add("Gelieve de gegevens eerst in te vullen.", Severity.Error);
+            
 
         }
         EquipmentResult.Index response = await EquipmentService.GetIndexAsync();
