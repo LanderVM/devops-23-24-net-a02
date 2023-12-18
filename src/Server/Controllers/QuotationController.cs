@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using shared.Quotations;
+using shared.GoogleMaps;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace devops_23_24_net_a02.Server.Controllers;
@@ -10,12 +11,15 @@ public class QuotationController : ControllerBase
 {
   private readonly ILogger<QuotationController> _logger;
   private readonly IQuotationService _quotationService;
+  private readonly IGoogleMapsService _googleMapsService;
 
-  public QuotationController(ILogger<QuotationController> logger, IQuotationService quotationService)
+  public QuotationController(ILogger<QuotationController> logger, IQuotationService quotationService, IGoogleMapsService googleMapsService)
   {
     _logger = logger;
     _quotationService = quotationService;
+    _googleMapsService = googleMapsService;
   }
+
   [HttpGet("Estimation/Details")]
   [SwaggerOperation("Returns all required data to set up the calculation for a quotation")]
   public async Task<QuotationResult.Detail> GetEstimatedQuotationDetails()
@@ -50,6 +54,7 @@ public class QuotationController : ControllerBase
   {
     return await _quotationService.GetIndexAsync();
   }
+
   [HttpGet("Dates")]
   [SwaggerOperation("Gets all the dates for which there is an approved quotation")]
   public async Task<QuotationResult.Dates> GetApprovedQuotationsDates() { 
@@ -57,5 +62,11 @@ public class QuotationController : ControllerBase
     return dateTimes;
   }
 
+  [HttpGet("DistanctePrice")]
+  [SwaggerOperation("Calculates a estimate on how much a offer would cost")]
+  public async Task<GoogleMapsDto.Response> GetDistanctePrice([FromQuery] string address)
+  {
+    return await _googleMapsService.GetDistanceAsync(address);
+  }
 }
 

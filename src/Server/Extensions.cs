@@ -7,6 +7,7 @@ using shared.Quotations;
 using shared.Formulas;
 using devops_23_24_net_a02.Services.Files;
 using devops_23_24_net_a02.Shared.Emails;
+using shared.GoogleMaps;
 
 namespace Api.Data;
 
@@ -33,6 +34,8 @@ public static class Extensions
     services.AddScoped<IFormulaService, FormulaService>();
     services.AddScoped<ICustomerService, CustomerService>();
     services.AddScoped<IStorageService, BlobStorageService>();
+    services.AddScoped<IGoogleMapsService, GoogleMapsService>();
+
     return services;
   }
 }

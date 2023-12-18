@@ -9,6 +9,7 @@ using devops_23_24_net_a02.Client.Shared;
 using shared.Formulas;
 using devops_23_24_net_a02.Client.Pages.Formulas;
 using shared.Quotations;
+using shared.GoogleMaps;
 using devops_23_24_net_a02.Client.Pages.Quotations;
 using Append.Blazor.Sidepanel;
 using devops_23_24_net_a02.Client.Infrastructure;
@@ -16,6 +17,7 @@ using Blazored.Toast;
 using devops_23_24_net_a02.Client.Files;
 using devops_23_24_net_a02.Shared.Emails;
 using devops_23_24_net_a02.Client.EmailOverview;
+using Pages.Overview;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -49,6 +51,7 @@ builder.Services.AddScoped<IEquipmentService, EquipmentService>();
 builder.Services.AddScoped<IEmailService,EmailService>();
 builder.Services.AddScoped<IFormulaService, FormulaService>();
 builder.Services.AddScoped<IQuotationService, QuotationService>();
+builder.Services.AddScoped<IGoogleMapsService, GoogleMapsService>();
 builder.Services.AddHttpClient<IStorageService,
                                AzureBlobStorageService>();
 
