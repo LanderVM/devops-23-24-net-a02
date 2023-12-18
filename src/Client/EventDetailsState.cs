@@ -12,7 +12,7 @@ public class EventDetailsState
 
   public bool HasTripleBeer = false;
 
-  public DateRange dateRange = new DateRange(DateTime.Now.Date, DateTime.Now.AddDays(3).Date);
+  public DateRange dateRange;
   
   public void Clear()
   {
