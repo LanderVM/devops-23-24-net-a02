@@ -3,6 +3,7 @@ using System;
 using Api.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace devops2324neta02.Server.Migrations
 {
     [DbContext(typeof(BlancheDbContext))]
-    partial class BlancheDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231219160513_AddImageToFormula")]
+    partial class AddImageToFormula
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -192,10 +195,6 @@ namespace devops2324neta02.Server.Migrations
 
                     b.Property<int>("NumberOfPeople")
                         .HasColumnType("int");
-
-                    b.Property<string>("Opmerking")
-                        .HasMaxLength(4000)
-                        .HasColumnType("varchar(4000)");
 
                     b.Property<int>("OrderedById")
                         .HasColumnType("int");
