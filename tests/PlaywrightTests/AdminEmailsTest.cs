@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Playwright;
 using Microsoft.Playwright.NUnit;
 using NUnit.Framework.Internal;
+using Shouldly;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Client.PlaywrightTests;
@@ -33,6 +34,9 @@ public class AdminEmailsTest : PageTest
 
     await Page.GotoAsync(TestHelper.EmailOverview);
     await Page.WaitForSelectorAsync("data-test-id=email-table");
+    await Page.WaitForSelectorAsync("data-test-id=email-row");
+    int amount = await Page.Locator("data-test-id=email-row").CountAsync();
+    amount.ShouldBeGreaterThan(0);
   }
 
 }
