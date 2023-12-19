@@ -237,7 +237,7 @@ public class QuotationService : IQuotationService
     return result;
   }
 
-  public async Task<decimal> GetPriceEstimationPrice(QuotationResponse.Estimate model)
+  public async Task<decimal> GetPriceEstimationPrice(QuotationDto.Estimate model)
   {
     decimal totalPrice = 0;
 

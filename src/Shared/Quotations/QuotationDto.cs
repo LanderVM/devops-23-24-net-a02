@@ -23,6 +23,29 @@ public static class QuotationDto
     public DateTime StartTime { get; set; }
     public DateTime EndTime { get; set; }
   }
+
+  public class Estimate
+  {
+    public int FormulaId { get; set; }
+    public List<int>? EquipmentIds { get; set; } = default!;
+    public long StartTime { get; set; }
+    public long EndTime { get; set; }
+    public int EstimatedNumberOfPeople { get; set; }
+    public bool IsTripelBier { get; set; } = false;
+
+    public class Validator : AbstractValidator<Estimate>
+    {
+      public Validator()
+      {
+        RuleFor(model => model.FormulaId).NotEmpty().WithMessage("Formule id mag niet leeg zijn!");
+        RuleFor(model => model.FormulaId).Must(id => id >= 1).WithMessage("Formule id moet een positief getal zijn!");
+        RuleFor(model => new { model.StartTime, model.EndTime })
+          .Must(model => (model.EndTime - model.StartTime) > 0)
+          .WithMessage("End time cannot be before start time!");
+      }
+    }
+  }
+
   public class Create
   {
     public int FormulaId { get; set; }

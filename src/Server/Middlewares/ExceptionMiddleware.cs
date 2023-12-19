@@ -40,6 +40,7 @@ public class ExceptionMiddleware
       EntityAlreadyExistsException ex => new ErrorDetails(ex.Message, HttpStatusCode.Conflict),
       // Add more custom exceptions here...
       ApplicationException ex => new ErrorDetails(ex.Message),
+      ArgumentException ex => new ErrorDetails(ex.Message, HttpStatusCode.BadRequest),
       _ => new ErrorDetails(exception.Message)
     };
     context.Response.ContentType = "application/json";

@@ -33,7 +33,7 @@ public class QuotationService : IQuotationService
     return response;
   }
 
-  public async Task<decimal> GetPriceEstimationPrice(QuotationResponse.Estimate model)
+  public async Task<decimal> GetPriceEstimationPrice(QuotationDto.Estimate model)
   {
     var queryString = new StringBuilder();
 

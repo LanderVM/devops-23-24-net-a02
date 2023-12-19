@@ -180,7 +180,8 @@
                               .Select(x => x.Id)
                               .ToList() ?? new List<int>();
 
-        QuotationResponse.Estimate estimate = new QuotationResponse.Estimate {
+        QuotationDto.Estimate estimate = new QuotationDto.Estimate
+            {
                 FormulaId = QuotationEstimateState.QuotationEstimateObject.FormulaId,
                 EquipmentIds = ids,
                 EstimatedNumberOfPeople = QuotationEstimateState.QuotationEstimateObject.EstimatedNumberOfPeople,
