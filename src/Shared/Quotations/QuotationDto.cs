@@ -41,7 +41,9 @@ public static class QuotationDto
         RuleFor(model => model.FormulaId).Must(id => id >= 1).WithMessage("Formule id moet een positief getal zijn!");
         RuleFor(model => new { model.StartTime, model.EndTime })
           .Must(model => (model.EndTime - model.StartTime) > 0)
-          .WithMessage("End time cannot be before start time!");
+          .WithMessage("De begin tijd kan niet starten achter de eind tijd!");
+        RuleFor(model => model.IsTripelBier).NotEmpty().WithMessage("De keuze voor tripel bier moet aangevuld zijn!");
+        RuleFor(model => model.EstimatedNumberOfPeople).GreaterThan(0).WithMessage("Het verwacht aantal personen kan niet minder dan 0 zijn!");
       }
     }
   }
@@ -69,10 +71,10 @@ public static class QuotationDto
       RuleFor(model => model.EventLocation).NotEmpty();
       RuleFor(model => model.StartTime).NotEmpty().WithMessage(model => "Gelieve een startdatum in te vullen"); 
       RuleFor(model => model.EndTime).NotEmpty().WithMessage(model => "Gelieve een einddatum in te vullen");
-     RuleFor(model => new { model.StartTime, model.EndTime })
+      RuleFor(model => new { model.StartTime, model.EndTime })
         .Must(model => (model.EndTime - model.StartTime).TotalSeconds > 0)
         .WithMessage("End time cannot be before start time!");
-     RuleFor(model => model.Customer).NotEmpty();
+      RuleFor(model => model.Customer).NotEmpty();
     
     }
   }

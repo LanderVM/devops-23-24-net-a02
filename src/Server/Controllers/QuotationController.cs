@@ -29,7 +29,7 @@ public class QuotationController : ControllerBase
 
   [HttpGet("Estimation/Calculate")]
   [SwaggerOperation("Calculates a estimate on how much a offer would cost")]
-  public async Task<decimal> GetEstimatedQuotationPrice([FromQuery] QuotationResponse.Estimate model)
+  public async Task<decimal> GetEstimatedQuotationPrice([FromQuery] QuotationDto.Estimate model)
   {
     return await _quotationService.GetPriceEstimationPrice(model);
   }
