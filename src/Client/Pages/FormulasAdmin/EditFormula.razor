@@ -8,7 +8,8 @@
     <MudTextField @bind-Value="formula.Title"
                   For="@(() => formula.Title)"
                   Label="Titel"
-                  Variant="Variant.Outlined" />
+                  Variant="Variant.Outlined" 
+                  data-test-id="formulas-admin-edit-title"/>
         
     <MudNumericField @bind-Value="formula.PricePerDayExtra"
                      Class="mt-3"
@@ -16,7 +17,8 @@
                      For="@(() => formula.PricePerDayExtra)"
                      Variant="Variant.Outlined"
                      Step="1"
-                     Min="0" />
+                     Min="0" 
+                     data-test-id="formulas-admin-edit-pricePerDayExtra" />
         
     <MudText Class="mt-5 mb-1" Typo="Typo.body2">Plaats elk element op een nieuwe lijn</MudText>
         
@@ -25,12 +27,13 @@
                   For="@(() => formula.BasePrice)"
                   Variant="Variant.Outlined"
                   Lines="3"
-    />
+                  data-test-id="formulas-admin-edit-basePrice" />
 
     <MudTextField @bind-Value="formula.Attributes"
                   Label="Kenmerken"
                   Variant="Variant.Outlined"
-                  Lines="5" />
+                  Lines="5" 
+                  data-test-id="formulas-admin-edit-attributes" />
 
     <MudCheckBox @bind-Checked="@formula.IsActive"
                      For="@(() => formula.IsActive)"
@@ -45,7 +48,7 @@
 
         </MudItem>
         <MudItem xs="5">
-            <MudButton Class="mr-1" Variant="Variant.Filled" FullWidth="true" Color="Color.Primary" ButtonType="ButtonType.Submit">Pas aan</MudButton>
+            <MudButton Class="mr-1" Variant="Variant.Filled" FullWidth="true" Color="Color.Primary" ButtonType="ButtonType.Submit" data-test-id="formulas-admin-edit-editbutton">Pas aan</MudButton>
         </MudItem>
         <MudItem xs="5">
             <MudButton Class="ml-1" Variant="Variant.Filled" FullWidth="true" Color="Color.Primary" OnClick="Close">Annuleren</MudButton>

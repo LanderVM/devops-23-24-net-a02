@@ -26,7 +26,7 @@
                 }
             </MudTd>
             <MudTd DataLabel="Prijs extra dagen" Style=@styleTd>@Math.Round(@context.PricePerDayExtra)</MudTd>
-            <MudTd DataLabel="Wijzigen" Style=@styleTd><MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="@(() => UpdateItem(context.Id))" test-data-id="formulas-admin-overview-editbutton"/></MudTd>
+            <MudTd DataLabel="Wijzigen" Style=@styleTd><MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="@(() => UpdateItem(context.Id))" data-test-id="formulas-admin-overview-editbutton"/></MudTd>
 
         </RowTemplate>
     </MudTable>
