@@ -80,7 +80,7 @@ public class Quotation : Entity
   {
     decimal priceBeer = IsTripelBier ? 3.0m : 1.5m;
     decimal priceBbq = 12m;
-
+    
     if (Formula.Id == 3)
     {
       return GetPriceDays() + Formula.getPriceForEquipment() + (NumberOfPeople * priceBeer) + (NumberOfPeople * priceBbq);
@@ -93,5 +93,10 @@ public class Quotation : Entity
     {
       return GetPriceDays() + Formula.getPriceForEquipment();
     }
+  }
+
+  public decimal GetEstimatedPriceRounded()
+  {
+    return Math.Round(GetEstimatedPrice() / 10) * 10;
   }
 }

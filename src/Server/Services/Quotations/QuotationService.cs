@@ -238,8 +238,6 @@ public class QuotationService : IQuotationService
 
   public async Task<decimal> GetPriceEstimationPrice(QuotationDto.Estimate model)
   {
-    decimal totalPrice = 0;
-
     Formula? chosenFormula = _dbContext.Formulas.FirstOrDefault(formula => formula.Id == model.FormulaId);
     if (chosenFormula is null)
       throw new EntityNotFoundException(nameof(Formula),model.FormulaId);
@@ -268,8 +266,10 @@ public class QuotationService : IQuotationService
       equipmentList.Add(equipment);
     }
 
-    Quotation quotation = new Quotation(new Formula(equipmentList), new DateTime(model.StartTime), new DateTime(model.EndTime), model.EstimatedNumberOfPeople, model.IsTripelBier);
-    return quotation.GetEstimatedPrice();
+    chosenFormula.Equipment.AddRange(equipmentList);
+
+    Quotation quotation = new Quotation(chosenFormula, new DateTime(model.StartTime), new DateTime(model.EndTime), model.EstimatedNumberOfPeople, model.IsTripelBier);
+    return quotation.GetEstimatedPriceRounded();
   }
 
   public async Task<QuotationResponse.Create> UpdateAsync(int QuotationId, QuotationDto.Edit model)

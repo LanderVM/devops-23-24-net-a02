@@ -9,102 +9,10 @@
 @inject ExtraMaterialState ExtraMaterialState
 @inject NavigationManager NavigationManager
 
-<SidepanelComponent Title="Snelle inschatting" Backdrop="@BackdropType.Dismiss" @ref="sidepanel">
-    <MudForm Model="@QuotationEstimateState.quotationEstimateClassValidator" @ref="@form" ValidationDelay="0" Validation="@(QuotationEstimateState.quotationEstimateClassValidator.ValidateValue)">
-        <MudContainer>
-            <MudGrid Justify="Justify.SpaceBetween" Class="my-5">
-                <MudItem xs="12">
-                    <MudDateRangePicker Color="Color.Primary"
-                                        Elevation="2"
-                                        Label="Placeholder"
-                                        Editable="true"
-                                        Required="true"
-                                        Immediate="true"
-                    @bind-DateRange="@QuotationEstimateState.QuotationEstimateObject.DateRange"
-                                        PlaceholderStart="Start datum"
-                                        PlaceholderEnd="Eind datum"
-                                        Date="@(DateTime.Today.AddDays(1))"
-                                        PickerVariant="PickerVariant.Static"
-                                        IsDateDisabledFunc="@((DateTime dt) => dt.Date < DateTime.Now.Date || IsDateDisabled(dt.Date, UnavailableDates))" />
-                </MudItem>
-            </MudGrid>
-
-            <MudGrid Justify="Justify.SpaceBetween" Class="my-5 align-center">
-                <MudItem md="5" xs="8">
-                    <MudSelect Immediate="true" Required="true" Placeholder="Selecteer uw formule" Label="Formule" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter" @bind-Value="QuotationEstimateState.QuotationEstimateObject.FormulaId" >                     
-                        @foreach (FormulaDto.Select item in Formulas)
-                        {
-                            <MudSelectItem Value=@item.Id>@item.Title</MudSelectItem>
-                        }
-                    </MudSelect>
-                </MudItem>
-                <MudItem Class="justify-center" md="2" xs="4">
-                    <MudText Align="Align.Center">Met</MudText>
-                </MudItem>
-                <MudItem md="2" xs="6">
-                    <MudNumericField 
-                        Immediate="true" 
-                        Label="Aantal" 
-                        @bind-Value="QuotationEstimateState.QuotationEstimateObject.EstimatedNumberOfPeople"
-                        Variant="Variant.Outlined"
-                        Min="1"
-                        />
-                </MudItem>
-                <MudItem Class="justify-center" md="3" xs="4">
-                    <MudText Align="Align.Center">personen</MudText>
-                </MudItem>
-            </MudGrid>
-
-            <MudGrid Class="my-5 align-center">
-                <MudItem md="6" xs="12">           
-                    <MudSelect Immediate="true" T="EquipmentDto.Select" ToStringFunc="@converter" MultiSelection="true" @bind-SelectedValues="QuotationEstimateState.QuotationEstimateObject.Equipment" Label="Materiaal" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter" Clearable>
-                        @foreach (EquipmentDto.Select item in ExtraEquipment)
-                        {
-                            <MudSelectItem Value=@item>@item.Title</MudSelectItem>
-                        }
-                    </MudSelect>
-                </MudItem>
-            </MudGrid>
-
-            <MudGrid Class="my-5 align-center">
-                <MudItem>
-                    <MudText>Triple beer?</MudText>
-                </MudItem>
-                <MudItem>
-                    <MudCheckBox Immediate="true" @bind-Checked="QuotationEstimateState.QuotationEstimateObject.IsTripelBier"></MudCheckBox>
-                </MudItem>
-            </MudGrid>
-
-            <MudGrid Class="my-5 justify-center" Justify="Justify.Center">
-                @if (_showPrice)
-                {
-                    <MudItem xs="12">
-                        <MudText Typo="Typo.h4" Align="Align.Center">Dit zal tussen rond de € @price liggen</MudText>
-                    </MudItem>
-                    <MudItem xs="12">
-                        <MudText>Deze prijs is een schatting en ligt dus niet vast</MudText>
-                    </MudItem>
-                }
-        
-                <MudItem xs="6">
-                    <MudButton Variant="Variant.Filled" Size="Size.Large" Color="Color.Primary" OnClick="@(async () => await Submit())" Class="justify-center">
-                        Bereken prijs
-                    </MudButton>
-                </MudItem>
-                <MudItem xs="6">
-                    <MudButton Variant="Variant.Filled" Size="Size.Large" Color="Color.Primary" OnClick="@ToFormulas" Class="justify-center">
-                        Naar Formules
-                    </MudButton>
-                </MudItem>
-            </MudGrid>
-        </MudContainer>
-    </MudForm>
-</SidepanelComponent>
-
 <MudPopover Style="background-color: #C8A86E; color: white; margin-top: 90vh; position: fixed; margin-left: -10px; cursor: pointer;"
             Open="@_isOpen"
             Class="px-5 pt-5"
-            @onclick=OpenSideSheet
+            @onclick=OpenSidePanel
             AnchorOrigin="Origin.TopRight">
     <div class="d-flex flex-column">
         <MudText>Druk hier voor een snelle inschatting</MudText>
@@ -113,31 +21,15 @@
 </MudPopover>
 
 @code {
-    private MudForm form;
+    [Inject]
+    ISidepanelService Sidepanel { get; set; } = default!;
+    [Inject]
+    IQuotationService QuotationService { get; set; } = default!;
 
     public bool _isOpen = false;
-    public bool _showExtraItems { get; set; } = false;
-    public bool _showPrice { get; set; } = false;
-
-    Func<EquipmentDto.Select, string> converter = p => p?.Title;
-
-    public decimal price { get; set; } = default!;
-
-    private SidepanelComponent sidepanel;
-
-    [Inject] public IQuotationService QuotationService { get; set; } = default!;
-    private IEnumerable<EquipmentDto.Select> ExtraEquipment;
-    private IEnumerable<FormulaDto.Select> Formulas;
-    private IEnumerable<DateDto> UnavailableDates;
 
     protected override async Task OnInitializedAsync()
     {
-        QuotationResult.Detail response = await QuotationService.GetPriceEstimationDetailsAsync();
-
-        ExtraEquipment = response.Equipment;
-        Formulas = response.Formulas;
-        UnavailableDates = response.UnavailableDates;
-
         await Task.Delay(1000);
         ToggleOpen();
     }
@@ -147,71 +39,21 @@
         _isOpen = !_isOpen;
     }
 
-    public void OpenSideSheet()
+    private void OpenSidePanel()
     {
-        sidepanel.Open();
-    }
+        var callback1 = EventCallback.Factory.Create(this, Close);
 
-    private void CloseSideSheet()
-    {
-        sidepanel.Close();
-    }
-
-    private void ToFormulas()
-    {
-        NavigationManager.NavigateTo(Routes.Formula);
-
-    }
-
-    private async Task Submit()
-    {
-        await form.Validate();
-
-        if (form.IsValid)
+        var parameters = new Dictionary<string, object>
         {
-            GetPriceEstimate();
-        }
-    }
-
-    private async void GetPriceEstimate()
-    {
-        List<int> ids = QuotationEstimateState.QuotationEstimateObject.Equipment?
-                              .Where(x => x != null)
-                              .Select(x => x.Id)
-                              .ToList() ?? new List<int>();
-
-        QuotationDto.Estimate estimate = new QuotationDto.Estimate
-            {
-                FormulaId = QuotationEstimateState.QuotationEstimateObject.FormulaId,
-                EquipmentIds = ids,
-                EstimatedNumberOfPeople = QuotationEstimateState.QuotationEstimateObject.EstimatedNumberOfPeople,
-                IsTripelBier = QuotationEstimateState.QuotationEstimateObject.IsTripelBier,
-                StartTime = QuotationEstimateState.QuotationEstimateObject.DateRange.Start.Value.Ticks,
-                EndTime = QuotationEstimateState.QuotationEstimateObject.DateRange.End.Value.Ticks,
+            {nameof(EstimatePriceForm.Close),callback1 },
         };
 
-        price = await QuotationService.GetPriceEstimationPrice(estimate);
-        _showPrice = true;
-
-        StateHasChanged();
+        Sidepanel.Open<EstimatePriceForm>("Prijs inschatting", "", parameters, BackdropType.Dismiss);
+        ToggleOpen();
     }
 
-    bool IsDateDisabled(DateTime date, IEnumerable<DateDto> ranges)
+    private void Close()
     {
-        if (ranges != null)
-        {
-            foreach (DateDto range in ranges)
-            {
-                DateTime startDateTime = new(range.StartTime);
-                DateTime endDateTime = new(range.EndTime);
-
-                if (date.Date >= startDateTime.Date && date.Date <= endDateTime.Date)
-                {
-                    return true;
-                }
-            }
-        }
-
-        return false;
+        Sidepanel.Close();
     }
 }
