@@ -23,7 +23,7 @@ public static class QuotationResponse
     public QuotationStatus Status { get; set; }
   }
 
-  public class Price
+  public class Calculation
   {
     public decimal EstimatedPrice { get; set; }
   }

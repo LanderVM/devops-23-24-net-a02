@@ -1,16 +1,15 @@
 ﻿using devops_23_24_net_a02.Shared.Emails;
 using Domain.Common;
 using Domain.Customers;
+using Domain.Exceptions;
 using Domain.Formulas;
 using Domain.Quotations;
 using Microsoft.EntityFrameworkCore;
-using shared.Equipment;
-using shared.Formulas;
 using Shared.Common;
 using Shared.Customer;
+using shared.Equipment;
+using shared.Formulas;
 using shared.Quotations;
-using Domain.Exceptions;
-
 
 namespace Api.Data.Services.Quotations;
 
@@ -221,8 +220,8 @@ public class QuotationService : IQuotationService
     IEnumerable<DateDto> unavailableDates = await queryDates.OrderBy(x => x.StartTime).Select(
       x => new DateDto
       {
-        StartTime = x.StartTime.Ticks,
-        EndTime = x.EndTime.Ticks
+        StartTime = x.StartTime.ToUniversalTime(),
+        EndTime = x.EndTime.ToUniversalTime()
       }
       ).ToListAsync();
 
@@ -236,7 +235,7 @@ public class QuotationService : IQuotationService
     return result;
   }
 
-  public async Task<decimal> GetPriceEstimationPrice(QuotationDto.Estimate model)
+  public async Task<QuotationResult.Calculation> GetPriceEstimationPrice(QuotationDto.Estimate model)
   {
     Formula? chosenFormula = _dbContext.Formulas.FirstOrDefault(formula => formula.Id == model.FormulaId);
     if (chosenFormula is null)
@@ -269,7 +268,7 @@ public class QuotationService : IQuotationService
     chosenFormula.Equipment.AddRange(equipmentList);
 
     Quotation quotation = new Quotation(chosenFormula, new DateTime(model.StartTime), new DateTime(model.EndTime), model.EstimatedNumberOfPeople, model.IsTripelBier);
-    return quotation.GetEstimatedPriceRounded();
+    return new QuotationResult.Calculation { EstimatedPrice = quotation.GetEstimatedPriceRounded() };
   }
 
   public async Task<QuotationResponse.Create> UpdateAsync(int QuotationId, QuotationDto.Edit model)

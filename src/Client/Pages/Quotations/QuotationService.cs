@@ -33,7 +33,7 @@ public class QuotationService : IQuotationService
     return response;
   }
 
-  public async Task<decimal> GetPriceEstimationPrice(QuotationDto.Estimate model)
+  public async Task<QuotationResult.Calculation> GetPriceEstimationPrice(QuotationDto.Estimate model)
   {
     var queryString = new StringBuilder();
 
@@ -52,7 +52,7 @@ public class QuotationService : IQuotationService
         queryString.Append($"&EquipmentIds={equipmentId}");
       }
     }
-    var response = await client.GetFromJsonAsync<decimal>($"{endpoint}/Estimation/Calculate?{queryString}");
+    var response = await client.GetFromJsonAsync<QuotationResult.Calculation>($"{endpoint}/Estimation/Calculate?{queryString}");
 
     return response;
   }
