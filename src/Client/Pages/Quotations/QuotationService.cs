@@ -62,4 +62,9 @@ public class QuotationService : IQuotationService
     var response = await client.GetFromJsonAsync<QuotationResult.Dates>($"{endpoint}/Dates");
     return response;
   }
+
+  public Task<QuotationResponse.Create> UpdateAsync(int QuotationId, QuotationDto.Edit model)
+  {
+    throw new NotImplementedException();
+  }
 }

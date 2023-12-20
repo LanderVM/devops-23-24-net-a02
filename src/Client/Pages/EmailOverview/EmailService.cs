@@ -3,8 +3,7 @@
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using devops_23_24_net_a02.Shared.Emails;
-
-
+using shared.Quotations;
 
 public class EmailService : IEmailService
 {
@@ -27,6 +26,11 @@ public class EmailService : IEmailService
     EmailResult.Index? result = await client.GetFromJsonAsync<EmailResult.Index>(endpoint);
 
     return result!;
+  }
+
+  public Task<QuotationResponse.Edit> SendConfirmationMail(QuotationResponse.Create model)
+  {
+    throw new NotImplementedException();
   }
 }
 

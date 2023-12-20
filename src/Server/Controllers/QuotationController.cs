@@ -2,6 +2,7 @@
 using shared.Quotations;
 using shared.GoogleMaps;
 using Swashbuckle.AspNetCore.Annotations;
+using devops_23_24_net_a02.Shared.Emails;
 
 namespace devops_23_24_net_a02.Server.Controllers;
 
@@ -12,26 +13,23 @@ public class QuotationController : ControllerBase
   private readonly ILogger<QuotationController> _logger;
   private readonly IQuotationService _quotationService;
   private readonly IGoogleMapsService _googleMapsService;
+  private readonly IEmailService _emailService;
 
-  public QuotationController(ILogger<QuotationController> logger, IQuotationService quotationService, IGoogleMapsService googleMapsService)
+
+  public QuotationController(ILogger<QuotationController> logger, IQuotationService quotationService, IGoogleMapsService googleMapsService, IEmailService emailService)
   {
     _logger = logger;
     _quotationService = quotationService;
     _googleMapsService = googleMapsService;
+    _emailService = emailService;
+
   }
 
-  [HttpGet("Estimation/Details")]
-  [SwaggerOperation("Returns all required data to set up the calculation for a quotation")]
-  public async Task<QuotationResult.Detail> GetEstimatedQuotationDetails()
+  [HttpGet]
+  [SwaggerOperation("Gets a list of all the quotations")]
+  public async Task<QuotationResult.Index> GetQuotations()
   {
-    return await _quotationService.GetPriceEstimationDetailsAsync();
-  }
-
-  [HttpGet("Estimation/Calculate")]
-  [SwaggerOperation("Calculates a estimate on how much a offer would cost")]
-  public async Task<decimal> GetEstimatedQuotationPrice([FromQuery] QuotationDto.Estimate model)
-  {
-    return await _quotationService.GetPriceEstimationPrice(model);
+    return await _quotationService.GetIndexAsync();
   }
 
   [HttpPost]
@@ -48,12 +46,30 @@ public class QuotationController : ControllerBase
     return CreatedAtAction(nameof(RegisterQuotationRequest), quotation); // TODO QuotationResponse ipv QuotationResult teruggeven
   }
 
-  [HttpGet]
-  [SwaggerOperation("Gets a list of all the quotations")]
-  public async Task<QuotationResult.Index> GetQuotations()
+  [HttpPut]
+  [SwaggerOperation("Changes a quotation offer and send a mail to the costumer")]
+  public async Task<QuotationResponse.Edit> UpdateQuotationRequest(int QuotationId, QuotationDto.Edit model)
   {
-    return await _quotationService.GetIndexAsync();
+    var quotation = await _quotationService.UpdateAsync(QuotationId, model);
+    var result = await _emailService.SendConfirmationMail(quotation);
+
+    return result;
   }
+
+  [HttpGet("Estimation/Details")]
+  [SwaggerOperation("Returns all required data to set up the calculation for a quotation")]
+  public async Task<QuotationResult.Detail> GetEstimatedQuotationDetails()
+  {
+    return await _quotationService.GetPriceEstimationDetailsAsync();
+  }
+
+  [HttpGet("Estimation/Calculate")]
+  [SwaggerOperation("Calculates a estimate on how much a offer would cost")]
+  public async Task<decimal> GetEstimatedQuotationPrice([FromQuery] QuotationDto.Estimate model)
+  {
+    return await _quotationService.GetPriceEstimationPrice(model);
+  }
+
 
   [HttpGet("Dates")]
   [SwaggerOperation("Gets all the dates for which there is an approved quotation")]
@@ -68,5 +84,7 @@ public class QuotationController : ControllerBase
   {
     return await _googleMapsService.GetDistanceAsync(address);
   }
+
+  
 }
 

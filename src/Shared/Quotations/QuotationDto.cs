@@ -48,6 +48,21 @@ public static class QuotationDto
     }
   }
 
+  public class Edit
+  {
+    public string? Opmerking { get; set; } = default!;
+    public QuotationStatus Status { get; set; }
+    public List<EquipmentDto.Lines>? EquipmentList { get; set; } = default!;
+
+    public class Validator : AbstractValidator<Edit>
+    {
+      public Validator()
+      {
+        RuleFor(model => model.Status).NotEmpty().WithMessage("Geef een geldige status!");   
+      }
+    }
+  }
+
   public class Create
   {
     public int FormulaId { get; set; }
