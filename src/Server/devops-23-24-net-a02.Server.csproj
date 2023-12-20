@@ -43,5 +43,9 @@
     <ProjectReference Include="..\Shared\devops-23-24-net-a02.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\Customer\" />
+  </ItemGroup>
+
 
 </Project>

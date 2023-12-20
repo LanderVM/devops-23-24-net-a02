@@ -61,10 +61,15 @@ public static class EquipmentDto
     {
       public Validator()
       {
-        RuleFor(x => x.Title).NotEmpty().MaximumLength(100);
-        RuleFor(x => x.Attributes).NotEmpty().MaximumLength(100);
-        RuleFor(x => x.Price).NotEmpty().InclusiveBetween(0, 5000);
-        RuleFor(x => x.Stock).NotEmpty().InclusiveBetween(1, 1000);
+        RuleFor(x => x.Title).NotEmpty().WithMessage("De titel mag niet leeg zijn")
+          .MaximumLength(100).WithMessage("Gelieve een kortere titel in te geven");
+        RuleFor(x => x.Attributes).NotEmpty().WithMessage("De attributen mogen niet leeg zijn")
+          .MaximumLength(200).WithMessage("Dit zijn te veel attributen");;
+        RuleFor(x => x.Price).NotEmpty().WithMessage("De prijs mag niet leeg zijn")
+          .InclusiveBetween(0, 5000).WithMessage("De prijs moet een getal tussen 0 en 5000 zijn");
+        RuleFor(x => x.Stock).NotEmpty().WithMessage("De voorraad mag niet leeg zijn")
+          .InclusiveBetween(1, 1000).WithMessage("De voorraad moet een getal tussen 1 en 1000 zijn");
+        
       }
     }
   }
@@ -83,10 +88,14 @@ public static class EquipmentDto
     {
       public Validator()
       {
-        RuleFor(x => x.Title).NotEmpty().MaximumLength(100);
-        RuleFor(x => x.Attributes).NotEmpty().MaximumLength(100);
-        RuleFor(x => x.Price).NotEmpty().InclusiveBetween(0, 5000);
-        RuleFor(x => x.Stock).NotEmpty().InclusiveBetween(1, 1000);
+        RuleFor(x => x.Title).NotEmpty().WithMessage("De titel mag niet leeg zijn")
+          .MaximumLength(100).WithMessage("Gelieve een kortere titel in te geven");
+        RuleFor(x => x.Attributes).NotEmpty().WithMessage("De attributen mogen niet leeg zijn")
+          .MaximumLength(200).WithMessage("Dit zijn te veel attributen");
+        RuleFor(x => x.Price).NotEmpty().WithMessage("De prijs mag niet leeg zijn")
+          .InclusiveBetween(0, 5000).WithMessage("De prijs moet een getal tussen 0 en 5000 zijn");
+        RuleFor(x => x.Stock).NotEmpty().WithMessage("De voorraad mag niet leeg zijn")
+          .InclusiveBetween(1, 1000).WithMessage("De voorraad moet een getal tussen 1 en 1000 zijn");
         
       }
 

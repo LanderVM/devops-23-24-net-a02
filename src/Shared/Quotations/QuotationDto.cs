@@ -23,6 +23,48 @@ public static class QuotationDto
     public DateTime StartTime { get; set; }
     public DateTime EndTime { get; set; }
   }
+
+  public class Estimate
+  {
+    public int FormulaId { get; set; }
+    public List<int>? EquipmentIds { get; set; } = default!;
+    public long StartTime { get; set; }
+    public long EndTime { get; set; }
+    public int EstimatedNumberOfPeople { get; set; }
+    public bool IsTripelBier { get; set; } = false;
+
+    public class Validator : AbstractValidator<Estimate>
+    {
+      public Validator()
+      {
+        RuleFor(model => model.FormulaId).NotEmpty().WithMessage("Formule id mag niet leeg zijn!");
+        RuleFor(model => model.FormulaId).Must(id => id >= 1).WithMessage("Formule id moet een positief getal zijn!");
+        RuleFor(model => model.StartTime).NotEmpty();
+        RuleFor(model => model.EndTime).NotEmpty();
+        RuleFor(model => new { model.StartTime, model.EndTime })
+          .Must(model => (model.EndTime - model.StartTime) >= 0)
+          .WithMessage("De begin tijd kan niet starten achter de eind tijd!");
+        RuleFor(model => model.IsTripelBier).Must(IsTripelBier => IsTripelBier == false || IsTripelBier == true).WithMessage("De keuze voor tripel bier moet aangevuld zijn!");
+        RuleFor(model => model.EstimatedNumberOfPeople).GreaterThan(0).WithMessage("Het verwacht aantal personen kan niet minder dan 0 zijn!");
+      }
+    }
+  }
+
+  public class Edit
+  {
+    public string? Opmerking { get; set; } = default!;
+    public QuotationStatus Status { get; set; }
+    public List<EquipmentDto.Lines>? EquipmentList { get; set; } = default!;
+
+    public class Validator : AbstractValidator<Edit>
+    {
+      public Validator()
+      {
+        RuleFor(model => model.Status).NotEmpty().WithMessage("Geef een geldige status!");   
+      }
+    }
+  }
+
   public class Create
   {
     public int FormulaId { get; set; }
@@ -32,7 +74,7 @@ public static class QuotationDto
     
     public List<EquipmentDto.Lines> Equipments { get; set; }
     public CustomerDto.Create Customer { get; set; }
-    public bool IsTripelBier { get; set; }
+    public bool IsTripelBier { get; set; } = default!;
     
     public int NumberOfPeople { get; set; }
   }
@@ -41,17 +83,16 @@ public static class QuotationDto
   {
     public Validator()
     {
-      RuleFor(model => model.FormulaId).NotEmpty();
-      RuleFor(model => model.FormulaId).Must(id => id >= 1).WithMessage("Formula id must be a positive id!");
+      RuleFor(model => model.FormulaId).NotEmpty().WithMessage("Formule id mag niet leeg zijn!");
+      RuleFor(model => model.FormulaId).Must(id => id >= 1).WithMessage("Formule id moet een positief getal zijn!");
       RuleFor(model => model.EventLocation).NotEmpty();
-      RuleFor(model => model.StartTime).NotEmpty();
-      RuleFor(model => model.EndTime).NotEmpty();
-     RuleFor(model => new { model.StartTime, model.EndTime })
+      RuleFor(model => model.StartTime).NotEmpty().WithMessage(model => "Gelieve een startdatum in te vullen"); 
+      RuleFor(model => model.EndTime).NotEmpty().WithMessage(model => "Gelieve een einddatum in te vullen");
+      RuleFor(model => new { model.StartTime, model.EndTime })
         .Must(model => (model.EndTime - model.StartTime).TotalSeconds > 0)
         .WithMessage("End time cannot be before start time!");
-     RuleFor(model => model.Customer).NotEmpty();
-     //RuleFor(model => model.Customer).SetValidator(new CustomerDto.Validator());
-     //RuleFor(model => model.IsTripelBier).NotEmpty(); TODO
+      RuleFor(model => model.Customer).NotEmpty();
+    
     }
   }
 }

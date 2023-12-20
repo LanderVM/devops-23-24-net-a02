@@ -1,16 +1,15 @@
 ﻿using devops_23_24_net_a02.Shared.Emails;
 using Domain.Common;
 using Domain.Customers;
+using Domain.Exceptions;
 using Domain.Formulas;
 using Domain.Quotations;
 using Microsoft.EntityFrameworkCore;
-using shared.Equipment;
-using shared.Formulas;
 using Shared.Common;
 using Shared.Customer;
+using shared.Equipment;
+using shared.Formulas;
 using shared.Quotations;
-using Domain.Exceptions;
-
 
 namespace Api.Data.Services.Quotations;
 
@@ -119,8 +118,8 @@ public class QuotationService : IQuotationService
       quotationLines,
       model.StartTime,
       model.EndTime,
-      model.IsTripelBier,
-      model.NumberOfPeople
+      model.NumberOfPeople,
+      model.IsTripelBier
      );
 
     _dbContext.Quotations.Add(quotation);
@@ -128,7 +127,6 @@ public class QuotationService : IQuotationService
     QuotationResult.Create result = new QuotationResult.Create
     {
       QuotationId = quotation.Id,
-      FormulaId = quotation.FormulaId,
       EventLocation = new AddressDto
       {
         Street = quotation.EventLocation.Street,
@@ -222,8 +220,8 @@ public class QuotationService : IQuotationService
     IEnumerable<DateDto> unavailableDates = await queryDates.OrderBy(x => x.StartTime).Select(
       x => new DateDto
       {
-        StartTime = x.StartTime.Ticks,
-        EndTime = x.EndTime.Ticks
+        StartTime = x.StartTime.ToUniversalTime(),
+        EndTime = x.EndTime.ToUniversalTime()
       }
       ).ToListAsync();
 
@@ -237,10 +235,8 @@ public class QuotationService : IQuotationService
     return result;
   }
 
-  public async Task<decimal> GetPriceEstimationPrice(QuotationResponse.Estimate model)
+  public async Task<QuotationResult.Calculation> GetPriceEstimationPrice(QuotationDto.Estimate model)
   {
-    decimal totalPrice = 0;
-
     Formula? chosenFormula = _dbContext.Formulas.FirstOrDefault(formula => formula.Id == model.FormulaId);
     if (chosenFormula is null)
       throw new EntityNotFoundException(nameof(Formula),model.FormulaId);
@@ -269,8 +265,80 @@ public class QuotationService : IQuotationService
       equipmentList.Add(equipment);
     }
 
-    Quotation quotation = new Quotation(new Formula(equipmentList), chosenFormula.Id, new DateTime(model.StartTime), new DateTime(model.EndTime), model.EstimatedNumberOfPeople, model.IsTripelBier);
-    return quotation.GetEstimatedPrice();
+    chosenFormula.Equipment.AddRange(equipmentList);
+
+    Quotation quotation = new Quotation(chosenFormula, new DateTime(model.StartTime), new DateTime(model.EndTime), model.EstimatedNumberOfPeople, model.IsTripelBier);
+    return new QuotationResult.Calculation { EstimatedPrice = quotation.GetEstimatedPriceRounded() };
   }
-  
+
+  public async Task<QuotationResponse.Create> UpdateAsync(int QuotationId, QuotationDto.Edit model)
+  {
+    var quotation = _dbContext.Quotations
+      .Include(quotation => quotation.QuotationLines)
+      .Include(quotation => quotation.OrderedBy).ThenInclude(customer => customer.Email)
+      .Include(quotation => quotation.Formula)
+      .FirstOrDefault(quotation => quotation.Id == QuotationId);
+    if (quotation is null)
+    {
+      throw new Exception($"No quotation found with Id: {QuotationId}");
+    }
+
+    var quotationLines = new List<QuotationLine>();
+    foreach (var lines in model.EquipmentList)
+    {
+      var equipment = _dbContext.Equipments.FirstOrDefault(equipment => equipment.Id == lines.EquipmentId);
+      if (equipment is not null)
+      {
+        quotationLines.Add(new QuotationLine(equipment, lines.Amount));
+      }
+    }
+    quotation.QuotationLines = quotationLines;
+    quotation.Status = model.Status;
+    quotation.Opmerking = model.Opmerking;
+
+    await _dbContext.SaveChangesAsync();
+
+    QuotationResponse.Create result = new QuotationResponse.Create
+    {
+      QuotationId = QuotationId,
+      FormulaId = quotation.Formula.Id,
+      EndTime = quotation.EndTime,
+      StartTime = quotation.StartTime,
+      Equipments = model.EquipmentList
+        .Select(line => new EquipmentDto.Lines
+        {
+          EquipmentId = line.EquipmentId,
+          Amount = line.Amount
+        }).ToList(),
+      EventLocation = new AddressDto
+      {
+        City = quotation.EventLocation.City,
+        HouseNumber = quotation.EventLocation.HouseNumber,
+        PostalCode = quotation.EventLocation.PostalCode,
+        Street = quotation.EventLocation.Street
+      },
+      Customer = new CustomerDto.Details
+      {
+        Id = quotation.OrderedBy.Id,
+        FirstName = quotation.OrderedBy.FirstName,
+        LastName = quotation.OrderedBy.LastName,
+        Email = new EmailDto.Create { Email = quotation.OrderedBy.Email.Value },
+        PhoneNumber = quotation.OrderedBy.PhoneNumber.Value,
+        VatNumber = quotation.OrderedBy.VatNumber,
+        BillingAddress = new AddressDto
+        {
+          Street = quotation.OrderedBy.BillingAddress.Street,
+          HouseNumber = quotation.OrderedBy.BillingAddress.HouseNumber,
+          City = quotation.OrderedBy.BillingAddress.City,
+          PostalCode = quotation.OrderedBy.BillingAddress.PostalCode,
+        }
+      },
+      IsTripelBier = quotation.IsTripelBier,
+      NumberOfPeople = quotation.NumberOfPeople,
+      Opmerking = quotation.Opmerking,
+      Status = quotation.Status
+    };
+
+    return result;
+  }
 }

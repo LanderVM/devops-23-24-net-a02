@@ -1,4 +1,5 @@
 ﻿@using shared.Equipment
+@using shared.GoogleMaps
 @inject ExtraMaterialState ExtraMaterialState
 @inject EventDetailsState EventDetailsState
 @inject FormulaState FormulaState
@@ -151,19 +152,17 @@
         }
         <MudItem lg="8" md="4" sm="4" xs="3">
             <MudText Class="ml-6 mb-n4 mt-n4">
-                Vervoerskosten
+                Vervoerskosten(Onder 20km geen kosten)
             </MudText>
         </MudItem>
         <MudItem lg="1" md="2" sm="2" xs="2">
             <MudText Class="ml-4 mb-n4 mt-n4">
-                23
-                @* @DistanceInKilometer*@
+                @AmountOfKilometers
             </MudText>
         </MudItem>
         <MudItem lg="1" md="2" sm="2" xs="2">
             <MudText Class="mb-n4 mt-n4">
-                €0.75
-                @* @PricePerKilometer*@
+                @PricePerKilometer
             </MudText>
         </MudItem>
         <MudItem lg="1" md="2" sm="2" xs="2">
@@ -173,8 +172,7 @@
         </MudItem>
         <MudItem lg="1" md="2" sm="2" xs="3">
             <MudText Class="mr-6 mb-n4 mt-n4">
-                €2.25
-                @* @((@DistanceInKilometer * @PricePerKilometer)*1.21M)*@
+                @((@CalculatePriceOfDistance()) * 1.21M)
             </MudText>
         </MudItem>
         <MudItem xs="12">
@@ -227,30 +225,42 @@
 
 
 @code {
-    [Inject] public IEquipmentService EquipmentService { get; set; } = default!;
+        [Inject] public IEquipmentService EquipmentService { get; set; } = default!;
+        [Inject] public IGoogleMapsService GoogleMapsService { get; set; } = default!;
 
-    [Parameter, EditorRequired]
-    public string Title { get; set; }
-    [Parameter, EditorRequired]
-    public decimal PriceFormula { get; set; }
-    [Parameter]
-    public decimal PricePerKilometer { get; set; }
-    [Parameter]
-    public decimal AmountOfKilometers { get; set; }
-    [Parameter, EditorRequired]
-    public decimal TotalWithoutBtw { get; set; }
-    [Parameter, EditorRequired]
-    public decimal BtwOnTotal { get; set; }
-    [Parameter, EditorRequired]
-    public decimal TotalWithBtw { get; set; }
-   
+        [Parameter, EditorRequired]
+        public string Title { get; set; }
+        [Parameter, EditorRequired]
+        public decimal PriceFormula { get; set; }
+        [Parameter, EditorRequired]
+        public decimal TotalWithoutBtw { get; set; }
+        [Parameter, EditorRequired]
+        public decimal BtwOnTotal { get; set; }
+        [Parameter, EditorRequired]
+        public decimal TotalWithBtw { get; set; }
+
     private IEnumerable<EquipmentDto.Index>? Extras = default!;
+    private decimal? AmountOfKilometers { get; set; } = default!;
+    private decimal? PricePerKilometer { get; set; } = default!;
 
     protected override async Task OnInitializedAsync()
     {
         EquipmentResult.Index response = await EquipmentService.GetIndexAsync();
 
-        Extras = response.Equipment;
+        GoogleMapsDto.Response distanceResponse = await GoogleMapsService.GetDistanceAsync(EventDetailsState.FormattedAddress);
 
+        PricePerKilometer = distanceResponse.PricePerKm;
+        AmountOfKilometers = distanceResponse.DistanceAmount;
+        Extras = response.Equipment;
+    }
+
+    private decimal? CalculatePriceOfDistance()
+    {
+        if (AmountOfKilometers <= 20)
+        {
+            return 0;
+        }
+
+        return (AmountOfKilometers - 20) * PricePerKilometer;
     }
 }
