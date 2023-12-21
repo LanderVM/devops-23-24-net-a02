@@ -17,7 +17,7 @@ public class GoogleMapsService : IGoogleMapsService
 
   public async Task<GoogleMapsDto.Response> GetDistanceAsync(string request)
   {
-    var response = await client.GetFromJsonAsync<GoogleMapsDto.Response>($"{endpoint}/DistanctePrice?address={request}");
+    var response = await client.GetFromJsonAsync<GoogleMapsDto.Response>($"{endpoint}/PriceDistance?address={request}");
     return response;
   }
 }

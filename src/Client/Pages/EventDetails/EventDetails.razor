@@ -206,11 +206,6 @@
                 var postalCode = postalCodeCity[0];
                 var city = string.Join(" ", postalCodeCity.Skip(1));
 
-                if (!string.IsNullOrEmpty(houseNumber) && !char.IsDigit(houseNumber[0]))
-                {
-                    hasValidAdress = false;
-                }
-
                 EventDetailsState.EventAddress = new AddressDto
                 {
                     Street = street,
