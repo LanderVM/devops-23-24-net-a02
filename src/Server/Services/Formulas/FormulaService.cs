@@ -52,6 +52,7 @@ public class FormulaService: IFormulaService
     if (formula is null)
       throw new Exception($"formula with id: {formulaId} not found");
     
+    
     string attributes = string.Join("\n", formula.Description.Attributes);
     string basePrice = string.Join("\n", formula.BasePrice);
     
@@ -60,7 +61,12 @@ public class FormulaService: IFormulaService
       Attributes = attributes,
       PricePerDayExtra = formula.PricePerDayExtra,
       BasePrice= basePrice,
-      IsActive = formula.IsActive
+      IsActive = formula.IsActive,
+      ImageData = new FormulaDto.ImageData
+      {
+        ImageUrl = "https://via.placeholder.com/350x300",
+        AltText = "placeholder txt",
+      }
     };
 
     return mutate;
@@ -75,30 +81,28 @@ public class FormulaService: IFormulaService
       throw new Exception($"Equipment with id: {formulaId} doesn't exist");
     }
 
-    Image? image = null;
-    if (model.ImageContentType is not null)
-    {
-      image = new Image(_storageService.BasePath, model.ImageContentType);
-    }
+    Image image = new Image(_storageService.BasePath, model.ImageContentType!);
+    
 
     formula.Description = new Description(model.Title, model.Attributes.Split('\n').ToList());
     formula.BasePrice = model.BasePrice.Split('\n').Select(decimal.Parse).ToList();
     formula.PricePerDayExtra = model.PricePerDayExtra;
     formula.IsActive = model.IsActive;
-    formula.ImageUrl = image?.FileUri.ToString() ?? "https://a2blanchestorage.blob.core.windows.net/images/SfeerFoto1.jpg";
-
+    formula.ImageUrl = image.FileUri.ToString();
+    
     await _dbContext.SaveChangesAsync();
 
+    Uri uploadSas = _storageService.GenerateImageUploadSas(image);
+    
     FormulaResult.Edit result = new FormulaResult.Edit
     {
       Id = formula.Id,
-      Image = image is not null
-            ? new ImageData
+      Image =  new ImageData
             {
-              ImageUrl = _storageService.GenerateImageUploadSas(image).ToString(),
+              ImageUrl = uploadSas.ToString(),
               AltText = formula.Description.Title
             }
-            : null
+            
     };
 
     return result;
