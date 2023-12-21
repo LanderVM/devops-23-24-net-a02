@@ -5,6 +5,7 @@ using Domain.Exceptions;
 using Domain.Formulas;
 using Domain.Quotations;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Shared.Common;
 using shared.Common;
 using Shared.Customer;
@@ -89,7 +90,7 @@ public class QuotationService : IQuotationService
           model.Customer.BillingAddress.City,
           model.Customer.BillingAddress.PostalCode),
         new PhoneNumber(model.Customer.PhoneNumber),
-        model.Customer.VatNumber is null ? null : new VatNumber(model.Customer.VatNumber));
+        model.Customer.VatNumber.IsNullOrEmpty() ? null : new VatNumber(model.Customer.VatNumber!));
       _dbContext.Customers.Add(customer);
     }
     
