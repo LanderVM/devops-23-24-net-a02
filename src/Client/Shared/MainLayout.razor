@@ -1,5 +1,6 @@
 @inherits LayoutComponentBase
 @using devops_23_24_net_a02.Client.Pages.NavBar
+
 @inject NavigationManager MyNavigationManager
 
 <MudThemeProvider Theme="MainTheme" DefaultScrollbar="true" />
@@ -13,7 +14,20 @@
     <MudLayout Style="display: flex; flex-direction: column; min-height: 100vh;">
         <MudMainContent Style="padding-top: 0px; flex-grow: 1;">
             <NavBarHome />
-            @Body
+            <CustomErrorBoundary @ref="@errorBoundary" Context="Exception">
+                <ChildContent>
+                    @Body
+                </ChildContent>
+                <ErrorContent>
+                    <MudAlert Severity="Severity.Error"
+                              ContentAlignment="HorizontalAlignment.Right"
+                              ShowCloseIcon="true"
+                              CloseIconClicked="ResetError">
+                        Er ging iets mis!
+                    </MudAlert>
+                    @Body
+                </ErrorContent>
+            </CustomErrorBoundary>
         </MudMainContent>
         <Footer />
     </MudLayout>
@@ -25,7 +39,20 @@ else
             <NavBar />
         </MudAppBar>
         <MudMainContent Style="flex-grow: 1;">
-            @Body
+            <CustomErrorBoundary @ref="@errorBoundary" Context="Exception">
+                <ChildContent>
+                    @Body
+                </ChildContent>
+                <ErrorContent>
+                        <MudAlert Severity="Severity.Error"
+                              ContentAlignment="HorizontalAlignment.Start"
+                              ShowCloseIcon="true"
+                              CloseIconClicked="ResetError"
+                              Class="ma-16">
+                            @Exception.Message
+                        </MudAlert>
+                </ErrorContent> 
+            </CustomErrorBoundary>
         </MudMainContent>
         <Footer />
     </MudLayout>
@@ -33,6 +60,24 @@ else
 
 
 @code {
+    private ErrorBoundary errorBoundary = default!;
+     
+    protected override void OnInitialized()
+    {
+        MyNavigationManager.LocationChanged += OnLocationChanged;
+    }
+
+    private void OnLocationChanged(object sender, LocationChangedEventArgs args)
+    {
+        // Reset the error when the page changes
+        ResetError();
+    }
+
+    private void ResetError()
+    {
+        errorBoundary.Recover();
+    }
+
     bool onHomePage => MyNavigationManager.Uri == MyNavigationManager.BaseUri || MyNavigationManager.Uri.StartsWith(MyNavigationManager.BaseUri + "#");
     MudTheme MainTheme = new MudTheme()
         {
