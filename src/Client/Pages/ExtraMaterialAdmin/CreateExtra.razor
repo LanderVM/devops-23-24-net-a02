@@ -15,7 +15,9 @@
                       For="@(() => CreateEquipment.Title)"
                       Immediate="true"
                       Label="Titel"
-                      Variant="Variant.Outlined" />
+                      Variant="Variant.Outlined" 
+                      data-test-id="admin-extra-create-title"
+                      />
 
 
         <MudNumericField @bind-Value="CreateEquipment.Price"
@@ -24,7 +26,8 @@
                          For="@(() => CreateEquipment.Price)"
                          Variant="Variant.Outlined"
                          Step="0.01M"
-                         Min="0.0M" />
+                         Min="0.0M"
+                         data-test-id="admin-extra-create-price" />
 
         <MudNumericField @bind-Value="CreateEquipment.Stock"
                          Class="mt-3"
@@ -32,7 +35,8 @@
                          For="@(() => CreateEquipment.Stock)"
                          Variant="Variant.Outlined"
                          Step="1"
-                         Min="0" />
+                         Min="0" 
+                         data-test-id="admin-extra-create-stock" />
 
         <MudText Class="mt-5 mb-1" Typo="Typo.body2">Onderscheid je attributen in de text met een ";"</MudText>
 
@@ -41,7 +45,7 @@
                       Label="Attributen"
                       Variant="Variant.Outlined" 
                       Lines="3"
-                      />
+                      data-test-id="admin-extra-create-attributes" />
 
         <MudCheckBox @bind-Checked="@CreateEquipment.IsActive"
                      For="@(() => CreateEquipment.IsActive)"
@@ -100,7 +104,7 @@
 
             </MudItem>
             <MudItem xs="5">
-                <MudButton Class="mr-1" Variant="Variant.Filled" FullWidth="true" Color="Color.Primary" ButtonType="ButtonType.Submit">Voeg Item toe</MudButton>
+                <MudButton Class="mr-1" Variant="Variant.Filled" FullWidth="true" Color="Color.Primary" ButtonType="ButtonType.Submit" data-test-id="admin-extra-create-createbutton">Voeg Item toe</MudButton>
             </MudItem>
             <MudItem xs="5">
                 <MudButton Class="ml-1" Variant="Variant.Filled" FullWidth="true" Color="Color.Primary" OnClick="Close">Annuleren</MudButton>

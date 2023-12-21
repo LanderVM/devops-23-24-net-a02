@@ -8,7 +8,7 @@
         <MudLink @onclick="BeginSignOut" Typo="Typo.subtitle1" Color="Color.Dark" Style="margin-right: 4vw">Log Out</MudLink>
     </Authorized>
     <NotAuthorized>
-        <MudLink Typo="Typo.subtitle1" Color="Color.Dark" Href="authentication/login" Style="margin-right: 4vw">Admin</MudLink>
+        <MudLink Typo="Typo.subtitle1" Color="Color.Dark" Href="authentication/login" Style="margin-right: 4vw" data-test-id="admin-button">Admin</MudLink>
     </NotAuthorized>
 </AuthorizeView>
 

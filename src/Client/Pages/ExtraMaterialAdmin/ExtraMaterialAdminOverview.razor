@@ -13,13 +13,13 @@
             <MudText Class="mt-6" Typo="Typo.h4">Overzicht extra materiaal</MudText>
         </MudItem>
         <MudItem lg="4" md="4" sm="12" xs="12">
-            <MudButton OnClick="AddItem" Class="mb-6 mt-7" Variant="Variant.Filled" Color="Color.Primary">Extra item toevoegen</MudButton>
+            <MudButton OnClick="AddItem" Class="mb-6 mt-7" Variant="Variant.Filled" Color="Color.Primary" data-test-id="extras-admin-create-button">Extra item toevoegen</MudButton>
         </MudItem>
         <MudItem lg="3" md="2" sm="12" xs="12">
 
         </MudItem>
         <MudItem lg="10" md="12" sm="12" xs="12">
-            <MudGrid>
+            <MudGrid data-test-id="extras-admin-card-overview">
                 <Loader IsLoading=@(Extras == null)>
 
                     @foreach (EquipmentDto.Index item in Extras)

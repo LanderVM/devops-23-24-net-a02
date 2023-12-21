@@ -6,7 +6,7 @@
 
 <PageTitle>Offertes Overzicht</PageTitle>
 <MudContainer Fixed="true" Class="mt-16 mb-16">
-    <MudDataGrid Items="@Quotations" Filterable="false" SortMode="@SortMode.None" Groupable="false">
+    <MudDataGrid Items="@Quotations" Filterable="false" SortMode="@SortMode.None" Groupable="false" data-test-id="admin-quotations-grid">
         <Columns>
             <PropertyColumn Property="x => x.Customer.FirstName" Title="Voornaam"/>
             <PropertyColumn Property="x => x.Customer.LastName"  Title="Naam"/>

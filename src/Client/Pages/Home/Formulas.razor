@@ -3,13 +3,13 @@
 @inject FormulaState FormulaState
 
 <MudContainer MaxWidth="MaxWidth.Large" id="cards">
-    <MudGrid Justify="Justify.SpaceEvenly" Spacing="6">
+    <MudGrid Justify="Justify.SpaceEvenly" Spacing="6" data-test-id="home-cards-overview">
         <Loader IsLoading=@(FormulasList == null)>
             @foreach (FormulaDto.Index item in FormulasList)
             {
                 if (item.IsActive)
                 {
-                    <MudItem lg="3" md="3" sm="6" xs="12" Class="mudItem">
+                    <MudItem lg="3" md="3" sm="6" xs="12" Class="mudItem" data-test-id="home-formula-card">
                         <MudLink OnClick="@(() =>{ FormulaState.ChosenFormulaId = item.Id; FormulaState.Title = item.Title; FormulaState.Attributes = item.Attributes; FormulaState.PricePerDayExtra = item.PricePerDayExtra; FormulaState.BasePrice = item.BasePrice; NavigateToEventdetails(); })" Underline="Underline.None">
                             <MudCard Style="border: 1px solid #C8A86E">
                                 <MudCardMedia Image="@item.ImageUrl" Height="200" />
