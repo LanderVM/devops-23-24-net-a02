@@ -11,10 +11,10 @@ public class CustomErrorBoundary : ErrorBoundary
 
   protected override Task OnErrorAsync(Exception ex)
   {
-    if (Environment.IsProduction())
-    {
+    /*if (Environment.IsDevelopment())
+    {  
       return base.OnErrorAsync(ex);
-    } 
+    }*/ 
     return Task.CompletedTask;
   }
 }
