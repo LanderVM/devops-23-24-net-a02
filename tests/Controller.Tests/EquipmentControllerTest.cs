@@ -15,7 +15,7 @@ public class EquipmentControllerTest
 {
 
   [Fact]
-  public async Task Index_ReturnsAViewResult_WithAListOfBrainstormSessions()
+  public async Task GetAllActiveEquipmpent_ReturnsTheRightEquipment()
   {
     // Arrange
     using var loggerFactory = LoggerFactory.Create(loggingBuilder => loggingBuilder
@@ -24,8 +24,8 @@ public class EquipmentControllerTest
 
     ILogger<EquipmentController> logger = loggerFactory.CreateLogger<EquipmentController>();
 
-    var mockRepo = new Mock<IEquipmentService>();
-    mockRepo.Setup(repo => repo.GetActiveEquipmentAsync())
+    var mockService = new Mock<IEquipmentService>();
+    mockService.Setup(service => service.GetActiveEquipmentAsync())
         .ReturnsAsync(new EquipmentResult.ActiveEquipment
         {
           Equipment = new List<EquipmentDto.Index> { new EquipmentDto.Index {
@@ -53,7 +53,7 @@ public class EquipmentControllerTest
         },
           TotalAmount = 2
         });
-    var controller = new EquipmentController(logger, mockRepo.Object);
+    var controller = new EquipmentController(logger, mockService.Object);
 
     // Act
     var result = await controller.GetActiveEquipment();
@@ -71,6 +71,36 @@ public class EquipmentControllerTest
     anEquipment.Price.ShouldBe(3.33M);
     anEquipment.Stock.ShouldBe(3);
     anEquipment.Attributes.ShouldBe(new List<String> { "Zeep", "Badeendje" });
-    
+  }
+
+  [Fact]
+  public async Task PostAnEquipmentWithoutImage_CheckWetherServiceMethodIsCalled() {
+    using var loggerFactory = LoggerFactory.Create(loggingBuilder => loggingBuilder
+        .SetMinimumLevel(LogLevel.Trace)
+        .AddConsole());
+
+    ILogger<EquipmentController> logger = loggerFactory.CreateLogger<EquipmentController>();
+
+    var mockService = new Mock<IEquipmentService>();
+    mockService.Setup(service => service.CreateAsync(It.IsAny<EquipmentDto.Create>()))
+        .ReturnsAsync(new EquipmentResult.Create { Id = 5 })
+        .Verifiable();
+
+    var controller = new EquipmentController(logger, mockService.Object);
+
+    var result = await controller.Create(new EquipmentDto.Create{
+      Title = "Barbeque set",
+      Price = 5.55M,
+      Stock = 5,
+      Attributes = "Tang,Kolen",
+      ImageContentType = null,
+      IsActive = true,
+    });
+
+    EquipmentResult.Create viewResult = Assert.IsType<EquipmentResult.Create>(result);
+
+    viewResult.Id.ShouldBe(5);
+
+    mockService.Verify();
   }
 }
