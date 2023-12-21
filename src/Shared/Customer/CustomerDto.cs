@@ -1,4 +1,5 @@
 ﻿
+using System.Text.RegularExpressions;
 using devops_23_24_net_a02.Shared.Emails;
 using FluentValidation;
 using Shared.Common;
@@ -51,10 +52,12 @@ public static class CustomerDto
           .Matches("0[1-9][0-9]{8}").MaximumLength(10).WithMessage(model => "Gelieve een geldig telefoonnummer, zonder spaties, in te voeren!");
         When(model => !string.IsNullOrEmpty(model.VatNumber), () =>
         {
-          RuleFor(model => model.VatNumber).Matches("[B][E][0-9]+").WithMessage(model =>"De eerste twee letters van het btw-nummer moeten uw landcode zijn, daarna moeten er cijfers volgen!").MaximumLength(200);
+          RuleFor(model => model.VatNumber)
+            .Matches("^BE[01][0-9]{9}$")
+            .WithMessage(model =>"De eerste twee letters van het btw-nummer moeten de Belgische landcode BE zijn gevolgd door het cijfer 0 of 1, daarna moeten er 9 cijfers volgen!").MaximumLength(200);
         });
       }
     }
   }
-
 }
+

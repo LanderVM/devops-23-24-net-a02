@@ -88,7 +88,7 @@ public class QuotationService : IQuotationService
           model.Customer.BillingAddress.City,
           model.Customer.BillingAddress.PostalCode),
         new PhoneNumber(model.Customer.PhoneNumber),
-        model.Customer.VatNumber);
+        model.Customer.VatNumber is null ? null : new VatNumber(model.Customer.VatNumber));
       _dbContext.Customers.Add(customer);
     }
     
@@ -145,7 +145,7 @@ public class QuotationService : IQuotationService
         LastName = quotation.OrderedBy.LastName,
         Email = new EmailDto.Create { Email = quotation.OrderedBy.Email.Value },
         PhoneNumber = quotation.OrderedBy.PhoneNumber.Value,
-        VatNumber = quotation.OrderedBy.VatNumber,
+        VatNumber = quotation.OrderedBy.VatNumber?.Value,
         BillingAddress = new AddressDto
         {
           Street = quotation.OrderedBy.BillingAddress.Street,
@@ -184,7 +184,7 @@ public class QuotationService : IQuotationService
            && customerFromDb.LastName == model.Customer.LastName
            && customerFromDb.Email.Value == model.Customer.Email.Email
            && customerFromDb.PhoneNumber.Value == model.Customer.PhoneNumber
-           && customerFromDb.VatNumber == model.Customer.VatNumber
+           && customerFromDb.VatNumber?.Value == model.Customer.VatNumber
            && customerFromDb.BillingAddress.Street == model.Customer.BillingAddress.Street
            && customerFromDb.BillingAddress.HouseNumber == model.Customer.BillingAddress.HouseNumber
            && customerFromDb.BillingAddress.PostalCode == model.Customer.BillingAddress.PostalCode
@@ -276,7 +276,10 @@ public class QuotationService : IQuotationService
     var quotation = _dbContext.Quotations
       .Include(quotation => quotation.QuotationLines)
       .Include(quotation => quotation.OrderedBy).ThenInclude(customer => customer.Email)
-      .Include(quotation => quotation.Formula)
+      .Include(quotation => quotation.Formula).Include(quotation => quotation.OrderedBy)
+      .ThenInclude(customer => customer.VatNumber).Include(quotation => quotation.OrderedBy)
+      .ThenInclude(customer => customer.PhoneNumber).Include(quotation => quotation.OrderedBy)
+      .ThenInclude(customer => customer.BillingAddress).Include(quotation => quotation.EventLocation)
       .FirstOrDefault(quotation => quotation.Id == QuotationId);
     if (quotation is null)
     {
@@ -324,7 +327,7 @@ public class QuotationService : IQuotationService
         LastName = quotation.OrderedBy.LastName,
         Email = new EmailDto.Create { Email = quotation.OrderedBy.Email.Value },
         PhoneNumber = quotation.OrderedBy.PhoneNumber.Value,
-        VatNumber = quotation.OrderedBy.VatNumber,
+        VatNumber = quotation.OrderedBy.VatNumber?.Value,
         BillingAddress = new AddressDto
         {
           Street = quotation.OrderedBy.BillingAddress.Street,

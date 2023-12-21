@@ -24,5 +24,8 @@ public class CustomerConfiguration : EntityConfiguration<Customer>
     builder.OwnsOne(c => c.PhoneNumber)
       .Property(p => p.Value)
       .IsRequired();
+    builder.OwnsOne(c => c.VatNumber)
+      .Property(vat => vat.Value)
+      .HasColumnName("VatNumber");
   }
 }

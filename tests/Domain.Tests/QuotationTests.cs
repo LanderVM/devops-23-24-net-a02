@@ -23,7 +23,7 @@ public class QuotationTests
     _equipment = new();
     _formula = new Formula(_equipment, title, description);
     _customer = new Customer("Jan", "Peeters", new Email("JanPeeters@gmail.com"),
-      new BillingAddress("Straat", "01", "Zottegem", "9620"), new PhoneNumber("0479254691"), "BE123");
+      new BillingAddress("Straat", "01", "Zottegem", "9620"), new PhoneNumber("0479254691"), new VatNumber("BE1000000000"));
     _eventLocation = new EventLocation("Straat", "01", "Zottegem", "9620");
     _quotationLines = new();
   }

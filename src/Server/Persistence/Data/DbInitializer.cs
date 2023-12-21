@@ -63,7 +63,7 @@ public static class DbInitializer
 
     // Customers
     var cust1 = new Customer("Bert", "de Backer", new Email("bert.debacker@gmail.com"),
-      new BillingAddress("Rue de Bouillon", "52", "Grimbergen", "1850"), new PhoneNumber("0486980477"), "BE123");
+      new BillingAddress("Rue de Bouillon", "52", "Grimbergen", "1850"), new PhoneNumber("0486980477"), new VatNumber("BE1232323232"));
     var cust2 = new Customer("Frederick", "Honderdpoot", new Email("f.honderdpoot@outlook.be"),
       new BillingAddress("Korte Noordsstraat", "292", "Uitkerke", "8370"), new PhoneNumber("0479894230"), null);
     var customers = new[] { cust1, cust2 };
