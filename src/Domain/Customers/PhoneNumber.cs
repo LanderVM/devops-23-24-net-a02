@@ -26,7 +26,7 @@ public partial class PhoneNumber : ValueObject
     return BelgianPhoneRegex().IsMatch(value);
   }
 
-  [GeneratedRegex(@"^(?:\+32|0)4\d{8}$")]
+  [GeneratedRegex(@"^(\+32\s?|0)4[56789]\d{7}$")]
   private static partial Regex BelgianPhoneRegex();
 
   protected override IEnumerable<object?> GetEqualityComponents()

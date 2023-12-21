@@ -50,7 +50,7 @@ public static class CustomerDto
         RuleFor(model => model.BillingAddress).NotEmpty().SetValidator(new AddressDto.Validator());
         RuleFor(model => model.PhoneNumber)
           .NotEmpty().WithMessage(model => "Gelieve een telefoonnummer in te vullen")
-          .Matches(@"^(?:\+32|0)4\d{8}$").WithMessage("Gelieve een geldig telefoonnummer in te voeren")
+          .Matches(@"^(\+32\s?|0)4[56789]\d{7}$").WithMessage("Gelieve een geldig telefoonnummer in te voeren")
           .MaximumLength(12).WithMessage(model => "Gelieve geen spaties in te voeren");
         When(model => !string.IsNullOrEmpty(model.VatNumber), () =>
         {
