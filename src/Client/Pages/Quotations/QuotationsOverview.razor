@@ -25,7 +25,6 @@
 </MudContainer>
 
 @code {
-
     [Inject]
     public IQuotationService QuotationService { get; set; } = default!;
     
@@ -35,9 +34,6 @@
     {
         QuotationResult.Index response = await QuotationService.GetIndexAsync();
 
-        Quotations = response.Quotation;
-
-       
+        Quotations = response.Quotation;      
     }
-
 }
