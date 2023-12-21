@@ -203,10 +203,10 @@
     {
         if (FormulaState.ChosenFormulaId == null  || PersonalDetailsState.Customer.Email.Email == null || EventDetailsState.FormattedAddress == null || EventDetailsState.dateRange == null)
         {
-            
+
             NavigationManager.NavigateTo("/Event/EventDetails");
             Snackbar.Add("Gelieve de gegevens eerst in te vullen.", Severity.Error);
-            
+
 
         }
         EquipmentResult.Index response = await EquipmentService.GetIndexAsync();
@@ -326,26 +326,10 @@
         return (CalculateTransportCost() * 0.21M) + (GetPriceFormulaWithoutBeerAndBarbeque() * 0.21M) + (GetPriceBeer() * 0.12M) + (GetPriceBarbeque() * 0.12M) + extrasCostBtw;
     }
 
-    public EventLocation ParseAddress(string addressString)
-    {
-        var parts = addressString.Split(',');
-        var streetHouseNumber = parts[0].Trim().Split(' ');
-
-        var street = string.Join(" ", streetHouseNumber.Take(streetHouseNumber.Length - 1));
-        var houseNumber = streetHouseNumber.Last();
-
-        var postalCodeCity = parts[1].Trim().Split(' ');
-        var postalCode = postalCodeCity[0];
-        var city = postalCodeCity.Last();
-
-
-        return new EventLocation(street, houseNumber, city, postalCode);
-    }
-
     private async Task CreateQuotationAsync()
     {
 
-        var eventLocation = ParseAddress(EventDetailsState.FormattedAddress);
+        var eventLocation = EventDetailsState.EventAddress;
         List<EquipmentDto.Lines> equipments = new();
         if (ExtraMaterialState.ExtrasAmount.Count != 0)
         {

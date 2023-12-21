@@ -1,7 +1,7 @@
 ﻿
 using devops_23_24_net_a02.Shared.Emails;
 using FluentValidation;
-using Shared.Common;
+using shared.Common;
 
 namespace Shared.Customer;
 

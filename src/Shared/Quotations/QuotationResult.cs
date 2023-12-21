@@ -1,4 +1,5 @@
-﻿using Shared.Common;
+﻿using shared.Common;
+using Shared.Common;
 using Shared.Customer;
 using shared.Equipment;
 using shared.Formulas;

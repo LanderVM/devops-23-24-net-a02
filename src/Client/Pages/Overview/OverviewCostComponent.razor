@@ -225,19 +225,21 @@
 
 
 @code {
-        [Inject] public IEquipmentService EquipmentService { get; set; } = default!;
-        [Inject] public IGoogleMapsService GoogleMapsService { get; set; } = default!;
+    [Inject] 
+    public IEquipmentService EquipmentService { get; set; } = default!;
+    [Inject] 
+    public IGoogleMapsService GoogleMapsService { get; set; } = default!;
 
-        [Parameter, EditorRequired]
-        public string Title { get; set; }
-        [Parameter, EditorRequired]
-        public decimal PriceFormula { get; set; }
-        [Parameter, EditorRequired]
-        public decimal TotalWithoutBtw { get; set; }
-        [Parameter, EditorRequired]
-        public decimal BtwOnTotal { get; set; }
-        [Parameter, EditorRequired]
-        public decimal TotalWithBtw { get; set; }
+    [Parameter, EditorRequired]
+    public string Title { get; set; }
+    [Parameter, EditorRequired]
+    public decimal PriceFormula { get; set; }
+    [Parameter, EditorRequired]
+    public decimal TotalWithoutBtw { get; set; }
+    [Parameter, EditorRequired]
+    public decimal BtwOnTotal { get; set; }
+    [Parameter, EditorRequired]
+    public decimal TotalWithBtw { get; set; }
 
     private IEnumerable<EquipmentDto.Index>? Extras = default!;
     private decimal? AmountOfKilometers { get; set; } = default!;

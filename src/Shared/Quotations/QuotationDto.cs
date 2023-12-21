@@ -1,9 +1,8 @@
 ﻿using Domain.Quotations;
 using FluentValidation;
-using Shared.Common;
-using Shared.Customer;
 using Shared.Customer;
 using shared.Equipment;
+using shared.Common;
 
 namespace shared.Quotations;
 
