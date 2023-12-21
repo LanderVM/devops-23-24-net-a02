@@ -172,7 +172,7 @@
         </MudItem>
         <MudItem lg="1" md="2" sm="2" xs="3">
             <MudText Class="mr-6 mb-n4 mt-n4">
-                @(Decimal.Round(@CalculatePriceOfDistance() * 1.21M), 2)
+                @decimal.Round(CalculatePriceOfDistance() * 1.21M, 2)
             </MudText>
         </MudItem>
         <MudItem xs="12">

@@ -48,13 +48,15 @@ public static class CustomerDto
           .MaximumLength(200).WithMessage(model => "Gelieve een geldig achternaam in te vullen");
         RuleFor(model => model.Email).NotEmpty().SetValidator(new EmailDto.Create.Validator());
         RuleFor(model => model.BillingAddress).NotEmpty().SetValidator(new AddressDto.Validator());
-        RuleFor(model => model.PhoneNumber).NotEmpty().WithMessage(model => "Gelieve een telefoonnummer in te vullen")
-          .Matches("0[1-9][0-9]{8}").MaximumLength(10).WithMessage(model => "Gelieve een geldig telefoonnummer, zonder spaties, in te voeren!");
+        RuleFor(model => model.PhoneNumber)
+          .NotEmpty().WithMessage(model => "Gelieve een telefoonnummer in te vullen")
+          .Matches(@"^(?:\+32|0)4\d{8}$").WithMessage("Gelieve een geldig telefoonnummer in te voeren")
+          .MaximumLength(12).WithMessage(model => "Gelieve geen spaties in te voeren");
         When(model => !string.IsNullOrEmpty(model.VatNumber), () =>
         {
           RuleFor(model => model.VatNumber)
             .Matches("^BE[01][0-9]{9}$")
-            .WithMessage(model =>"De eerste twee letters van het btw-nummer moeten de Belgische landcode BE zijn gevolgd door het cijfer 0 of 1, daarna moeten er 9 cijfers volgen!").MaximumLength(200);
+            .WithMessage(model =>"De eerste twee letters van het btw-nummer moeten de Belgische landcode BE zijn gevolgd door het cijfer 0 of 1, daarna moeten er 9 cijfers volgen.").MaximumLength(200);
         });
       }
     }
