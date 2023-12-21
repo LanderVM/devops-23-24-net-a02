@@ -16,11 +16,11 @@ public static class CustomerDto
   public class Details
   {
     public int Id { get; set; }
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
+    public string FirstName { get; set; } = default!;
+    public string LastName { get; set; } = default!;
     public EmailDto.Create Email { get; set; }
     public AddressDto BillingAddress { get; set; }
-    public string PhoneNumber { get; set; }
+    public string? PhoneNumber { get; set; }
     public string? VatNumber { get; set; }
   }
   public class Create

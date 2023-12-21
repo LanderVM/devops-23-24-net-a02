@@ -1,0 +1,135 @@
+﻿@using shared.Quotations;
+@using shared.Equipment;
+@using Client.Files;
+@using Microsoft.AspNetCore.Components;
+@using Microsoft.AspNetCore.Components.Forms;
+@using FluentValidation;
+
+<Loader IsLoading=@(loader)>
+    <EditForm Model="@Model" OnValidSubmit="UpdateQuotationAsync">
+    <Blazored.FluentValidation.FluentValidationValidator />
+        <MudPaper Class="pa-5">
+            <MudGrid>
+                <MudItem xs="3">
+                     <MudText><b>Naam:</b></MudText>
+                </MudItem>
+                <MudItem xs="9">
+                     <MudText>@Quotation.Customer.FirstName @Quotation.Customer.LastName</MudText>
+                </MudItem>
+
+                <MudItem xs="3">
+                    <MudText><b>Email:</b></MudText>
+                </MudItem>
+                <MudItem xs="9">
+                    <MudText>@Quotation.Customer.Email.Email</MudText>
+                </MudItem>
+
+                <MudItem xs="3">
+                    <MudText><b>Adres event:</b></MudText>
+                </MudItem>
+                <MudItem xs="9">
+                    <MudText>@Quotation.EventLocation.Street @Quotation.EventLocation.HouseNumber, @Quotation.EventLocation.City @Quotation.EventLocation.PostalCode</MudText>
+                </MudItem>
+
+                <MudItem xs="3">
+                    <MudText><b>Telefoonnummer:</b></MudText>
+                </MudItem>
+                <MudItem xs="9">
+                    <MudText>@Quotation.Customer.PhoneNumber</MudText>
+                </MudItem>
+            </MudGrid>
+
+            <MudDivider Class="my-8" />
+
+            <MudGrid>
+                <MudItem xs="3">
+                    <MudText><b>Formule:</b></MudText>
+                </MudItem>
+                <MudItem xs="9">
+                    <MudText>@Quotation.Formula.Title</MudText>
+                </MudItem>
+
+                <MudItem xs="3">
+                    <MudText><b>Verwacht aantal personen:</b></MudText>
+                </MudItem>
+                <MudItem xs="9">
+                    <MudText>@Quotation.NumberOfPeople</MudText>
+                </MudItem>
+
+                <MudItem xs="3">
+                    <MudText><b>Status:</b></MudText>
+                </MudItem>
+                <MudItem xs="9">
+                    <MudText>@Quotation.Status</MudText>
+                </MudItem>
+            </MudGrid>
+        </MudPaper>
+
+        <MudTextField @bind-Value="Model.Opmerking"
+                      For="@(() => Model.Opmerking)"
+                      Label="Opmerking"
+                      Variant="Variant.Outlined"
+                      Lines="3"
+                      Class="my-8"/>
+
+        <MudGrid>
+            <MudItem xs="6">
+                <MudButton Class="d-flex align-center justify-center mud-width-full py-2" Variant="Variant.Filled" Size="Size.Large" Color="Color.Primary" ButtonType="ButtonType.Submit">
+                    Pas aan
+                </MudButton>
+            </MudItem>
+            <MudItem xs="6">
+                <MudButton Class="d-flex align-center justify-center mud-width-full py-2" Variant="Variant.Filled" Size="Size.Large" Color="Color.Primary" OnClick="Close">
+                    Annuleren
+                </MudButton>
+            </MudItem>
+        </MudGrid>
+    </EditForm>
+</Loader>
+
+
+@code {
+    [Inject]
+    private IQuotationService QuotationService { get; set; } = default!;
+    [Inject] 
+    public ISnackbar Snackbar { get; set; } = default!;
+
+    [Parameter]
+    public EventCallback Close { get; set; } = default!;
+    [Parameter]
+    public EventCallback Refresh { get; set; } = default!;
+    [Parameter]
+    public int QuotationId { get; set; } = default!;
+
+    private QuotationDto.Edit Model { get; set; } = new QuotationDto.Edit();
+    private QuotationDto.DetailEdit Quotation { get; set; } = new QuotationDto.DetailEdit();
+
+    private bool loader = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        loader = true;
+        QuotationResult.DetailEdit response = await QuotationService.GetSpecificDetailEditAsync(QuotationId);
+        Quotation.Formula = response.Quotation.Formula;
+        Quotation.NumberOfPeople = response.Quotation.NumberOfPeople;
+        Quotation.IsTripelBier = response.Quotation.IsTripelBier;
+        Quotation.Customer = response.Quotation.Customer;
+        Quotation.EventLocation = response.Quotation.EventLocation;
+        Quotation.Status = response.Quotation.Status;
+
+        Model.Opmerking = response.Quotation.Opmerking;
+        Model.EquipmentList = response.Quotation.Equipment;
+        Model.Status = response.Quotation.Status;
+        loader = false;
+        StateHasChanged();
+    }
+
+    private async Task UpdateQuotationAsync()
+    {
+        await QuotationService.UpdateAsync(QuotationId, Model);
+        Snackbar.Add("Je offerte werd succesvol verstuurd", MudBlazor.Severity.Success);
+
+        await Close.InvokeAsync();
+        await Refresh.InvokeAsync();
+    }
+}

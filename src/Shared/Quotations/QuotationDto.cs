@@ -4,6 +4,8 @@ using Shared.Common;
 using Shared.Customer;
 using Shared.Customer;
 using shared.Equipment;
+using shared.Formulas;
+using Domain.Common;
 
 namespace shared.Quotations;
 
@@ -17,7 +19,20 @@ public static class QuotationDto
     public String CreatedAt { get; set; }
     
   }
-  
+
+  public class DetailEdit
+  {
+    public int QuotationId { get; set; }
+    public FormulaDto.Select Formula { get; set; } = default!;
+    public CustomerDto.Details Customer { get; set; } = default!;
+    public EventLocation EventLocation { get; set; } = default!;
+    public IEnumerable<EquipmentDto.Lines> Equipment { get; set; } = default!;
+    public bool IsTripelBier { get; set; }
+    public decimal NumberOfPeople { get; set; }
+    public string? Opmerking { get; set; }
+    public QuotationStatus Status { get; set; }
+  }
+
   public class Dates { 
     
     public DateTime StartTime { get; set; }
@@ -54,7 +69,7 @@ public static class QuotationDto
   {
     public string? Opmerking { get; set; } = default!;
     public QuotationStatus Status { get; set; }
-    public List<EquipmentDto.Lines>? EquipmentList { get; set; } = default!;
+    public IEnumerable<EquipmentDto.Lines>? EquipmentList { get; set; } = default!;
 
     public class Validator : AbstractValidator<Edit>
     {

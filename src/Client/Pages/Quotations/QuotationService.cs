@@ -1,6 +1,7 @@
 ﻿using System.Net.Http.Json;
 using System.Text;
 using devops_23_24_net_a02.Client.Extensions;
+using shared.Equipment;
 using shared.Quotations;
 
 namespace devops_23_24_net_a02.Client.Pages.Quotations;
@@ -15,21 +16,21 @@ public class QuotationService : IQuotationService
     this.client = client;
   }
 
-  public async Task<QuotationResult.Create> CreateAsync(QuotationDto.Create model)
-  {
-    var response = await client.PostAsJsonAsync(endpoint,model);
-    return await response.Content.ReadFromJsonAsync<QuotationResult.Create>();
-  }
-
   public async Task<QuotationResult.Index> GetIndexAsync()
   {
     var response = await client.GetFromJsonAsync<QuotationResult.Index>(endpoint);
     return response;
   }
 
+  public async Task<QuotationResult.DetailEdit> GetSpecificDetailEditAsync(int quotationId)
+  {
+    var response = await client.GetFromJsonAsync<QuotationResult.DetailEdit>($"{endpoint}/{quotationId}");
+    return response;
+  }
+
   public async Task<QuotationResult.Detail> GetPriceEstimationDetailsAsync()
   {
-    QuotationResult.Detail response = await client.GetFromJsonAsync<QuotationResult.Detail>($"{endpoint}/Estimation/Details");
+    var response = await client.GetFromJsonAsync<QuotationResult.Detail>($"{endpoint}/Estimation/Details");
     return response;
   }
 
@@ -63,8 +64,15 @@ public class QuotationService : IQuotationService
     return response;
   }
 
-  public Task<QuotationResponse.Create> UpdateAsync(int QuotationId, QuotationDto.Edit model)
+  public async Task<QuotationResult.Create> CreateAsync(QuotationDto.Create model)
   {
-    throw new NotImplementedException();
+    var response = await client.PostAsJsonAsync(endpoint, model);
+    return await response.Content.ReadFromJsonAsync<QuotationResult.Create>();
+  }
+
+  public async Task<QuotationResponse.Create> UpdateAsync(int QuotationId, QuotationDto.Edit model)
+  {
+    var response = await client.PutAsJsonAsync($"{endpoint}/{QuotationId}", model);
+    return await response.Content.ReadFromJsonAsync<QuotationResponse.Create>();
   }
 }

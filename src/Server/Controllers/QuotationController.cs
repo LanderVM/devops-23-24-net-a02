@@ -32,6 +32,13 @@ public class QuotationController : ControllerBase
     return await _quotationService.GetIndexAsync();
   }
 
+  [HttpGet("{QuotationId}")]
+  [SwaggerOperation("Gets a list of all the quotations")]
+  public async Task<QuotationResult.DetailEdit> GetSpecificDetailQuotation(int QuotationId)
+  {
+    return await _quotationService.GetSpecificDetailEditAsync(QuotationId);
+  }
+
   [HttpPost]
   [SwaggerOperation("Saves a new quotation offer, registering a new customer if need be")]
   public async Task<IActionResult> RegisterQuotationRequest(QuotationDto.Create model)
@@ -46,7 +53,7 @@ public class QuotationController : ControllerBase
     return CreatedAtAction(nameof(RegisterQuotationRequest), quotation); // TODO QuotationResponse ipv QuotationResult teruggeven
   }
 
-  [HttpPut]
+  [HttpPut("{QuotationId}")]
   [SwaggerOperation("Changes a quotation offer and send a mail to the costumer")]
   public async Task<QuotationResponse.Edit> UpdateQuotationRequest(int QuotationId, QuotationDto.Edit model)
   {

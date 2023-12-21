@@ -15,7 +15,7 @@
             <TemplateColumn CellClass="d-flex justify-end">
                 <CellTemplate>
                     <MudStack Row>
-                        <MudButton Size="@Size.Small" Variant="@Variant.Filled" Color="@Color.Primary">Wijzig</MudButton>
+                        <MudButton Size="@Size.Small" Variant="@Variant.Filled" Color="@Color.Primary" OnClick="@(() => UpdateItem(context.Item.QuotationId))">Wijzig</MudButton>
                     </MudStack>
                 </CellTemplate>
             </TemplateColumn>
@@ -29,17 +29,51 @@
 @code {
 
     [Inject]
-    public IQuotationService QuotationService { get; set; } = default!;
-    
-    private IEnumerable<QuotationDto.Index>? Quotations = default!;
-    
+    public IQuotationService QuotationService { get; set; } = default!; 
+    [Inject]
+    ISidepanelService Sidepanel { get; set; } = default!;
+
+    private IEnumerable<QuotationDto.Index>? Quotations = default!; 
+
+    private bool Loading { get; set; } = true;
+
+
     protected override async Task OnInitializedAsync()
     {
         QuotationResult.Index response = await QuotationService.GetIndexAsync();
 
-        Quotations = response.Quotation;
-
-       
+        Quotations = response.Quotation;   
     }
 
+    private void UpdateItem(object QuotationId)
+    {
+        var callback1 = EventCallback.Factory.Create(this, Close);
+        var callback2 = EventCallback.Factory.Create(this, Refresh);
+
+        int quotationId = (int)QuotationId;
+
+        var parameters = new Dictionary<string, object>
+        {
+            {nameof(EditQuotation.Close),callback1 },
+            {nameof(EditQuotation.Refresh),callback2 },
+            {nameof(EditQuotation.QuotationId),quotationId},
+        };
+
+        Sidepanel.Open<EditQuotation>("Overzicht", "Offerte", parameters);
+    }
+
+    private void Close()
+    {
+        Sidepanel.Close();
+    }
+    private async Task Refresh()
+    {
+        Loading = true;
+        QuotationResult.Index response = await QuotationService.GetIndexAsync();
+
+        Quotations = response.Quotation;
+
+        Loading = false;
+        StateHasChanged();
+    }
 }
