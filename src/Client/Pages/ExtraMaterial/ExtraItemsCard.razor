@@ -58,11 +58,6 @@
         int count;
         ExtraMaterialState.ExtrasAmount.TryGetValue(key, out count);
         ExtraMaterialState.ExtrasAmount[key] = count + 1;
-
-        foreach (var item in ExtraMaterialState.ExtrasAmount)
-        {
-            Console.WriteLine(item.Key + item.Value);
-        }
     }
 
 }

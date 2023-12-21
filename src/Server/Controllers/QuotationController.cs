@@ -89,7 +89,7 @@ public class QuotationController : ControllerBase
     return dateTimes;
   }
 
-  [HttpGet("DistanctePrice")]
+  [HttpGet("PriceDistance")]
   [SwaggerOperation("Calculates a estimate on how much a offer would cost")]
   public async Task<GoogleMapsDto.Response> GetDistanctePrice([FromQuery] string address)
   {

@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Shared.Common;
+namespace shared.Common;
 
 public class AddressDto
 {
