@@ -11,7 +11,7 @@ public class Formula : Entity
   {
     Equipment.AddRange(equipment);
     Description = new Description(title, description);
-    ImageUrl = Guard.Against.Null(imageUrl);
+    ImageUrl = Guard.Against.NullOrWhiteSpace(imageUrl);
   }
 
   public Formula(List<Equipment> equipment)
@@ -28,12 +28,12 @@ public class Formula : Entity
 
   public List<Quotation> OrderedIn { get; set; } = default!;
 
-  public decimal getPriceForEquipment() 
+  public decimal GetPriceForEquipment() 
   { 
     return Equipment.Sum(x => x.Price); 
   }
 
-  public List<QuotationLine> getQuotationLines(int amountOfPeople)
+  public List<QuotationLine> GetQuotationLines(int amountOfPeople)
   {
     List<QuotationLine> result = new();
 

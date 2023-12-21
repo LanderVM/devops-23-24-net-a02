@@ -48,6 +48,10 @@ public class QuotationTests
     quotation.OriginalFormulaPricePerDay.ShouldBe(_formula.BasePrice);
     quotation.OriginalFormulaPricePerDayExtra.ShouldBe(_formula.PricePerDayExtra);
     quotation.GetPrice().ShouldBe(totalPrice);
+    quotation.EventLocation.Street.ShouldBe(_eventLocation.Street);
+    quotation.EventLocation.HouseNumber.ShouldBe(_eventLocation.HouseNumber);
+    quotation.EventLocation.City.ShouldBe(_eventLocation.City);
+    quotation.EventLocation.PostalCode.ShouldBe(_eventLocation.PostalCode);
   }
 
   [Theory]
