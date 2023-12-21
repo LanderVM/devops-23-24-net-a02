@@ -1,6 +1,6 @@
-﻿@page "/ExtraMaterialReadOnly"
+﻿@page "/over-ons/extra-materiaal"
 @using shared.Equipment
-@inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager
+@inject NavigationManager NavigationManager
 
 <PageTitle>Bekijken extra's</PageTitle>
 
@@ -66,7 +66,7 @@
 
     private void GoToHomePage()
     {
-        NavigationManager.NavigateTo("/");
+        NavigationManager.NavigateTo(Routes.Home);
     }
 
 }

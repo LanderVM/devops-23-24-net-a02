@@ -1,18 +1,18 @@
 ﻿namespace devops_23_24_net_a02.Client.Shared;
 public static class Routes
 {
-  public const string About = "/OverOns";
-  public const string EventDetails = "/Event/EventDetails";
-  public const string PersonalDetails = "/PersoonlijkeDetails";
-  public const string Overview = "/Overzicht";
-  public const string Formula = "/Formules";
+  public const string About = "/over-ons";
+  public const string EventDetails = "/aanvraag/evenement-gegevens";
+  public const string PersonalDetails = "/aanvraag/persoonlijke-gegevens";
+  public const string Overview = "/aanvraag/overzicht";
+  public const string Formula = "/over-ons/formules";
   public const string Home = "/";
-  public const string ExtraMaterial = "/ExtraMateriaal";
-  public const string ExtraMaterialReadOnly = "/ExtraMaterialReadOnly";
+  public const string ExtraMaterial = "/aanvraag/extra-materiaal";
+  public const string ExtraMaterialReadOnly = "/over-ons/extra-materiaal";
   
   // Admin
-  public const string EmailOverview = "/EmailOverview";
-  public const string FormulasAdmin = "/FormulesAdmin";
-  public const string ExtraMaterialAdmin = "/ExtraMaterialAdmin";
-  public const string Quotations = "/Offertes";
+  public const string EmailOverview = "/admin/overzicht/emails";
+  public const string FormulasAdmin = "/admin/overzicht/formules";
+  public const string ExtraMaterialAdmin = "/admin/overzicht/extra-materiaal";
+  public const string Quotations = "/admin/overzicht/offerte-aanvragen";
 }

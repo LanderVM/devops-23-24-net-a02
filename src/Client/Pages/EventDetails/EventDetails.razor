@@ -1,13 +1,12 @@
-﻿@page "/Event/EventDetails"
+﻿@page "/aanvraag/evenement-gegevens"
+@using shared.Quotations
+@using Size = MudBlazor.Size
 @using GoogleMapsComponents
 @using GoogleMapsComponents.Maps
 @using GoogleMapsComponents.Maps.Places
-@using Size = MudBlazor.Size
-@using shared.Quotations;
-@using shared.Common;
-@inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager
+@using shared.Common
+@inject NavigationManager NavigationManager
 @inject EventDetailsState EventDetailsState
-@inject FormulaState FormulaState
 
 
 
@@ -88,9 +87,16 @@
 
     [Inject]
     public ISnackbar Snackbar { get; set; } = default!;
+    
     [Inject]
     public IQuotationService QuotationService { get; set; } = default!;
-
+    
+    [Inject]
+    public FormulaState FormulaState { get; set; } = default!;
+    
+    [Inject]
+    public PersonalDetailsState PersonalDetailsState { get; set; } = default!;
+    
     private DateRange _dateRange; 
 
     private void ClickNext()
@@ -131,6 +137,12 @@
 
     protected override async Task OnInitializedAsync()
     {
+        if (FormulaState.ChosenFormulaId == null || FormulaState.ChosenFormulaId == 0 || PersonalDetailsState.Customer.Email.Email == null )
+        {
+            NavigationManager.NavigateTo(Routes.Formula);
+            Snackbar.Add("Gelieve uw offerteaanvraag opnieuw te beginnen.", Severity.Error);
+        }
+        
         _dateRange = EventDetailsState.dateRange.Start == DateTime.Today ? null: EventDetailsState.dateRange;
         var response = await QuotationService.GetDatesAsync();
         DateRange = response.DateRanges;

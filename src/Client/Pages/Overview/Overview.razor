@@ -1,4 +1,4 @@
-@page "/Overzicht"
+@page "/aanvraag/overzicht"
 @using shared.Equipment
 @using shared.Quotations
 @using Size = MudBlazor.Size
@@ -201,13 +201,10 @@
 
     protected override async Task OnInitializedAsync()
     {
-        if (FormulaState.ChosenFormulaId == null  || PersonalDetailsState.Customer.Email.Email == null || EventDetailsState.FormattedAddress == null || EventDetailsState.dateRange == null)
+        if (FormulaState.ChosenFormulaId == null || FormulaState.ChosenFormulaId == 0  || PersonalDetailsState.Customer.Email.Email == null || EventDetailsState.FormattedAddress == null || EventDetailsState.dateRange == null)
         {
-
-            NavigationManager.NavigateTo("/Event/EventDetails");
-            Snackbar.Add("Gelieve de gegevens eerst in te vullen.", Severity.Error);
-
-
+            NavigationManager.NavigateTo(Routes.Formula);
+            Snackbar.Add("Gelieve uw offerteaanvraag opnieuw te beginnen.", Severity.Error);
         }
         EquipmentResult.Index response = await EquipmentService.GetIndexAsync();
 
@@ -371,7 +368,7 @@
 
         var result = await QuotationService.CreateAsync(quotation);
         Snackbar.Add("Je offerte werd succesvol aangemaakt", Severity.Success);
-        NavigationManager.NavigateTo("/");
+        NavigationManager.NavigateTo(Routes.Home);
         ClearAllStates();
         
     }

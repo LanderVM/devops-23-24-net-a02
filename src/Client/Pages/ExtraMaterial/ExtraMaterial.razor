@@ -1,4 +1,4 @@
-@page "/ExtraMateriaal"
+@page "/aanvraag/extra-materiaal"
 @using shared.Equipment
 @inject NavigationManager NavigationManager
 @inject ExtraMaterialState ExtraMaterialState
@@ -29,7 +29,7 @@
 
         <MudItem lg="10" md="10" sm="12" xs="12">
             <MudGrid Spacing="@Spacing" data-test-id="extras-card-overview">
-                 <Loader IsLoading=@(Extras == null)>
+                <Loader IsLoading=@(Extras == null)>
                     @foreach (EquipmentDto.Index item in Extras)
                     {
                         <MudItem lg="3" md="4" sm="6" xs="12">
@@ -71,6 +71,19 @@
     [Inject]
     public IEquipmentService EquipmentService { get; set; } = default!;
 
+    [Inject]
+    public ISnackbar Snackbar { get; set; } = default!;
+
+    [Inject]
+    public FormulaState FormulaState { get; set; } = default!;
+
+    [Inject]
+    public EventDetailsState EventDetailsState { get; set; }
+    
+    [Inject]
+    public PersonalDetailsState PersonalDetailsState { get; set; } = default!;
+
+
     private IEnumerable<EquipmentDto.Index>? Extras = default!;
 
     private int Spacing { get; set; } = 2;
@@ -83,13 +96,19 @@
 
         Extras = response.Equipment;
 
+        if (FormulaState.ChosenFormulaId == null || FormulaState.ChosenFormulaId == 0  || PersonalDetailsState.Customer.Email.Email == null || EventDetailsState.FormattedAddress == null || EventDetailsState.dateRange == null)
+        {
+            NavigationManager.NavigateTo(Routes.Formula);
+            Snackbar.Add("Gelieve uw offerteaanvraag opnieuw te beginnen.", Severity.Error);
+        }
         if (ExtraMaterialState.ExtrasAmount.Count == 0)
         {
             foreach (EquipmentDto.Index item in Extras)
             {
                 ExtraMaterialState.ExtrasAmount.Add(item.Id, 0);
             }
-        } else if (Extras.Count()>ExtraMaterialState.ExtrasAmount.Count)
+        }
+        else if (Extras.Count() > ExtraMaterialState.ExtrasAmount.Count)
         {
             foreach (EquipmentDto.Index item in Extras)
             {
@@ -105,4 +124,5 @@
     {
         NavigationManager.NavigateTo(Routes.Overview);
     }
+
 }
