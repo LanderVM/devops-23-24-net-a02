@@ -12,7 +12,7 @@ public static class TestHelper
 
   public static string FormulasPage = $"{BaseUri}/over-ons/formules";
 
-  public static string ExtraMaterial = $"{BaseUri}/aanvraag/extra-materiaal";
+  public static string ExtraMaterial = $"{BaseUri}/over-ons/extra-materiaal";
 
   public static string EventDetails = $"{BaseUri}/aanvraag/evenement-gegevens";
 

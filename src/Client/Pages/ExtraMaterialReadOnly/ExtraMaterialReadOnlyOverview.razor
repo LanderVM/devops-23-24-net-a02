@@ -4,7 +4,7 @@
 
 <PageTitle>Bekijken extra's</PageTitle>
 
-<MudContainer MaxWidth="MaxWidth.Large">
+<MudContainer MaxWidth="MaxWidth.Large" data-test-id="extras-card-overview">
     <MudGrid Justify="Justify.SpaceEvenly">
         <MudItem lg="1" md="1" sm="12" xs="12">
 
@@ -23,7 +23,7 @@
                 <Loader IsLoading=@(Extras == null)>
                     @foreach (EquipmentDto.Index item in Extras)
                     {
-                        <MudItem lg="3" md="4" sm="6" xs="12">
+                        <MudItem lg="3" md="4" sm="6" xs="12" data-test-id="extras-extra-card">
                             <ExtraItemsReadOnlyCard
                               Title="@item.Title"  
                               Attributes="@item.Attributes"

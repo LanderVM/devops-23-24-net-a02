@@ -28,7 +28,7 @@
         </MudHidden>
 
         <MudItem lg="10" md="10" sm="12" xs="12">
-            <MudGrid Spacing="@Spacing" data-test-id="extras-card-overview">
+            <MudGrid Spacing="@Spacing">
                 <Loader IsLoading=@(Extras == null)>
                     @foreach (EquipmentDto.Index item in Extras)
                     {
