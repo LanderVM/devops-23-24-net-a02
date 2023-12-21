@@ -137,7 +137,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        if (FormulaState.ChosenFormulaId == null || FormulaState.ChosenFormulaId == 0 || PersonalDetailsState.Customer.Email.Email == null )
+        if (FormulaState.ChosenFormulaId == null || FormulaState.ChosenFormulaId == 0)
         {
             NavigationManager.NavigateTo(Routes.Formula);
             Snackbar.Add("Gelieve uw offerteaanvraag opnieuw te beginnen.", Severity.Error);
