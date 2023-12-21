@@ -3,7 +3,7 @@
 @attribute [Authorize]
 
 <PageTitle>Formules Admin</PageTitle>
-<MudContainer Fixed="true" Class="mt-15">
+<MudContainer Fixed="true" Class="mt-15 mb-15">
     <Loader IsLoading=@(Formulas == null)>
 
     <MudTable Elevation="2" Items="Formulas" Hover="true" Breakpoint="Breakpoint.Sm">
@@ -12,7 +12,7 @@
             <MudTh Style=@styleTh>Kenmerken</MudTh>
             <MudTh Style=@styleTh>Basisprijs</MudTh>
             <MudTh Style=@styleTh>Prijs extra dagen</MudTh>
-            <MudTh Style="color: #FAf6F1;background-color: #FAf6F1"> Wijzigen </MudTh>
+            <MudTh Style="color: white"> Wijzigen </MudTh>
         </HeaderContent>
         <RowTemplate>
             <MudTd DataLabel="Titel" Style=@styleTd>
@@ -44,8 +44,8 @@
     
     private bool Loading { get; set; } = true;
     
-    private String styleTd = "text-align: center; background-color: #FAf6F1";
-    private String styleTh = "font-weight: bold;text-align: center;background-color: #FAf6F1";
+    private String styleTd = "text-align: center";
+    private String styleTh = "font-weight: bold;text-align: center";
     
     protected override async Task OnInitializedAsync()
     {
