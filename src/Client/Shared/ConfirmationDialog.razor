@@ -24,7 +24,7 @@
     public void Submit()
     {
         MudDialog.Close(DialogResult.Ok(true));
-        NavigationManager.NavigateTo("/");
+        NavigationManager.NavigateTo(Routes.Home);
     } 
     void Cancel() => MudDialog.Cancel();
 }

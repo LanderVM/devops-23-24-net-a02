@@ -1,4 +1,5 @@
-﻿using Shared.Common;
+﻿using shared.Common;
+using Shared.Common;
 using Shared.Customer;
 using shared.Equipment;
 using shared.Formulas;
@@ -42,5 +43,10 @@ public static class QuotationResult
       public CustomerDto.Details Customer { get; set; } = default!;
       public Boolean IsTripelBier { get; set; } = default!;
       public int NumberOfPeople { get; set; } = default!;
+    }
+    
+    public class Calculation
+    {
+      public decimal EstimatedPrice { get; set; }
     }
 }

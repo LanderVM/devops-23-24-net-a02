@@ -12,7 +12,8 @@
     <MudTextField @bind-Value="Model.Title"
                   For="@(() => Model.Title)"
                   Label="Titel"
-                  Variant="Variant.Outlined" />
+                  Variant="Variant.Outlined" 
+                  data-test-id="admin-extra-edit-title" />
 
     <MudNumericField @bind-Value="Model.Price"
                      Class="mt-3"
@@ -20,7 +21,8 @@
                      For="@(() => Model.Price)"
                      Variant="Variant.Outlined"
                      Step="0.01M"
-                     Min="0.0M" />
+                     Min="0.0M" 
+                     data-test-id="admin-extra-edit-price" />
 
     <MudNumericField @bind-Value="Model.Stock"
                      Class="mt-3"
@@ -28,7 +30,8 @@
                      For="@(() => Model.Stock)"
                      Variant="Variant.Outlined"
                      Step="1"
-                     Min="0" />
+                     Min="0" 
+                     data-test-id="admin-extra-edit-stock" />
 
     <MudText Class="mt-5 mb-1" Typo="Typo.body2">Onderscheid je attributen in de text met een ";"</MudText>
 
@@ -36,7 +39,8 @@
                   For="@(() => Model.Attributes)"
                   Label="Attributen"
                   Variant="Variant.Outlined"
-                  Lines="3" />
+                  Lines="3" 
+                  data-test-id="admin-extra-edit-attributes" />
 
     <MudCheckBox @bind-Checked="@Model.IsActive"
                  For="@(() => Model.IsActive)"
@@ -96,7 +100,7 @@
 
         </MudItem>
         <MudItem xs="5">
-            <MudButton Class="mr-1" Variant="Variant.Filled" FullWidth="true" Color="Color.Primary" ButtonType="ButtonType.Submit">Pas aan</MudButton>
+            <MudButton Class="mr-1" Variant="Variant.Filled" FullWidth="true" Color="Color.Primary" ButtonType="ButtonType.Submit" data-test-id="extras-admin-edit-editbutton">Pas aan</MudButton>
         </MudItem>
         <MudItem xs="5">
             <MudButton Class="ml-1" Variant="Variant.Filled" FullWidth="true" Color="Color.Primary" OnClick="Close">Annuleren</MudButton>

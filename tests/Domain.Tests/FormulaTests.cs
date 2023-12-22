@@ -17,6 +17,10 @@ public class FormulaTests
     var formula = new Formula(equipment, title, description);
 
     formula.Equipment.Count.ShouldBe(0);
+    formula.Description.Title.ShouldBe(title);
+    formula.Description.Attributes.ShouldBe(description);
+    formula.ImageUrl.ShouldBe("https://a2blanchestorage.blob.core.windows.net/images/SfeerFoto1.jpg");
+    formula.GetPriceForEquipment().ShouldBe(0);
   }
 
   [Fact]
@@ -30,8 +34,12 @@ public class FormulaTests
     var formula = new Formula(equipment, title, description);
 
     formula.Equipment.Count.ShouldBe(equipment.Count);
+    formula.Description.Title.ShouldBe(title);
+    formula.Description.Attributes.ShouldBe(description);
     formula.Equipment.ShouldContain(equipment[0]);
     formula.Equipment.ShouldContain(equipment[1]);
+    formula.ImageUrl.ShouldBe("https://a2blanchestorage.blob.core.windows.net/images/SfeerFoto1.jpg");
+    formula.GetPriceForEquipment().ShouldBe(equipment.Sum(e => e.Price));
   }
 
   [Theory]
@@ -50,11 +58,11 @@ public class FormulaTests
   [InlineData("")]
   [InlineData("    ")]
   [InlineData(null)]
-  public void Create_new_formula_description_invalid(string invalidDescription)
+  public void Create_new_formula_no_image(string imageUrl)
   {
     Should.Throw<ArgumentException>(() =>
     {
-      new Formula(equipment, title, new List<string> { invalidDescription });
+      new Formula(equipment, title, description, imageUrl);
     });
   }
 

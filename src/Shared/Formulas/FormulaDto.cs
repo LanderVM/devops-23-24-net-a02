@@ -7,23 +7,24 @@ public class FormulaDto {
 
   public class Index {
     public int Id { get; set; }
-
     public string Title { get; set; }
-
     public List<string> Attributes { get; set;}
-
     public decimal PricePerDayExtra { get; set; }
-
     public List<decimal> BasePrice { get; set; }
-    
     public bool IsActive { get; set; }
+    public string? ImageUrl { get; set; }
+  }
+  
+  public class ImageData {
+    public string ImageUrl { get; set; }
 
+    public string AltText { get; set; }
+      
   }
 
   public class Select
   {
     public int Id { get; set; }
-
     public string Title { get; set; }
   }
   
@@ -34,6 +35,9 @@ public class FormulaDto {
     public decimal PricePerDayExtra { get; set; }
     public string BasePrice { get; set; }
     public bool IsActive { get; set; }
+    public string? ImageContentType { get; set; }
+    public ImageData ImageData { get; set; }
+
 
     public class Validator : AbstractValidator<FormulaDto.Mutate>
     {

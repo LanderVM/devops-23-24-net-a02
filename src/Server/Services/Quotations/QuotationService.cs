@@ -1,16 +1,17 @@
 ﻿using devops_23_24_net_a02.Shared.Emails;
 using Domain.Common;
 using Domain.Customers;
+using Domain.Exceptions;
 using Domain.Formulas;
 using Domain.Quotations;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Shared.Common;
+using shared.Common;
+using Shared.Customer;
 using shared.Equipment;
 using shared.Formulas;
-using Shared.Common;
-using Shared.Customer;
 using shared.Quotations;
-using Domain.Exceptions;
-
 
 namespace Api.Data.Services.Quotations;
 
@@ -137,7 +138,7 @@ public class QuotationService : IQuotationService
           model.Customer.BillingAddress.City,
           model.Customer.BillingAddress.PostalCode),
         new PhoneNumber(model.Customer.PhoneNumber),
-        model.Customer.VatNumber);
+        model.Customer.VatNumber.IsNullOrEmpty() ? null : new VatNumber(model.Customer.VatNumber!));
       _dbContext.Customers.Add(customer);
     }
     
@@ -194,7 +195,7 @@ public class QuotationService : IQuotationService
         LastName = quotation.OrderedBy.LastName,
         Email = new EmailDto.Create { Email = quotation.OrderedBy.Email.Value },
         PhoneNumber = quotation.OrderedBy.PhoneNumber.Value,
-        VatNumber = quotation.OrderedBy.VatNumber,
+        VatNumber = quotation.OrderedBy.VatNumber?.Value,
         BillingAddress = new AddressDto
         {
           Street = quotation.OrderedBy.BillingAddress.Street,
@@ -233,7 +234,7 @@ public class QuotationService : IQuotationService
            && customerFromDb.LastName == model.Customer.LastName
            && customerFromDb.Email.Value == model.Customer.Email.Email
            && customerFromDb.PhoneNumber.Value == model.Customer.PhoneNumber
-           && customerFromDb.VatNumber == model.Customer.VatNumber
+           && customerFromDb.VatNumber?.Value == model.Customer.VatNumber
            && customerFromDb.BillingAddress.Street == model.Customer.BillingAddress.Street
            && customerFromDb.BillingAddress.HouseNumber == model.Customer.BillingAddress.HouseNumber
            && customerFromDb.BillingAddress.PostalCode == model.Customer.BillingAddress.PostalCode
@@ -269,8 +270,8 @@ public class QuotationService : IQuotationService
     IEnumerable<DateDto> unavailableDates = await queryDates.OrderBy(x => x.StartTime).Select(
       x => new DateDto
       {
-        StartTime = x.StartTime.Ticks,
-        EndTime = x.EndTime.Ticks
+        StartTime = x.StartTime.ToUniversalTime(),
+        EndTime = x.EndTime.ToUniversalTime()
       }
       ).ToListAsync();
 
@@ -284,7 +285,7 @@ public class QuotationService : IQuotationService
     return result;
   }
 
-  public async Task<decimal> GetPriceEstimationPrice(QuotationDto.Estimate model)
+  public async Task<QuotationResult.Calculation> GetPriceEstimationPrice(QuotationDto.Estimate model)
   {
     Formula? chosenFormula = _dbContext.Formulas.FirstOrDefault(formula => formula.Id == model.FormulaId);
     if (chosenFormula is null)
@@ -317,7 +318,7 @@ public class QuotationService : IQuotationService
     chosenFormula.Equipment.AddRange(equipmentList);
 
     Quotation quotation = new Quotation(chosenFormula, new DateTime(model.StartTime), new DateTime(model.EndTime), model.EstimatedNumberOfPeople, model.IsTripelBier);
-    return quotation.GetEstimatedPriceRounded();
+    return new QuotationResult.Calculation { EstimatedPrice = quotation.GetEstimatedPriceRounded() };
   }
 
   public async Task<QuotationResponse.Create> UpdateAsync(int QuotationId, QuotationDto.Edit model)
@@ -325,7 +326,10 @@ public class QuotationService : IQuotationService
     var quotation = _dbContext.Quotations
       .Include(quotation => quotation.QuotationLines)
       .Include(quotation => quotation.OrderedBy).ThenInclude(customer => customer.Email)
-      .Include(quotation => quotation.Formula)
+      .Include(quotation => quotation.Formula).Include(quotation => quotation.OrderedBy)
+      .ThenInclude(customer => customer.VatNumber).Include(quotation => quotation.OrderedBy)
+      .ThenInclude(customer => customer.PhoneNumber).Include(quotation => quotation.OrderedBy)
+      .ThenInclude(customer => customer.BillingAddress).Include(quotation => quotation.EventLocation)
       .FirstOrDefault(quotation => quotation.Id == QuotationId);
     if (quotation is null)
     {
@@ -374,7 +378,7 @@ public class QuotationService : IQuotationService
         LastName = quotation.OrderedBy.LastName,
         Email = new EmailDto.Create { Email = quotation.OrderedBy.Email.Value },
         PhoneNumber = quotation.OrderedBy.PhoneNumber.Value,
-        VatNumber = quotation.OrderedBy.VatNumber,
+        VatNumber = quotation.OrderedBy.VatNumber?.Value,
         BillingAddress = new AddressDto
         {
           Street = quotation.OrderedBy.BillingAddress.Street,

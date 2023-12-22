@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using Shared.Common;
+using shared.Common;
 using Shared.Customer;
 using shared.Equipment;
 using Domain.Quotations;
@@ -23,7 +23,7 @@ public static class QuotationResponse
     public QuotationStatus Status { get; set; }
   }
 
-  public class Price
+  public class Calculation
   {
     public decimal EstimatedPrice { get; set; }
   }

@@ -39,8 +39,10 @@ public class ExceptionMiddleware
       EntityNotFoundException ex => new ErrorDetails(ex.Message, HttpStatusCode.NotFound),
       EntityAlreadyExistsException ex => new ErrorDetails(ex.Message, HttpStatusCode.Conflict),
       // Add more custom exceptions here...
-      ApplicationException ex => new ErrorDetails(ex.Message),
+      ArgumentNullException ex => new ErrorDetails(ex.Message, HttpStatusCode.BadRequest),
+      ArgumentOutOfRangeException ex => new ErrorDetails(ex.Message, HttpStatusCode.BadRequest),
       ArgumentException ex => new ErrorDetails(ex.Message, HttpStatusCode.BadRequest),
+      ApplicationException ex => new ErrorDetails(ex.Message),
       _ => new ErrorDetails(exception.Message)
     };
     context.Response.ContentType = "application/json";

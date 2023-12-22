@@ -10,7 +10,7 @@ public class Quotation : Entity
 
   public Quotation(Formula formula, Customer orderedBy, EventLocation eventLocation, List<QuotationLine> quotationLines,
     DateTime startTime, DateTime endTime, int numberOfPeople, bool isTripelBier = false) 
-  {
+  { // Registering Quotation
     if ((endTime - startTime).TotalSeconds <= 0)
       throw new ArgumentException("End time cannot be before start time!");
 
@@ -27,7 +27,7 @@ public class Quotation : Entity
     IsTripelBier = isTripelBier;
   }
   public Quotation(Formula formula, DateTime startTime, DateTime endTime, int estimatedNumberPeople, bool isTripelBier = false)
-  { // todo ??
+  { // Price Estimation
     if ((endTime - startTime).TotalSeconds <= 0)
       throw new ArgumentException("End time cannot be before start time!");
 
@@ -83,15 +83,15 @@ public class Quotation : Entity
     
     if (Formula.Id == 3)
     {
-      return GetPriceDays() + Formula.getPriceForEquipment() + (NumberOfPeople * priceBeer) + (NumberOfPeople * priceBbq);
+      return GetPriceDays() + Formula.GetPriceForEquipment() + (NumberOfPeople * priceBeer) + (NumberOfPeople * priceBbq);
     }
     if (Formula.Id == 2)
     {
-      return GetPriceDays() + Formula.getPriceForEquipment() + (NumberOfPeople * priceBeer);
+      return GetPriceDays() + Formula.GetPriceForEquipment() + (NumberOfPeople * priceBeer);
     }
     else
     {
-      return GetPriceDays() + Formula.getPriceForEquipment();
+      return GetPriceDays() + Formula.GetPriceForEquipment();
     }
   }
 

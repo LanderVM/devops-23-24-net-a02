@@ -1,6 +1,6 @@
 ﻿@inject ExtraMaterialState ExtraMaterialState
 
-<MudCard Style="height: 100%;">
+<MudCard Style="height: 100%;" data-test-id="extras-extra-card">
     <div style="height: 100%; display: flex; flex-direction: column;">
         <MudCardMedia Image=@ImageUrl Height="250" />
         <MudCardContent>
@@ -58,11 +58,6 @@
         int count;
         ExtraMaterialState.ExtrasAmount.TryGetValue(key, out count);
         ExtraMaterialState.ExtrasAmount[key] = count + 1;
-
-        foreach (var item in ExtraMaterialState.ExtrasAmount)
-        {
-            Console.WriteLine(item.Key + item.Value);
-        }
     }
 
 }

@@ -1,4 +1,4 @@
-﻿@page "/Formules"
+﻿@page "/over-ons/formules"
 @using shared.Formulas
 @inject NavigationManager NavigationManager
 @inject FormulaState FormulaState
@@ -9,7 +9,7 @@
     
         <MudContainer MaxWidth="MaxWidth.Large">
             <Loader IsLoading=@(Formulas == null)>
-                <MudGrid Spacing="@spacing">
+                <MudGrid Spacing="@spacing" data-test-id="formulas-cards-overview">
                     @foreach (FormulaDto.Index item in Formulas)
                     {
                         @if (counter % 2 == 0)

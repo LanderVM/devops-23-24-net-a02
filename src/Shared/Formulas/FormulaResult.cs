@@ -12,6 +12,7 @@ public class FormulaResult
   public class Edit
   {
     public int Id { get; set; }
+    public ImageData? Image { get; set; }
   }
   
   

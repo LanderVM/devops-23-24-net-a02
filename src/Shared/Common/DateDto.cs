@@ -8,7 +8,7 @@ namespace Shared.Common;
 
 public class DateDto
 {
-  public long StartTime { get; set; }
-  public long EndTime { get; set; }
+  public DateTime StartTime { get; set; }
+  public DateTime EndTime { get; set; }
 }
 

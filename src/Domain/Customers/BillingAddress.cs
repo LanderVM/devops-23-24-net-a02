@@ -1,9 +1,10 @@
-﻿using Domain.Common;
+﻿using devops_23_24_net_a02.Domain.Common;
+using Domain.Common;
 using Domain.Quotations;
 
 namespace Domain.Customers;
 
-public class BillingAddress
+public class BillingAddress : ValueObject
 {
   private BillingAddress() { } // EF Core constructor
 
@@ -23,5 +24,13 @@ public class BillingAddress
   public override string ToString()
   {
     return $"{Street} {HouseNumber}, {PostalCode} {City}";
+  }
+
+  protected override IEnumerable<object?> GetEqualityComponents()
+  {
+    yield return Street;
+    yield return HouseNumber;
+    yield return City;
+    yield return PostalCode;
   }
 }

@@ -1,7 +1,5 @@
 ﻿using devops_23_24_net_a02.Shared.Emails;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Server.Services;
 using Shared.Emails;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -21,7 +19,7 @@ public class EmailController : ControllerBase
   }
 
   [HttpPost]
-  [SwaggerOperation("Saves and sends an email with more information to the provided email address")]
+  [SwaggerOperation("Adds a user to the subscribed email addresses list and sends them an email containing more information about the food truck")]
   public async Task<IActionResult> RegisterEmail(EmailDto.Create model)
   {
     _logger.Log(LogLevel.Information, "Registering new email {model.Email}", model.Email);
@@ -31,9 +29,10 @@ public class EmailController : ControllerBase
   }
 
   [HttpGet]
-  [SwaggerOperation("Get all email addresses that are known to the server")]
+  [SwaggerOperation("Get a list of subscribed email addresses")]
   public async Task<EmailResult.Index> GetEmail()
   {
+    _logger.Log(LogLevel.Information, "Returning list of subscribed email address");
     return await _emailService.GetEmailsAsync();
   }
 }

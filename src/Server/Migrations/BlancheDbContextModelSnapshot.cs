@@ -53,10 +53,6 @@ namespace devops2324neta02.Server.Migrations
                         .HasColumnType("datetime(6)")
                         .HasDefaultValueSql("NOW()");
 
-                    b.Property<string>("VatNumber")
-                        .HasMaxLength(4000)
-                        .HasColumnType("varchar(4000)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("EmailId");
@@ -141,6 +137,11 @@ namespace devops2324neta02.Server.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
                         .HasDefaultValueSql("NOW()");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasMaxLength(4000)
+                        .HasColumnType("varchar(4000)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("tinyint(1)")
@@ -335,6 +336,25 @@ namespace devops2324neta02.Server.Migrations
                                 .HasForeignKey("CustomerId");
                         });
 
+                    b.OwnsOne("Domain.Customers.VatNumber", "VatNumber", b1 =>
+                        {
+                            b1.Property<int>("CustomerId")
+                                .HasColumnType("int");
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasMaxLength(4000)
+                                .HasColumnType("varchar(4000)")
+                                .HasColumnName("VatNumber");
+
+                            b1.HasKey("CustomerId");
+
+                            b1.ToTable("Customer");
+
+                            b1.WithOwner()
+                                .HasForeignKey("CustomerId");
+                        });
+
                     b.Navigation("BillingAddress")
                         .IsRequired();
 
@@ -342,6 +362,8 @@ namespace devops2324neta02.Server.Migrations
 
                     b.Navigation("PhoneNumber")
                         .IsRequired();
+
+                    b.Navigation("VatNumber");
                 });
 
             modelBuilder.Entity("Domain.Formulas.Equipment", b =>

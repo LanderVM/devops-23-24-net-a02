@@ -1,12 +1,12 @@
-﻿@page "/Event/EventDetails"
+﻿@page "/aanvraag/evenement-gegevens"
+@using shared.Quotations
+@using Size = MudBlazor.Size
 @using GoogleMapsComponents
 @using GoogleMapsComponents.Maps
 @using GoogleMapsComponents.Maps.Places
-@using Size = MudBlazor.Size
-@using shared.Quotations;
-@inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager
+@using shared.Common
+@inject NavigationManager NavigationManager
 @inject EventDetailsState EventDetailsState
-@inject FormulaState FormulaState
 
 
 
@@ -82,13 +82,20 @@
     private bool addressError;
     private bool numberOfPeopleError;
     private bool hasValidAdress;
-    
+
     private IEnumerable<QuotationDto.Dates>? DateRange;
-    
+
     [Inject]
     public ISnackbar Snackbar { get; set; } = default!;
+    
     [Inject]
     public IQuotationService QuotationService { get; set; } = default!;
+    
+    [Inject]
+    public FormulaState FormulaState { get; set; } = default!;
+    
+    [Inject]
+    public PersonalDetailsState PersonalDetailsState { get; set; } = default!;
     
     private DateRange _dateRange; 
 
@@ -126,14 +133,20 @@
 
     }
 
-    
+
 
     protected override async Task OnInitializedAsync()
     {
+        if (FormulaState.ChosenFormulaId == null || FormulaState.ChosenFormulaId == 0)
+        {
+            NavigationManager.NavigateTo(Routes.Formula);
+            Snackbar.Add("Gelieve uw offerteaanvraag opnieuw te beginnen.", Severity.Error);
+        }
+        
         _dateRange = EventDetailsState.dateRange.Start == DateTime.Today ? null: EventDetailsState.dateRange;
         var response = await QuotationService.GetDatesAsync();
         DateRange = response.DateRanges;
-        
+
     }
 
 
@@ -195,18 +208,38 @@
             }
             if (place.FormattedAddress is not null)
             {
+                Console.WriteLine(place.FormattedAddress);
+                var parts = place.FormattedAddress.Split(",");
+
+                var streetHouseNumber = parts[0].Trim().Split(" ");
+                var street = string.Join(" ", streetHouseNumber.Take(streetHouseNumber.Length - 1));
+                var houseNumber = streetHouseNumber.Last();
+                var postalCodeCity = parts[1].Trim().Split(" ");
+                var postalCode = postalCodeCity[0];
+                var city = string.Join(" ", postalCodeCity.Skip(1));
+
+                EventDetailsState.EventAddress = new AddressDto
+                {
+                    Street = street,
+                    HouseNumber = houseNumber,
+                    City = city,
+                    PostalCode = postalCode
+                };
                 EventDetailsState.FormattedAddress = place.FormattedAddress;
             }
-            
+             
             if (place.AddressComponents is not null)
             {
-                    if (place.AddressComponents.Count() < 7)
-                    {
-                            hasValidAdress = false;
-                    } else
-                    {
-                                hasValidAdress = true;
-                    }
+                if (EventDetailsState.EventAddress.Street == null ||
+                    EventDetailsState.EventAddress.City == null ||
+                    EventDetailsState.EventAddress.PostalCode == null || !char.IsDigit(EventDetailsState.EventAddress.PostalCode[0]) ||
+                    EventDetailsState.EventAddress.HouseNumber == null || !char.IsDigit(EventDetailsState.EventAddress.HouseNumber[0]))
+                {
+                    hasValidAdress = false;
+                } else
+                {
+                    hasValidAdress = true;
+                }
             }
             
             

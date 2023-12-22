@@ -1,4 +1,4 @@
-﻿@page "/EmailOverview"
+﻿@page "/admin/overzicht/emails"
 @using devops_23_24_net_a02.Shared.Emails;
 @inject IEmailService EmailService;
 @attribute [Authorize]
@@ -16,12 +16,12 @@
         </MudItem>
     </MudGrid>
     
-    <MudTable Items="@EmailAddresses" Hover="true" Loading="@Loading" LoadingProgressColor="Color.Info">
+    <MudTable Items="@EmailAddresses" data-test-id="email-table" Hover="true" Loading="@Loading" LoadingProgressColor="Color.Info">
         <HeaderContent>
             <MudTh>Email adressen</MudTh>
         </HeaderContent>
         <RowTemplate>
-            <MudTd DataLabel="Email adres">@context.EmailAddress</MudTd>
+            <MudTd DataLabel="Email adres" data-test-id="email-row">@context.EmailAddress</MudTd>
         </RowTemplate>
         <PagerContent>
             <MudTablePager />

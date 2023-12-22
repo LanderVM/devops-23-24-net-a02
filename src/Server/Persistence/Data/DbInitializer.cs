@@ -55,15 +55,15 @@ public static class DbInitializer
     // Formula's
     var formulas = new Formula[]
     {
-      new(new List<Equipment>(), "Basic", new List<string> { "De foodtruck", "Twee tapkranen", "Barkoeler van 320 liter", "Vriezer van 80 liter", "Dubbele afwasbak","100 bierglazen (multifunctioneel)" }),
-      new(new List<Equipment>(), "Extended", new List<string> { "incl. Basic formule", "Met bier (keuze uit pils of tripel)", "Glazen inbegrepen" }),
+      new(new List<Equipment>(), "Basic", new List<string> { "De foodtruck", "Twee tapkranen", "Barkoeler van 320 liter", "Vriezer van 80 liter", "Dubbele afwasbak","100 bierglazen (multifunctioneel)" }, "https://a2blanchestorage.blob.core.windows.net/images/SfeerFoto4.jpg"),
+      new(new List<Equipment>(), "Extended", new List<string> { "incl. Basic formule", "Met bier (keuze uit pils of tripel)", "Glazen inbegrepen" }, "https://a2blanchestorage.blob.core.windows.net/images/SfeerFoto2.jpg"),
       new(new List<Equipment>(), "All-in",
-        new List<string> { "incl. Basic formule", "Met bier (keuze uit pils of tripel)", "Glazen inbegrepen", "Inclusief barbecue", "Inclusief hout & eten voor de bbq", "Bbq-kit ingebegrepen" })
+        new List<string> { "incl. Basic formule", "Met bier (keuze uit pils of tripel)", "Glazen inbegrepen", "Inclusief barbecue", "Inclusief hout & eten voor de bbq", "Bbq-kit ingebegrepen" }, "https://a2blanchestorage.blob.core.windows.net/images/SfeerFoto3.jpg")
     };
 
     // Customers
     var cust1 = new Customer("Bert", "de Backer", new Email("bert.debacker@gmail.com"),
-      new BillingAddress("Rue de Bouillon", "52", "Grimbergen", "1850"), new PhoneNumber("0486980477"), "BE123");
+      new BillingAddress("Rue de Bouillon", "52", "Grimbergen", "1850"), new PhoneNumber("0486980477"), new VatNumber("BE1232323232"));
     var cust2 = new Customer("Frederick", "Honderdpoot", new Email("f.honderdpoot@outlook.be"),
       new BillingAddress("Korte Noordsstraat", "292", "Uitkerke", "8370"), new PhoneNumber("0479894230"), null);
     var customers = new[] { cust1, cust2 };

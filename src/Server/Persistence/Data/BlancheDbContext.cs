@@ -2,7 +2,6 @@
 using Domain.Formulas;
 using Domain.Quotations;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Server.Persistence.Triggers;
 
 namespace Api.Data;

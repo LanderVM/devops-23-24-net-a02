@@ -1,11 +1,13 @@
 ﻿using GoogleMapsComponents.Maps.Places;
 using MudBlazor;
+using shared.Common;
 
 namespace devops_23_24_net_a02.Client;
 
 public class EventDetailsState
 {
   public string FormattedAddress { get; set; }
+  public AddressDto EventAddress { get; set; }
   public PlaceGeometry PlaceGeometry { get; set; }
   public string PlaceTitle { get; set; }
   public int NumberOfPeople { get; set; }

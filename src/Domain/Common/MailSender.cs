@@ -108,7 +108,7 @@ public class MailSender
     contentBuilder.Append("</tr>");
     totalPrice += quotation.GetPriceDays();
 
-    foreach (QuotationLine equipment in quotation.Formula.getQuotationLines(quotation.NumberOfPeople))
+    foreach (QuotationLine equipment in quotation.Formula.GetQuotationLines(quotation.NumberOfPeople))
     {
       int aantal = equipment.AmountOrdered;
       decimal btwPercentageItem = 0.21M;

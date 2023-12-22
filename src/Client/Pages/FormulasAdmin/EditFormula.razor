@@ -1,6 +1,8 @@
 @using shared.Formulas
 @using devops_23_24_net_a02.Client.Pages.Formulas
+@using devops_23_24_net_a02.Client.Files
 @attribute [Authorize]
+@inject IStorageService StorageService;
 
 <EditForm Model="@formula" OnValidSubmit="UpdateFormulaAsync">
     <Blazored.FluentValidation.FluentValidationValidator />
@@ -8,7 +10,8 @@
     <MudTextField @bind-Value="formula.Title"
                   For="@(() => formula.Title)"
                   Label="Titel"
-                  Variant="Variant.Outlined" />
+                  Variant="Variant.Outlined" 
+                  data-test-id="formulas-admin-edit-title"/>
         
     <MudNumericField @bind-Value="formula.PricePerDayExtra"
                      Class="mt-3"
@@ -16,7 +19,8 @@
                      For="@(() => formula.PricePerDayExtra)"
                      Variant="Variant.Outlined"
                      Step="1"
-                     Min="0" />
+                     Min="0" 
+                     data-test-id="formulas-admin-edit-pricePerDayExtra" />
         
     <MudText Class="mt-5 mb-1" Typo="Typo.body2">Plaats elk element op een nieuwe lijn</MudText>
         
@@ -25,12 +29,13 @@
                   For="@(() => formula.BasePrice)"
                   Variant="Variant.Outlined"
                   Lines="3"
-    />
+                  data-test-id="formulas-admin-edit-basePrice" />
 
     <MudTextField @bind-Value="formula.Attributes"
                   Label="Kenmerken"
                   Variant="Variant.Outlined"
-                  Lines="5" />
+                  Lines="5" 
+                  data-test-id="formulas-admin-edit-attributes" />
 
     <MudCheckBox @bind-Checked="@formula.IsActive"
                      For="@(() => formula.IsActive)"
@@ -39,13 +44,58 @@
                      Size="Size.Medium">
         </MudCheckBox>
     
+    <MudGrid Class="mt-2 mb-2">
+            <MudItem xs="12">
+                <MudStack Style="width: 100%">
+                    <MudFileUpload T="IBrowserFile"
+                                   OnFilesChanged="OnInputFileChanged"
+                                   Hidden="@false"
+                                   InputClass="absolute mud-width-full mud-height-full overflow-hidden z-20"
+                                   InputStyle="opacity:0"
+                                   Context="InputFile"
+                                   @ondragenter="@SetDragClass"
+                                   @ondragleave="@ClearDragClass"
+                                   @ondragend="@ClearDragClass">
+                        <ButtonTemplate>
+                            <MudPaper Height="150px"
+                                      Outlined="true"
+                                      Class="@_dragClass">
+                                <MudText Typo="Typo.h6">
+                                    Laad een foto op
+                                </MudText>
+                                @foreach (var file in _fileNames)
+                                {
+                                    <MudChip Color="Color.Dark" Text="@file" />
+                                }
+                            </MudPaper>
+                            <MudToolBar DisableGutters="true"
+                                        Class="relative d-flex justify-end gap-4 z-30">
+                                <MudButton HtmlTag="label"
+                                           Color="Color.Primary"
+                                           Variant="Variant.Filled"
+                                           for="@InputFile">
+                                    Open een bestand
+                                </MudButton>
+                                <MudButton OnClick="@Clear"
+                                           Color="Color.Error"
+                                           Disabled="@(!_fileNames.Any())"
+                                           Variant="Variant.Filled">
+                                    Verwijder foto
+                                </MudButton>
+                            </MudToolBar>
+                        </ButtonTemplate>
+                    </MudFileUpload>
+                </MudStack>
+            </MudItem>
+    
+        </MudGrid>
 
     <MudGrid Class="mt-6">
         <MudItem xs="1">
 
         </MudItem>
         <MudItem xs="5">
-            <MudButton Class="mr-1" Variant="Variant.Filled" FullWidth="true" Color="Color.Primary" ButtonType="ButtonType.Submit">Pas aan</MudButton>
+            <MudButton Class="mr-1" Variant="Variant.Filled" FullWidth="true" Color="Color.Primary" ButtonType="ButtonType.Submit" data-test-id="formulas-admin-edit-editbutton">Pas aan</MudButton>
         </MudItem>
         <MudItem xs="5">
             <MudButton Class="ml-1" Variant="Variant.Filled" FullWidth="true" Color="Color.Primary" OnClick="Close">Annuleren</MudButton>
@@ -66,11 +116,18 @@
     [Parameter] public EventCallback Close { get; set; } = default!;
     [Parameter] public EventCallback Refresh { get; set; } = default!;
     
+    private IBrowserFile? image;
     
     private FormulaDto.Mutate formula { get; set; } = new ();
     
     protected override async Task OnParametersSetAsync()
     {
+        formula.ImageData = new FormulaDto.ImageData
+        {
+            ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/7/77/Google_Images_2015_logo.svg",
+            AltText = "a google image"
+
+        };
         var response = await FormulaService.GetSpecificMutateAsync(FormulaId);
 
         formula.Title = response.Title;
@@ -78,6 +135,7 @@
         formula.BasePrice = response.BasePrice;
         formula.PricePerDayExtra = Math.Round(response.PricePerDayExtra, 0);
         formula.IsActive = response.IsActive;
+        formula.ImageData = response.ImageData;
         StateHasChanged();
         
     }
@@ -86,6 +144,7 @@
     {
         
         FormulaResult.Edit result = await FormulaService.UpdateAsync(FormulaId, formula);
+        await StorageService.UploadImageAsync(result.Image.ImageUrl, image!);
         await Close.InvokeAsync();
         await Refresh.InvokeAsync();
     }
@@ -93,6 +152,47 @@
     private void Cancel()
     {
         Close.InvokeAsync();
+    }
+    
+        private const string DefaultDragClass = "relative rounded-lg border-2 pa-4 mt-4 mud-width-full mud-height-full z-10";
+    private string _dragClass = DefaultDragClass;
+    private readonly List<string> _fileNames = new();
+
+    private async Task Clear()
+    {
+        _fileNames.Clear();
+        ClearDragClass();
+        await Task.Delay(100);
+    }
+
+    private void SetDragClass()
+        => _dragClass = $"{DefaultDragClass} mud-border-primary";
+
+    private void ClearDragClass()
+    {
+        image = null;
+        _dragClass = DefaultDragClass;
+    }
+
+    private void OnInputFileChanged(InputFileChangeEventArgs e)
+    {
+        ClearDragClass();
+        var files = e.GetMultipleFiles();
+        _fileNames.Clear();
+        if (files.Any())
+        {
+            var newestFile = files.First();
+            _fileNames.Add(newestFile.Name);
+
+            image = e.File;
+            formula.ImageContentType = image.ContentType;
+        }  
+    }
+
+    private void LoadImage(InputFileChangeEventArgs e)
+    {
+        image = e.File;
+        formula.ImageContentType = image.ContentType;
     }
     
 }

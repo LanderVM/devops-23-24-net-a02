@@ -29,7 +29,10 @@ public class QuotationController : ControllerBase
   [SwaggerOperation("Gets a list of all the quotations")]
   public async Task<QuotationResult.Index> GetQuotations()
   {
-    return await _quotationService.GetIndexAsync();
+    _logger.Log(LogLevel.Information, "Fetching list of formulas");
+    var result = await _quotationService.GetIndexAsync();
+    _logger.Log(LogLevel.Information, "Found {result.TotalAmount} formulas", result.TotalAmount);
+    return result;
   }
 
   [HttpGet("{QuotationId}")]
@@ -57,9 +60,11 @@ public class QuotationController : ControllerBase
   [SwaggerOperation("Changes a quotation offer and send a mail to the costumer")]
   public async Task<QuotationResponse.Edit> UpdateQuotationRequest(int QuotationId, QuotationDto.Edit model)
   {
+    _logger.Log(LogLevel.Information, "Fetching quotation with id {QuotationId} to edit based off model: {model.ToString()}", QuotationId, model.ToString());
     var quotation = await _quotationService.UpdateAsync(QuotationId, model);
+    _logger.Log(LogLevel.Information, "Updated quotation with id {QuotationId}: {quotation.ToString()}", QuotationId, quotation.ToString());
     var result = await _emailService.SendConfirmationMail(quotation);
-
+    _logger.Log(LogLevel.Information, "Sending confirmation mail for quotation with id {result.QuotationId}", result.QuotationId);
     return result;
   }
 
@@ -67,29 +72,38 @@ public class QuotationController : ControllerBase
   [SwaggerOperation("Returns all required data to set up the calculation for a quotation")]
   public async Task<QuotationResult.Detail> GetEstimatedQuotationDetails()
   {
+    _logger.Log(LogLevel.Information, "Fetching data for estimation screen");
     return await _quotationService.GetPriceEstimationDetailsAsync();
   }
 
   [HttpGet("Estimation/Calculate")]
   [SwaggerOperation("Calculates a estimate on how much a offer would cost")]
-  public async Task<decimal> GetEstimatedQuotationPrice([FromQuery] QuotationDto.Estimate model)
+  public async Task<QuotationResult.Calculation> GetEstimatedQuotationPrice([FromQuery] QuotationDto.Estimate model)
   {
-    return await _quotationService.GetPriceEstimationPrice(model);
+    _logger.Log(LogLevel.Information, "Calculating estimated price based off model: {model.ToString()}", model.ToString());
+    var result = await _quotationService.GetPriceEstimationPrice(model);
+    _logger.Log(LogLevel.Information, "Calculated estimated price of {result.EstimatedPrice} based off model: {model.ToString()}", result.EstimatedPrice, model.ToString());
+    return result;
   }
 
 
   [HttpGet("Dates")]
   [SwaggerOperation("Gets all the dates for which there is an approved quotation")]
   public async Task<QuotationResult.Dates> GetApprovedQuotationsDates() { 
+    _logger.Log(LogLevel.Information, "Fetching unavailable date ranges");
     var dateTimes = await _quotationService.GetDatesAsync();
+    _logger.Log(LogLevel.Information, "Fetched unavailable date ranges: {dateTimes.DateRanges.ToString()}", dateTimes.DateRanges.ToString());
     return dateTimes;
   }
 
-  [HttpGet("DistanctePrice")]
+  [HttpGet("PriceDistance")]
   [SwaggerOperation("Calculates a estimate on how much a offer would cost")]
   public async Task<GoogleMapsDto.Response> GetDistanctePrice([FromQuery] string address)
   {
-    return await _googleMapsService.GetDistanceAsync(address);
+    _logger.Log(LogLevel.Information, "Calculating estimated transport price for address: {address}", address);
+    var result = await _googleMapsService.GetDistanceAsync(address);
+    _logger.Log(LogLevel.Information, "Calculated estimated transport price of {result.PricePerKm * result.DistanceAmount} before reduction for address: {address}", result.PricePerKm * result.DistanceAmount, address);
+    return result;
   }
 
   

@@ -1,9 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Domain.Common;
+﻿using System.Text.RegularExpressions;
+using devops_23_24_net_a02.Domain.Common;
 
 namespace Domain.Customers;
 
-public class PhoneNumber
+public partial class PhoneNumber : ValueObject
 {
   private PhoneNumber() { } // EF Core constructor
 
@@ -21,8 +21,16 @@ public class PhoneNumber
 
   public string Value { get; } = default!;
 
-  private bool IsValidPhoneNumber(string value)
+  private static bool IsValidPhoneNumber(string value)
   {
-    return new PhoneAttribute().IsValid(value);
+    return BelgianPhoneRegex().IsMatch(value);
+  }
+
+  [GeneratedRegex(@"^(\+32\s?|0)4[56789]\d{7}$")]
+  private static partial Regex BelgianPhoneRegex();
+
+  protected override IEnumerable<object?> GetEqualityComponents()
+  {
+    yield return Value;
   }
 }

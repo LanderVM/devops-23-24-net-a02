@@ -97,7 +97,7 @@ public class EmailService : IEmailService
       new Email(model.Customer.Email.Email),
       new BillingAddress(model.Customer.BillingAddress.Street, model.Customer.BillingAddress.HouseNumber, model.Customer.BillingAddress.City, model.Customer.BillingAddress.PostalCode),
       new PhoneNumber(model.Customer.PhoneNumber),
-      model.Customer.VatNumber
+      model.Customer.VatNumber is null ? null : new VatNumber(model.Customer.VatNumber)
       );
 
     EventLocation eventLocation = new(

@@ -75,7 +75,7 @@
                 @if (_showPrice)
                 {
                     <MudItem xs="12">
-                        <MudText Typo="Typo.h4" Align="Align.Center">Dit zal rond de € @price liggen</MudText>
+                        <MudText Typo="Typo.h4" Align="Align.Center">Dit zal rond de € @Math.Round(price, 2) liggen</MudText>
                     </MudItem>
                     <MudItem xs="12">
                         <MudText Align="Align.Center">Deze prijs is een schatting en ligt dus niet vast</MudText>
@@ -163,7 +163,8 @@
                 EndTime = QuotationEstimateState.DateRange.End.Value.Ticks,
             };
 
-        price = await QuotationService.GetPriceEstimationPrice(estimate);
+        var result = await QuotationService.GetPriceEstimationPrice(estimate);
+        price = result.EstimatedPrice;
         _showPrice = true;
 
         StateHasChanged();
@@ -175,8 +176,8 @@
         {
             foreach (DateDto range in ranges)
             {
-                DateTime startDateTime = new(range.StartTime);
-                DateTime endDateTime = new(range.EndTime);
+                DateTime startDateTime = range.StartTime;
+                DateTime endDateTime = range.EndTime;
 
                 if (date.Date >= startDateTime.Date && date.Date <= endDateTime.Date)
                 {
