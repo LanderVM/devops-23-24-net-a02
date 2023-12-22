@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using shared.Equipment;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -46,6 +47,7 @@ public class EquipmentController : ControllerBase
 
   [SwaggerOperation("Edits an equipment item in the catalog.")]
   [HttpPut("{equipmentId}")]
+  [Authorize]
   public async Task<EquipmentResult.Create> Edit(int equipmentId, EquipmentDto.Mutate model)
   {
     _logger.Log(LogLevel.Information, "Fetching equipment with id {equipmentId} to edit based off model: {model.ToString}", equipmentId, model.ToString());
@@ -56,6 +58,7 @@ public class EquipmentController : ControllerBase
 
   [SwaggerOperation("Edites an equipment item with an image in the catalog.")]
   [HttpPut("WithImage/{equipmentId}")]
+  [Authorize]
   public async Task<EquipmentResult.CreateWithImage> EditWithImage(int equipmentId, EquipmentDto.Mutate model)
   {
     _logger.Log(LogLevel.Information, "Fetching equipment with id {equipmentId} to edit with images", equipmentId);
@@ -66,6 +69,7 @@ public class EquipmentController : ControllerBase
 
   [SwaggerOperation("Deletes equipment item from catalog.")]
   [HttpDelete("{equipmentId}")]
+  [Authorize]
   public async Task<int> Delete(int equipmentId)
   {
     _logger.Log(LogLevel.Information, "Fetching equipment with id {equipmentId} to delete", equipmentId);
@@ -76,6 +80,7 @@ public class EquipmentController : ControllerBase
 
   [SwaggerOperation("Creates equipment and adds it to the catalog.")]
   [HttpPost]
+  [Authorize]
   public async Task<EquipmentResult.Create> Create(EquipmentDto.Create model)
   {
     _logger.Log(LogLevel.Information, "Creating new equipment based off model: {model.ToString()}", model.ToString());
@@ -86,6 +91,7 @@ public class EquipmentController : ControllerBase
 
   [HttpPost("WithImage")]
   [SwaggerOperation("Creates equipment with a image and adds it to the catalog.")]
+  [Authorize]
   public async Task<EquipmentResult.CreateWithImage> CreateWithImage(EquipmentDto.Create model)
   {
     _logger.Log(LogLevel.Information, "Creating new equipment with image based off model: {model.ToString()}", model.ToString());

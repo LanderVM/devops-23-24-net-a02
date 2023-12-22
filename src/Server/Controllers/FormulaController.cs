@@ -1,6 +1,6 @@
 ﻿
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using shared.Equipment;
 using shared.Formulas;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -40,6 +40,7 @@ public class FormulaController : ControllerBase
   
   [SwaggerOperation("Edits a formula in the catalog.")]
   [HttpPut("{formulaId}")]
+  [Authorize]
   public async Task<FormulaResult.Edit> Edit(int formulaId, FormulaDto.Mutate model)
   {
     _logger.Log(LogLevel.Information, "Fetching formula with id {formulaId} to edit based off model: {model.ToString}", formulaId, model.ToString());
