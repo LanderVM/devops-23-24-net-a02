@@ -74,14 +74,20 @@
                     <col style="width:80%;" />
                     <col />
                     <col />
+                    <col />
+                    <col />
                 </ColGroup>
                 <HeaderContent>
                     <MudTh><MudTableSortLabel SortBy="new Func<EquipmentDto.LinesDetail, object>(x=>x.Name)">Naam</MudTableSortLabel></MudTh>
                     <MudTh><MudTableSortLabel SortBy="new Func<EquipmentDto.LinesDetail, object>(x=>x.Amount)">Aantal</MudTableSortLabel></MudTh>
+                    <MudTh><MudTableSortLabel SortBy="new Func<EquipmentDto.LinesDetail, object>(x=>x.Price)">Eenheid</MudTableSortLabel></MudTh>
+                    <MudTh><MudTableSortLabel SortBy="new Func<EquipmentDto.LinesDetail, object>(x=>x.Price * x.Amount)">Totaal</MudTableSortLabel></MudTh>
                 </HeaderContent>
                 <RowTemplate>
                     <MudTd DataLabel="Naam">@items.Name</MudTd>
                     <MudTd DataLabel="Aantal">@items.Amount</MudTd>
+                    <MudTd DataLabel="Eenheid">€ @items.Price</MudTd>
+                    <MudTd DataLabel="Totaal">€ @decimal.Round(@items.Price * @items.Amount, 2)</MudTd>
                     <MudIcon Class="ma-4" Icon="@Icons.Outlined.Delete" @onclick="@( async() => await DeleteEntry(items))" Size="Size.Small"></MudIcon>
                 </RowTemplate>
                 <RowEditingTemplate>
@@ -90,6 +96,12 @@
                      </MudTd>
                      <MudTd DataLabel="Aantal">
                          <MudNumericField @bind-Value="@items.Amount" For="(() => items.Amount)" Required Min="1" />
+                     </MudTd>
+                     <MudTd DataLabel="Eenheid">
+                         <MudText>€ @items.Price</MudText>
+                     </MudTd>
+                     <MudTd DataLabel="Totaal">
+                         <MudText>€ @decimal.Round(@items.Price * @items.Amount, 2)</MudText>
                      </MudTd>
                  </RowEditingTemplate>
                  <EditButtonContent Context="button">

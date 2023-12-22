@@ -99,6 +99,7 @@ public class QuotationService : IQuotationService
       {
         Amount = line.AmountOrdered,
         EquipmentId = line.EquipmentOrdered.Id,
+        Price = line.EquipmentOrdered.Price,
         Name = line.EquipmentOrdered.Description.Title
       }),
       IsTripelBier = quotation.IsTripelBier,

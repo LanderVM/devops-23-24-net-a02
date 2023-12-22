@@ -38,13 +38,8 @@ public class MailSender
     }
   }
 
-  private string GetMailBody(Quotation quotation)
+  private string GetMailBody(Quotation quotation, DistancePrice distancePrice)
   {
-    /*var formula = quotation.Formula;
-    if (formula == null || !formula.Equipment.Any())
-    {
-      throw new Exception("There is no Equipment in this formula");
-    }*/
     StringBuilder contentBuilder = new StringBuilder();
 
     decimal totalPrice = 0;
@@ -64,7 +59,7 @@ public class MailSender
 
     // Oferte
     string factuurNummer = "2023017";
-    string datum = quotation.StartTime.ToString("dd/M/yyyy", CultureInfo.InvariantCulture);
+    string datum = quotation.CreatedAt.ToString("dd/M/yyyy", CultureInfo.InvariantCulture);
     string afbeeldingUrl = "https://a2blanchestorage.blob.core.windows.net/images/foodtruck.jpg";
 
     decimal btw12 = 100m * 0.12m; //replace 100m with price with 12% btw
@@ -147,6 +142,23 @@ public class MailSender
 
       totalPrice += bedrag;
     }
+
+    // Vervoerskosten 
+    if (distancePrice.DistanceAmount.HasValue)
+    {
+      decimal? vervoerskosten = distancePrice.PricePerKilometer * distancePrice.DistanceAmount;
+      decimal btw = vervoerskosten.Value * 0.21M; 
+
+      contentBuilder.Append("<tr>");
+      contentBuilder.Append($"<td style='border: 1px solid #ddd; padding: 10px; text-align: center; width: 12%'>{distancePrice.DistanceAmount} Km</td>");
+      contentBuilder.Append($"<td style='border: 1px solid #ddd; padding: 10px; width: 39%;'>Vervoerskosten (<20 Km is gratis)</td>");
+      contentBuilder.Append($"<td style='border: 1px solid #ddd; padding: 10px; text-align: center; width: 14%;'>{distancePrice.PricePerKilometer.ToString("C2")}</td>");
+      contentBuilder.Append($"<td style='border: 1px solid #ddd; padding: 10px; text-align: center; width: 13%;'>{(distancePrice.PricePerKilometer * distancePrice.DistanceAmount).Value.ToString("C2")}</td>");
+      contentBuilder.Append($"<td style='border: 1px solid #ddd; padding: 10px; text-align: center; width: 22%;'>{btw.ToString("C2")}</td>");
+      contentBuilder.Append("</tr>");
+    }
+
+
     btw21 = totalPrice * 0.21m;
     contentBuilder.Append("<tr style='background-color: #d8d8d8; font-weight: bold; text-align: center;'>");
     contentBuilder.Append("<td style='border: 1px solid #ddd; padding: 10px;' colspan='2'>Belastbaar Totaal</td>");
@@ -164,7 +176,10 @@ public class MailSender
 
     contentBuilder.Append("</table>");
 
-    contentBuilder.Append($"<p style='margin-bottom: 20px;'>Comment: <br>{quotation.Opmerking}</p>");
+    if (string.IsNullOrWhiteSpace(quotation.Opmerking))
+    {
+      contentBuilder.Append($"<p style='margin-bottom: 20px;'>Comment: <br>{quotation.Opmerking}</p>");
+    }
     //contentBuilder.Append($"<a href='{acceptQuoteUrl}' style='background-color: #4CAF50; color: white; padding: 15px 32px; text-align: center; font-size: 16px; text-decoration: none; border-radius: 10px; display: inline-block;' target='_blank'>Offerte Accepteren</a></div>");
 
     contentBuilder.Append("<p>Met vriendelijke groeten,<br>Blanche</p></div>");
@@ -172,10 +187,10 @@ public class MailSender
     return contentBuilder.ToString();
   }
 
-  public bool SendNewQuote(Quotation quotation)
+  public bool SendNewQuote(Quotation quotation, DistancePrice distancePrice)
   {
     mail.Subject = "Offerte Blanche";
-    mail.Body = GetMailBody(quotation);
+    mail.Body = GetMailBody(quotation, distancePrice);
     //mail.Body = "Dit is een test";
     mail.IsBodyHtml = true;
 

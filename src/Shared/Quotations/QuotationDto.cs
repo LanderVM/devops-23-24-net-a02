@@ -70,14 +70,6 @@ public static class QuotationDto
     public string? Opmerking { get; set; } = default!;
     public IEnumerable<EquipmentDto.LinesDetail>? EquipmentList { get; set; } = default!;
     public bool IsTripelBier { get; set; }
-
-    public class Validator : AbstractValidator<Edit>
-    {
-      public Validator()
-      {
-        RuleFor(model => model.IsTripelBier).NotEmpty().WithMessage("Maak een keuze tussen tripel bier of niet.");   
-      }
-    }
   }
 
   public class Create

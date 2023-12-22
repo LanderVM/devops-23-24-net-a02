@@ -3,6 +3,7 @@ using shared.Quotations;
 using shared.GoogleMaps;
 using Swashbuckle.AspNetCore.Annotations;
 using devops_23_24_net_a02.Shared.Emails;
+using Shared.Common;
 
 namespace devops_23_24_net_a02.Server.Controllers;
 
@@ -62,8 +63,11 @@ public class QuotationController : ControllerBase
   {
     _logger.Log(LogLevel.Information, "Fetching quotation with id {QuotationId} to edit based off model: {model.ToString()}", QuotationId, model.ToString());
     var quotation = await _quotationService.UpdateAsync(QuotationId, model);
+    var address = $"{quotation.EventLocation.Street} {quotation.EventLocation.HouseNumber}, {quotation.EventLocation.City} {quotation.EventLocation.PostalCode}";
     _logger.Log(LogLevel.Information, "Updated quotation with id {QuotationId}: {quotation.ToString()}", QuotationId, quotation.ToString());
-    var result = await _emailService.SendConfirmationMail(quotation);
+    var distancePrice = await _googleMapsService.GetDistanceAsync(address);
+    _logger.Log(LogLevel.Information, "Fetching distance from GoogleMaps API for calculating distance price", QuotationId, quotation.ToString());
+    var result = await _emailService.SendConfirmationMail(quotation, distancePrice);
     _logger.Log(LogLevel.Information, "Sending confirmation mail for quotation with id {result.QuotationId}", result.QuotationId);
     return result;
   }
