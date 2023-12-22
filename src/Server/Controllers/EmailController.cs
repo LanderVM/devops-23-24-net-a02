@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Shared.Emails;
 using Swashbuckle.AspNetCore.Annotations;
+using Microsoft.AspNetCore.Authorization;
 
 namespace devops_23_24_net_a02.Server.Controllers;
 
@@ -29,6 +30,7 @@ public class EmailController : ControllerBase
   }
 
   [HttpGet]
+  [Authorize]
   [SwaggerOperation("Get a list of subscribed email addresses")]
   public async Task<EmailResult.Index> GetEmail()
   {
