@@ -5,6 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Playwright;
 using Microsoft.Playwright.NUnit;
+using NUnit.Framework.Internal;
+using Shouldly;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Client.PlaywrightTests;
 
@@ -30,5 +33,8 @@ public class AdminQuotationsTest:PageTest
 
     await Page.GotoAsync(TestHelper.QuotationsOverview);
     await Page.WaitForSelectorAsync("data-test-id=admin-quotations-grid");
+    await Page.WaitForSelectorAsync("data-test-id=admin-quotations-overview-editbutton");
+    int amount =await Page.Locator("data-test-id=admin-quotations-overview-editbutton").CountAsync();
+    amount.ShouldBeGreaterThan(0);
   }
 }
