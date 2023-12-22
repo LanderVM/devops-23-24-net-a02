@@ -55,16 +55,11 @@ public class EquipmentService : IEquipmentService
     var response = await adminClient.PutAsJsonAsync($"{endpoint}/WithImage/{equipmentId}", model);
     return await response.Content.ReadFromJsonAsync<EquipmentResult.CreateWithImage>();
   }
-
-  public async Task<EquipmentDto.Index> GetSpecificIndexAsync(int equipmentId)
-  {
-    EquipmentDto.Index? response = await publicClient.GetFromJsonAsync<EquipmentDto.Index>($"{endpoint}/{equipmentId}");
-    return response!;
-  }
+  
   
   public async Task<EquipmentDto.Mutate> GetSpecificMutateAsync(int equipmentId)
   {
-    EquipmentDto.Mutate? response = await publicClient.GetFromJsonAsync<EquipmentDto.Mutate>($"{endpoint}/{equipmentId}");
+    EquipmentDto.Mutate? response = await adminClient.GetFromJsonAsync<EquipmentDto.Mutate>($"{endpoint}/{equipmentId}");
     return response!;
   }
 

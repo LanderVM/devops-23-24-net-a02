@@ -1,4 +1,4 @@
-﻿using System.Net.Http.Json;
+using System.Net.Http.Json;
 using shared.Formulas;
 namespace devops_23_24_net_a02.Client.Pages.Formulas
 {
@@ -22,7 +22,7 @@ namespace devops_23_24_net_a02.Client.Pages.Formulas
 
     public async Task<FormulaDto.Mutate> GetSpecificMutateAsync(int formulaId)
     {
-      FormulaDto.Mutate? response = await publicClient.GetFromJsonAsync<FormulaDto.Mutate>($"{endpoint}/{formulaId}");
+      FormulaDto.Mutate? response = await adminClient.GetFromJsonAsync<FormulaDto.Mutate>($"{endpoint}/{formulaId}");
       return response;
     }
 
@@ -30,6 +30,12 @@ namespace devops_23_24_net_a02.Client.Pages.Formulas
     {
       var response = await adminClient.PutAsJsonAsync($"{endpoint}/{formulaId}", model);
       return await response.Content.ReadFromJsonAsync<FormulaResult.Edit>();
+    }
+
+    public async Task<FormulaResult.EditWithoutImage> UpdateWithoutImageAsync(int formulaId, FormulaDto.Mutate model)
+    {
+      var response = await adminClient.PutAsJsonAsync($"{endpoint}/WithoutImage/{formulaId}", model);
+      return await response.Content.ReadFromJsonAsync<FormulaResult.EditWithoutImage>();
     }
   }
 }

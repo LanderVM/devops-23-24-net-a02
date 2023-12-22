@@ -37,6 +37,7 @@ public class EquipmentController : ControllerBase
 
   [HttpGet("{equipmentId}")]
   [SwaggerOperation("Returns a specific equipment based on id.")]
+  [Authorize]
   public async Task<EquipmentDto.Mutate> GetSpecificEquipmentMutate(int equipmentId)
   {
     _logger.Log(LogLevel.Information, "Fetching equipment with id {equipmentId}", equipmentId);

@@ -166,32 +166,7 @@ public class EquipmentService : IEquipmentService
     };
     return result;
   }
-
-  public async Task<EquipmentDto.Index> GetSpecificIndexAsync(int equipmentId)
-  {
-    EquipmentDto.Index? equipment = await _dbContext.Equipments.Select(x => new EquipmentDto.Index
-    {
-      Id = x.Id,
-      Title = x.Description.Title,
-      Attributes = x.Description.Attributes,
-      Price = x.Price,
-      Stock = x.Stock,
-      IsActive = x.IsActive,
-      ImageData = new EquipmentDto.ImageData
-      {
-        ImageUrl = "https://via.placeholder.com/350x300",
-        AltText = "placeholder txt",
-      },
-      FormulaIds = x.Formulas.Select(x => x.Id).ToList(),
-    }).FirstOrDefaultAsync(x => x.Id == equipmentId);
-
-    if(equipment == null)
-    {
-      throw new EntityNotFoundException(nameof(Equipment),equipmentId);
-    }
-
-    return equipment;
-  }
+  
 
   public async Task<EquipmentDto.Mutate> GetSpecificMutateAsync(int equipmentId)
   {

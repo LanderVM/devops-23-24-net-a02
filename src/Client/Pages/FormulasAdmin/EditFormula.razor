@@ -142,9 +142,16 @@
     
     private async Task UpdateFormulaAsync()
     {
+        if (image == null)
+        {
+            await FormulaService.UpdateWithoutImageAsync(FormulaId, formula);
+        }
+        else
+        {
+            FormulaResult.Edit result = await FormulaService.UpdateAsync(FormulaId, formula);
+            await StorageService.UploadImageAsync(result.Image.ImageUrl, image!);
+        }
         
-        FormulaResult.Edit result = await FormulaService.UpdateAsync(FormulaId, formula);
-        await StorageService.UploadImageAsync(result.Image.ImageUrl, image!);
         await Close.InvokeAsync();
         await Refresh.InvokeAsync();
     }
@@ -153,7 +160,7 @@
     {
         Close.InvokeAsync();
     }
-    
+        
         private const string DefaultDragClass = "relative rounded-lg border-2 pa-4 mt-4 mud-width-full mud-height-full z-10";
     private string _dragClass = DefaultDragClass;
     private readonly List<string> _fileNames = new();
