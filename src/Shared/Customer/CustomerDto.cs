@@ -33,6 +33,11 @@ public static class CustomerDto
     public string PhoneNumber { get; set; }
     public string? VatNumber { get; set; }
 
+    public Create() { 
+      Email = new EmailDto.Create();
+      BillingAddress = new AddressDto();
+    }
+
     public class Validator : AbstractValidator<Create>
     {
       public Validator()
