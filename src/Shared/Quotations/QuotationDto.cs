@@ -2,7 +2,6 @@
 using FluentValidation;
 using Shared.Common;
 using Shared.Customer;
-using Shared.Customer;
 using shared.Equipment;
 using shared.Formulas;
 using Domain.Common;
@@ -26,7 +25,7 @@ public static class QuotationDto
     public FormulaDto.Select Formula { get; set; } = default!;
     public CustomerDto.Details Customer { get; set; } = default!;
     public EventLocation EventLocation { get; set; } = default!;
-    public IEnumerable<EquipmentDto.Lines> Equipment { get; set; } = default!;
+    public IEnumerable<EquipmentDto.LinesDetail> Equipment { get; set; } = default!;
     public bool IsTripelBier { get; set; }
     public decimal NumberOfPeople { get; set; }
     public string? Opmerking { get; set; }
@@ -68,14 +67,14 @@ public static class QuotationDto
   public class Edit
   {
     public string? Opmerking { get; set; } = default!;
-    public QuotationStatus Status { get; set; }
-    public IEnumerable<EquipmentDto.Lines>? EquipmentList { get; set; } = default!;
+    public IEnumerable<EquipmentDto.LinesDetail>? EquipmentList { get; set; } = default!;
+    public bool IsTripelBier { get; set; }
 
     public class Validator : AbstractValidator<Edit>
     {
       public Validator()
       {
-        RuleFor(model => model.Status).NotEmpty().WithMessage("Geef een geldige status!");   
+        RuleFor(model => model.IsTripelBier).NotEmpty().WithMessage("Maak een keuze tussen tripel bier of niet.");   
       }
     }
   }

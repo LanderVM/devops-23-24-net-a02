@@ -33,7 +33,7 @@ public class QuotationController : ControllerBase
   }
 
   [HttpGet("{QuotationId}")]
-  [SwaggerOperation("Gets a list of all the quotations")]
+  [SwaggerOperation("Returns a quotation that matches the given id")]
   public async Task<QuotationResult.DetailEdit> GetSpecificDetailQuotation(int QuotationId)
   {
     return await _quotationService.GetSpecificDetailEditAsync(QuotationId);

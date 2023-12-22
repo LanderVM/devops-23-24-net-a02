@@ -21,8 +21,7 @@ public class EquipmentController : ControllerBase
   [HttpGet]
   [SwaggerOperation("Returns a list of equipment available in the extra's catalog.")]
   public async Task<EquipmentResult.Index> GetEquipment()
-  {
-    
+  { 
     return await _equipmentService.GetIndexAsync();
   }
 

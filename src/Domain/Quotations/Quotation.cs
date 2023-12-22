@@ -20,7 +20,7 @@ public class Quotation : Entity
     OrderedBy = Guard.Against.Null(orderedBy);
     EventLocation = Guard.Against.Null(eventLocation);
     QuotationLines = Guard.Against.Null(quotationLines);
-    Status = QuotationStatus.Unread;
+    Status = QuotationStatus.Open;
     StartTime = Guard.Against.Null(startTime);
     EndTime = Guard.Against.Null(endTime);
     NumberOfPeople = Guard.Against.NegativeOrZero(numberOfPeople);
@@ -52,7 +52,7 @@ public class Quotation : Entity
   public int NumberOfPeople { get; protected set; }
   public bool IsTripelBier { get; set; }
 
-  public QuotationStatus Status { get; set; } = QuotationStatus.Unread;
+  public QuotationStatus Status { get; set; } = QuotationStatus.Open;
   public string? Opmerking { get; set; } = default!;
 
   public decimal GetPrice()

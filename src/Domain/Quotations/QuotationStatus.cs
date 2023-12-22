@@ -2,8 +2,6 @@
 
 public enum QuotationStatus
 {
-  Unread,
-  Read,
-  Rejected,
+  Open,
   Accepted
 }

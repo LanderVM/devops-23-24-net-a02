@@ -94,10 +94,11 @@ public class QuotationService : IQuotationService
         },
       },
       EventLocation = quotation.EventLocation,
-      Equipment = quotation.QuotationLines.Select(line => new EquipmentDto.Lines
+      Equipment = quotation.QuotationLines.Select(line => new EquipmentDto.LinesDetail
       {
         Amount = line.AmountOrdered,
-        EquipmentId = line.EquipmentOrdered.Id
+        EquipmentId = line.EquipmentOrdered.Id,
+        Name = line.EquipmentOrdered.Description.Title
       }),
       IsTripelBier = quotation.IsTripelBier,
       NumberOfPeople = quotation.NumberOfPeople,
@@ -341,7 +342,8 @@ public class QuotationService : IQuotationService
       }
     }
     quotation.QuotationLines = quotationLines;
-    quotation.Status = model.Status;
+    quotation.Status = QuotationStatus.Accepted;
+    quotation.IsTripelBier = model.IsTripelBier;
     quotation.Opmerking = model.Opmerking;
 
     await _dbContext.SaveChangesAsync();
