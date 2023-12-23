@@ -4,15 +4,15 @@
 
 <MudContainer MaxWidth="MaxWidth.Large" id="cards">
     <MudGrid Justify="Justify.SpaceEvenly" Spacing="6" data-test-id="home-cards-overview">
-        <Loader IsLoading=@(FormulasList == null)>
-            @foreach (FormulaDto.Index item in FormulasList)
+        <Loader IsLoading="@(FormulasList == null)">
+            @foreach (var item in FormulasList)
             {
                 if (item.IsActive)
                 {
                     <MudItem lg="3" md="3" sm="6" xs="12" Class="mudItem" data-test-id="home-formula-card">
                         <MudLink OnClick="@(() =>{ FormulaState.ChosenFormulaId = item.Id; FormulaState.Title = item.Title; FormulaState.Attributes = item.Attributes; FormulaState.PricePerDayExtra = item.PricePerDayExtra; FormulaState.BasePrice = item.BasePrice; NavigateToEventdetails(); })" Underline="Underline.None">
                             <MudCard Style="border: 1px solid #C8A86E">
-                                <MudCardMedia Image="@item.ImageUrl" Height="200" />
+                                <MudCardMedia Image="@item.ImageUrl" Height="200"/>
                                 <MudCardContent>
                                     <MudText Color="Color.Primary" Style="text-align: center" Typo="Typo.h5">
                                         @item.Title <MudIconButton Href=@Routes.Formula Style="padding: 0; color: #9D9D9D" Icon="@Icons.Material.Filled.HelpOutline" aria-label="help"></MudIconButton>
@@ -20,15 +20,14 @@
                                 </MudCardContent>
                             </MudCard>
                         </MudLink>
-                    </MudItem> 
+                    </MudItem>
                 }
-                
             }
 
             <MudItem lg="3" md="3" sm="6" xs="12" Class="mudItem">
-                <MudLink Href=@Routes.ExtraMaterialReadOnly Underline="Underline.None">
+                <MudLink Href="@Routes.ExtraMaterialReadOnly" Underline="Underline.None">
                     <MudCard Style="border: 1px solid #C8A86E">
-                        <MudCardMedia Image="images/7.jpg" Height="200" />
+                        <MudCardMedia Image="images/7.jpg" Height="200"/>
                         <MudCardContent>
                             <MudText Color="Color.Primary" Style="text-align: center" Typo="Typo.h5">Extra Materiaal</MudText>
                         </MudCardContent>
@@ -40,6 +39,7 @@
 </MudContainer>
 
 @code {
+
     [Inject]
     public IFormulaService FormulaService { get; set; } = default!;
 
@@ -47,7 +47,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        FormulaResult.Index response = await FormulaService.GetIndexAsync();
+        var response = await FormulaService.GetIndexAsync();
         FormulasList = response.Formulas;
     }
 
@@ -55,4 +55,5 @@
     {
         NavigationManager.NavigateTo(Routes.EventDetails);
     }
+
 }

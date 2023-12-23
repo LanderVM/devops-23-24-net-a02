@@ -1,15 +1,15 @@
-﻿using Domain.Common;
-using Domain.Formulas;
+﻿using Domain.Formulas;
 
 namespace Domain.Tests;
 
 public class FormulaTests
 {
-  List<Equipment> equipment = new();
-  const string title = "The base food truck formula";
+  private const string title = "The base food truck formula";
 
   private static readonly List<string> description =
     new() { "Having a small party? Our iconic food truck is your choice of the evening!" };
+
+  private readonly List<Equipment> equipment = new();
 
   [Fact]
   public void Create_new_formula_without_equipment_happyFlow()

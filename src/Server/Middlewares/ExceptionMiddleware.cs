@@ -1,12 +1,12 @@
-﻿using shared.Infrastructure;
+﻿using System.Net;
 using Domain.Exceptions;
-using System.Net;
+using shared.Infrastructure;
 
 namespace devops_23_24_net_a02.Middlewares;
 
 /// <summary>
-/// Global error handling middleware, when an exception is thrown in the underlying layers,
-/// we intercept it and return a more appropriate error without a stack trace.
+///   Global error handling middleware, when an exception is thrown in the underlying layers,
+///   we intercept it and return a more appropriate error without a stack trace.
 /// </summary>
 public class ExceptionMiddleware
 {
@@ -34,7 +34,7 @@ public class ExceptionMiddleware
 
   private async Task HandleExceptionAsync(HttpContext context, Exception exception)
   {
-    ErrorDetails error = exception switch
+    var error = exception switch
     {
       EntityNotFoundException ex => new ErrorDetails(ex.Message, HttpStatusCode.NotFound),
       EntityAlreadyExistsException ex => new ErrorDetails(ex.Message, HttpStatusCode.Conflict),
@@ -46,7 +46,7 @@ public class ExceptionMiddleware
       _ => new ErrorDetails(exception.Message)
     };
     context.Response.ContentType = "application/json";
-    context.Response.StatusCode = (int)error.StatusCode;
+    context.Response.StatusCode = error.StatusCode;
     await context.Response.WriteAsync(error.ToString());
   }
 }

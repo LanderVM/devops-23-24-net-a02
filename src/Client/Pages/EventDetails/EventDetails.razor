@@ -9,7 +9,6 @@
 @inject EventDetailsState EventDetailsState
 
 
-
 <PageTitle>Stap 1</PageTitle>
 
 <MudContainer MaxWidth="MaxWidth.ExtraLarge" Style="margin-top: 4vw">
@@ -36,7 +35,7 @@
 
         <MudItem lg="4" md="10" sm="12" Style="max-width: 500px">
             <GoogleMap @ref="@Map" Id="map1" Options="@_options" Height="410px" OnAfterInit="async () => await OnAfterMapInit()"></GoogleMap>
-            <MudTextField @ref="_addressSearch" Class="ml-16 mr-16 mb-4 pt-2" Label="Adres" Variant="Variant.Outlined" T="string" ErrorText="Gelieve een volledig adres in te geven" Error="@addressError" TextChanged="@(()=>{addressError=false;})" />
+            <MudTextField @ref="_addressSearch" Class="ml-16 mr-16 mb-4 pt-2" Label="Adres" Variant="Variant.Outlined" T="string" ErrorText="Gelieve een volledig adres in te geven" Error="@addressError" TextChanged="@(() => { addressError = false; })"/>
         </MudItem>
         <MudItem lg="4" md="10" sm="12" Style="max-width: 770px">
             <MudDateRangePicker Color="Color.Primary"
@@ -48,14 +47,13 @@
                                 PlaceholderEnd="End Date"
                                 Date="@(DateTime.Today.AddDays(1))"
                                 PickerVariant="PickerVariant.Static"
-                                IsDateDisabledFunc="@((DateTime dt) => DateRange != null && (dt.Date < DateTime.Now.Date || DateRange.Any(d => d.StartTime.Date <= dt.Date && dt.Date <= d.EndTime.Date)))"
- />
+                                IsDateDisabledFunc="@((DateTime dt) => DateRange != null && (dt.Date < DateTime.Now.Date || DateRange.Any(d => d.StartTime.Date <= dt.Date && dt.Date <= d.EndTime.Date)))"/>
             <div style="width: 100%">
-                @if (FormulaState.ChosenFormulaId!=1)
+                @if (FormulaState.ChosenFormulaId != 1)
                 {
-                    <MudSwitch @bind-Checked="@EventDetailsState.HasTripleBeer" Label="Bestel trippel bier i.p.v. blond" Color="Color.Primary" UnCheckedColor="Color.Secondary" />
+                    <MudSwitch @bind-Checked="@EventDetailsState.HasTripleBeer" Label="Bestel trippel bier i.p.v. blond" Color="Color.Primary" UnCheckedColor="Color.Secondary"/>
                 }
-                <MudNumericField Class="d-inline-flex" @bind-Value="@EventDetailsState.NumberOfPeople" Label="Aantal Personen"Min="0" Max="50000" Error="@numberOfPeopleError" ErrorText="Gelieve een geldig nummer op te geven" />
+                <MudNumericField Class="d-inline-flex" @bind-Value="@EventDetailsState.NumberOfPeople" Label="Aantal Personen"Min="0" Max="50000" Error="@numberOfPeopleError" ErrorText="Gelieve een geldig nummer op te geven"/>
             </div>
 
 
@@ -87,17 +85,17 @@
 
     [Inject]
     public ISnackbar Snackbar { get; set; } = default!;
-    
+
     [Inject]
     public IQuotationService QuotationService { get; set; } = default!;
-    
+
     [Inject]
     public FormulaState FormulaState { get; set; } = default!;
-    
+
     [Inject]
     public PersonalDetailsState PersonalDetailsState { get; set; } = default!;
-    
-    private DateRange _dateRange; 
+
+    private DateRange _dateRange;
 
     private void ClickNext()
     {
@@ -129,10 +127,7 @@
             EventDetailsState.dateRange = _dateRange;
             NavigationManager.NavigateTo(Routes.PersonalDetails);
         }
-
-
     }
-
 
 
     protected override async Task OnInitializedAsync()
@@ -142,22 +137,23 @@
             NavigationManager.NavigateTo(Routes.Formula);
             Snackbar.Add("Gelieve uw offerteaanvraag opnieuw te beginnen.", Severity.Error);
         }
-        
-        _dateRange = EventDetailsState.dateRange.Start == DateTime.Today ? null: EventDetailsState.dateRange;
+
+        _dateRange = EventDetailsState.dateRange.Start == DateTime.Today ? null : EventDetailsState.dateRange;
         var response = await QuotationService.GetDatesAsync();
         DateRange = response.DateRanges;
-
     }
 
 
     private GoogleMap Map { get; set; } = default!;
+
     private readonly MapOptions _options = new()
-        {
-            Zoom = 13,
-            Center = new LatLngLiteral { Lat = 50.93735122680664, Lng = 4.03336238861084 },
-            MapTypeId = MapTypeId.Roadmap,
-            DisableDefaultUI = true,
-        };
+    {
+        Zoom = 13,
+        Center = new LatLngLiteral { Lat = 50.93735122680664, Lng = 4.03336238861084 },
+        MapTypeId = MapTypeId.Roadmap,
+        DisableDefaultUI = true
+    };
+
     private Marker? _selectedLocation;
     private Autocomplete _autocomplete = default!;
     private MudTextField<string> _addressSearch = default!;
@@ -166,11 +162,11 @@
     {
         var marker = await Marker.CreateAsync(Map.JsRuntime,
             new MarkerOptions
-                {
-                    Position = await Map.InteropObject.GetCenter(),
-                    Map = Map.InteropObject,
-                    Title = "HOGENT Campus Aalst"
-                });
+            {
+                Position = await Map.InteropObject.GetCenter(),
+                Map = Map.InteropObject,
+                Title = "HOGENT Campus Aalst"
+            });
         await UpdateMarker(marker);
     }
 
@@ -178,18 +174,17 @@
     {
         await SetDefaultMarker();
         _autocomplete = await Autocomplete.CreateAsync(Map.JsRuntime, _addressSearch.InputReference.ElementReference, new AutocompleteOptions
-            {
-                StrictBounds = false,
-                ComponentRestrictions = new ComponentRestrictions { Country = new[] { "be" } }
-            });
+        {
+            StrictBounds = false,
+            ComponentRestrictions = new ComponentRestrictions { Country = new[] { "be" } }
+        });
 
         await _autocomplete.SetFields(new[] { "ALL" });
 
         await _autocomplete.AddListener("place_changed", async () =>
         {
-
-            PlaceResult place = await _autocomplete.GetPlace();
-            //Console.WriteLine("size adrscomp:" + place.AddressComponents.Count());
+            var place = await _autocomplete.GetPlace();
+    //Console.WriteLine("size adrscomp:" + place.AddressComponents.Count());
 
             if (place.Geometry.Location is not null)
             {
@@ -197,11 +192,11 @@
                 await Map.InteropObject.SetZoom(13);
 
                 var marker = await Marker.CreateAsync(Map.JsRuntime, new MarkerOptions
-                    {
-                        Position = place.Geometry.Location,
-                        Map = Map.InteropObject,
-                        Title = place.Name
-                    });
+                {
+                    Position = place.Geometry.Location,
+                    Map = Map.InteropObject,
+                    Title = place.Name
+                });
                 await UpdateMarker(marker);
                 EventDetailsState.PlaceTitle = place.Name;
                 EventDetailsState.PlaceGeometry = place.Geometry;
@@ -227,7 +222,7 @@
                 };
                 EventDetailsState.FormattedAddress = place.FormattedAddress;
             }
-             
+
             if (place.AddressComponents is not null)
             {
                 if (EventDetailsState.EventAddress.Street == null ||
@@ -236,13 +231,14 @@
                     EventDetailsState.EventAddress.HouseNumber == null || !char.IsDigit(EventDetailsState.EventAddress.HouseNumber[0]))
                 {
                     hasValidAdress = false;
-                } else
+                }
+                else
                 {
                     hasValidAdress = true;
                 }
             }
-            
-            
+
+
             else if (place.Geometry.Viewport is not null)
             {
                 await Map.InteropObject.FitBounds(place.Geometry.Viewport, 5);

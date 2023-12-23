@@ -1,17 +1,13 @@
-﻿using FluentValidation;
-using shared;
-using Shared.Customer;
-using devops_23_24_net_a02.Shared.Emails;
-using Shared.Common;
+﻿using Shared.Customer;
 
 namespace devops_23_24_net_a02.Client;
 
 public class PersonalDetailsState
-{ 
-  public CustomerDto.Create Customer { get; set; } = new CustomerDto.Create();
+{
+  public CustomerDto.Create Customer { get; set; } = new();
 
-  public void Clear() {
+  public void Clear()
+  {
     Customer = new CustomerDto.Create();
   }
-
 }

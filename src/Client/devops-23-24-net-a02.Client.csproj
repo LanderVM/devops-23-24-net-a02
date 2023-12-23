@@ -8,30 +8,30 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Pages\NavBar\NavBarHome.razor.css" />
+    <None Remove="Pages\NavBar\NavBarHome.razor.css"/>
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Pages\NavBar\NavBarHome.razor.css" />
+    <Content Include="Pages\NavBar\NavBarHome.razor.css"/>
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Append.Blazor.Sidepanel" Version="6.3.3" />
-    <PackageReference Include="Azure.Storage.Blobs" Version="12.19.1" />
-    <PackageReference Include="Blazored.FluentValidation" Version="2.1.0" />
-    <PackageReference Include="BlazorGoogleMaps" Version="3.2.3" />
-    <PackageReference Include="FluentValidation" Version="11.8.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Analyzers" Version="7.0.13" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="7.0.13" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.13" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="7.0.13" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.13" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
-    <PackageReference Include="MudBlazor" Version="6.11.0" />
+    <PackageReference Include="Append.Blazor.Sidepanel" Version="6.3.3"/>
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.19.1"/>
+    <PackageReference Include="Blazored.FluentValidation" Version="2.1.0"/>
+    <PackageReference Include="BlazorGoogleMaps" Version="3.2.3"/>
+    <PackageReference Include="FluentValidation" Version="11.8.0"/>
+    <PackageReference Include="Microsoft.AspNetCore.Components.Analyzers" Version="7.0.13"/>
+    <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="7.0.13"/>
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.13"/>
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="7.0.13"/>
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.13" PrivateAssets="all"/>
+    <PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0"/>
+    <PackageReference Include="MudBlazor" Version="6.11.0"/>
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Shared\devops-23-24-net-a02.Shared.csproj" />
+    <ProjectReference Include="..\Shared\devops-23-24-net-a02.Shared.csproj"/>
   </ItemGroup>
 
   <ItemGroup>

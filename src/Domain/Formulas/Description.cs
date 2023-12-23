@@ -1,6 +1,4 @@
-﻿using Domain.Common;
-
-namespace Domain.Formulas;
+﻿namespace Domain.Formulas;
 
 public class Description
 {
@@ -19,18 +17,12 @@ public class Description
   public string Title
   {
     get => _title;
-    private set
-    {
-      _title = Guard.Against.NullOrWhiteSpace(value);
-    }
+    private set => _title = Guard.Against.NullOrWhiteSpace(value);
   }
 
   public List<string> Attributes
   {
     get => _attributes;
-    protected set
-    {
-      _attributes = value.Select(attribute => Guard.Against.NullOrWhiteSpace(attribute)).ToList();
-    }
+    protected set => _attributes = value.Select(attribute => Guard.Against.NullOrWhiteSpace(attribute)).ToList();
   }
 }

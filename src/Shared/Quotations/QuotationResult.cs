@@ -28,7 +28,7 @@ public static class QuotationResult
     public IEnumerable<EquipmentDto.Select> Equipment { get; set; } = default!;
     public IEnumerable<DateDto> UnavailableDates { get; set; } = default!;
   }
-  
+
   public class Calculation
   {
     public decimal EstimatedPrice { get; set; }

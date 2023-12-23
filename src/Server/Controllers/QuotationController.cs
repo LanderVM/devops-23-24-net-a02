@@ -1,11 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using shared.Quotations;
-using shared.GoogleMaps;
-using Swashbuckle.AspNetCore.Annotations;
-using devops_23_24_net_a02.Shared.Emails;
-using Shared.Common;
+﻿using devops_23_24_net_a02.Shared.Emails;
 using Microsoft.AspNetCore.Authorization;
-using Domain.Quotations;
+using Microsoft.AspNetCore.Mvc;
+using shared.GoogleMaps;
+using shared.Quotations;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace devops_23_24_net_a02.Server.Controllers;
 
@@ -13,19 +11,19 @@ namespace devops_23_24_net_a02.Server.Controllers;
 [Route("api/[controller]")]
 public class QuotationController : ControllerBase
 {
+  private readonly IEmailService _emailService;
+  private readonly IGoogleMapsService _googleMapsService;
   private readonly ILogger<QuotationController> _logger;
   private readonly IQuotationService _quotationService;
-  private readonly IGoogleMapsService _googleMapsService;
-  private readonly IEmailService _emailService;
 
 
-  public QuotationController(ILogger<QuotationController> logger, IQuotationService quotationService, IGoogleMapsService googleMapsService, IEmailService emailService)
+  public QuotationController(ILogger<QuotationController> logger, IQuotationService quotationService,
+    IGoogleMapsService googleMapsService, IEmailService emailService)
   {
     _logger = logger;
     _quotationService = quotationService;
     _googleMapsService = googleMapsService;
     _emailService = emailService;
-
   }
 
   [HttpGet]
@@ -52,15 +50,16 @@ public class QuotationController : ControllerBase
   {
     _logger.Log(LogLevel.Information,
       "Registering new quotation request at {model} for {(model.Customer.FirstName + model.Customer.LastName)}",
-      model.EventLocation, (model.Customer.FirstName + model.Customer.LastName));
-    QuotationResponse.Create quotation = await _quotationService.CreateAsync(model);
+      model.EventLocation, model.Customer.FirstName + model.Customer.LastName);
+    var quotation = await _quotationService.CreateAsync(model);
     _logger.Log(LogLevel.Information,
       "Registered new quotation request at {model} for {(model.Customer.FirstName + model.Customer.LastName)}",
-      model.EventLocation, (model.Customer.FirstName + model.Customer.LastName));
-    var address = $"{quotation.EventLocation.Street} {quotation.EventLocation.HouseNumber}, {quotation.EventLocation.City} {quotation.EventLocation.PostalCode}";
+      model.EventLocation, model.Customer.FirstName + model.Customer.LastName);
+    var address =
+      $"{quotation.EventLocation.Street} {quotation.EventLocation.HouseNumber}, {quotation.EventLocation.City} {quotation.EventLocation.PostalCode}";
     var distancePrice = await _googleMapsService.GetDistanceAsync(address);
     await _emailService.SendQuotationMail(quotation, distancePrice);
-    return CreatedAtAction(nameof(RegisterQuotationRequest), quotation); 
+    return CreatedAtAction(nameof(RegisterQuotationRequest), quotation);
   }
 
   [HttpPut("{QuotationId}")]
@@ -68,14 +67,20 @@ public class QuotationController : ControllerBase
   [Authorize]
   public async Task<QuotationResponse.Edit> UpdateQuotationRequest(int QuotationId, QuotationDto.Edit model)
   {
-    _logger.Log(LogLevel.Information, "Fetching quotation with id {QuotationId} to edit based off model: {model.ToString()}", QuotationId, model.ToString());
+    _logger.Log(LogLevel.Information,
+      "Fetching quotation with id {QuotationId} to edit based off model: {model.ToString()}", QuotationId,
+      model.ToString());
     var quotation = await _quotationService.UpdateAsync(QuotationId, model);
-    var address = $"{quotation.EventLocation.Street} {quotation.EventLocation.HouseNumber}, {quotation.EventLocation.City} {quotation.EventLocation.PostalCode}";
-    _logger.Log(LogLevel.Information, "Updated quotation with id {QuotationId}: {quotation.ToString()}", QuotationId, quotation.ToString());
+    var address =
+      $"{quotation.EventLocation.Street} {quotation.EventLocation.HouseNumber}, {quotation.EventLocation.City} {quotation.EventLocation.PostalCode}";
+    _logger.Log(LogLevel.Information, "Updated quotation with id {QuotationId}: {quotation.ToString()}", QuotationId,
+      quotation.ToString());
     var distancePrice = await _googleMapsService.GetDistanceAsync(address);
-    _logger.Log(LogLevel.Information, "Fetching distance from GoogleMaps API for calculating distance price", QuotationId, quotation.ToString());
+    _logger.Log(LogLevel.Information, "Fetching distance from GoogleMaps API for calculating distance price",
+      QuotationId, quotation.ToString());
     var result = await _emailService.SendConfirmationMail(quotation, distancePrice);
-    _logger.Log(LogLevel.Information, "Sending confirmation mail for quotation with id {result.QuotationId}", result.QuotationId);
+    _logger.Log(LogLevel.Information, "Sending confirmation mail for quotation with id {result.QuotationId}",
+      result.QuotationId);
     return result;
   }
 
@@ -91,19 +96,24 @@ public class QuotationController : ControllerBase
   [SwaggerOperation("Calculates a estimate on how much a offer would cost")]
   public async Task<QuotationResult.Calculation> GetEstimatedQuotationPrice([FromQuery] QuotationDto.Estimate model)
   {
-    _logger.Log(LogLevel.Information, "Calculating estimated price based off model: {model.ToString()}", model.ToString());
+    _logger.Log(LogLevel.Information, "Calculating estimated price based off model: {model.ToString()}",
+      model.ToString());
     var result = await _quotationService.GetPriceEstimationPrice(model);
-    _logger.Log(LogLevel.Information, "Calculated estimated price of {result.EstimatedPrice} based off model: {model.ToString()}", result.EstimatedPrice, model.ToString());
+    _logger.Log(LogLevel.Information,
+      "Calculated estimated price of {result.EstimatedPrice} based off model: {model.ToString()}",
+      result.EstimatedPrice, model.ToString());
     return result;
   }
 
 
   [HttpGet("Dates")]
   [SwaggerOperation("Gets all the dates for which there is an approved quotation")]
-  public async Task<QuotationResult.Dates> GetApprovedQuotationsDates() { 
+  public async Task<QuotationResult.Dates> GetApprovedQuotationsDates()
+  {
     _logger.Log(LogLevel.Information, "Fetching unavailable date ranges");
     var dateTimes = await _quotationService.GetDatesAsync();
-    _logger.Log(LogLevel.Information, "Fetched unavailable date ranges: {dateTimes.DateRanges.ToString()}", dateTimes.DateRanges.ToString());
+    _logger.Log(LogLevel.Information, "Fetched unavailable date ranges: {dateTimes.DateRanges.ToString()}",
+      dateTimes.DateRanges.ToString());
     return dateTimes;
   }
 
@@ -113,10 +123,9 @@ public class QuotationController : ControllerBase
   {
     _logger.Log(LogLevel.Information, "Calculating estimated transport price for address: {address}", address);
     var result = await _googleMapsService.GetDistanceAsync(address);
-    _logger.Log(LogLevel.Information, "Calculated estimated transport price of {result.PricePerKm * result.DistanceAmount} before reduction for address: {address}", result.PricePerKm * result.DistanceAmount, address);
+    _logger.Log(LogLevel.Information,
+      "Calculated estimated transport price of {result.PricePerKm * result.DistanceAmount} before reduction for address: {address}",
+      result.PricePerKm * result.DistanceAmount, address);
     return result;
   }
-
-  
 }
-

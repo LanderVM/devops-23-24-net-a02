@@ -1,14 +1,10 @@
-﻿@using Microsoft.AspNetCore.Components;
-@using Microsoft.AspNetCore.Components.Forms;
-@using FluentValidation;
-@using shared.Quotations;
-@using shared.Formulas;
-@using shared.Equipment;
-@using global::Shared.Common;
-
+﻿@using shared.Quotations
+@using shared.Equipment
+@using shared.Formulas
+@using global::Shared.Common
 <Loader IsLoading="@(ExtraEquipment == null && Formulas == null)">
     <EditForm Model="@QuotationEstimateState" OnValidSubmit="Submit">
-        <Blazored.FluentValidation.FluentValidationValidator />
+        <Blazored.FluentValidation.FluentValidationValidator/>
 
         <MudContainer>
             <MudGrid Justify="Justify.SpaceBetween" Class="my-5">
@@ -19,7 +15,7 @@
                                         Editable="true"
                                         Required="true"
                                         Immediate="true"
-                    @bind-DateRange="@QuotationEstimateState.DateRange"
+                                        @bind-DateRange="@QuotationEstimateState.DateRange"
                                         PlaceholderStart="Start datum"
                                         PlaceholderEnd="Eind datum"
                                         Date="@(DateTime.Today.AddDays(1))"
@@ -31,7 +27,7 @@
             <MudGrid Justify="Justify.SpaceBetween" Class="my-5 align-center">
                 <MudItem md="5" xs="8">
                     <MudSelect ToStringFunc="@converterFormula" Required="true" Placeholder="Selecteer uw formule" Label="Formule" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter" @bind-Value="QuotationEstimateState.FormulaId">
-                        @foreach (FormulaDto.Select item in Formulas)
+                        @foreach (var item in Formulas)
                         {
                             <MudSelectItem Value=@item></MudSelectItem>
                         }
@@ -43,9 +39,9 @@
                 <MudItem md="2" xs="6">
                     <MudNumericField Immediate="true"
                                      Label="Aantal"
-                    @bind-Value="QuotationEstimateState.EstimatedNumberOfPeople"
+                                     @bind-Value="QuotationEstimateState.EstimatedNumberOfPeople"
                                      Variant="Variant.Outlined"
-                                     Min="1" />
+                                     Min="1"/>
                 </MudItem>
                 <MudItem Class="justify-center" md="3" xs="4">
                     <MudText Align="Align.Center">personen</MudText>
@@ -54,7 +50,7 @@
             <MudGrid Class="my-5 align-center">
                 <MudItem md="6" xs="12">
                     <MudSelect Immediate="true" T="EquipmentDto.Select" ToStringFunc="@converter" MultiSelection="true" @bind-SelectedValues="QuotationEstimateState.Equipment" Label="Materiaal" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter" Clearable>
-                        @foreach (EquipmentDto.Select item in ExtraEquipment)
+                        @foreach (var item in ExtraEquipment)
                         {
                             <MudSelectItem Value=@item></MudSelectItem>
                         }
@@ -96,33 +92,39 @@
         </MudContainer>
     </EditForm>
 </Loader>
+
 @code {
+
     [Inject]
     public IQuotationService QuotationService { get; set; } = default!;
+
     [Inject]
     public QuotationEstimateState QuotationEstimateState { get; set; } = default!;
+
     [Inject]
     public NavigationManager NavigationManager { get; set; } = default!;
+
     [Inject]
     public ISnackbar Snackbar { get; set; } = default!;
 
     [Parameter]
-    public EventCallback Close { get; set; } = default!;
+    public EventCallback Close { get; set; }
+
     [Parameter]
-    public EventCallback Refresh { get; set; } = default!;
+    public EventCallback Refresh { get; set; }
 
-    public bool _showPrice { get; set; } = false;
-    public decimal price { get; set; } = default!;
+    public bool _showPrice { get; set; }
+    public decimal price { get; set; }
 
-    private IEnumerable<EquipmentDto.Select>? ExtraEquipment = default!;
-    private IEnumerable<FormulaDto.Select>? Formulas = default!;
+    private IEnumerable<EquipmentDto.Select>? ExtraEquipment;
+    private IEnumerable<FormulaDto.Select>? Formulas;
     private IEnumerable<DateDto>? UnavailableDates;
 
     protected override async Task OnInitializedAsync()
     {
         QuotationEstimateState.Clear();
         _showPrice = false;
-        QuotationResult.Detail response = await QuotationService.GetPriceEstimationDetailsAsync();
+        var response = await QuotationService.GetPriceEstimationDetailsAsync();
 
         ExtraEquipment = response.Equipment;
         Formulas = response.Formulas;
@@ -142,26 +144,26 @@
         NavigationManager.NavigateTo(Routes.Formula);
     }
 
-    Func<EquipmentDto.Select, string> converter = p => p?.Title;
-    Func<FormulaDto.Select, string> converterFormula = p => p?.Title;
+    readonly Func<EquipmentDto.Select, string> converter = p => p?.Title;
+    readonly Func<FormulaDto.Select, string> converterFormula = p => p?.Title;
 
 
     private async void GetPriceEstimate()
     {
-        List<int> ids = QuotationEstimateState.Equipment?
+        var ids = QuotationEstimateState.Equipment?
             .Where(x => x != null)
             .Select(x => x.Id)
             .ToList() ?? new List<int>();
 
-        QuotationDto.Estimate estimate = new QuotationDto.Estimate
-            {
-                FormulaId = QuotationEstimateState.FormulaId.Id,
-                EquipmentIds = ids,
-                EstimatedNumberOfPeople = QuotationEstimateState.EstimatedNumberOfPeople,
-                IsTripelBier = QuotationEstimateState.IsTripelBier,
-                StartTime = QuotationEstimateState.DateRange.Start.Value.Ticks,
-                EndTime = QuotationEstimateState.DateRange.End.Value.Ticks,
-            };
+        var estimate = new QuotationDto.Estimate
+        {
+            FormulaId = QuotationEstimateState.FormulaId.Id,
+            EquipmentIds = ids,
+            EstimatedNumberOfPeople = QuotationEstimateState.EstimatedNumberOfPeople,
+            IsTripelBier = QuotationEstimateState.IsTripelBier,
+            StartTime = QuotationEstimateState.DateRange.Start.Value.Ticks,
+            EndTime = QuotationEstimateState.DateRange.End.Value.Ticks
+        };
 
         var result = await QuotationService.GetPriceEstimationPrice(estimate);
         price = result.EstimatedPrice;
@@ -174,10 +176,10 @@
     {
         if (ranges != null)
         {
-            foreach (DateDto range in ranges)
+            foreach (var range in ranges)
             {
-                DateTime startDateTime = range.StartTime;
-                DateTime endDateTime = range.EndTime;
+                var startDateTime = range.StartTime;
+                var endDateTime = range.EndTime;
 
                 if (date.Date >= startDateTime.Date && date.Date <= endDateTime.Date)
                 {
@@ -191,15 +193,14 @@
 
     private bool CheckForErrors()
     {
-
         if (QuotationEstimateState.DateRange == null || !QuotationEstimateState.DateRange.End.HasValue || !QuotationEstimateState.DateRange.End.HasValue)
         {
-            Snackbar.Add("Gelieve een geldige start- en einddag aan te duiden", MudBlazor.Severity.Error);
+            Snackbar.Add("Gelieve een geldige start- en einddag aan te duiden", Severity.Error);
             return false;
         }
         if (QuotationEstimateState.FormulaId == null)
         {
-            Snackbar.Add("Gelieve een Formule te selecteren", MudBlazor.Severity.Error);
+            Snackbar.Add("Gelieve een Formule te selecteren", Severity.Error);
             return false;
         }
 
@@ -210,4 +211,5 @@
 
         return true;
     }
+
 }

@@ -2,14 +2,15 @@
 
 public static class EquipmentResult
 {
-
-  public class Index {
-
+  public class Index
+  {
     public IEnumerable<EquipmentDto.Index>? Equipment { get; set; }
 
     public int TotalAmount { get; set; }
   }
-  public class ActiveEquipment {
+
+  public class ActiveEquipment
+  {
     public IEnumerable<EquipmentDto.Index>? Equipment { get; set; }
 
     public int TotalAmount { get; set; }

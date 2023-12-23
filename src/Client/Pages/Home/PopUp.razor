@@ -1,9 +1,4 @@
-﻿@using global::shared.Quotations;
-@using shared.Formulas;
-@using shared.Equipment;
-@using global::Shared.Common;
-@using FluentValidation
-
+﻿@using shared.Quotations
 @inject FormulaState FormulaState
 @inject QuotationEstimateState QuotationEstimateState
 @inject ExtraMaterialState ExtraMaterialState
@@ -12,7 +7,7 @@
 <MudPopover Style="background-color: #C8A86E; color: white; margin-top: 90vh; position: fixed; margin-left: -10px; cursor: pointer;"
             Open="@_isOpen"
             Class="px-5 pt-5"
-            @onclick=OpenSidePanel
+            @onclick="OpenSidePanel"
             AnchorOrigin="Origin.TopRight">
     <div class="d-flex flex-column">
         <MudText>Druk hier voor een snelle inschatting</MudText>
@@ -21,8 +16,10 @@
 </MudPopover>
 
 @code {
+
     [Inject]
     ISidepanelService Sidepanel { get; set; } = default!;
+
     [Inject]
     IQuotationService QuotationService { get; set; } = default!;
 
@@ -45,7 +42,7 @@
 
         var parameters = new Dictionary<string, object>
         {
-            {nameof(EstimatePriceForm.Close),callback1 },
+            { nameof(EstimatePriceForm.Close), callback1 }
         };
 
         Sidepanel.Open<EstimatePriceForm>("Prijs inschatting", "", parameters, BackdropType.Dismiss);
@@ -56,4 +53,5 @@
     {
         Sidepanel.Close();
     }
+
 }

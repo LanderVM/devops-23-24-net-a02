@@ -29,8 +29,8 @@
 
         <MudItem lg="10" md="10" sm="12" xs="12">
             <MudGrid Spacing="@Spacing">
-                <Loader IsLoading=@(Extras == null)>
-                    @foreach (EquipmentDto.Index item in Extras)
+                <Loader IsLoading="@(Extras == null)">
+                    @foreach (var item in Extras)
                     {
                         <MudItem lg="3" md="4" sm="6" xs="12">
                             <ExtraItemsCard EquipmentId="@item.Id"
@@ -79,38 +79,38 @@
 
     [Inject]
     public EventDetailsState EventDetailsState { get; set; }
-    
+
     [Inject]
     public PersonalDetailsState PersonalDetailsState { get; set; } = default!;
 
 
-    private IEnumerable<EquipmentDto.Index>? Extras = default!;
+    private IEnumerable<EquipmentDto.Index>? Extras;
 
-    private int Spacing { get; set; } = 2;
+    private int Spacing { get; } = 2;
 
     private int number { get; set; } = 0;
 
     protected override async Task OnInitializedAsync()
     {
-        EquipmentResult.ActiveEquipment response = await EquipmentService.GetActiveEquipmentAsync();
+        var response = await EquipmentService.GetActiveEquipmentAsync();
 
         Extras = response.Equipment;
 
-        if (FormulaState.ChosenFormulaId == null || FormulaState.ChosenFormulaId == 0  || PersonalDetailsState.Customer.Email.Email == null || EventDetailsState.FormattedAddress == null || EventDetailsState.dateRange == null)
+        if (FormulaState.ChosenFormulaId == null || FormulaState.ChosenFormulaId == 0 || PersonalDetailsState.Customer.Email.Email == null || EventDetailsState.FormattedAddress == null || EventDetailsState.dateRange == null)
         {
             NavigationManager.NavigateTo(Routes.Formula);
             Snackbar.Add("Gelieve uw offerteaanvraag opnieuw te beginnen.", Severity.Error);
         }
         if (ExtraMaterialState.ExtrasAmount.Count == 0)
         {
-            foreach (EquipmentDto.Index item in Extras)
+            foreach (var item in Extras)
             {
                 ExtraMaterialState.ExtrasAmount.Add(item.Id, 0);
             }
         }
         else if (Extras.Count() > ExtraMaterialState.ExtrasAmount.Count)
         {
-            foreach (EquipmentDto.Index item in Extras)
+            foreach (var item in Extras)
             {
                 if (!ExtraMaterialState.ExtrasAmount.ContainsKey(item.Id))
                 {

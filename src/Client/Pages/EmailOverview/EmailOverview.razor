@@ -1,5 +1,5 @@
 ﻿@page "/admin/overzicht/emails"
-@using devops_23_24_net_a02.Shared.Emails;
+@using devops_23_24_net_a02.Shared.Emails
 @inject IEmailService EmailService;
 @attribute [Authorize]
 
@@ -7,7 +7,7 @@
 
 <MudContainer MaxWidth="MaxWidth.Small">
     <MudGrid Class="mt-2 mb-2">
-       
+
         <MudItem lg="10" md="10" sm="12" xs="12">
             <MudText Class="mt-6" Typo="Typo.h4">Overzicht emails klanten</MudText>
         </MudItem>
@@ -15,7 +15,7 @@
 
         </MudItem>
     </MudGrid>
-    
+
     <MudTable Items="@EmailAddresses" data-test-id="email-table" Hover="true" Loading="@Loading" LoadingProgressColor="Color.Info">
         <HeaderContent>
             <MudTh>Email adressen</MudTh>
@@ -24,25 +24,24 @@
             <MudTd DataLabel="Email adres" data-test-id="email-row">@context.EmailAddress</MudTd>
         </RowTemplate>
         <PagerContent>
-            <MudTablePager />
+            <MudTablePager/>
         </PagerContent>
     </MudTable>
 
-    
-    
-   
+
 </MudContainer>
 
 @code {
     private bool Loading { get; set; } = true;
 
-    private IEnumerable<EmailDto.Index>? EmailAddresses { get; set; } = default;
+    private IEnumerable<EmailDto.Index>? EmailAddresses { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        EmailResult.Index result = await EmailService.GetEmailsAsync();
+        var result = await EmailService.GetEmailsAsync();
         EmailAddresses = result.EmailAddresses;
 
         Loading = false;
     }
+
 }

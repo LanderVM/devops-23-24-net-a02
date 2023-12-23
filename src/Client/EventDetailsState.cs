@@ -6,16 +6,15 @@ namespace devops_23_24_net_a02.Client;
 
 public class EventDetailsState
 {
+  public DateRange dateRange = new(DateTime.Today, DateTime.Today.AddDays(2));
+
+  public bool HasTripleBeer;
   public string FormattedAddress { get; set; }
   public AddressDto EventAddress { get; set; }
   public PlaceGeometry PlaceGeometry { get; set; }
   public string PlaceTitle { get; set; }
   public int NumberOfPeople { get; set; }
 
-  public bool HasTripleBeer = false;
-
-  public DateRange dateRange = new DateRange(DateTime.Today, DateTime.Today.AddDays(2));
-  
   public void Clear()
   {
     FormattedAddress = null;
@@ -25,6 +24,4 @@ public class EventDetailsState
     HasTripleBeer = false;
     dateRange = new DateRange(DateTime.Now.Date, DateTime.Now.AddDays(3).Date);
   }
-  
 }
-

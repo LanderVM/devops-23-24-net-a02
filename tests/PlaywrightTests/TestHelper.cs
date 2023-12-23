@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Client.PlaywrightTests;
+﻿namespace Client.PlaywrightTests;
 
 public static class TestHelper
 {

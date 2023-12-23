@@ -37,6 +37,6 @@ public static class GoogleMapsDto
   public class Response
   {
     public decimal? DistanceAmount { get; set; }
-    public decimal PricePerKm { get; set; } 
+    public decimal PricePerKm { get; set; }
   }
 }

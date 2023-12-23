@@ -4,89 +4,94 @@
 
 <PageTitle>Formules Admin</PageTitle>
 <MudContainer Fixed="true" Class="mt-15 mb-15">
-    <Loader IsLoading=@(Formulas == null)>
+    <Loader IsLoading="@(Formulas == null)">
 
-    <MudTable Elevation="2" Items="Formulas" Hover="true" Breakpoint="Breakpoint.Sm" data-test-id="formulas-admin-formulastable">
-        <HeaderContent>
-            <MudTh Style=@styleTh>Titel</MudTh>
-            <MudTh Style=@styleTh>Kenmerken</MudTh>
-            <MudTh Style=@styleTh>Basisprijs</MudTh>
-            <MudTh Style=@styleTh>Prijs extra dagen</MudTh>
-            <MudTh Style="color: white"> Wijzigen </MudTh>
-        </HeaderContent>
-        <RowTemplate>
-            <MudTd DataLabel="Titel" Style=@styleTd>
-                @context.Title
-            </MudTd>
-            <MudTd DataLabel="Kenmerken" Style=@styleTd>@string.Join(", ", @context.Attributes)</MudTd>
-            <MudTd DataLabel="Basisprijs" Style=@styleTd>
-                @foreach (decimal i in context.BasePrice)
-                {
-                    <p>@Math.Round(i, 0)</p>
-                }
-            </MudTd>
-            <MudTd DataLabel="Prijs extra dagen" Style=@styleTd>@Math.Round(@context.PricePerDayExtra)</MudTd>
-            <MudTd DataLabel="Wijzigen" Style=@styleTd><MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="@(() => UpdateItem(context.Id))" data-test-id="formulas-admin-overview-editbutton"/></MudTd>
+        <MudTable Elevation="2" Items="Formulas" Hover="true" Breakpoint="Breakpoint.Sm" data-test-id="formulas-admin-formulastable">
+            <HeaderContent>
+                <MudTh Style="@styleTh">Titel</MudTh>
+                <MudTh Style="@styleTh">Kenmerken</MudTh>
+                <MudTh Style="@styleTh">Basisprijs</MudTh>
+                <MudTh Style="@styleTh">Prijs extra dagen</MudTh>
+                <MudTh Style="color: white"> Wijzigen </MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd DataLabel="Titel" Style="@styleTd">
+                    @context.Title
+                </MudTd>
+                <MudTd DataLabel="Kenmerken" Style="@styleTd">@string.Join(", ", context.Attributes)</MudTd>
+                <MudTd DataLabel="Basisprijs" Style="@styleTd">
+                    @foreach (var i in context.BasePrice)
+                    {
+                        <p>@Math.Round(i, 0)</p>
+                    }
+                </MudTd>
+                <MudTd DataLabel="Prijs extra dagen" Style="@styleTd">@Math.Round(context.PricePerDayExtra)</MudTd>
+                <MudTd DataLabel="Wijzigen" Style="@styleTd">
+                    <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" OnClick="@(() => UpdateItem(context.Id))" data-test-id="formulas-admin-overview-editbutton"/>
+                </MudTd>
 
-        </RowTemplate>
-    </MudTable>
+            </RowTemplate>
+        </MudTable>
     </Loader>
 </MudContainer>
 
 
-
 @code {
 
-    [Inject] public IFormulaService FormulaService { get; set; } = default!;
-    [Inject] ISidepanelService Sidepanel { get; set; } = default!;
-    
+    [Inject]
+    public IFormulaService FormulaService { get; set; } = default!;
+
+    [Inject]
+    ISidepanelService Sidepanel { get; set; } = default!;
+
     private IEnumerable<FormulaDto.Index>? Formulas;
-    
+
     private bool Loading { get; set; } = true;
-    
-    private String styleTd = "text-align: center";
-    private String styleTh = "font-weight: bold;text-align: center";
-    
+
+    private readonly string styleTd = "text-align: center";
+    private readonly string styleTh = "font-weight: bold;text-align: center";
+
     protected override async Task OnInitializedAsync()
     {
-        FormulaResult.Index response = await FormulaService.GetIndexAsync();
+        var response = await FormulaService.GetIndexAsync();
 
         Formulas = response.Formulas;
 
         Loading = false;
     }
-    
+
     private void UpdateItem(int formulaId)
     {
         var callback1 = EventCallback.Factory.Create(this, Close);
         var callback2 = EventCallback.Factory.Create(this, Refresh);
-        
+
         var parameters = new Dictionary<string, object>
         {
-            {nameof(EditFormula.Close),callback1 },
-            {nameof(EditFormula.Refresh),callback2 },
-            { nameof(EditFormula.FormulaId),formulaId},
+            { nameof(EditFormula.Close), callback1 },
+            { nameof(EditFormula.Refresh), callback2 },
+            { nameof(EditFormula.FormulaId), formulaId }
         };
-    
+
         Sidepanel.Open<EditFormula>("Formule", "wijzigen", parameters);
     }
-    
+
     private void Close()
     {
-        Sidepanel.Close();    
+        Sidepanel.Close();
     }
+
     private async Task Refresh()
     {
         Loading = true;
-    
-        FormulaResult.Index response = await FormulaService.GetIndexAsync();
-    
+
+        var response = await FormulaService.GetIndexAsync();
+
         Formulas = response.Formulas;
-    
+
         Loading = false;
-        StateHasChanged();    
+        StateHasChanged();
     }
 
-    
+
 
 }

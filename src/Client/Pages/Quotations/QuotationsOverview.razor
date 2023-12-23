@@ -7,8 +7,8 @@
     <MudDataGrid Items="@Quotations" Filterable="false" SortMode="@SortMode.None" Groupable="false" data-test-id="admin-quotations-grid">
         <Columns>
             <PropertyColumn Property="x => x.Customer.FirstName" Title="Voornaam"/>
-            <PropertyColumn Property="x => x.Customer.LastName"  Title="Naam"/>
-            <PropertyColumn Property="x => x.Customer.Email" />
+            <PropertyColumn Property="x => x.Customer.LastName" Title="Naam"/>
+            <PropertyColumn Property="x => x.Customer.Email"/>
             <PropertyColumn Property="x => x.CreatedAt" Title="Gemaakt op"/>
             <TemplateColumn CellClass="d-flex justify-end">
                 <CellTemplate>
@@ -19,26 +19,28 @@
             </TemplateColumn>
         </Columns>
         <PagerContent>
-                <MudDataGridPager T="QuotationDto.Index" />
-            </PagerContent>
+            <MudDataGridPager T="QuotationDto.Index"/>
+        </PagerContent>
     </MudDataGrid>
 </MudContainer>
 
 @code {
+
     [Inject]
-    public IQuotationService QuotationService { get; set; } = default!; 
+    public IQuotationService QuotationService { get; set; } = default!;
+
     [Inject]
     ISidepanelService Sidepanel { get; set; } = default!;
 
-    private IEnumerable<QuotationDto.Index>? Quotations = default!; 
+    private IEnumerable<QuotationDto.Index>? Quotations;
 
     private bool Loading { get; set; } = true;
 
 
     protected override async Task OnInitializedAsync()
     {
-        QuotationResult.Index response = await QuotationService.GetIndexAsync();
-        Quotations = response.Quotation;   
+        var response = await QuotationService.GetIndexAsync();
+        Quotations = response.Quotation;
     }
 
     private void UpdateItem(object QuotationId)
@@ -46,13 +48,13 @@
         var callback1 = EventCallback.Factory.Create(this, Close);
         var callback2 = EventCallback.Factory.Create(this, Refresh);
 
-        int quotationId = (int)QuotationId;
+        var quotationId = (int)QuotationId;
 
         var parameters = new Dictionary<string, object>
         {
-            {nameof(EditQuotation.Close),callback1 },
-            {nameof(EditQuotation.Refresh),callback2 },
-            {nameof(EditQuotation.QuotationId),quotationId},
+            { nameof(EditQuotation.Close), callback1 },
+            { nameof(EditQuotation.Refresh), callback2 },
+            { nameof(EditQuotation.QuotationId), quotationId }
         };
 
         Sidepanel.Open<EditQuotation>("Overzicht", "Offerte", parameters);
@@ -62,14 +64,16 @@
     {
         Sidepanel.Close();
     }
+
     private async Task Refresh()
     {
         Loading = true;
-        QuotationResult.Index response = await QuotationService.GetIndexAsync();
+        var response = await QuotationService.GetIndexAsync();
 
         Quotations = response.Quotation;
 
         Loading = false;
         StateHasChanged();
     }
+
 }

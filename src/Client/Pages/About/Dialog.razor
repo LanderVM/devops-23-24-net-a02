@@ -11,8 +11,10 @@
 
 
 @code {
-    public EmailDto.Create Email  = new EmailDto.Create();
-    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    public EmailDto.Create Email = new();
+
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; }
 
     [Inject]
     public IEmailService EmailService { get; set; } = default!;
@@ -25,11 +27,16 @@
         CreateEmailAsync();
         Snackbar.Add("Meer info werd naar jouw e-mailadres gestuurd", Severity.Info);
         MudDialog.Close(DialogResult.Ok(true));
-    } 
-    void Cancel() => MudDialog.Cancel();
+    }
+
+    void Cancel()
+    {
+        MudDialog.Cancel();
+    }
 
     private async Task CreateEmailAsync()
     {
         var result = await EmailService.CreateAsync(Email);
     }
+
 }

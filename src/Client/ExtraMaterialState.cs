@@ -2,11 +2,10 @@
 
 public class ExtraMaterialState
 {
-  public Dictionary<int,int> ExtrasAmount = new Dictionary<int,int>();
+  public Dictionary<int, int> ExtrasAmount = new();
 
   public void Clear()
   {
     ExtrasAmount = new Dictionary<int, int>();
   }
 }
-

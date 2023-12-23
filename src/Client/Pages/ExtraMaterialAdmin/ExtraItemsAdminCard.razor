@@ -1,20 +1,20 @@
-﻿@using shared.Equipment;
-
+﻿@using shared.Equipment
 <MudCard Style="height: 100%;" data-test-id="extras-admin-extra-card">
     <div style="height: 100%; display: flex; flex-direction: column;">
-        <MudCardMedia Image=@ImageUrl Height="250" />
+        <MudCardMedia Image="@ImageUrl" Height="250"/>
         <MudCardContent>
             <MudText Typo="Typo.h5" Class="mb-2" data-test-id="extras-admin-extra-card-title">@Title</MudText>
-            @foreach (string i in Attributes)
+            @foreach (var i in Attributes)
             {
                 <MudText Typo="Typo.body2" Class="mb-3">@i</MudText>
             }
-            <MudText Typo="Typo.body2" Class="mb-3" data-test-id="extras-admin-extra-card-price">€ @(Decimal.Round(Price, 2))/72uur</MudText>
+            <MudText Typo="Typo.body2" Class="mb-3" data-test-id="extras-admin-extra-card-price">€ @(decimal.Round(Price, 2))/72uur</MudText>
             <MudText Typo="Typo.body2" Class="mb-3" data-test-id="extras-admin-extra-card-stock">@Stock in stock</MudText>
-            @if (IsActive==true)
+            @if (IsActive)
             {
                 <MudText Typo="Typo.body2" Class="mb-1">Is actief</MudText>
-            }else
+            }
+            else
             {
                 <MudText Typo="Typo.body2" Class="mb-1">Is niet actief</MudText>
             }
@@ -30,7 +30,8 @@
                     <MudItem xs="12">
                         <MudButton OnClick="ChangeWantToRemove" Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" data-test-id="extras-admin-extra-card-remove-button">Verwijderen</MudButton>
                     </MudItem>
-                }else
+                }
+                else
                 {
                     <MudItem xs="12">
                         <MudButton OnClick="DeleteEquipment" Class="mb-n4" Variant="Variant.Filled" Color="Color.Error" FullWidth="true" data-test-id="extras-admin-extra-card-remove-button-definitly">Definitief verwijderen</MudButton>
@@ -75,7 +76,7 @@
     public EventCallback UpdateItem { get; set; }
 
     [Parameter]
-    public EventCallback RefreshOverviewPage{ get; set; }
+    public EventCallback RefreshOverviewPage { get; set; }
 
 
     private bool wantToRemove = false;
@@ -97,6 +98,6 @@
         await RefreshOverviewPage.InvokeAsync();
     }
 
-    
+
 
 }

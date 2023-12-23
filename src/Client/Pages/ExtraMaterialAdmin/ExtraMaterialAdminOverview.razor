@@ -20,48 +20,49 @@
         </MudItem>
         <MudItem lg="10" md="12" sm="12" xs="12">
             <MudGrid data-test-id="extras-admin-card-overview">
-                <Loader IsLoading=@(Extras == null)>
+                <Loader IsLoading="@(Extras == null)">
 
-                    @foreach (EquipmentDto.Index item in Extras)
+                    @foreach (var item in Extras)
                     {
                         <MudItem lg="3" md="4" sm="6" xs="12">
                             <ExtraItemsAdminCard EquipmentId="@item.Id"
-                                            ImageUrl="@item.ImageData.ImageUrl"
-                                            Title="@item.Title"
-                                            Attributes="@item.Attributes"
-                                            Stock="@item.Stock"
-                                            Price="@item.Price"
-                                            IsActive = "@item.IsActive"
-                                            UpdateItem="UpdateItem"
-                                            RefreshOverviewPage="Refresh">
+                                                 ImageUrl="@item.ImageData.ImageUrl"
+                                                 Title="@item.Title"
+                                                 Attributes="@item.Attributes"
+                                                 Stock="@item.Stock"
+                                                 Price="@item.Price"
+                                                 IsActive="@item.IsActive"
+                                                 UpdateItem="UpdateItem"
+                                                 RefreshOverviewPage="Refresh">
                             </ExtraItemsAdminCard>
                         </MudItem>
                     }
                 </Loader>
             </MudGrid>
         </MudItem>
-        
+
     </MudGrid>
 </MudContainer>
 
 @code {
+
     [Inject]
     public IEquipmentService EquipmentService { get; set; } = default!;
 
-    private IEnumerable<EquipmentDto.Index>? Extras = default!;
+    private IEnumerable<EquipmentDto.Index>? Extras;
 
     private bool Loading { get; set; } = true;
 
-    [Inject] ISidepanelService Sidepanel { get; set; } = default!;
+    [Inject]
+    ISidepanelService Sidepanel { get; set; } = default!;
 
     protected override async Task OnInitializedAsync()
     {
-        EquipmentResult.Index response = await EquipmentService.GetIndexAsync();
+        var response = await EquipmentService.GetIndexAsync();
 
         Extras = response.Equipment;
 
         Loading = false;
-
     }
 
     private void UpdateItem(object equipmentId)
@@ -69,13 +70,13 @@
         var callback1 = EventCallback.Factory.Create(this, Close);
         var callback2 = EventCallback.Factory.Create(this, Refresh);
 
-        int equipmentId2 = (int)equipmentId;
+        var equipmentId2 = (int)equipmentId;
 
         var parameters = new Dictionary<string, object>
         {
-            {nameof(EditExtra.Close),callback1 },
-            {nameof(EditExtra.Refresh),callback2 },
-            { nameof(EditExtra.EquipmentId),equipmentId2},
+            { nameof(EditExtra.Close), callback1 },
+            { nameof(EditExtra.Refresh), callback2 },
+            { nameof(EditExtra.EquipmentId), equipmentId2 }
         };
 
         Sidepanel.Open<EditExtra>("Extra item", "updaten", parameters);
@@ -86,27 +87,30 @@
         var callback1 = EventCallback.Factory.Create(this, Close);
         var callback2 = EventCallback.Factory.Create(this, Refresh);
 
-        var parameters = new Dictionary<string,object>
+        var parameters = new Dictionary<string, object>
         {
-            {nameof(CreateExtra.Close),callback1 },
-            {nameof(CreateExtra.Refresh),callback2 },
+            { nameof(CreateExtra.Close), callback1 },
+            { nameof(CreateExtra.Refresh), callback2 }
         };
 
-        Sidepanel.Open<CreateExtra>("Extra item","toevoegen",parameters);
+        Sidepanel.Open<CreateExtra>("Extra item", "toevoegen", parameters);
     }
+
     private void Close()
     {
-        Sidepanel.Close();    
+        Sidepanel.Close();
     }
+
     private async Task Refresh()
     {
         Loading = true;
 
-        EquipmentResult.Index response = await EquipmentService.GetIndexAsync();
+        var response = await EquipmentService.GetIndexAsync();
 
         Extras = response.Equipment;
 
         Loading = false;
-        StateHasChanged();    
+        StateHasChanged();
     }
+
 }

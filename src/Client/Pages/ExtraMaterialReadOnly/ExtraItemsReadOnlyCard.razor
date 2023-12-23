@@ -1,13 +1,13 @@
 ﻿<MudCard Style="height: 100%;">
     <div style="height: 100%; display: flex; flex-direction: column;">
-        <MudCardMedia Image=@ImageUrl Height="250"/>
+        <MudCardMedia Image="@ImageUrl" Height="250"/>
         <MudCardContent>
             <MudText Typo="Typo.h5" Class="mb-2">@Title</MudText>
-            @foreach (string i in Attributes)
+            @foreach (var i in Attributes)
             {
                 <MudText Typo="Typo.body2" Class="mb-3">@i</MudText>
             }
-            <MudText Typo="Typo.body2" Class="mb-3">€ @(Decimal.Round(Price, 2))/72uur</MudText>
+            <MudText Typo="Typo.body2" Class="mb-3">€ @(decimal.Round(Price, 2))/72uur</MudText>
             <MudText Typo="Typo.body2" Class="mb-1">@Stock in stock</MudText>
         </MudCardContent>
     </div>

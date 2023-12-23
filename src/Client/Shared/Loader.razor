@@ -2,17 +2,16 @@
 {
     <div style="display: flex; justify-content: center; align-items: center; height: 100%; width: 100%;">
         <div style="position: relative; display: inline-block;">
-            <MudProgressCircular Color="Color.Primary" Style="height:100px; width:100px;" Indeterminate="true" />
+            <MudProgressCircular Color="Color.Primary" Style="height:100px; width:100px;" Indeterminate="true"/>
             <MudText style="position: absolute; top: 45%; left: 50%; transform: translate(-50%, -50%);">Loading</MudText>
         </div>
     </div>
-
 }
 else if (IsAuthenticating)
 {
     <div style="display: flex; justify-content: center; align-items: center; height: 90vh; width: 100vw; position: fixed; top: 0; left: 0;">
         <div style="position: relative; display: inline-block;">
-            <MudProgressCircular Color="Color.Primary" Style="height:100px; width:100px;" Indeterminate="true" />
+            <MudProgressCircular Color="Color.Primary" Style="height:100px; width:100px;" Indeterminate="true"/>
             <MudText style="position: absolute; top: 45%; left: 50%; transform: translate(-50%, -50%);">Loading</MudText>
         </div>
     </div>
@@ -23,8 +22,14 @@ else
 }
 
 @code {
-    [Parameter] public bool IsLoading { get; set; } = false;
-    [Parameter] public bool IsAuthenticating { get; set; } = false;
-    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter]
+    public bool IsLoading { get; set; } = false;
+
+    [Parameter]
+    public bool IsAuthenticating { get; set; } = false;
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
 
 }

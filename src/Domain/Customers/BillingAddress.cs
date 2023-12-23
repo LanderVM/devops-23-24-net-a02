@@ -1,6 +1,4 @@
 ﻿using devops_23_24_net_a02.Domain.Common;
-using Domain.Common;
-using Domain.Quotations;
 
 namespace Domain.Customers;
 

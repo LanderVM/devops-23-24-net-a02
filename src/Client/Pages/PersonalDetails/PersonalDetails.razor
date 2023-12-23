@@ -6,24 +6,24 @@
 <PageTitle>Persoonlijke gegevens</PageTitle>
 
 <EditForm Model="Create" OnValidSubmit="Submit">
-    <Blazored.FluentValidation.FluentValidationValidator />
+    <Blazored.FluentValidation.FluentValidationValidator/>
     <MudPaper Width="100%" Class="pt-16" Height="100%" Elevation="0">
         <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge">
             <MudGrid Spacing="@Spacing">
                 <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="true">
-                    <MudItem lg="12" md="12" sm="5" xs="5" />
+                    <MudItem lg="12" md="12" sm="5" xs="5"/>
                     <MudItem lg="2" md="2" sm="7" xs="7">
                         <TimeLineVertical step="2"></TimeLineVertical>
                     </MudItem>
                 </MudHidden>
                 <MudHidden Breakpoint="Breakpoint.MdAndUp">
-                    <MudItem lg="2" md="2" sm="2" xs="2" />
+                    <MudItem lg="2" md="2" sm="2" xs="2"/>
                     <MudItem lg="8" md="8" sm="8" xs="8">
                         <TimeLineHorizontal step="2"></TimeLineHorizontal>
                     </MudItem>
-                    <MudItem lg="2" md="2" sm="2" xs="2" />
+                    <MudItem lg="2" md="2" sm="2" xs="2"/>
                 </MudHidden>
-                
+
                 <MudItem lg="10" md="10" sm="12" xs="12">
                     <MudGrid Spacing="@Spacing">
                         <MudItem lg="6" md="6" sm="12" xs="12">
@@ -32,11 +32,11 @@
                         </MudItem>
                         <MudItem lg="6" md="6" sm="12" xs="12">
                             <MudTextField @bind-Value="Create.LastName" For="@(() => Create.LastName)" Class="ml-16 mr-16 mb-6 pt-2" Label="Naam" Variant="Variant.Outlined"></MudTextField>
-                            <MudTextField @bind-Value="Create.PhoneNumber" For="@(() =>Create.PhoneNumber)" Class=" ml-16 mr-16 pt-2" Label="Telefoonnummer" Variant="Variant.Outlined"></MudTextField>
+                            <MudTextField @bind-Value="Create.PhoneNumber" For="@(() => Create.PhoneNumber)" Class=" ml-16 mr-16 pt-2" Label="Telefoonnummer" Variant="Variant.Outlined"></MudTextField>
                         </MudItem>
                         <MudItem lg="6" md="6" sm="12" xs="12">
                             <MudTextField @bind-Value="Create.BillingAddress.Street" For="@(() => Create.BillingAddress.Street)" Class="ml-16 mr-16 mb-6 pt-2" Label="Straat" Variant="Variant.Outlined"></MudTextField>
-                            <MudTextField @bind-Value="Create.BillingAddress.City" For="@(() =>Create.BillingAddress.City)" Class="ml-16 mr-16 mb-4 pt-2" Label="Gemeente" Variant="Variant.Outlined"></MudTextField>
+                            <MudTextField @bind-Value="Create.BillingAddress.City" For="@(() => Create.BillingAddress.City)" Class="ml-16 mr-16 mb-4 pt-2" Label="Gemeente" Variant="Variant.Outlined"></MudTextField>
                         </MudItem>
                         <MudItem lg="6" md="6" sm="12" xs="12">
                             <MudTextField @bind-Value="Create.BillingAddress.HouseNumber" For="@(() => Create.BillingAddress.HouseNumber)" Class="ml-16 mr-16 mb-6 pt-2" Label="Huisnummer" Variant="Variant.Outlined"></MudTextField>
@@ -48,10 +48,10 @@
                         </MudItem>
                     </MudGrid>
                 </MudItem>
-            
+
             </MudGrid>
             <MudGrid>
-                <MudItem lg="10" md="10" sm="5" xs="5" />
+                <MudItem lg="10" md="10" sm="5" xs="5"/>
                 <MudItem lg="2" md="2" sm="7" xs="7">
                     <MudButton Class="mb-2" Variant="Variant.Filled" Size="Size.Large" Color="Color.Primary" ButtonType="ButtonType.Submit">Volgende</MudButton>
                 </MudItem>
@@ -63,25 +63,25 @@
 
 
 @code {
-    
+
     [Inject]
     public ISnackbar Snackbar { get; set; } = default!;
-    
+
     [Inject]
     public FormulaState FormulaState { get; set; } = default!;
 
-    private int Spacing { get; set; } = 2;
+    private int Spacing { get; } = 2;
 
     private CustomerDto.Create Create { get; set; }
 
-    protected override async Task OnInitializedAsync() {
-
-    if (FormulaState.ChosenFormulaId == null || FormulaState.ChosenFormulaId == 0 )
+    protected override async Task OnInitializedAsync()
     {
-        NavigationManager.NavigateTo(Routes.Formula);
-        Snackbar.Add("Gelieve uw offerteaanvraag opnieuw te beginnen.", Severity.Error);
-    }
-    
+        if (FormulaState.ChosenFormulaId == null || FormulaState.ChosenFormulaId == 0)
+        {
+            NavigationManager.NavigateTo(Routes.Formula);
+            Snackbar.Add("Gelieve uw offerteaanvraag opnieuw te beginnen.", Severity.Error);
+        }
+
         Create = new CustomerDto.Create();
         if (!string.IsNullOrWhiteSpace(PersonalDetailsState.Customer.FirstName))
         {
@@ -131,4 +131,5 @@
             Create.VatNumber = PersonalDetailsState.Customer.VatNumber;
         }
     }
+
 }

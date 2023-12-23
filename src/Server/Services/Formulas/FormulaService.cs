@@ -1,14 +1,14 @@
 ﻿using Api.Data;
+using devops_23_24_net_a02.Domain.Files;
+using devops_23_24_net_a02.Services.Files;
 using Domain.Formulas;
 using Microsoft.EntityFrameworkCore;
 using shared.Formulas;
-using devops_23_24_net_a02.Services.Files;
-using devops_23_24_net_a02.Domain.Files;
 
 namespace server.Services;
-public class FormulaService: IFormulaService
-{
 
+public class FormulaService : IFormulaService
+{
   private readonly BlancheDbContext _dbContext;
   private readonly IStorageService _storageService;
 
@@ -22,50 +22,49 @@ public class FormulaService: IFormulaService
   {
     var query = _dbContext.Formulas.AsQueryable();
 
-    int totalAmount = await query.CountAsync();
+    var totalAmount = await query.CountAsync();
 
-      IEnumerable<FormulaDto.Index> items = await query.OrderBy(x => x.Id).Select(
-        x=> new FormulaDto.Index { 
-          Id = x.Id,
-          Title = x.Description.Title,
-          Attributes = x.Description.Attributes,
-          PricePerDayExtra = x.PricePerDayExtra,
-          BasePrice = x.BasePrice,
-          IsActive = x.IsActive,
-          ImageUrl = x.ImageUrl
+    IEnumerable<FormulaDto.Index> items = await query.OrderBy(x => x.Id).Select(
+      x => new FormulaDto.Index
+      {
+        Id = x.Id,
+        Title = x.Description.Title,
+        Attributes = x.Description.Attributes,
+        PricePerDayExtra = x.PricePerDayExtra,
+        BasePrice = x.BasePrice,
+        IsActive = x.IsActive,
+        ImageUrl = x.ImageUrl
       }
-      ).ToListAsync();
+    ).ToListAsync();
 
-    var result = new FormulaResult.Index
-    {
-      Formulas = items,
-      TotalAmount = totalAmount,
-    };
+    var result = new FormulaResult.Index { Formulas = items, TotalAmount = totalAmount };
 
     return result;
   }
 
   public async Task<FormulaDto.Mutate> GetSpecificMutateAsync(int formulaId)
   {
-    Formula? formula = await _dbContext.Formulas.FirstOrDefaultAsync(x => x.Id == formulaId);
+    var formula = await _dbContext.Formulas.FirstOrDefaultAsync(x => x.Id == formulaId);
 
     if (formula is null)
+    {
       throw new Exception($"formula with id: {formulaId} not found");
-    
-    
-    string attributes = string.Join("\n", formula.Description.Attributes);
-    string basePrice = string.Join("\n", formula.BasePrice);
-    
-    FormulaDto.Mutate mutate = new FormulaDto.Mutate{ 
+    }
+
+
+    var attributes = string.Join("\n", formula.Description.Attributes);
+    var basePrice = string.Join("\n", formula.BasePrice);
+
+    var mutate = new FormulaDto.Mutate
+    {
       Title = formula.Description.Title,
       Attributes = attributes,
       PricePerDayExtra = formula.PricePerDayExtra,
-      BasePrice= basePrice,
+      BasePrice = basePrice,
       IsActive = formula.IsActive,
       ImageData = new FormulaDto.ImageData
       {
-        ImageUrl = "https://via.placeholder.com/350x300",
-        AltText = "placeholder txt",
+        ImageUrl = "https://via.placeholder.com/350x300", AltText = "placeholder txt"
       }
     };
 
@@ -74,64 +73,54 @@ public class FormulaService: IFormulaService
 
   public async Task<FormulaResult.Edit> UpdateAsync(int formulaId, FormulaDto.Mutate model)
   {
-    Formula? formula = await _dbContext.Formulas.FirstOrDefaultAsync(x => x.Id == formulaId);
+    var formula = await _dbContext.Formulas.FirstOrDefaultAsync(x => x.Id == formulaId);
 
     if (formula is null)
     {
       throw new Exception($"Formula with id: {formulaId} doesn't exist");
     }
 
-    Image image = new Image(_storageService.BasePath, model.ImageContentType!);
-    
+    var image = new Image(_storageService.BasePath, model.ImageContentType!);
+
 
     formula.Description = new Description(model.Title, model.Attributes.Split('\n').ToList());
     formula.BasePrice = model.BasePrice.Split('\n').Select(decimal.Parse).ToList();
     formula.PricePerDayExtra = model.PricePerDayExtra;
     formula.IsActive = model.IsActive;
     formula.ImageUrl = image.FileUri.ToString();
-    
+
     await _dbContext.SaveChangesAsync();
 
-    Uri uploadSas = _storageService.GenerateImageUploadSas(image);
-    
-    FormulaResult.Edit result = new FormulaResult.Edit
+    var uploadSas = _storageService.GenerateImageUploadSas(image);
+
+    var result = new FormulaResult.Edit
     {
-      Id = formula.Id,
-      Image =  new ImageData
-            {
-              ImageUrl = uploadSas.ToString(),
-              AltText = formula.Description.Title
-            }
-            
+      Id = formula.Id, Image = new ImageData { ImageUrl = uploadSas.ToString(), AltText = formula.Description.Title }
     };
 
     return result;
   }
 
-  
+
   public async Task<FormulaResult.EditWithoutImage> UpdateWithoutImageAsync(int formulaId, FormulaDto.Mutate model)
   {
-    Formula? formula = await _dbContext.Formulas.FirstOrDefaultAsync(x => x.Id == formulaId);
+    var formula = await _dbContext.Formulas.FirstOrDefaultAsync(x => x.Id == formulaId);
 
     if (formula is null)
     {
       throw new Exception($"Formula with id: {formulaId} doesn't exist");
     }
-    
+
     formula.Description = new Description(model.Title, model.Attributes.Split('\n').ToList());
     formula.BasePrice = model.BasePrice.Split('\n').Select(decimal.Parse).ToList();
     formula.PricePerDayExtra = model.PricePerDayExtra;
     formula.IsActive = model.IsActive;
-    
+
     await _dbContext.SaveChangesAsync();
-    
-    
-    FormulaResult.EditWithoutImage result = new FormulaResult.EditWithoutImage
-    {
-      Id = formula.Id
-    };
+
+
+    var result = new FormulaResult.EditWithoutImage { Id = formula.Id };
 
     return result;
   }
 }
-

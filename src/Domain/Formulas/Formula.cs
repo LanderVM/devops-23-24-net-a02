@@ -7,7 +7,8 @@ public class Formula : Entity
 {
   private Formula() { } // EF Core constructor
 
-  public Formula(List<Equipment> equipment, string title, List<string> description, string imageUrl = "https://a2blanchestorage.blob.core.windows.net/images/SfeerFoto1.jpg")
+  public Formula(List<Equipment> equipment, string title, List<string> description,
+    string imageUrl = "https://a2blanchestorage.blob.core.windows.net/images/SfeerFoto1.jpg")
   {
     Equipment.AddRange(equipment);
     Description = new Description(title, description);
@@ -28,16 +29,16 @@ public class Formula : Entity
 
   public List<Quotation> OrderedIn { get; set; } = default!;
 
-  public decimal GetPriceForEquipment() 
-  { 
-    return Equipment.Sum(x => x.Price); 
+  public decimal GetPriceForEquipment()
+  {
+    return Equipment.Sum(x => x.Price);
   }
 
   public List<QuotationLine> GetQuotationLines(int amountOfPeople)
   {
     List<QuotationLine> result = new();
 
-    foreach (Equipment equipment in Equipment)
+    foreach (var equipment in Equipment)
     {
       result.Add(new QuotationLine(equipment, amountOfPeople));
     }

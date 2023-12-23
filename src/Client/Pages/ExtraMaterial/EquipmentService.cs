@@ -1,25 +1,27 @@
 ﻿using System.Net.Http.Json;
 using shared.Equipment;
 
-
 namespace devops_23_24_net_a02.Client.Pages.ExtraMaterial;
 
 public class EquipmentService : IEquipmentService
 {
-  
-  private readonly HttpClient publicClient;
-  private readonly HttpClient adminClient;
   private const string endpoint = "/api/Equipment";
-  
-  public EquipmentService(IHttpClientFactory  httpClientFactory) {
+  private readonly HttpClient adminClient;
+
+  private readonly HttpClient publicClient;
+
+  public EquipmentService(IHttpClientFactory httpClientFactory)
+  {
     adminClient = httpClientFactory.CreateClient("FoodtruckAPI");
     publicClient = httpClientFactory.CreateClient("PublicAPI");
   }
+
   public async Task<EquipmentResult.Index> GetIndexAsync()
   {
     var response = await publicClient.GetFromJsonAsync<EquipmentResult.Index>(endpoint);
     return response;
   }
+
   public async Task<EquipmentResult.ActiveEquipment> GetActiveEquipmentAsync()
   {
     var response = await publicClient.GetFromJsonAsync<EquipmentResult.ActiveEquipment>($"{endpoint}/active");
@@ -34,7 +36,7 @@ public class EquipmentService : IEquipmentService
 
   public async Task<EquipmentResult.Create> CreateAsync(EquipmentDto.Create model)
   {
-    var response = await adminClient.PostAsJsonAsync(endpoint,model);
+    var response = await adminClient.PostAsJsonAsync(endpoint, model);
     return await response.Content.ReadFromJsonAsync<EquipmentResult.Create>();
   }
 
@@ -55,14 +57,11 @@ public class EquipmentService : IEquipmentService
     var response = await adminClient.PutAsJsonAsync($"{endpoint}/WithImage/{equipmentId}", model);
     return await response.Content.ReadFromJsonAsync<EquipmentResult.CreateWithImage>();
   }
-  
-  
+
+
   public async Task<EquipmentDto.Mutate> GetSpecificMutateAsync(int equipmentId)
   {
-    EquipmentDto.Mutate? response = await adminClient.GetFromJsonAsync<EquipmentDto.Mutate>($"{endpoint}/{equipmentId}");
+    var response = await adminClient.GetFromJsonAsync<EquipmentDto.Mutate>($"{endpoint}/{equipmentId}");
     return response!;
   }
-
-  
 }
-

@@ -1,5 +1,4 @@
-﻿using System.Net.Mail;
-using Domain.Customers;
+﻿using Domain.Customers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

@@ -1,13 +1,13 @@
 ﻿using Api.Data.Services.Quotations;
-using Microsoft.EntityFrameworkCore;
-using server.Services;
-using shared.Equipment;
-using Server.Services;
-using shared.Quotations;
-using shared.Formulas;
 using devops_23_24_net_a02.Services.Files;
 using devops_23_24_net_a02.Shared.Emails;
+using Microsoft.EntityFrameworkCore;
+using server.Services;
+using Server.Services;
+using shared.Equipment;
+using shared.Formulas;
 using shared.GoogleMaps;
+using shared.Quotations;
 
 namespace Api.Data;
 

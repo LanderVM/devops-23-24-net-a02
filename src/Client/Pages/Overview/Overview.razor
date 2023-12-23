@@ -3,6 +3,7 @@
 @using shared.Quotations
 @using Size = MudBlazor.Size
 @using GoogleMapsComponents.Maps
+@using shared.Common
 @using GoogleMapsComponents
 
 <PageTitle>Overzicht</PageTitle>
@@ -33,7 +34,7 @@
             <MudGrid>
                 <MudItem xs="12">
                     <MudText Typo="Typo.h4" Class="ml-3">Overzicht</MudText>
-                    <hr style="background-color:black;height:1.5px;border-width:0;margin-left:13px;margin-right:100px;margin-top:10px;margin-bottom:0px" />
+                    <hr style="background-color:black;height:1.5px;border-width:0;margin-left:13px;margin-right:100px;margin-top:10px;margin-bottom:0px"/>
                 </MudItem>
                 <MudItem xs="12">
                     <MudText Typo="Typo.h5" Class="ml-3">Evenement</MudText>
@@ -43,7 +44,7 @@
                         <MudItem md="6" sm="12">
                             <MudPaper Class="ma-1" Elevation="3" Style="background-color:#EDE7DB">
                                 <MudText Class="mt-1 ml-3">Datum</MudText>
-                                <MudText Class="ml-3">@EventDetailsState.dateRange.Start.ToString().Substring(0,10) tot @EventDetailsState.dateRange.End.ToString().Substring(0,10)</MudText>
+                                <MudText Class="ml-3">@EventDetailsState.dateRange.Start.ToString().Substring(0, 10) tot @EventDetailsState.dateRange.End.ToString().Substring(0, 10)</MudText>
                             </MudPaper>
                         </MudItem>
                         <MudItem md="6" sm="12">
@@ -57,55 +58,55 @@
                                 <GoogleMap @ref="@Map" Id="map1" Options="@_options" Height="410px" OnAfterInit="async () => await OnAfterMapInit()"></GoogleMap>
                                 <MudPaper Class="mt-4 ml-1 mr-1" Elevation="3" Style="background-color:#EDE7DB">
                                     <MudText Class="mt-1 mb-1 ml-3">Aantal personen op evenement: @(EventDetailsState.NumberOfPeople.ToString())</MudText>
-                                    </MudPaper>
-                                </MudItem>
-                            </MudHidden>
-                            <MudItem xs="12">
-                                <MudText Typo="Typo.h5" Class="ml-3">Contact en facturatie gegevens</MudText>
-                            </MudItem>
-                            
-                            <MudItem xs="12">
-                                <MudPaper Class="ma-1" Elevation="3" Style="background-color:#EDE7DB">
-                                    <MudText Class="mt-1 ml-3">Naam</MudText>
-                                    <MudText Class="ml-3">@(@PersonalDetailsState.Customer.LastName + " " + PersonalDetailsState.Customer.FirstName)</MudText>
                                 </MudPaper>
                             </MudItem>
-                            <MudItem xs="12">
-                                <MudPaper Class="ma-1" Elevation="3" Style="background-color:#EDE7DB">
-                                    <MudText Class="mt-1 ml-3">Email</MudText>
-                                    <MudText Class="ml-3">@PersonalDetailsState.Customer.Email.Email</MudText>
-                                </MudPaper>
-                            </MudItem>
-                            <MudItem xs="12">
-                                <MudPaper Class="ma-1" Elevation="3" Style="background-color:#EDE7DB">
-                                    <MudText Class="mt-1 ml-3">Telefoon</MudText>
-                                    <MudText Class="ml-3">@PersonalDetailsState.Customer.PhoneNumber</MudText>
-                                </MudPaper>
-                            </MudItem>
-                            <MudItem xs="12">
-                                <MudPaper Class="ma-1" Elevation="3" Style="background-color:#EDE7DB">
-                                    <MudText Class="mt-1 ml-3">Adres</MudText>
-                                    <MudText Class="ml-3">@($"{@PersonalDetailsState.Customer.BillingAddress.Street} {@PersonalDetailsState.Customer.BillingAddress.HouseNumber} {@PersonalDetailsState.Customer.BillingAddress.PostalCode} {@PersonalDetailsState.Customer.BillingAddress.City}")</MudText>
-                                </MudPaper>
-                            </MudItem>
-                            <MudItem xs="12">
-                                <MudPaper Class="ma-1" Elevation="3" Style="background-color:#EDE7DB">
-                                    <MudText Class="mt-1 ml-3">Btw-nummer</MudText>
-                                    <MudText Class="ml-3">@(CheckIfBtwNumberIsEmpty())</MudText>
-                                </MudPaper>
-                            </MudItem>
-                            
-                        </MudGrid>
-                    </MudItem>
-                    <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="true">
-                        <MudItem lg="6" md="6" sm="12" xs="12">
-                            <GoogleMap @ref="@Map" Id="map1" Options="@_options" Height="410px" OnAfterInit="async () => await OnAfterMapInit()"></GoogleMap>
-                            <MudPaper Class="mt-4 ml-1 mr-1" Elevation="3" Style="background-color:#EDE7DB">
-                                <MudText Class="mt-1 mb-1 ml-3">Aantal personen op evenement: @(EventDetailsState.NumberOfPeople.ToString())</MudText>
+                        </MudHidden>
+                        <MudItem xs="12">
+                            <MudText Typo="Typo.h5" Class="ml-3">Contact en facturatie gegevens</MudText>
+                        </MudItem>
+
+                        <MudItem xs="12">
+                            <MudPaper Class="ma-1" Elevation="3" Style="background-color:#EDE7DB">
+                                <MudText Class="mt-1 ml-3">Naam</MudText>
+                                <MudText Class="ml-3">@(PersonalDetailsState.Customer.LastName + " " + PersonalDetailsState.Customer.FirstName)</MudText>
                             </MudPaper>
                         </MudItem>
-                    </MudHidden>
-                    @if (@NoExtraMaterial() == false)
+                        <MudItem xs="12">
+                            <MudPaper Class="ma-1" Elevation="3" Style="background-color:#EDE7DB">
+                                <MudText Class="mt-1 ml-3">Email</MudText>
+                                <MudText Class="ml-3">@PersonalDetailsState.Customer.Email.Email</MudText>
+                            </MudPaper>
+                        </MudItem>
+                        <MudItem xs="12">
+                            <MudPaper Class="ma-1" Elevation="3" Style="background-color:#EDE7DB">
+                                <MudText Class="mt-1 ml-3">Telefoon</MudText>
+                                <MudText Class="ml-3">@PersonalDetailsState.Customer.PhoneNumber</MudText>
+                            </MudPaper>
+                        </MudItem>
+                        <MudItem xs="12">
+                            <MudPaper Class="ma-1" Elevation="3" Style="background-color:#EDE7DB">
+                                <MudText Class="mt-1 ml-3">Adres</MudText>
+                                <MudText Class="ml-3">@($"{PersonalDetailsState.Customer.BillingAddress.Street} {PersonalDetailsState.Customer.BillingAddress.HouseNumber} {PersonalDetailsState.Customer.BillingAddress.PostalCode} {PersonalDetailsState.Customer.BillingAddress.City}")</MudText>
+                            </MudPaper>
+                        </MudItem>
+                        <MudItem xs="12">
+                            <MudPaper Class="ma-1" Elevation="3" Style="background-color:#EDE7DB">
+                                <MudText Class="mt-1 ml-3">Btw-nummer</MudText>
+                                <MudText Class="ml-3">@(CheckIfBtwNumberIsEmpty())</MudText>
+                            </MudPaper>
+                        </MudItem>
+
+                    </MudGrid>
+                </MudItem>
+                <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="true">
+                    <MudItem lg="6" md="6" sm="12" xs="12">
+                        <GoogleMap @ref="@Map" Id="map1" Options="@_options" Height="410px" OnAfterInit="async () => await OnAfterMapInit()"></GoogleMap>
+                        <MudPaper Class="mt-4 ml-1 mr-1" Elevation="3" Style="background-color:#EDE7DB">
+                            <MudText Class="mt-1 mb-1 ml-3">Aantal personen op evenement: @(EventDetailsState.NumberOfPeople.ToString())</MudText>
+                        </MudPaper>
+                    </MudItem>
+                </MudHidden>
+                @if (NoExtraMaterial() == false)
                 {
                     <MudItem xs="12">
                         <MudText Typo="Typo.h5" Class="ml-3">Extra materiaal</MudText>
@@ -113,19 +114,19 @@
                 }
                 <MudItem xs="12">
                     <MudGrid>
-                        <Loader IsLoading=@(Extras == null)>
+                        <Loader IsLoading="@(Extras == null)">
                             @foreach (var item in ExtraMaterialState.ExtrasAmount)
                             {
                                 @if (item.Value != 0)
                                 {
                                     <MudItem lg="3" md="4" sm="6" xs="12">
                                         <OverviewExtraItemsCard ImageUrl="@(Extras.FirstOrDefault(x => x.Id == item.Key).ImageData.ImageUrl)"
-                                        Title="@(Extras.FirstOrDefault(x => x.Id == item.Key).Title)"
-                                        Attributes="@(Extras.FirstOrDefault(x => x.Id == item.Key).Attributes)"
-                                        EquipmentId="@(Extras.FirstOrDefault(x => x.Id == item.Key).Id)"
-                                        Amount="@item.Value"
-                                        Price="@(Extras.FirstOrDefault(x => x.Id == item.Key).Price)"
-                                        ExternalMethod="@RefreshPage">
+                                                                Title="@(Extras.FirstOrDefault(x => x.Id == item.Key).Title)"
+                                                                Attributes="@(Extras.FirstOrDefault(x => x.Id == item.Key).Attributes)"
+                                                                EquipmentId="@(Extras.FirstOrDefault(x => x.Id == item.Key).Id)"
+                                                                Amount="@item.Value"
+                                                                Price="@(Extras.FirstOrDefault(x => x.Id == item.Key).Price)"
+                                                                ExternalMethod="@RefreshPage">
 
                                         </OverviewExtraItemsCard>
                                     </MudItem>
@@ -138,21 +139,21 @@
                     <MudText Typo="Typo.h5" Class="ml-3">Kost</MudText>
                 </MudItem>
                 <MudItem xs="12">
-                    @if (@Extras != null)
+                    @if (Extras != null)
                     {
                         <MudHidden Breakpoint="Breakpoint.Xs" Invert="true">
                             <OverviewCostSmallFontsizeComponent Title="@FormulaState.Title"
-                            PriceFormula="@GetPriceFormulaWithoutBeerAndBarbeque()"
-                            TotalWithoutBtw="@CalculateTotalWithoutBtw()"
-                            BtwOnTotal="CalculateBtwOnTotal()"
-                            TotalWithBtw="@(Decimal.Round(CalculateTotalWithoutBtw(), 2) + Decimal.Round(CalculateBtwOnTotal(), 2))" />
+                                                                PriceFormula="@GetPriceFormulaWithoutBeerAndBarbeque()"
+                                                                TotalWithoutBtw="@CalculateTotalWithoutBtw()"
+                                                                BtwOnTotal="CalculateBtwOnTotal()"
+                                                                TotalWithBtw="@decimal.Round(CalculateTotalWithoutBtw(), 2) + decimal.Round(CalculateBtwOnTotal(), 2)"/>
                         </MudHidden>
                         <MudHidden Breakpoint="Breakpoint.Xs">
                             <OverviewCostComponent Title="@FormulaState.Title"
-                            PriceFormula="@GetPriceFormulaWithoutBeerAndBarbeque()"
-                            TotalWithoutBtw="@CalculateTotalWithoutBtw()"
-                            BtwOnTotal="CalculateBtwOnTotal()"
-                            TotalWithBtw="@(Decimal.Round(CalculateTotalWithoutBtw(), 2) + Decimal.Round(CalculateBtwOnTotal(), 2))" />
+                                                   PriceFormula="@GetPriceFormulaWithoutBeerAndBarbeque()"
+                                                   TotalWithoutBtw="@CalculateTotalWithoutBtw()"
+                                                   BtwOnTotal="CalculateBtwOnTotal()"
+                                                   TotalWithBtw="@decimal.Round(CalculateTotalWithoutBtw(), 2) + decimal.Round(CalculateBtwOnTotal(), 2)"/>
                         </MudHidden>
                     }
                 </MudItem>
@@ -179,41 +180,50 @@
 
 @code {
 
-    [Inject] public IEquipmentService EquipmentService { get; set; } = default!;
+    [Inject]
+    public IEquipmentService EquipmentService { get; set; } = default!;
 
-    [Inject]public ISnackbar Snackbar { get; set; } = default!;
-    [Inject] public IQuotationService QuotationService { get; set; } = default!;
-    [Inject] public NavigationManager NavigationManager { get; set; } = default!;
-    [Inject] public ExtraMaterialState ExtraMaterialState { get; set; } = default!;
-    [Inject] public FormulaState FormulaState { get; set; } = default!;
+    [Inject]
+    public ISnackbar Snackbar { get; set; } = default!;
+
+    [Inject]
+    public IQuotationService QuotationService { get; set; } = default!;
+
+    [Inject]
+    public NavigationManager NavigationManager { get; set; } = default!;
+
+    [Inject]
+    public ExtraMaterialState ExtraMaterialState { get; set; } = default!;
+
+    [Inject]
+    public FormulaState FormulaState { get; set; } = default!;
 
     [Inject]
     public EventDetailsState EventDetailsState { get; set; }
 
 
-    [Inject] public PersonalDetailsState PersonalDetailsState { get; set; } = default!;
+    [Inject]
+    public PersonalDetailsState PersonalDetailsState { get; set; } = default!;
 
 
-    private IEnumerable<EquipmentDto.Index>? Extras = default!;
+    private IEnumerable<EquipmentDto.Index>? Extras;
 
     protected override async Task OnInitializedAsync()
     {
-        if (FormulaState.ChosenFormulaId == null || FormulaState.ChosenFormulaId == 0  || PersonalDetailsState.Customer.Email.Email == null || EventDetailsState.FormattedAddress == null || EventDetailsState.dateRange == null)
+        if (FormulaState.ChosenFormulaId == null || FormulaState.ChosenFormulaId == 0 || PersonalDetailsState.Customer.Email.Email == null || EventDetailsState.FormattedAddress == null || EventDetailsState.dateRange == null)
         {
             NavigationManager.NavigateTo(Routes.Formula);
             Snackbar.Add("Gelieve uw offerteaanvraag opnieuw te beginnen.", Severity.Error);
         }
-        EquipmentResult.Index response = await EquipmentService.GetIndexAsync();
+        var response = await EquipmentService.GetIndexAsync();
 
         Extras = response.Equipment;
-
     }
-
 
 
     private bool NoExtraMaterial()
     {
-        bool thereIsNoExtraMaterial = true;
+        var thereIsNoExtraMaterial = true;
         foreach (var item in ExtraMaterialState.ExtrasAmount)
         {
             if (item.Value != 0)
@@ -228,19 +238,18 @@
     private void RefreshPage()
     {
         StateHasChanged();
-
     }
 
 
     private decimal GetPriceFormulaWithoutBeerAndBarbeque()
     {
-        decimal initialPrice = 0M;
+        var initialPrice = 0M;
 
-        DateTime? start = EventDetailsState.dateRange.Start;
-        DateTime? end = EventDetailsState.dateRange.End;
-        TimeSpan? dif = end - start;
+        var start = EventDetailsState.dateRange.Start;
+        var end = EventDetailsState.dateRange.End;
+        var dif = end - start;
 
-        int amountOfDaysDiff = (int)dif.Value.TotalDays;
+        var amountOfDaysDiff = (int)dif.Value.TotalDays;
 
         if (amountOfDaysDiff == 0)
         {
@@ -256,7 +265,7 @@
         }
         else
         {
-            int extraDays = amountOfDaysDiff - 2;
+            var extraDays = amountOfDaysDiff - 2;
             initialPrice = FormulaState.PricePerDayExtra * extraDays + FormulaState.BasePrice[2];
         }
 
@@ -268,10 +277,8 @@
         if (FormulaState.ChosenFormulaId == 1)
         {
             return 0.0M;
-        } else
-        {
-            return EventDetailsState.NumberOfPeople * (EventDetailsState.HasTripleBeer ? 3.0M : 1.5M);
         }
+        return EventDetailsState.NumberOfPeople * (EventDetailsState.HasTripleBeer ? 3.0M : 1.5M);
     }
 
     private decimal GetPriceBarbeque()
@@ -280,10 +287,7 @@
         {
             return 0.0M;
         }
-        else
-        {
-            return EventDetailsState.NumberOfPeople * 12.0M;
-        }
+        return EventDetailsState.NumberOfPeople * 12.0M;
     }
 
     private decimal CalculateTransportCost()
@@ -293,36 +297,33 @@
 
     private decimal CalculateTotalWithoutBtw()
     {
-
-        decimal extrasKosten = 0M;
+        var extrasKosten = 0M;
         foreach (var item in ExtraMaterialState.ExtrasAmount)
         {
             if (item.Value != 0)
             {
-                extrasKosten += (Extras.FirstOrDefault(x => x.Id == item.Key).Price * item.Value);
+                extrasKosten += Extras.FirstOrDefault(x => x.Id == item.Key).Price * item.Value;
             }
         }
         return CalculateTransportCost() + GetPriceFormulaWithoutBeerAndBarbeque() + GetPriceBeer() + GetPriceBarbeque() + extrasKosten;
-
     }
 
     private decimal CalculateBtwOnTotal()
     {
-        decimal extrasCostBtw = 0M;
+        var extrasCostBtw = 0M;
 
         foreach (var item in ExtraMaterialState.ExtrasAmount)
         {
             if (item.Value != 0)
             {
-                extrasCostBtw += ((Extras.FirstOrDefault(x => x.Id == item.Key).Price * item.Value) * 0.21M);
+                extrasCostBtw += Extras.FirstOrDefault(x => x.Id == item.Key).Price * item.Value * 0.21M;
             }
         }
-        return (CalculateTransportCost() * 0.21M) + (GetPriceFormulaWithoutBeerAndBarbeque() * 0.21M) + (GetPriceBeer() * 0.12M) + (GetPriceBarbeque() * 0.12M) + extrasCostBtw;
+        return CalculateTransportCost() * 0.21M + GetPriceFormulaWithoutBeerAndBarbeque() * 0.21M + GetPriceBeer() * 0.12M + GetPriceBarbeque() * 0.12M + extrasCostBtw;
     }
 
     private async Task CreateQuotationAsync()
     {
-
         var eventLocation = EventDetailsState.EventAddress;
         List<EquipmentDto.Lines> equipments = new();
         if (ExtraMaterialState.ExtrasAmount.Count != 0)
@@ -331,45 +332,41 @@
             {
                 if (item.Value != 0)
                 {
-                    equipments.Add(new EquipmentDto.Lines()
-                        {
-                            EquipmentId = item.Key,
-                            Amount = item.Value,
-                        });
+                    equipments.Add(new EquipmentDto.Lines
+                    {
+                        EquipmentId = item.Key,
+                        Amount = item.Value
+                    });
                 }
-
             }
         }
-        
-        
-        QuotationDto.Create quotation = new QuotationDto.Create
+
+
+        var quotation = new QuotationDto.Create
+        {
+            FormulaId = FormulaState.ChosenFormulaId,
+            EventLocation = new AddressDto
             {
-                FormulaId = FormulaState.ChosenFormulaId,
-
-                EventLocation = new()
-                {
-                    Street = eventLocation.Street,
-                    HouseNumber = eventLocation.HouseNumber,
-                    PostalCode = eventLocation.PostalCode,
-                    City = eventLocation.City
-                },
-                StartTime = (DateTime)EventDetailsState.dateRange.Start,
-                EndTime = (DateTime)EventDetailsState.dateRange.End,
-                Equipments = equipments,
-                Customer = PersonalDetailsState.Customer,
-                NumberOfPeople = EventDetailsState.NumberOfPeople,
-                IsTripelBier = EventDetailsState.HasTripleBeer
-
-            };
+                Street = eventLocation.Street,
+                HouseNumber = eventLocation.HouseNumber,
+                PostalCode = eventLocation.PostalCode,
+                City = eventLocation.City
+            },
+            StartTime = (DateTime)EventDetailsState.dateRange.Start,
+            EndTime = (DateTime)EventDetailsState.dateRange.End,
+            Equipments = equipments,
+            Customer = PersonalDetailsState.Customer,
+            NumberOfPeople = EventDetailsState.NumberOfPeople,
+            IsTripelBier = EventDetailsState.HasTripleBeer
+        };
 
 
         var result = await QuotationService.CreateAsync(quotation);
         Snackbar.Add("Je offerte werd succesvol aangemaakt", Severity.Success);
         NavigationManager.NavigateTo(Routes.Home);
         ClearAllStates();
-        
     }
-    
+
 
     private void ClearAllStates()
     {
@@ -378,14 +375,14 @@
         ExtraMaterialState.Clear();
         PersonalDetailsState.Clear();
     }
-    
+
 
     private Marker? _selectedLocation;
 
     private GoogleMap Map { get; set; } = default!;
 
     private readonly MapOptions _options = new()
-        { Zoom = 13, Center = new LatLngLiteral { Lat = 50.93735122680664, Lng = 4.03336238861084 }, MapTypeId = MapTypeId.Roadmap, DisableDefaultUI = true, };
+    { Zoom = 13, Center = new LatLngLiteral { Lat = 50.93735122680664, Lng = 4.03336238861084 }, MapTypeId = MapTypeId.Roadmap, DisableDefaultUI = true };
 
     private async Task UpdateMarker(Marker marker)
     {
@@ -399,14 +396,12 @@
         await Map.InteropObject.SetZoom(13);
 
         var marker = await Marker.CreateAsync(Map.JsRuntime, new MarkerOptions
-            {
-                Position = EventDetailsState.PlaceGeometry.Location,
-                Map = Map.InteropObject,
-                Title = GetEventLocationTitle(),
-            });
+        {
+            Position = EventDetailsState.PlaceGeometry.Location,
+            Map = Map.InteropObject,
+            Title = GetEventLocationTitle()
+        });
         await UpdateMarker(marker);
-
-
     }
 
     private string GetEventLocationTitle()
@@ -420,10 +415,7 @@
         {
             return "Geen Btw-nummer opgegeven";
         }
-        else
-        {
-            return PersonalDetailsState.Customer.VatNumber;
-        }
+        return PersonalDetailsState.Customer.VatNumber;
     }
 
 }

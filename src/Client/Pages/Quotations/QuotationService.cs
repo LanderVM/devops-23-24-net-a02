@@ -1,20 +1,18 @@
 ﻿using System.Net.Http.Json;
 using System.Text;
-using devops_23_24_net_a02.Client.Extensions;
-using shared.Equipment;
-
 using shared.Quotations;
 
 namespace devops_23_24_net_a02.Client.Pages.Quotations;
 
 public class QuotationService : IQuotationService
 {
-  
-  private readonly HttpClient publicClient;
-  private readonly HttpClient adminClient;
   private const string endpoint = "/api/Quotation";
-  
-  public QuotationService(IHttpClientFactory  httpClientFactory) {
+  private readonly HttpClient adminClient;
+
+  private readonly HttpClient publicClient;
+
+  public QuotationService(IHttpClientFactory httpClientFactory)
+  {
     adminClient = httpClientFactory.CreateClient("FoodtruckAPI");
     publicClient = httpClientFactory.CreateClient("PublicAPI");
   }
@@ -33,7 +31,7 @@ public class QuotationService : IQuotationService
 
   public async Task<QuotationResult.Detail> GetPriceEstimationDetailsAsync()
   {
-    QuotationResult.Detail response = await publicClient.GetFromJsonAsync<QuotationResult.Detail>($"{endpoint}/Estimation/Details");
+    var response = await publicClient.GetFromJsonAsync<QuotationResult.Detail>($"{endpoint}/Estimation/Details");
     return response;
   }
 
@@ -56,7 +54,10 @@ public class QuotationService : IQuotationService
         queryString.Append($"&EquipmentIds={equipmentId}");
       }
     }
-    var response = await publicClient.GetFromJsonAsync<QuotationResult.Calculation>($"{endpoint}/Estimation/Calculate?{queryString}");
+
+    var response =
+      await publicClient.GetFromJsonAsync<QuotationResult.Calculation>(
+        $"{endpoint}/Estimation/Calculate?{queryString}");
 
     return response;
   }

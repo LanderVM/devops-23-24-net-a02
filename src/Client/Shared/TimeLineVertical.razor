@@ -1,4 +1,4 @@
-﻿@if (@step==1)
+﻿@if (step == 1)
 {
     <MudTimeline Class="sticky" Style="height:350px" TimelinePosition=TimelinePosition.Left>
         <MudTimelineItem Color=Color.Primary Size="Size.Large" Variant="Variant.Filled">
@@ -26,8 +26,8 @@
             </ItemContent>
         </MudTimelineItem>
     </MudTimeline>
-
-} else if (@step==2)
+}
+else if (step == 2)
 {
     <MudTimeline Style="height:350px" TimelinePosition=TimelinePosition.Left>
         <MudTimelineItem Color=Color.Primary Size="Size.Large" Variant="Variant.Filled">
@@ -55,7 +55,8 @@
             </ItemContent>
         </MudTimelineItem>
     </MudTimeline>
-}else if(step==3)
+}
+else if (step == 3)
 {
     <MudTimeline Style="height:350px" TimelinePosition=TimelinePosition.Left>
         <MudTimelineItem Color=Color.Primary Size="Size.Large" Variant="Variant.Filled">
@@ -83,10 +84,12 @@
             </ItemContent>
         </MudTimelineItem>
     </MudTimeline>
-} 
+}
 
 
 @code {
+
     [Parameter]
     public int step { get; set; } = 1;
+
 }

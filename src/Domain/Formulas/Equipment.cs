@@ -4,13 +4,14 @@ namespace Domain.Formulas;
 
 public class Equipment : Entity
 {
+  private string _imageUrl = default!;
   private decimal _price;
   private int _stock;
-  private string _imageUrl = default!;
 
   private Equipment() { } // EF Core constructor
 
-  public Equipment(string title, List<string> description, decimal price, int stock, string imageUrl = "https://via.placeholder.com/350x300")
+  public Equipment(string title, List<string> description, decimal price, int stock,
+    string imageUrl = "https://via.placeholder.com/350x300")
   {
     Description = new Description(title, description);
     Price = price;

@@ -1,6 +1,4 @@
-﻿using shared.Equipment;
-
-namespace shared.Equipment;
+﻿namespace shared.Equipment;
 
 public interface IEquipmentService
 {
@@ -17,6 +15,4 @@ public interface IEquipmentService
 
   public Task<EquipmentResult.Create> UpdateAsync(int equipmentId, EquipmentDto.Mutate model);
   public Task<EquipmentResult.CreateWithImage> UpdateWithImageAsync(int equipmentId, EquipmentDto.Mutate model);
-
 }
-

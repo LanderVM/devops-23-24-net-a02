@@ -31,31 +31,31 @@
             </MudText>
         </MudItem>
         <MudItem xs="12">
-            <hr style="background-color:black;height:1.5px;border-width:0;margin-left:2px;margin-right:2px;" />
+            <hr style="background-color:black;height:1.5px;border-width:0;margin-left:2px;margin-right:2px;"/>
         </MudItem>
         <MudItem lg="8" md="4" sm="4" xs="3">
             <MudText Class="ml-6 mt-n4 mb-n4" Style="font-size:0.8em">
-                @($"{@Title} formule")
+                @($"{Title} formule")
             </MudText>
         </MudItem>
-        <MudItem lg="1" md="2" sm="2" xs="2" >
+        <MudItem lg="1" md="2" sm="2" xs="2">
             <MudText Class="ml-4 mt-n4 mb-n4" Style="font-size:0.8em">
                 1
             </MudText>
         </MudItem>
-        <MudItem lg="1" md="2" sm="2" xs="2" >
+        <MudItem lg="1" md="2" sm="2" xs="2">
             <MudText Class="mt-n4 mb-n4" Style="font-size:0.8em">
-                @(Decimal.Round(PriceFormula, 2))
+                @(decimal.Round(PriceFormula, 2))
             </MudText>
         </MudItem>
-        <MudItem lg="1" md="2" sm="2" xs="2" >
+        <MudItem lg="1" md="2" sm="2" xs="2">
             <MudText Class="mt-n4 mb-n4" Style="font-size:0.8em">
                 21%
             </MudText>
         </MudItem>
-        <MudItem lg="1" md="2" sm="2" xs="3" >
+        <MudItem lg="1" md="2" sm="2" xs="3">
             <MudText Class="mr-6 mt-n4 mb-n4" Style="font-size:0.8em">
-                @(Decimal.Round(PriceFormula*1.21M, 2))
+                @(decimal.Round(PriceFormula * 1.21M, 2))
             </MudText>
         </MudItem>
         @if (FormulaState.ChosenFormulaId != 1)
@@ -72,7 +72,7 @@
             </MudItem>
             <MudItem lg="1" md="2" sm="2" xs="2">
                 <MudText Class="mt-n4 mb-n4" Style="font-size:0.8em">
-                    @(Decimal.Round(EventDetailsState.HasTripleBeer ? 3.0M : 1.5M, 2))
+                    @(decimal.Round(EventDetailsState.HasTripleBeer ? 3.0M : 1.5M, 2))
                 </MudText>
             </MudItem>
             <MudItem lg="1" md="2" sm="2" xs="2">
@@ -82,7 +82,7 @@
             </MudItem>
             <MudItem lg="1" md="2" sm="2" xs="3">
                 <MudText Class="mr-6 mt-n4 mb-n4" Style="font-size:0.8em">
-                    @(Decimal.Round((EventDetailsState.HasTripleBeer ? 3.0M : 1.5M) * EventDetailsState.NumberOfPeople * 1.12M, 2))
+                    @(decimal.Round((EventDetailsState.HasTripleBeer ? 3.0M : 1.5M) * EventDetailsState.NumberOfPeople * 1.12M, 2))
                 </MudText>
             </MudItem>
         }
@@ -110,7 +110,7 @@
             </MudItem>
             <MudItem lg="1" md="2" sm="2" xs="3">
                 <MudText Class="mr-6 mt-n4 mb-n4" Style="font-size:0.8em">
-                    @(Decimal.Round((12.0M * EventDetailsState.NumberOfPeople) * 1.12M, 2))
+                    @decimal.Round(12.0M * EventDetailsState.NumberOfPeople * 1.12M, 2)
                 </MudText>
             </MudItem>
         }
@@ -132,7 +132,7 @@
                     </MudItem>
                     <MudItem lg="1" md="2" sm="2" xs="2">
                         <MudText Class="mb-n4 mt-n4" Style="font-size:0.8em">
-                            @(Decimal.Round(Extras.FirstOrDefault(x => x.Id == item.Key).Price, 2))
+                            @(decimal.Round(Extras.FirstOrDefault(x => x.Id == item.Key).Price, 2))
                         </MudText>
                     </MudItem>
                     <MudItem lg="1" md="2" sm="2" xs="2">
@@ -142,10 +142,9 @@
                     </MudItem>
                     <MudItem lg="1" md="2" sm="2" xs="3">
                         <MudText Class="mr-6 mb-n4 mt-n4" Style="font-size:0.8em">
-                            @(Decimal.Round((Extras.FirstOrDefault(x => x.Id == item.Key).Price * item.Value) + ((Extras.FirstOrDefault(x => x.Id == item.Key).Price * item.Value) * 0.21M), 2))
+                            @decimal.Round(Extras.FirstOrDefault(x => x.Id == item.Key).Price * item.Value + Extras.FirstOrDefault(x => x.Id == item.Key).Price * item.Value * 0.21M, 2)
                         </MudText>
                     </MudItem>
-
                 }
             }
         }
@@ -178,7 +177,7 @@
             </MudText>
         </MudItem>
         <MudItem xs="12">
-            <hr style="background-color:black;height:1.5px;border-width:0;margin-left:2px;margin-right:2px;" />
+            <hr style="background-color:black;height:1.5px;border-width:0;margin-left:2px;margin-right:2px;"/>
         </MudItem>
         <MudItem lg="8" md="4" sm="4" xs="3">
             <MudText Class="ml-6 mb-n4 mt-n4" Style="font-size:0.8em">
@@ -190,7 +189,7 @@
         </MudItem>
         <MudItem lg="1" md="2" sm="2" xs="3">
             <MudText Class="mr-6 mb-n4 mt-n4" Style="font-size:0.8em">
-                @(Decimal.Round(@TotalWithoutBtw, 2))
+                @(decimal.Round(TotalWithoutBtw, 2))
             </MudText>
         </MudItem>
         <MudItem lg="8" md="4" sm="4" xs="3">
@@ -203,11 +202,11 @@
         </MudItem>
         <MudItem lg="1" md="2" sm="2" xs="3">
             <MudText Class="mr-6 mt-n4 mb-n4" Style="font-size:0.8em">
-                @(Decimal.Round(@BtwOnTotal, 2))
+                @(decimal.Round(BtwOnTotal, 2))
             </MudText>
         </MudItem>
         <MudItem xs="12">
-            <hr style="background-color:black;height:1.5px;border-width:0;margin-left:2px;margin-right:2px;" />
+            <hr style="background-color:black;height:1.5px;border-width:0;margin-left:2px;margin-right:2px;"/>
         </MudItem>
         <MudItem lg="8" md="4" sm="4" xs="3">
             <MudText Class="ml-6 mb-n4 mt-n4" Style="font-size:0.8em">
@@ -219,7 +218,7 @@
         </MudItem>
         <MudItem lg="1" md="2" sm="2" xs="3">
             <MudText Class="mr-6 mb-n4 mt-n4" Style="font-size:0.8em">
-                @(Decimal.Round(@TotalWithBtw, 2))
+                @(decimal.Round(TotalWithBtw, 2))
             </MudText>
         </MudItem>
     </MudGrid>
@@ -227,30 +226,43 @@
 
 
 @code {
-    [Inject] public IEquipmentService EquipmentService { get; set; } = default!;
 
-    [Parameter, EditorRequired]
+    [Inject]
+    public IEquipmentService EquipmentService { get; set; } = default!;
+
+    [Parameter]
+    [EditorRequired]
     public string Title { get; set; }
-    [Parameter, EditorRequired]
+
+    [Parameter]
+    [EditorRequired]
     public decimal PriceFormula { get; set; }
+
     [Parameter]
     public decimal PricePerKilometer { get; set; }
+
     [Parameter]
     public decimal AmountOfKilometers { get; set; }
-    [Parameter, EditorRequired]
+
+    [Parameter]
+    [EditorRequired]
     public decimal TotalWithoutBtw { get; set; }
-    [Parameter, EditorRequired]
+
+    [Parameter]
+    [EditorRequired]
     public decimal BtwOnTotal { get; set; }
-    [Parameter, EditorRequired]
+
+    [Parameter]
+    [EditorRequired]
     public decimal TotalWithBtw { get; set; }
 
     private IEnumerable<EquipmentDto.Index>? Extras = default!;
 
     protected override async Task OnInitializedAsync()
     {
-        EquipmentResult.Index response = await EquipmentService.GetIndexAsync();
+        var response = await EquipmentService.GetIndexAsync();
 
         Extras = response.Equipment;
-
     }
+
 }

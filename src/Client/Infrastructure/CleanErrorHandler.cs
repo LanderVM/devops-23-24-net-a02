@@ -5,7 +5,8 @@ namespace devops_23_24_net_a02.Client.Infrastructure;
 
 public class CleanErrorHandler : DelegatingHandler
 {
-  protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, System.Threading.CancellationToken cancellationToken)
+  protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
+    CancellationToken cancellationToken)
   {
     HttpResponseMessage? response = null;
     try

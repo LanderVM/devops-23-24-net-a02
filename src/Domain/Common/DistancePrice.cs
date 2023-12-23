@@ -2,6 +2,6 @@
 
 public class DistancePrice
 {
-  public decimal? DistanceAmount { get; set; } 
-  public decimal PricePerKilometer { get; set; } 
+  public decimal? DistanceAmount { get; set; }
+  public decimal PricePerKilometer { get; set; }
 }

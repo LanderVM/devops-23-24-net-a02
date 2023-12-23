@@ -1,23 +1,18 @@
-@using shared.Equipment;
-@using Client.Files;
-@using Microsoft.AspNetCore.Components;
-@using Microsoft.AspNetCore.Components.Forms;
-@using FluentValidation;
-
+@using shared.Equipment
+@using devops_23_24_net_a02.Client.Files
 @inject IStorageService StorageService;
 @inject IEquipmentService EquipmentService;
 
 <div style="width:600px;">
     <EditForm Model="@CreateEquipment" OnValidSubmit="CreateEquipmentAsync">
-        <Blazored.FluentValidation.FluentValidationValidator />
+        <Blazored.FluentValidation.FluentValidationValidator/>
 
         <MudTextField @bind-Value="CreateEquipment.Title"
                       For="@(() => CreateEquipment.Title)"
                       Immediate="true"
                       Label="Titel"
-                      Variant="Variant.Outlined" 
-                      data-test-id="admin-extra-create-title"
-                      />
+                      Variant="Variant.Outlined"
+                      data-test-id="admin-extra-create-title"/>
 
 
         <MudNumericField @bind-Value="CreateEquipment.Price"
@@ -27,7 +22,7 @@
                          Variant="Variant.Outlined"
                          Step="0.01M"
                          Min="0.0M"
-                         data-test-id="admin-extra-create-price" />
+                         data-test-id="admin-extra-create-price"/>
 
         <MudNumericField @bind-Value="CreateEquipment.Stock"
                          Class="mt-3"
@@ -35,17 +30,17 @@
                          For="@(() => CreateEquipment.Stock)"
                          Variant="Variant.Outlined"
                          Step="1"
-                         Min="0" 
-                         data-test-id="admin-extra-create-stock" />
+                         Min="0"
+                         data-test-id="admin-extra-create-stock"/>
 
         <MudText Class="mt-5 mb-1" Typo="Typo.body2">Onderscheid je attributen in de text met een ";"</MudText>
 
         <MudTextField @bind-Value="CreateEquipment.Attributes"
                       For="@(() => CreateEquipment.Attributes)"
                       Label="Attributen"
-                      Variant="Variant.Outlined" 
+                      Variant="Variant.Outlined"
                       Lines="3"
-                      data-test-id="admin-extra-create-attributes" />
+                      data-test-id="admin-extra-create-attributes"/>
 
         <MudCheckBox @bind-Checked="@CreateEquipment.IsActive"
                      For="@(() => CreateEquipment.IsActive)"
@@ -75,7 +70,7 @@
                                 </MudText>
                                 @foreach (var file in _fileNames)
                                 {
-                                    <MudChip Color="Color.Dark" Text="@file" />
+                                    <MudChip Color="Color.Dark" Text="@file"/>
                                 }
                             </MudPaper>
                             <MudToolBar DisableGutters="true"
@@ -118,28 +113,31 @@
 
 
 @code {
+
     [Parameter]
-    public EventCallback Close { get; set; } = default!;
+    public EventCallback Close { get; set; }
+
     [Parameter]
-    public EventCallback Refresh { get; set; } = default!;
+    public EventCallback Refresh { get; set; }
 
     private IBrowserFile? image;
     private string Attributes { get; set; } = default!;
-    private EquipmentDto.Create CreateEquipment { get; set; } = new();
+    private EquipmentDto.Create CreateEquipment { get; } = new();
 
     private async Task CreateEquipmentAsync()
     {
-        if (image == null) {
-            await EquipmentService.CreateAsync(CreateEquipment);
-        } else
+        if (image == null)
         {
-            EquipmentResult.CreateWithImage result = await EquipmentService.CreateWithImageAsync(CreateEquipment);
+            await EquipmentService.CreateAsync(CreateEquipment);
+        }
+        else
+        {
+            var result = await EquipmentService.CreateWithImageAsync(CreateEquipment);
             await StorageService.UploadImageAsync(result.Image.ImageUrl, image!);
         }
         await Close.InvokeAsync();
-        await Refresh.InvokeAsync();   
+        await Refresh.InvokeAsync();
     }
-
 
 
     private void Cancel()
@@ -148,7 +146,7 @@
     }
 
 
-    private const string DefaultDragClass = "relative rounded-lg border-2 pa-4 mt-4 mud-width-full mud-height-full z-10";
+        private const string DefaultDragClass = "relative rounded-lg border-2 pa-4 mt-4 mud-width-full mud-height-full z-10";
     private string _dragClass = DefaultDragClass;
     private readonly List<string> _fileNames = new();
 
@@ -160,7 +158,10 @@
         await Task.Delay(100);
     }
 
-    private void SetDragClass() => _dragClass = $"{DefaultDragClass} mud-border-primary";
+    private void SetDragClass()
+    {
+        _dragClass = $"{DefaultDragClass} mud-border-primary";
+    }
 
 
     private void ClearDragClass()
@@ -189,4 +190,5 @@
         image = e.File;
         CreateEquipment.ImageContentType = image.ContentType;
     }
+
 }

@@ -1,25 +1,25 @@
-@inherits LayoutComponentBase
 @using devops_23_24_net_a02.Client.Pages.NavBar
+@inherits LayoutComponentBase
 
 @inject NavigationManager MyNavigationManager
 
-<MudThemeProvider Theme="MainTheme" DefaultScrollbar="true" />
-<MudDialogProvider />
-<MudSnackbarProvider />
-<Sidepanel />
+<MudThemeProvider Theme="MainTheme" DefaultScrollbar="true"/>
+<MudDialogProvider/>
+<MudSnackbarProvider/>
+<Sidepanel/>
 
 
 @if (onHomePage)
 {
     <MudLayout Style="display: flex; flex-direction: column; min-height: 100vh;">
         <MudMainContent Style="padding-top: 0px; flex-grow: 1;">
-            <NavBarHome />
+            <NavBarHome/>
             <CustomErrorBoundary @ref="@errorBoundary" Context="Exception">
                 <ChildContent>
                     @Body
                 </ChildContent>
                 <ErrorContent>
-                    <NavBar />
+                    <NavBar/>
                     <MudAlert Severity="Severity.Error"
                               ContentAlignment="HorizontalAlignment.Start"
                               ShowCloseIcon="true"
@@ -30,14 +30,14 @@
                 </ErrorContent>
             </CustomErrorBoundary>
         </MudMainContent>
-        <Footer />
+        <Footer/>
     </MudLayout>
 }
 else
 {
     <MudLayout Style="display: flex; flex-direction: column; min-height: 100vh;">
         <MudAppBar Style="z-index: 2">
-            <NavBar />
+            <NavBar/>
         </MudAppBar>
         <MudMainContent Style="flex-grow: 1;">
             <CustomErrorBoundary @ref="@errorBoundary" Context="Exception">
@@ -45,24 +45,24 @@ else
                     @Body
                 </ChildContent>
                 <ErrorContent>
-                        <MudAlert Severity="Severity.Error"
+                    <MudAlert Severity="Severity.Error"
                               ContentAlignment="HorizontalAlignment.Start"
                               ShowCloseIcon="true"
                               CloseIconClicked="ResetError"
                               Class="ma-16">
-                            @Exception.Message
-                        </MudAlert>
-                </ErrorContent> 
+                        @Exception.Message
+                    </MudAlert>
+                </ErrorContent>
             </CustomErrorBoundary>
         </MudMainContent>
-        <Footer />
+        <Footer/>
     </MudLayout>
 }
 
 
 @code {
     private ErrorBoundary errorBoundary = default!;
-     
+
     protected override void OnInitialized()
     {
         MyNavigationManager.LocationChanged += OnLocationChanged;
@@ -70,7 +70,7 @@ else
 
     private void OnLocationChanged(object sender, LocationChangedEventArgs args)
     {
-        // Reset the error when the page changes
+    // Reset the error when the page changes
         ResetError();
     }
 
@@ -80,53 +80,50 @@ else
     }
 
     bool onHomePage => MyNavigationManager.Uri == MyNavigationManager.BaseUri || MyNavigationManager.Uri.StartsWith(MyNavigationManager.BaseUri + "#");
-    MudTheme MainTheme = new MudTheme()
+
+    readonly MudTheme MainTheme = new()
+    {
+        Typography = new Typography
         {
-            Typography = new Typography()
+            Default = new Default
             {
-                Default = new Default()
-                {
-                    FontFamily = new[] { "Source Sans Pro" }
-                },
-                H1 = new H1()
-                {
-                    FontFamily = new[] { "Source Sans Pro Semibold" }
-                },
-                H2 = new H2()
-                {
-                    FontFamily = new[] { "Source Sans Pro Semibold" }
-                },
-                H3 = new H3()
-                {
-                    FontFamily = new[] { "Source Sans Pro Semibold" }
-                },
-                H4 = new H4()
-                {
-                    FontFamily = new[] { "Source Sans Pro Semibold" }
-                },
-                H5 = new H5()
-                {
-                    FontFamily = new[] { "Source Sans Pro Semibold" },
-                    
-                },
-                Subtitle2 = new Subtitle2()
-                {
-                    FontSize = "25px"
-                }
-                
-                
+                FontFamily = new[] { "Source Sans Pro" }
             },
-            Palette = new PaletteLight()
+            H1 = new H1
             {
-                Primary = "C8A86E",
-                Secondary = "EDE7DB",
-                Tertiary = "FFFFFF",
-
-                TextSecondary = "000000",
-                TextPrimary = "000000",
-
-                AppbarBackground = "FFFFFF",
-                Background = "FFFFFF",
+                FontFamily = new[] { "Source Sans Pro Semibold" }
+            },
+            H2 = new H2
+            {
+                FontFamily = new[] { "Source Sans Pro Semibold" }
+            },
+            H3 = new H3
+            {
+                FontFamily = new[] { "Source Sans Pro Semibold" }
+            },
+            H4 = new H4
+            {
+                FontFamily = new[] { "Source Sans Pro Semibold" }
+            },
+            H5 = new H5
+            {
+                FontFamily = new[] { "Source Sans Pro Semibold" }
+            },
+            Subtitle2 = new Subtitle2
+            {
+                FontSize = "25px"
             }
-        };
+        },
+        Palette = new PaletteLight
+        {
+            Primary = "C8A86E",
+            Secondary = "EDE7DB",
+            Tertiary = "FFFFFF",
+            TextSecondary = "000000",
+            TextPrimary = "000000",
+            AppbarBackground = "FFFFFF",
+            Background = "FFFFFF"
+        }
+    };
+
 }

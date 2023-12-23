@@ -10,10 +10,13 @@ public class Quotation : Entity
   private Quotation() { } // EF Core Constructor
 
   public Quotation(Formula formula, Customer orderedBy, EventLocation eventLocation, List<QuotationLine> quotationLines,
-    DateTime startTime, DateTime endTime, int numberOfPeople, bool isTripelBier = false) 
-  { // Registering Quotation
+    DateTime startTime, DateTime endTime, int numberOfPeople, bool isTripelBier = false)
+  {
+    // Registering Quotation
     if ((endTime - startTime).TotalSeconds <= 0)
+    {
       throw new ArgumentException("End time cannot be before start time!");
+    }
 
     Formula = Guard.Against.Null(formula);
     OriginalFormulaPricePerDay = formula.BasePrice;
@@ -27,10 +30,15 @@ public class Quotation : Entity
     NumberOfPeople = Guard.Against.NegativeOrZero(numberOfPeople);
     IsTripelBier = isTripelBier;
   }
-  public Quotation(Formula formula, DateTime startTime, DateTime endTime, int estimatedNumberPeople, bool isTripelBier = false)
-  { // Price Estimation
+
+  public Quotation(Formula formula, DateTime startTime, DateTime endTime, int estimatedNumberPeople,
+    bool isTripelBier = false)
+  {
+    // Price Estimation
     if ((endTime - startTime).TotalSeconds <= 0)
+    {
       throw new ArgumentException("End time cannot be before start time!");
+    }
 
     Formula = Guard.Against.Null(formula);
     OriginalFormulaPricePerDay = formula.BasePrice;
@@ -40,7 +48,7 @@ public class Quotation : Entity
     NumberOfPeople = Guard.Against.NegativeOrZero(estimatedNumberPeople);
     IsTripelBier = isTripelBier;
   }
-  
+
   public Formula Formula { get; set; } = default!;
   public List<decimal> OriginalFormulaPricePerDay { get; protected set; } = new();
   public decimal OriginalFormulaPricePerDayExtra { get; protected set; }
@@ -59,7 +67,7 @@ public class Quotation : Entity
   public decimal GetPrice()
   {
     var days = (EndTime - StartTime).Days + 1;
-    var blocksOf3Days = days / 3 + (days % 3 != 0 ? 1 : 0);
+    var blocksOf3Days = (days / 3) + (days % 3 != 0 ? 1 : 0);
     var extraEquipmentPrices = QuotationLines.Sum(quotationLine => quotationLine.GetPrice() * blocksOf3Days);
 
     return GetPriceDays() + extraEquipmentPrices;
@@ -72,28 +80,31 @@ public class Quotation : Entity
 
     var basePrice = OriginalFormulaPricePerDay[hasExtraDays ? 2 : days - 1];
     decimal extraDaysPrice = 0;
-    if (hasExtraDays) extraDaysPrice = (days - 3) * OriginalFormulaPricePerDayExtra;
+    if (hasExtraDays)
+    {
+      extraDaysPrice = (days - 3) * OriginalFormulaPricePerDayExtra;
+    }
 
     return basePrice + extraDaysPrice;
   }
 
   public decimal GetEstimatedPrice()
   {
-    decimal priceBeer = IsTripelBier ? 3.0m : 1.5m;
-    decimal priceBbq = 12m;
-    
+    var priceBeer = IsTripelBier ? 3.0m : 1.5m;
+    var priceBbq = 12m;
+
     if (Formula.Id == 3)
     {
-      return GetPriceDays() + Formula.GetPriceForEquipment() + (NumberOfPeople * priceBeer) + (NumberOfPeople * priceBbq);
+      return GetPriceDays() + Formula.GetPriceForEquipment() + (NumberOfPeople * priceBeer) +
+             (NumberOfPeople * priceBbq);
     }
+
     if (Formula.Id == 2)
     {
       return GetPriceDays() + Formula.GetPriceForEquipment() + (NumberOfPeople * priceBeer);
     }
-    else
-    {
-      return GetPriceDays() + Formula.GetPriceForEquipment();
-    }
+
+    return GetPriceDays() + Formula.GetPriceForEquipment();
   }
 
   public decimal GetEstimatedPriceRounded()

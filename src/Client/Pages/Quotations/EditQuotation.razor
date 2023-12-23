@@ -1,7 +1,7 @@
 ﻿@using shared.Quotations
 @using shared.Equipment
 @using global::Shared.Quotations
-<Loader IsLoading=@(_loader)>
+<Loader IsLoading="@(_loader)">
     <EditForm Model="@Model" OnValidSubmit="UpdateQuotationAsync">
         <Blazored.FluentValidation.FluentValidationValidator/>
         <MudPaper Class="pa-5 my-6">
@@ -135,13 +135,13 @@
                             <MudText>@items.Name</MudText>
                         </MudTd>
                         <MudTd DataLabel="Aantal">
-                            <MudNumericField @bind-Value="@items.Amount" For="(() => items.Amount)" Required Min="1"/>
+                            <MudNumericField @bind-Value="@items.Amount" For="() => items.Amount" Required Min="1"/>
                         </MudTd>
                         <MudTd DataLabel="Eenheid">
                             <MudText>€ @items.Price</MudText>
                         </MudTd>
                         <MudTd DataLabel="Totaal">
-                            <MudText>€ @decimal.Round(@items.Price * @items.Amount, 2)</MudText>
+                            <MudText>€ @decimal.Round(items.Price * items.Amount, 2)</MudText>
                         </MudTd>
                     </RowEditingTemplate>
                     <EditButtonContent Context="button">

@@ -10,8 +10,8 @@ public class FormulaState
 
   public decimal PricePerDayExtra { get; set; }
 
-  public List<decimal> BasePrice {  get; set; }
-  
+  public List<decimal> BasePrice { get; set; }
+
   public void Clear()
   {
     ChosenFormulaId = 0;
@@ -21,4 +21,3 @@ public class FormulaState
     BasePrice = null;
   }
 }
-

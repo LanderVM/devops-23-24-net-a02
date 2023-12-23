@@ -7,7 +7,8 @@ public class Customer : Entity
 {
   private Customer() { } // EF Core constructor
 
-  public Customer(string firstName, string lastName, Email email, BillingAddress billingAddress, PhoneNumber phoneNumber, VatNumber? vatNumber)
+  public Customer(string firstName, string lastName, Email email, BillingAddress billingAddress,
+    PhoneNumber phoneNumber, VatNumber? vatNumber)
   {
     FirstName = Guard.Against.NullOrWhiteSpace(firstName, nameof(firstName));
     LastName = Guard.Against.NullOrWhiteSpace(lastName, nameof(lastName));

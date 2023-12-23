@@ -1,24 +1,27 @@
-﻿using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
-using Microsoft.AspNetCore.Components.WebAssembly.Authentication.Internal;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using System.Text.Json;
+using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
+using Microsoft.AspNetCore.Components.WebAssembly.Authentication.Internal;
 
 namespace devops_23_24_net_a02.Client.Shared;
 
-public class ArrayClaimsPrincipalFactory<TAccount> : AccountClaimsPrincipalFactory<TAccount> where TAccount : RemoteUserAccount
+public class ArrayClaimsPrincipalFactory<TAccount> : AccountClaimsPrincipalFactory<TAccount>
+  where TAccount : RemoteUserAccount
 {
   public ArrayClaimsPrincipalFactory(IAccessTokenProviderAccessor accessor)
-  : base(accessor)
-  { }
+    : base(accessor)
+  {
+  }
 
   // when a user belongs to multiple roles, Auth0 returns a single claim with a serialised array of values
   // this class improves the original factory by deserializing the claims in the correct way
-  public async override ValueTask<ClaimsPrincipal> CreateUserAsync(TAccount account, RemoteAuthenticationUserOptions options)
+  public override async ValueTask<ClaimsPrincipal> CreateUserAsync(TAccount account,
+    RemoteAuthenticationUserOptions options)
   {
     var user = await base.CreateUserAsync(account, options);
 
     var claimsIdentity = (ClaimsIdentity)user.Identity;
-    
+
 
     if (account != null)
     {
@@ -32,13 +35,13 @@ public class ArrayClaimsPrincipalFactory<TAccount> : AccountClaimsPrincipalFacto
           claimsIdentity.RemoveClaim(claimsIdentity.FindFirst(kvp.Key));
 
           var claims = element.EnumerateArray()
-              .Select(x => new Claim(kvp.Key, x.ToString()));
+            .Select(x => new Claim(kvp.Key, x.ToString()));
 
           claimsIdentity.AddClaims(claims);
         }
       }
     }
-    
+
     return user;
   }
 }

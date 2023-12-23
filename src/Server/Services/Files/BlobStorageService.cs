@@ -8,25 +8,23 @@ public class BlobStorageService : IStorageService
 {
   private readonly string connectionString;
 
-  public Uri BasePath => new("https://a2blanchestorage.blob.core.windows.net/images");
-
   public BlobStorageService(IConfiguration configuration)
   {
     connectionString = configuration.GetConnectionString("Storage");
   }
 
+  public Uri BasePath => new("https://a2blanchestorage.blob.core.windows.net/images");
+
   public Uri GenerateImageUploadSas(Image image)
   {
-    string containerName = "images";
+    var containerName = "images";
     var blobServiceClient = new BlobServiceClient(connectionString);
     var containerClient = blobServiceClient.GetBlobContainerClient(containerName);
-    BlobClient blobClient = containerClient.GetBlobClient(image.Filename);
+    var blobClient = containerClient.GetBlobClient(image.Filename);
 
     var blobSasBuilder = new BlobSasBuilder
     {
-      ExpiresOn = DateTime.UtcNow.AddMinutes(5),
-      BlobContainerName = containerName,
-      BlobName = image.Filename,
+      ExpiresOn = DateTime.UtcNow.AddMinutes(5), BlobContainerName = containerName, BlobName = image.Filename
     };
 
     blobSasBuilder.SetPermissions(BlobSasPermissions.Create | BlobSasPermissions.Write);
@@ -34,4 +32,3 @@ public class BlobStorageService : IStorageService
     return sas;
   }
 }
-

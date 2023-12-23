@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Playwright.NUnit;
-using NUnit.Framework.Internal;
+﻿using Microsoft.Playwright.NUnit;
 using Shouldly;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Client.PlaywrightTests;
 
 [Parallelizable(ParallelScope.Self)]
-public class FormulasPageTest:PageTest
+public class FormulasPageTest : PageTest
 {
   [Test]
   public async Task GoToFormulasShowThreeFormulaCards()

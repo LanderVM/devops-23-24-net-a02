@@ -4,10 +4,9 @@ namespace Shared.Customers;
 
 public abstract class CustomerResult
 {
-    public class Index
-    {
-        public IEnumerable<CustomerDto.Details>? Customers { get; set; }
-        public int TotalAmount { get; set; }
-    }
+  public class Index
+  {
+    public IEnumerable<CustomerDto.Details>? Customers { get; set; }
+    public int TotalAmount { get; set; }
+  }
 }
-

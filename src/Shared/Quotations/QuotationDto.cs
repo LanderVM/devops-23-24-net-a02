@@ -1,8 +1,8 @@
 ﻿using FluentValidation;
+using shared.Common;
+using Shared.Customer;
 using shared.Equipment;
 using shared.Formulas;
-using Shared.Customer;
-using shared.Common;
 using Shared.Quotations;
 
 namespace shared.Quotations;
@@ -53,7 +53,7 @@ public static class QuotationDto
         RuleFor(model => model.StartTime).NotEmpty();
         RuleFor(model => model.EndTime).NotEmpty();
         RuleFor(model => new { model.StartTime, model.EndTime })
-          .Must(model => (model.EndTime - model.StartTime) >= 0)
+          .Must(model => model.EndTime - model.StartTime >= 0)
           .WithMessage("De begin tijd kan niet starten achter de eind tijd!");
         RuleFor(model => model.IsTripelBier).NotEmpty()
           .WithMessage("De keuze voor tripel bier moet aangevuld zijn!");

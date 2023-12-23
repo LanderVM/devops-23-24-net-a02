@@ -1,14 +1,15 @@
-﻿using Api.Data;
+﻿using System.Net;
+using Api.Data;
 using devops_23_24_net_a02.Shared.Emails;
 using Domain.Common;
 using Domain.Customers;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using Domain.Exceptions;
 using Domain.Formulas;
 using Domain.Quotations;
-using shared.Quotations;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using shared.GoogleMaps;
+using shared.Quotations;
 using Shared.Quotations;
 
 namespace Server.Services;
@@ -26,20 +27,22 @@ public class EmailService : IEmailService
 
   public async Task<int> CreateAsync(EmailDto.Create model)
   {
-    Email? correspondingEmail = _dbContext.Emails.FirstOrDefault(existingMail => existingMail.Value.Equals(model.Email));
+    var correspondingEmail = _dbContext.Emails.FirstOrDefault(existingMail => existingMail.Value.Equals(model.Email));
     if (correspondingEmail is not null)
-      throw new EntityAlreadyExistsException(nameof(Email),nameof(Email.Value),model.Email);
+    {
+      throw new EntityAlreadyExistsException(nameof(Email), nameof(Email.Value), model.Email);
+    }
 
-    Email email = new Email(model.Email);
+    var email = new Email(model.Email);
     _dbContext.Emails.Add(email);
     await _dbContext.SaveChangesAsync();
 
     // Retrieve email configuration values
-    EmailConfiguration emailConfig = EmailConfiguration.GetInstance();
-    string mail = emailConfig.Mail;
-    string password = emailConfig.Password;
+    var emailConfig = EmailConfiguration.GetInstance();
+    var mail = emailConfig.Mail;
+    var password = emailConfig.Password;
 
-    MailSender mailSender = new MailSender(mail, email.Value, new System.Net.NetworkCredential(mail, password));
+    var mailSender = new MailSender(mail, email.Value, new NetworkCredential(mail, password));
     //mailSender.SendNewQuote("Test");
 
     return email.Id;
@@ -49,33 +52,23 @@ public class EmailService : IEmailService
   {
     var query = _dbContext.Emails.AsQueryable();
 
-    int totalAmount = await query.CountAsync();
+    var totalAmount = await query.CountAsync();
 
-    IEnumerable<EmailDto.Index> emailList = await query.Select(x => new EmailDto.Index
-    {
-      EmailAddress = x.Value
-    }).ToListAsync();
+    IEnumerable<EmailDto.Index> emailList =
+      await query.Select(x => new EmailDto.Index { EmailAddress = x.Value }).ToListAsync();
 
-    var result = new EmailResult.Index
-    {
-      EmailAddresses = emailList,
-      TotalAmount = totalAmount
-    };
+    var result = new EmailResult.Index { EmailAddresses = emailList, TotalAmount = totalAmount };
 
     return result;
-
   }
 
-  public async Task<QuotationResponse.Edit> SendConfirmationMail(QuotationResponse.Create model, GoogleMapsDto.Response distancePrice)
+  public async Task<QuotationResponse.Edit> SendConfirmationMail(QuotationResponse.Create model,
+    GoogleMapsDto.Response distancePrice)
   {
-    QuotationResponse.Edit result = new QuotationResponse.Edit
-    {
-      QuotationId = model.QuotationId
-    };
+    var result = new QuotationResponse.Edit { QuotationId = model.QuotationId };
 
     if (model.Status != QuotationStatus.Accepted)
     {
-
       return result;
     }
 
@@ -97,39 +90,37 @@ public class EmailService : IEmailService
       model.Customer.FirstName,
       model.Customer.LastName,
       new Email(model.Customer.Email.Email),
-      new BillingAddress(model.Customer.BillingAddress.Street, model.Customer.BillingAddress.HouseNumber, model.Customer.BillingAddress.City, model.Customer.BillingAddress.PostalCode),
+      new BillingAddress(model.Customer.BillingAddress.Street, model.Customer.BillingAddress.HouseNumber,
+        model.Customer.BillingAddress.City, model.Customer.BillingAddress.PostalCode),
       new PhoneNumber(model.Customer.PhoneNumber),
       model.Customer.VatNumber is null ? null : new VatNumber(model.Customer.VatNumber)
-      );
+    );
 
     EventLocation eventLocation = new(
       model.EventLocation.Street,
       model.EventLocation.HouseNumber,
       model.EventLocation.City,
       model.EventLocation.PostalCode
-      );
+    );
 
-    Quotation quotation = new(formule, customer, eventLocation, equipmentItems, model.StartTime, model.EndTime, model.NumberOfPeople, model.IsTripelBier)
-    {
-      Opmerking = model.Opmerking,
-      QuotationLines = equipmentItems
-    };
+    Quotation quotation =
+      new(formule, customer, eventLocation, equipmentItems, model.StartTime, model.EndTime, model.NumberOfPeople,
+        model.IsTripelBier) { Opmerking = model.Opmerking, QuotationLines = equipmentItems };
 
-    DistancePrice distance = new DistancePrice
+    var distance = new DistancePrice
     {
-      PricePerKilometer = distancePrice.PricePerKm,
-      DistanceAmount = distancePrice.DistanceAmount
+      PricePerKilometer = distancePrice.PricePerKm, DistanceAmount = distancePrice.DistanceAmount
     };
 
 
-    EmailConfiguration emailConfig = EmailConfiguration.GetInstance();
+    var emailConfig = EmailConfiguration.GetInstance();
 
-    string mail = emailConfig.Mail;
-    string password = emailConfig.Password;
+    var mail = emailConfig.Mail;
+    var password = emailConfig.Password;
 
-    MailSender mailSender = new MailSender(mail, model.Customer.Email.Email, new System.Net.NetworkCredential(mail, password));
+    var mailSender = new MailSender(mail, model.Customer.Email.Email, new NetworkCredential(mail, password));
 
-   
+
     mailSender.SendQuoteToCustomer(quotation, distance);
 
     return result;
@@ -137,7 +128,6 @@ public class EmailService : IEmailService
 
   public async Task SendQuotationMail(QuotationResponse.Create model, GoogleMapsDto.Response distancePrice)
   {
-
     var formule = _dbContext.Formulas.FirstOrDefault(formule => formule.Id == model.FormulaId);
     if (formule is null)
     {
@@ -158,39 +148,37 @@ public class EmailService : IEmailService
       model.Customer.FirstName,
       model.Customer.LastName,
       new Email(model.Customer.Email.Email),
-      new BillingAddress(model.Customer.BillingAddress.Street, model.Customer.BillingAddress.HouseNumber, model.Customer.BillingAddress.City, model.Customer.BillingAddress.PostalCode),
+      new BillingAddress(model.Customer.BillingAddress.Street, model.Customer.BillingAddress.HouseNumber,
+        model.Customer.BillingAddress.City, model.Customer.BillingAddress.PostalCode),
       new PhoneNumber(model.Customer.PhoneNumber),
       model.Customer.VatNumber is null ? null : new VatNumber(model.Customer.VatNumber)
-      );
+    );
 
     EventLocation eventLocation = new(
       model.EventLocation.Street,
       model.EventLocation.HouseNumber,
       model.EventLocation.City,
       model.EventLocation.PostalCode
-      );
+    );
 
-    Quotation quotation = new(formule, customer, eventLocation, equipmentItems, model.StartTime, model.EndTime, model.NumberOfPeople, model.IsTripelBier)
-    {
-      Opmerking = model.Opmerking,
-      QuotationLines = equipmentItems
-    };
+    Quotation quotation =
+      new(formule, customer, eventLocation, equipmentItems, model.StartTime, model.EndTime, model.NumberOfPeople,
+        model.IsTripelBier) { Opmerking = model.Opmerking, QuotationLines = equipmentItems };
 
-    DistancePrice distance = new DistancePrice
+    var distance = new DistancePrice
     {
-      PricePerKilometer = distancePrice.PricePerKm,
-      DistanceAmount = distancePrice.DistanceAmount
+      PricePerKilometer = distancePrice.PricePerKm, DistanceAmount = distancePrice.DistanceAmount
     };
 
 
-    EmailConfiguration emailConfig = EmailConfiguration.GetInstance();
+    var emailConfig = EmailConfiguration.GetInstance();
 
-    string mail = emailConfig.Mail;
-    string password = emailConfig.Password;
+    var mail = emailConfig.Mail;
+    var password = emailConfig.Password;
 
-    MailSender mailSender = new MailSender(mail, mail, new System.Net.NetworkCredential(mail, password));
+    var mailSender = new MailSender(mail, mail, new NetworkCredential(mail, password));
 
-    
+
     mailSender.ReceiveQuoteFromCustomer(quotation, distance);
   }
 }

@@ -1,4 +1,5 @@
 ﻿namespace devops_23_24_net_a02.Client.Shared;
+
 public static class Routes
 {
   public const string About = "/over-ons";
@@ -9,7 +10,7 @@ public static class Routes
   public const string Home = "/";
   public const string ExtraMaterial = "/aanvraag/extra-materiaal";
   public const string ExtraMaterialReadOnly = "/over-ons/extra-materiaal";
-  
+
   // Admin
   public const string EmailOverview = "/admin/overzicht/emails";
   public const string FormulasAdmin = "/admin/overzicht/formules";

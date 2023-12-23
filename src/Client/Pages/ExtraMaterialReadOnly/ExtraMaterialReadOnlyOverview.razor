@@ -19,18 +19,17 @@
 
         </MudItem>
         <MudItem lg="10" md="12" sm="12" xs="12">
-            <MudGrid>                
-                <Loader IsLoading=@(Extras == null)>
-                    @foreach (EquipmentDto.Index item in Extras)
+            <MudGrid>
+                <Loader IsLoading="@(Extras == null)">
+                    @foreach (var item in Extras)
                     {
                         <MudItem lg="3" md="4" sm="6" xs="12" data-test-id="extras-extra-card">
                             <ExtraItemsReadOnlyCard
-                              Title="@item.Title"  
-                              Attributes="@item.Attributes"
-                              Price="@item.Price"
-                              Stock="@item.Stock"
-                              ImageUrl="@item.ImageData.ImageUrl"
-                            />
+                                Title="@item.Title"
+                                Attributes="@item.Attributes"
+                                Price="@item.Price"
+                                Stock="@item.Stock"
+                                ImageUrl="@item.ImageData.ImageUrl"/>
                         </MudItem>
                     }
                 </Loader>
@@ -42,24 +41,25 @@
         <MudItem lg="8" md="8" sm="5" xs="5">
 
         </MudItem>
-            <MudItem lg="3" md="3" sm="7" xs="7">
-                <MudButton OnClick="GoToHomePage" Class="mb-6" Variant="Variant.Filled" Color="Color.Primary">Ga terug naar thuis pagina</MudButton>
-            </MudItem>
-            <MudItem lg="1" md="1" sm="12" xs="12">
+        <MudItem lg="3" md="3" sm="7" xs="7">
+            <MudButton OnClick="GoToHomePage" Class="mb-6" Variant="Variant.Filled" Color="Color.Primary">Ga terug naar thuis pagina</MudButton>
+        </MudItem>
+        <MudItem lg="1" md="1" sm="12" xs="12">
 
-            </MudItem>
+        </MudItem>
     </MudGrid>
 </MudContainer>
 
 @code {
+
     [Inject]
     public IEquipmentService EquipmentService { get; set; } = default!;
 
-    private IEnumerable<EquipmentDto.Index>? Extras = default!;
+    private IEnumerable<EquipmentDto.Index>? Extras;
 
     protected override async Task OnInitializedAsync()
     {
-        EquipmentResult.ActiveEquipment response = await EquipmentService.GetActiveEquipmentAsync();
+        var response = await EquipmentService.GetActiveEquipmentAsync();
 
         Extras = response.Equipment;
     }

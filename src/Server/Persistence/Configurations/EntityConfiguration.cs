@@ -8,7 +8,7 @@ public class EntityConfiguration<T> : IEntityTypeConfiguration<T> where T : Enti
 {
   public virtual void Configure(EntityTypeBuilder<T> builder)
   {
-    builder.ToTable(typeof(T).Name); 
+    builder.ToTable(typeof(T).Name);
     builder.Property(x => x.IsActive).IsRequired().HasDefaultValue(true).ValueGeneratedNever();
     builder.Property(x => x.CreatedAt).HasDefaultValueSql("NOW()");
     builder.Property(x => x.UpdatedAt).HasDefaultValueSql("NOW()").IsConcurrencyToken();

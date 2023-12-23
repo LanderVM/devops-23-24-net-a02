@@ -49,20 +49,20 @@ public class QuotationService : IQuotationService
         QuotationId = q.Id,
         Customer = new CustomerDto.Index
         {
-          FirstName = q.OrderedBy.FirstName, LastName = q.OrderedBy.LastName, Email = q.OrderedBy.Email.Value,
+          FirstName = q.OrderedBy.FirstName, LastName = q.OrderedBy.LastName, Email = q.OrderedBy.Email.Value
         },
         CreatedAt = q.CreatedAt.ToShortDateString()
       });
 
     var items = await query.ToListAsync();
 
-    var result = new QuotationResult.Index { Quotation = items, };
+    var result = new QuotationResult.Index { Quotation = items };
     return result;
   }
 
   public async Task<QuotationResult.DetailEdit> GetSpecificDetailEditAsync(int quotationId)
   {
-    Quotation? quotation = await _dbContext.Quotations.Include(quotation => quotation.QuotationLines)
+    var quotation = await _dbContext.Quotations.Include(quotation => quotation.QuotationLines)
       .ThenInclude(quotationLine => quotationLine.EquipmentOrdered)
       .ThenInclude(equipment => equipment.Description)
       .Include(quotation => quotation.OrderedBy)
@@ -76,34 +76,39 @@ public class QuotationService : IQuotationService
       .FirstOrDefaultAsync(x => x.Id == quotationId);
 
     if (quotation is null)
+    {
       throw new EntityNotFoundException(nameof(Quotation), quotationId);
+    }
 
-    QuotationDto.DetailEdit result = new QuotationDto.DetailEdit
+    var result = new QuotationDto.DetailEdit
     {
       QuotationId = quotation.Id,
-      Formula = new FormulaDto.Select { Id = quotation.Formula.Id, Title = quotation.Formula.Description.Title, },
-      Customer = new CustomerDto.Details
-      {
-        FirstName = quotation.OrderedBy.FirstName,
-        LastName = quotation.OrderedBy.LastName,
-        Email = new EmailDto.Create { Email = quotation.OrderedBy.Email.Value },
-        PhoneNumber = quotation.OrderedBy.PhoneNumber.Value,
-        VatNumber = quotation.OrderedBy.VatNumber?.Value,
-        BillingAddress = new AddressDto
+      Formula = new FormulaDto.Select { Id = quotation.Formula.Id, Title = quotation.Formula.Description.Title },
+      Customer =
+        new CustomerDto.Details
         {
-          Street = quotation.OrderedBy.BillingAddress.Street,
-          HouseNumber = quotation.OrderedBy.BillingAddress.HouseNumber,
-          PostalCode = quotation.OrderedBy.BillingAddress.PostalCode,
-          City = quotation.OrderedBy.BillingAddress.City,
-        }
-      },
-      EventLocation = new AddressDto
-      {
-        Street = quotation.EventLocation.Street,
-        HouseNumber = quotation.EventLocation.HouseNumber,
-        City = quotation.EventLocation.City,
-        PostalCode = quotation.EventLocation.PostalCode,
-      },
+          FirstName = quotation.OrderedBy.FirstName,
+          LastName = quotation.OrderedBy.LastName,
+          Email = new EmailDto.Create { Email = quotation.OrderedBy.Email.Value },
+          PhoneNumber = quotation.OrderedBy.PhoneNumber.Value,
+          VatNumber = quotation.OrderedBy.VatNumber?.Value,
+          BillingAddress =
+            new AddressDto
+            {
+              Street = quotation.OrderedBy.BillingAddress.Street,
+              HouseNumber = quotation.OrderedBy.BillingAddress.HouseNumber,
+              PostalCode = quotation.OrderedBy.BillingAddress.PostalCode,
+              City = quotation.OrderedBy.BillingAddress.City
+            }
+        },
+      EventLocation =
+        new AddressDto
+        {
+          Street = quotation.EventLocation.Street,
+          HouseNumber = quotation.EventLocation.HouseNumber,
+          City = quotation.EventLocation.City,
+          PostalCode = quotation.EventLocation.PostalCode
+        },
       Equipment = quotation.QuotationLines.Select(line => new EquipmentDto.LinesDetail
       {
         Amount = line.AmountOrdered,
@@ -122,11 +127,16 @@ public class QuotationService : IQuotationService
 
   public async Task<QuotationResponse.Create> CreateAsync(QuotationDto.Create model)
   {
-    Formula? chosenFormula = _dbContext.Formulas.FirstOrDefault(formula => formula.Id == model.FormulaId);
+    var chosenFormula = _dbContext.Formulas.FirstOrDefault(formula => formula.Id == model.FormulaId);
     if (chosenFormula is null)
+    {
       throw new EntityNotFoundException(nameof(Formula), model.FormulaId);
+    }
+
     if (chosenFormula.IsActive is false)
+    {
       throw new ApplicationException($"Formula with id {chosenFormula.Id} is not active!");
+    }
 
     var customer = _dbContext.Customers
       .Include(customer => customer.Email)
@@ -160,9 +170,11 @@ public class QuotationService : IQuotationService
     }
 
     if (customer.Email.IsActive is false)
+    {
       customer.Email.IsActive = true;
+    }
 
-    Quotation quotation = new Quotation(
+    var quotation = new Quotation(
       chosenFormula,
       customer,
       new EventLocation(
@@ -180,7 +192,7 @@ public class QuotationService : IQuotationService
 
     _dbContext.Quotations.Add(quotation);
     await _dbContext.SaveChangesAsync();
-    QuotationResponse.Create result = new QuotationResponse.Create
+    var result = new QuotationResponse.Create
     {
       QuotationId = quotation.Id,
       FormulaId = chosenFormula.Id,
@@ -208,7 +220,7 @@ public class QuotationService : IQuotationService
           Street = quotation.OrderedBy.BillingAddress.Street,
           HouseNumber = quotation.OrderedBy.BillingAddress.HouseNumber,
           City = quotation.OrderedBy.BillingAddress.City,
-          PostalCode = quotation.OrderedBy.BillingAddress.PostalCode,
+          PostalCode = quotation.OrderedBy.BillingAddress.PostalCode
         }
       },
       IsTripelBier = quotation.IsTripelBier,
@@ -217,38 +229,19 @@ public class QuotationService : IQuotationService
     return result;
   }
 
-
-  private Email? GetCustomerEmail(QuotationDto.Create model)
-  {
-    return _dbContext.Emails.FirstOrDefault(email => email.Value == model.Customer.Email.Email);
-  }
-
-  private static bool EqualsCustomer(QuotationDto.Create model, Customer customerFromDb)
-  {
-    return customerFromDb.FirstName == model.Customer.FirstName
-           && customerFromDb.LastName == model.Customer.LastName
-           && customerFromDb.Email.Value == model.Customer.Email.Email
-           && customerFromDb.PhoneNumber.Value == model.Customer.PhoneNumber
-           && customerFromDb.VatNumber?.Value == model.Customer.VatNumber
-           && customerFromDb.BillingAddress.Street == model.Customer.BillingAddress.Street
-           && customerFromDb.BillingAddress.HouseNumber == model.Customer.BillingAddress.HouseNumber
-           && customerFromDb.BillingAddress.PostalCode == model.Customer.BillingAddress.PostalCode
-           && customerFromDb.BillingAddress.City == model.Customer.BillingAddress.City;
-  }
-
   public async Task<QuotationResult.Detail> GetPriceEstimationDetailsAsync()
   {
     var queryFormulas = _dbContext.Formulas.AsQueryable();
 
     IEnumerable<FormulaDto.Select> itemsFormulas = await queryFormulas.OrderBy(x => x.Id).Select(
-      x => new FormulaDto.Select { Id = x.Id, Title = x.Description.Title, }
+      x => new FormulaDto.Select { Id = x.Id, Title = x.Description.Title }
     ).ToListAsync();
 
 
     var queryEquipment = _dbContext.Equipments.AsQueryable();
 
     IEnumerable<EquipmentDto.Select> itemsEquipment = await queryEquipment.OrderBy(x => x.Id).Select(
-      x => new EquipmentDto.Select { Id = x.Id, Title = x.Description.Title, }
+      x => new EquipmentDto.Select { Id = x.Id, Title = x.Description.Title }
     ).ToListAsync();
 
 
@@ -260,7 +253,7 @@ public class QuotationService : IQuotationService
 
     var result = new QuotationResult.Detail
     {
-      Formulas = itemsFormulas, Equipment = itemsEquipment, UnavailableDates = unavailableDates,
+      Formulas = itemsFormulas, Equipment = itemsEquipment, UnavailableDates = unavailableDates
     };
 
     return result;
@@ -268,21 +261,26 @@ public class QuotationService : IQuotationService
 
   public async Task<QuotationResult.Calculation> GetPriceEstimationPrice(QuotationDto.Estimate model)
   {
-    Formula? chosenFormula = _dbContext.Formulas.FirstOrDefault(formula => formula.Id == model.FormulaId);
+    var chosenFormula = _dbContext.Formulas.FirstOrDefault(formula => formula.Id == model.FormulaId);
     if (chosenFormula is null)
+    {
       throw new EntityNotFoundException(nameof(Formula), model.FormulaId);
+    }
+
     if (chosenFormula.IsActive is false)
+    {
       throw new ApplicationException($"Formula with id {chosenFormula.Id} is not active!");
+    }
 
     var queryEquipment = _dbContext.Equipments.AsQueryable();
 
-    List<EquipmentDto.Index> equipmentDtoQuery = new List<EquipmentDto.Index>();
+    var equipmentDtoQuery = new List<EquipmentDto.Index>();
 
     if (model.EquipmentIds.Any())
     {
       equipmentDtoQuery = await queryEquipment
         .Where(x => model.EquipmentIds.Contains(x.Id))
-        .Select(z => new EquipmentDto.Index { Id = z.Id, Price = z.Price, }).ToListAsync();
+        .Select(z => new EquipmentDto.Index { Id = z.Id, Price = z.Price }).ToListAsync();
     }
 
     List<Equipment> equipmentList = new();
@@ -294,7 +292,7 @@ public class QuotationService : IQuotationService
 
     chosenFormula.Equipment.AddRange(equipmentList);
 
-    Quotation quotation = new Quotation(chosenFormula, new DateTime(model.StartTime), new DateTime(model.EndTime),
+    var quotation = new Quotation(chosenFormula, new DateTime(model.StartTime), new DateTime(model.EndTime),
       model.EstimatedNumberOfPeople, model.IsTripelBier);
     return new QuotationResult.Calculation { EstimatedPrice = quotation.GetEstimatedPriceRounded() };
   }
@@ -309,7 +307,10 @@ public class QuotationService : IQuotationService
       .ThenInclude(customer => customer.PhoneNumber).Include(quotation => quotation.OrderedBy)
       .ThenInclude(customer => customer.BillingAddress).Include(quotation => quotation.EventLocation)
       .FirstOrDefault(quotation => quotation.Id == QuotationId);
-    if (quotation is null) throw new Exception($"No quotation found with Id: {QuotationId}");
+    if (quotation is null)
+    {
+      throw new Exception($"No quotation found with Id: {QuotationId}");
+    }
 
     var quotationLines = new List<QuotationLine>();
     quotationLines.AddRange(from lines in model.EquipmentList
@@ -319,13 +320,17 @@ public class QuotationService : IQuotationService
     );
 
     quotation.QuotationLines = quotationLines;
-    if (model.IsAccepted) quotation.Status = QuotationStatus.Accepted;
+    if (model.IsAccepted)
+    {
+      quotation.Status = QuotationStatus.Accepted;
+    }
+
     quotation.IsTripelBier = model.IsTripelBier;
     quotation.Opmerking = model.Opmerking;
 
     await _dbContext.SaveChangesAsync();
 
-    QuotationResponse.Create result = new QuotationResponse.Create
+    var result = new QuotationResponse.Create
     {
       QuotationId = QuotationId,
       FormulaId = quotation.Formula.Id,
@@ -354,7 +359,7 @@ public class QuotationService : IQuotationService
           Street = quotation.OrderedBy.BillingAddress.Street,
           HouseNumber = quotation.OrderedBy.BillingAddress.HouseNumber,
           City = quotation.OrderedBy.BillingAddress.City,
-          PostalCode = quotation.OrderedBy.BillingAddress.PostalCode,
+          PostalCode = quotation.OrderedBy.BillingAddress.PostalCode
         }
       },
       IsTripelBier = quotation.IsTripelBier,
@@ -364,5 +369,24 @@ public class QuotationService : IQuotationService
     };
 
     return result;
+  }
+
+
+  private Email? GetCustomerEmail(QuotationDto.Create model)
+  {
+    return _dbContext.Emails.FirstOrDefault(email => email.Value == model.Customer.Email.Email);
+  }
+
+  private static bool EqualsCustomer(QuotationDto.Create model, Customer customerFromDb)
+  {
+    return customerFromDb.FirstName == model.Customer.FirstName
+           && customerFromDb.LastName == model.Customer.LastName
+           && customerFromDb.Email.Value == model.Customer.Email.Email
+           && customerFromDb.PhoneNumber.Value == model.Customer.PhoneNumber
+           && customerFromDb.VatNumber?.Value == model.Customer.VatNumber
+           && customerFromDb.BillingAddress.Street == model.Customer.BillingAddress.Street
+           && customerFromDb.BillingAddress.HouseNumber == model.Customer.BillingAddress.HouseNumber
+           && customerFromDb.BillingAddress.PostalCode == model.Customer.BillingAddress.PostalCode
+           && customerFromDb.BillingAddress.City == model.Customer.BillingAddress.City;
   }
 }

@@ -28,7 +28,8 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
-  options.CustomSchemaIds(type => type.DeclaringType is null ? $"{type.Name}" : $"{type.DeclaringType?.Name}.{type.Name}");
+  options.CustomSchemaIds(type =>
+    type.DeclaringType is null ? $"{type.Name}" : $"{type.DeclaringType?.Name}.{type.Name}");
   options.EnableAnnotations();
 }).AddFluentValidationRulesToSwagger();
 builder.Services.AddRazorPages();

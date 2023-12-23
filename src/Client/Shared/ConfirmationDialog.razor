@@ -1,7 +1,7 @@
 ﻿<MudDialog>
     <DialogContent>
         <div class="d-flex align-items-center">
-            <MudIcon Icon="@Icons.Material.Filled.Info" Color="Color.Info" Size="Size.Large" Class="mr-2" />
+            <MudIcon Icon="@Icons.Material.Filled.Info" Color="Color.Info" Size="Size.Large" Class="mr-2"/>
             <MudText>Uw offerte werd succesvol aangemaakt!</MudText>
         </div>
     </DialogContent>
@@ -12,19 +12,31 @@
 </MudDialog>
 
 @code {
-    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
 
-    [Parameter] public string ContentText { get; set; }
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; }
 
-    [Parameter] public string ButtonText { get; set; }
+    [Parameter]
+    public string ContentText { get; set; }
 
-    [Parameter] public Color Color { get; set; }
-    [Inject] public NavigationManager NavigationManager { get; set; } = default!;
+    [Parameter]
+    public string ButtonText { get; set; }
+
+    [Parameter]
+    public Color Color { get; set; }
+
+    [Inject]
+    public NavigationManager NavigationManager { get; set; } = default!;
 
     public void Submit()
     {
         MudDialog.Close(DialogResult.Ok(true));
         NavigationManager.NavigateTo(Routes.Home);
-    } 
-    void Cancel() => MudDialog.Cancel();
+    }
+
+    void Cancel()
+    {
+        MudDialog.Cancel();
+    }
+
 }

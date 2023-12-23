@@ -9,8 +9,8 @@ namespace devops_23_24_net_a02.Server.Controllers;
 [Route("api/[controller]")]
 public class EquipmentController : ControllerBase
 {
-  private readonly ILogger<EquipmentController> _logger;
   private readonly IEquipmentService _equipmentService;
+  private readonly ILogger<EquipmentController> _logger;
 
   public EquipmentController(ILogger<EquipmentController> logger, IEquipmentService equipmentService)
   {
@@ -42,7 +42,8 @@ public class EquipmentController : ControllerBase
   {
     _logger.Log(LogLevel.Information, "Fetching equipment with id {equipmentId}", equipmentId);
     var result = await _equipmentService.GetSpecificMutateAsync(equipmentId);
-    _logger.Log(LogLevel.Information, "Found equipment with id {equipmentId}: {result.Title}", equipmentId, result.Title);
+    _logger.Log(LogLevel.Information, "Found equipment with id {equipmentId}: {result.Title}", equipmentId,
+      result.Title);
     return result;
   }
 
@@ -51,9 +52,12 @@ public class EquipmentController : ControllerBase
   [Authorize]
   public async Task<EquipmentResult.Create> Edit(int equipmentId, EquipmentDto.Mutate model)
   {
-    _logger.Log(LogLevel.Information, "Fetching equipment with id {equipmentId} to edit based off model: {model.ToString}", equipmentId, model.ToString());
+    _logger.Log(LogLevel.Information,
+      "Fetching equipment with id {equipmentId} to edit based off model: {model.ToString}", equipmentId,
+      model.ToString());
     var result = await _equipmentService.UpdateAsync(equipmentId, model);
-    _logger.Log(LogLevel.Information, "Edited equipment with id {equipmentId}: {result.ToString}", equipmentId, result.ToString());
+    _logger.Log(LogLevel.Information, "Edited equipment with id {equipmentId}: {result.ToString}", equipmentId,
+      result.ToString());
     return result;
   }
 
@@ -64,7 +68,8 @@ public class EquipmentController : ControllerBase
   {
     _logger.Log(LogLevel.Information, "Fetching equipment with id {equipmentId} to edit with images", equipmentId);
     var result = await _equipmentService.UpdateWithImageAsync(equipmentId, model);
-    _logger.Log(LogLevel.Information, "Edited equipment with images with id {equipmentId}: {result.ToString}", equipmentId, result.ToString());
+    _logger.Log(LogLevel.Information, "Edited equipment with images with id {equipmentId}: {result.ToString}",
+      equipmentId, result.ToString());
     return result;
   }
 
@@ -74,7 +79,7 @@ public class EquipmentController : ControllerBase
   public async Task<int> Delete(int equipmentId)
   {
     _logger.Log(LogLevel.Information, "Fetching equipment with id {equipmentId} to delete", equipmentId);
-    int id = await _equipmentService.DeleteAsync(equipmentId);
+    var id = await _equipmentService.DeleteAsync(equipmentId);
     _logger.Log(LogLevel.Information, "Deleted equipment with id {equipmentId}", equipmentId);
     return id;
   }
@@ -85,7 +90,7 @@ public class EquipmentController : ControllerBase
   public async Task<EquipmentResult.Create> Create(EquipmentDto.Create model)
   {
     _logger.Log(LogLevel.Information, "Creating new equipment based off model: {model.ToString()}", model.ToString());
-    EquipmentResult.Create item = await _equipmentService.CreateAsync(model);
+    var item = await _equipmentService.CreateAsync(model);
     _logger.Log(LogLevel.Information, "Created new equipment with id {item.Id}", item.Id);
     return item;
   }
@@ -95,10 +100,10 @@ public class EquipmentController : ControllerBase
   [Authorize]
   public async Task<EquipmentResult.CreateWithImage> CreateWithImage(EquipmentDto.Create model)
   {
-    _logger.Log(LogLevel.Information, "Creating new equipment with image based off model: {model.ToString()}", model.ToString());
-    EquipmentResult.CreateWithImage item = await _equipmentService.CreateWithImageAsync(model);
+    _logger.Log(LogLevel.Information, "Creating new equipment with image based off model: {model.ToString()}",
+      model.ToString());
+    var item = await _equipmentService.CreateWithImageAsync(model);
     _logger.Log(LogLevel.Information, "Created new equipment with id {item.Id}", item.Id);
     return item;
   }
 }
-

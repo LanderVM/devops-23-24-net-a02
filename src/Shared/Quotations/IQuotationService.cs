@@ -12,4 +12,3 @@ public interface IQuotationService
   Task<QuotationResponse.Create> CreateAsync(QuotationDto.Create model);
   Task<QuotationResponse.Create> UpdateAsync(int QuotationId, QuotationDto.Edit model);
 }
-

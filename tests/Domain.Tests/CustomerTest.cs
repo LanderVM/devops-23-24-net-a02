@@ -1,4 +1,3 @@
-using System.Net.Mail;
 using Domain.Customers;
 
 namespace Domain.Tests;
@@ -9,7 +8,8 @@ public class CustomerTest
   public void Create_new_customer_happyFlow()
   {
     var customer = new Customer("Jan", "Peeters", new Email("JanPeeters@gmail.com"),
-      new BillingAddress("Straat", "01", "Zottegem", "9620"), new PhoneNumber("0479254691"), new VatNumber("BE1000000000"));
+      new BillingAddress("Straat", "01", "Zottegem", "9620"), new PhoneNumber("0479254691"),
+      new VatNumber("BE1000000000"));
     customer.FirstName.ShouldBe("Jan");
     customer.LastName.ShouldBe("Peeters");
     customer.Email.Value.ShouldBe("JanPeeters@gmail.com");
@@ -20,7 +20,7 @@ public class CustomerTest
     customer.PhoneNumber.Value.ShouldBe("0479254691");
     customer.VatNumber!.Value.ShouldBe("BE1000000000");
   }
-  
+
   [Fact]
   public void Create_new_customerWithoutVatNumber_happyFlow()
   {

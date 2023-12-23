@@ -1,6 +1,4 @@
-﻿
-using System.Text.RegularExpressions;
-using devops_23_24_net_a02.Shared.Emails;
+﻿using devops_23_24_net_a02.Shared.Emails;
 using FluentValidation;
 using shared.Common;
 
@@ -14,6 +12,7 @@ public static class CustomerDto
     public string LastName { get; set; }
     public String Email { get; set; } = default!;
   }
+
   public class Details
   {
     public int Id { get; set; }
@@ -24,19 +23,21 @@ public static class CustomerDto
     public string? PhoneNumber { get; set; }
     public string? VatNumber { get; set; }
   }
+
   public class Create
   {
+    public Create()
+    {
+      Email = new EmailDto.Create();
+      BillingAddress = new AddressDto();
+    }
+
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public EmailDto.Create Email { get; set; }
     public AddressDto BillingAddress { get; set; }
     public string PhoneNumber { get; set; }
     public string? VatNumber { get; set; }
-
-    public Create() { 
-      Email = new EmailDto.Create();
-      BillingAddress = new AddressDto();
-    }
 
     public class Validator : AbstractValidator<Create>
     {
@@ -56,10 +57,11 @@ public static class CustomerDto
         {
           RuleFor(model => model.VatNumber)
             .Matches("^BE[01][0-9]{9}$")
-            .WithMessage(model =>"De eerste twee letters van het btw-nummer moeten de Belgische landcode BE zijn gevolgd door het cijfer 0 of 1, daarna moeten er 9 cijfers volgen.").MaximumLength(200);
+            .WithMessage(model =>
+              "De eerste twee letters van het btw-nummer moeten de Belgische landcode BE zijn gevolgd door het cijfer 0 of 1, daarna moeten er 9 cijfers volgen.")
+            .MaximumLength(200);
         });
       }
     }
   }
 }
-

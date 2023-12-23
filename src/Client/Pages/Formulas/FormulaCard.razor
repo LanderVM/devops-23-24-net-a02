@@ -2,8 +2,8 @@
     <MudText Style="text-align: center;font-weight: bold;color:black" Typo="Typo.h3" Class="pt-5">
         @Title
     </MudText>
-    <hr style="background-color:black;height:1.5px;border-width:0;margin-left:30px;margin-right:30px;margin-top:20px;margin-bottom:20px" />
-    @foreach (string attrbt in @Attributes)
+    <hr style="background-color:black;height:1.5px;border-width:0;margin-left:30px;margin-right:30px;margin-top:20px;margin-bottom:20px"/>
+    @foreach (var attrbt in Attributes)
     {
         <MudGrid>
             <MudItem xs="1"></MudItem>
@@ -25,12 +25,16 @@
 
     [Parameter]
     public string Title { get; set; } = "Basic";
+
     [Parameter]
     public EventCallback Click { get; set; }
+
     [Parameter]
     public string BackgroundColor { get; set; } = "EBEBEB";
+
     [Parameter]
-    public List<string> Attributes { get; set; } = new List<string> { "foodtruck", "incl. eerste tap", "incl. tweede tap", "incl. derde tap" };
+    public List<string> Attributes { get; set; } = new() { "foodtruck", "incl. eerste tap", "incl. tweede tap", "incl. derde tap" };
+
     [Parameter]
     public string MarginTop { get; set; } = "";
 

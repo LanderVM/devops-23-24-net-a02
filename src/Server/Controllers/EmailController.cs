@@ -1,8 +1,8 @@
 ﻿using devops_23_24_net_a02.Shared.Emails;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shared.Emails;
 using Swashbuckle.AspNetCore.Annotations;
-using Microsoft.AspNetCore.Authorization;
 
 namespace devops_23_24_net_a02.Server.Controllers;
 
@@ -10,8 +10,8 @@ namespace devops_23_24_net_a02.Server.Controllers;
 [Route("api/[controller]")]
 public class EmailController : ControllerBase
 {
-  private readonly ILogger<EmailController> _logger;
   private readonly IEmailService _emailService;
+  private readonly ILogger<EmailController> _logger;
 
   public EmailController(ILogger<EmailController> logger, IEmailService emailService)
   {
@@ -20,13 +20,14 @@ public class EmailController : ControllerBase
   }
 
   [HttpPost]
-  [SwaggerOperation("Adds a user to the subscribed email addresses list and sends them an email containing more information about the food truck")]
+  [SwaggerOperation(
+    "Adds a user to the subscribed email addresses list and sends them an email containing more information about the food truck")]
   public async Task<IActionResult> RegisterEmail(EmailDto.Create model)
   {
     _logger.Log(LogLevel.Information, "Registering new email {model.Email}", model.Email);
-    int emailIid = await _emailService.CreateAsync(model);
+    var emailIid = await _emailService.CreateAsync(model);
     _logger.Log(LogLevel.Information, "Registered email {model.Email}", model.Email);
-    return CreatedAtAction(nameof(RegisterEmail), new EmailResponse.Create { EmailId = emailIid});
+    return CreatedAtAction(nameof(RegisterEmail), new EmailResponse.Create { EmailId = emailIid });
   }
 
   [HttpGet]
