@@ -66,12 +66,14 @@ public class QuotationService : IQuotationService
 
   public async Task<QuotationResult.DetailEdit> GetSpecificDetailEditAsync(int quotationId)
   {
-    Quotation? quotation = await _dbContext.Quotations
-      .Include(q => q.Formula)
-      .Include(q => q.QuotationLines)
-      .ThenInclude(ql => ql.EquipmentOrdered)
-      .Include(q => q.OrderedBy)
-      .ThenInclude(c => c.Email)
+    Quotation? quotation = await _dbContext.Quotations.Include(quotation => quotation.QuotationLines)
+      .ThenInclude(quotationLine => quotationLine.EquipmentOrdered)
+      .ThenInclude(equipment => equipment.Description)
+      .Include(quotation => quotation.OrderedBy)
+      .ThenInclude(customer => customer.Email)
+      .Include(quotation => quotation.EventLocation)
+      .Include(quotation => quotation.Formula)
+      .ThenInclude(formula => formula.Description)
       .FirstOrDefaultAsync(x => x.Id == quotationId);
 
     if (quotation is null)
