@@ -124,7 +124,7 @@
 
     private IBrowserFile? _image;
 
-    private EquipmentDto.Mutate Model { get; set; } = default!;
+    private EquipmentDto.Mutate Model { get; set; } = new();
 
     protected override async Task OnInitializedAsync()
     {
