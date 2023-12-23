@@ -1,6 +1,5 @@
 ﻿using Domain.Quotations;
 using FluentValidation;
-using Shared.Common;
 using shared.Equipment;
 using shared.Formulas;
 using Domain.Common;
@@ -75,7 +74,7 @@ public static class QuotationDto
   public class Create
   {
     public int FormulaId { get; set; }
-    public AddressDto EventLocation { get; set; }
+    public AddressDto EventLocation { get; set; } = default!;
     public DateTime StartTime { get; set; }
     public DateTime EndTime { get; set; }
 
@@ -96,8 +95,8 @@ public static class QuotationDto
       RuleFor(model => model.StartTime).NotEmpty().WithMessage(_ => "Gelieve een startdatum in te vullen");
       RuleFor(model => model.EndTime).NotEmpty().WithMessage(_ => "Gelieve een einddatum in te vullen");
       RuleFor(model => new { model.StartTime, model.EndTime })
-        .Must(model => (model.EndTime - model.StartTime).TotalSeconds > 0)
-        .WithMessage("End time cannot be before start time!");
+        .Must(model => (model.EndTime - model.StartTime).TotalSeconds >= 0)
+        .WithMessage("Einddatum mag niet voor startdatum zijn!");
       RuleFor(model => model.Customer).NotEmpty();
     }
   }
