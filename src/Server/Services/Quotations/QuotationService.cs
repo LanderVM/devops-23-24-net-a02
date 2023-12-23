@@ -62,9 +62,58 @@ public class QuotationService : IQuotationService
       Quotation = items,
     };
     return result;
-
-    
   }
+
+  public async Task<QuotationResult.DetailEdit> GetSpecificDetailEditAsync(int quotationId)
+  {
+    Quotation? quotation = await _dbContext.Quotations
+      .Include(q => q.Formula)
+      .Include(q => q.QuotationLines)
+      .ThenInclude(ql => ql.EquipmentOrdered)
+      .Include(q => q.OrderedBy)
+      .ThenInclude(c => c.Email)
+      .FirstOrDefaultAsync(x => x.Id == quotationId);
+
+    if (quotation is null)
+      throw new EntityNotFoundException(nameof(Quotation), quotationId);
+
+    QuotationDto.DetailEdit result = new QuotationDto.DetailEdit
+    {
+      QuotationId = quotation.Id,
+      Formula = new FormulaDto.Select
+      {
+        Id = quotation.Formula.Id,
+        Title = quotation.Formula.Description.Title,
+      },
+      Customer = new CustomerDto.Details
+      {
+        FirstName = quotation.OrderedBy.FirstName,
+        LastName = quotation.OrderedBy.LastName,
+        Email = new EmailDto.Create
+        {
+          Email = quotation.OrderedBy.Email.Value
+        },
+      },
+      EventLocation = quotation.EventLocation,
+      Equipment = quotation.QuotationLines.Select(line => new EquipmentDto.LinesDetail
+      {
+        Amount = line.AmountOrdered,
+        EquipmentId = line.EquipmentOrdered.Id,
+        Price = line.EquipmentOrdered.Price,
+        Name = line.EquipmentOrdered.Description.Title
+      }),
+      IsTripelBier = quotation.IsTripelBier,
+      NumberOfPeople = quotation.NumberOfPeople,
+      Opmerking = quotation.Opmerking,
+      Status = quotation.Status
+    };
+
+    return new QuotationResult.DetailEdit
+    {
+      Quotation = result
+    };
+  }
+
   public async Task<QuotationResult.Create> CreateAsync(QuotationDto.Create model)
   {
     Formula? chosenFormula = _dbContext.Formulas.FirstOrDefault(formula => formula.Id == model.FormulaId);
@@ -298,7 +347,8 @@ public class QuotationService : IQuotationService
       }
     }
     quotation.QuotationLines = quotationLines;
-    quotation.Status = model.Status;
+    quotation.Status = QuotationStatus.Accepted;
+    quotation.IsTripelBier = model.IsTripelBier;
     quotation.Opmerking = model.Opmerking;
 
     await _dbContext.SaveChangesAsync();

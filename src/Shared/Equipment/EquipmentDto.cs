@@ -1,4 +1,4 @@
-using FluentValidation;
+﻿using FluentValidation;
 
 namespace shared.Equipment;
 
@@ -28,9 +28,25 @@ public static class EquipmentDto
       {
         RuleFor(x => x.Amount).NotEmpty();
       }
-
     }
   }
+
+  public class LinesDetail
+  {
+    public int EquipmentId { get; set; }
+    public int Amount { get; set; }
+    public decimal Price { get; set; }
+    public string Name { get; set; } = default!;
+
+    public class Validator : AbstractValidator<EquipmentDto.Lines>
+    {
+      public Validator()
+      {
+        RuleFor(x => x.Amount).NotEmpty().GreaterThanOrEqualTo(1).WithMessage("Het aantal moet meer zijn dan 0");
+      }
+    }
+  }
+
   public class ImageData {
       public string ImageUrl { get; set; }
 

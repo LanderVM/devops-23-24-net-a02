@@ -44,7 +44,7 @@ public class QuotationTests
       : _formula.BasePrice[days - 1];
 
     quotation.QuotationLines.Count.ShouldBe(0);
-    quotation.Status.ShouldBe(QuotationStatus.Unread);
+    quotation.Status.ShouldBe(QuotationStatus.Open);
     quotation.OriginalFormulaPricePerDay.ShouldBe(_formula.BasePrice);
     quotation.OriginalFormulaPricePerDayExtra.ShouldBe(_formula.PricePerDayExtra);
     quotation.GetPrice().ShouldBe(totalPrice);
@@ -82,7 +82,7 @@ public class QuotationTests
     totalPrice += ((2 * _equipment[0].Price) + (5 * _equipment[1].Price)) * ((days + 2) / 3);
 
     quotation.QuotationLines.Count.ShouldBe(2);
-    quotation.Status.ShouldBe(QuotationStatus.Unread);
+    quotation.Status.ShouldBe(QuotationStatus.Open);
     quotation.OriginalFormulaPricePerDay.ShouldBe(_formula.BasePrice);
     quotation.OriginalFormulaPricePerDayExtra.ShouldBe(_formula.PricePerDayExtra);
     quotation.GetPrice().ShouldBe(totalPrice);

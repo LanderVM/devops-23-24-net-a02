@@ -8,6 +8,7 @@ using Domain.Exceptions;
 using Domain.Formulas;
 using Domain.Quotations;
 using shared.Quotations;
+using shared.GoogleMaps;
 
 namespace Server.Services;
 
@@ -64,7 +65,7 @@ public class EmailService : IEmailService
 
   }
 
-  public async Task<QuotationResponse.Edit> SendConfirmationMail(QuotationResponse.Create model)
+  public async Task<QuotationResponse.Edit> SendConfirmationMail(QuotationResponse.Create model, GoogleMapsDto.Response distancePrice)
   {
     QuotationResponse.Edit result = new QuotationResponse.Edit
     {
@@ -119,10 +120,13 @@ public class EmailService : IEmailService
       QuotationLines = equipmentItems
     };
 
-    Console.WriteLine(model.Opmerking);
-    await Console.Out.WriteLineAsync(quotation.Opmerking);
+    DistancePrice distance = new DistancePrice
+    {
+      PricePerKilometer = distancePrice.PricePerKm,
+      DistanceAmount = distancePrice.DistanceAmount
+    };
 
-    mailSender.SendNewQuote(quotation);
+    mailSender.SendNewQuote(quotation, distance);
 
     return result;
   }

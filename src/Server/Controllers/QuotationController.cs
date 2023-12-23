@@ -3,6 +3,7 @@ using shared.Quotations;
 using shared.GoogleMaps;
 using Swashbuckle.AspNetCore.Annotations;
 using devops_23_24_net_a02.Shared.Emails;
+using Shared.Common;
 using Microsoft.AspNetCore.Authorization;
 
 namespace devops_23_24_net_a02.Server.Controllers;
@@ -36,6 +37,13 @@ public class QuotationController : ControllerBase
     return result;
   }
 
+  [HttpGet("{QuotationId}")]
+  [SwaggerOperation("Returns a quotation that matches the given id")]
+  public async Task<QuotationResult.DetailEdit> GetSpecificDetailQuotation(int QuotationId)
+  {
+    return await _quotationService.GetSpecificDetailEditAsync(QuotationId);
+  }
+
   [HttpPost]
   [SwaggerOperation("Saves a new quotation offer, registering a new customer if need be")]
   public async Task<IActionResult> RegisterQuotationRequest(QuotationDto.Create model)
@@ -50,15 +58,18 @@ public class QuotationController : ControllerBase
     return CreatedAtAction(nameof(RegisterQuotationRequest), quotation); // TODO QuotationResponse ipv QuotationResult teruggeven
   }
 
-  [HttpPut]
+  [HttpPut("{QuotationId}")]
   [SwaggerOperation("Changes a quotation offer and send a mail to the costumer")]
   [Authorize]
   public async Task<QuotationResponse.Edit> UpdateQuotationRequest(int QuotationId, QuotationDto.Edit model)
   {
     _logger.Log(LogLevel.Information, "Fetching quotation with id {QuotationId} to edit based off model: {model.ToString()}", QuotationId, model.ToString());
     var quotation = await _quotationService.UpdateAsync(QuotationId, model);
+    var address = $"{quotation.EventLocation.Street} {quotation.EventLocation.HouseNumber}, {quotation.EventLocation.City} {quotation.EventLocation.PostalCode}";
     _logger.Log(LogLevel.Information, "Updated quotation with id {QuotationId}: {quotation.ToString()}", QuotationId, quotation.ToString());
-    var result = await _emailService.SendConfirmationMail(quotation);
+    var distancePrice = await _googleMapsService.GetDistanceAsync(address);
+    _logger.Log(LogLevel.Information, "Fetching distance from GoogleMaps API for calculating distance price", QuotationId, quotation.ToString());
+    var result = await _emailService.SendConfirmationMail(quotation, distancePrice);
     _logger.Log(LogLevel.Information, "Sending confirmation mail for quotation with id {result.QuotationId}", result.QuotationId);
     return result;
   }

@@ -3,6 +3,7 @@
 public interface IQuotationService
 {
   Task<QuotationResult.Index> GetIndexAsync();
+  Task<QuotationResult.DetailEdit> GetSpecificDetailEditAsync(int quotationId);
   Task<QuotationResult.Dates> GetDatesAsync();
 
   Task<QuotationResult.Detail> GetPriceEstimationDetailsAsync();

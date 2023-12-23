@@ -3,6 +3,7 @@ using Shared.Common;
 using Shared.Customer;
 using shared.Equipment;
 using shared.Formulas;
+using Domain.Quotations;
 
 namespace shared.Quotations;
 
@@ -11,8 +12,12 @@ public static class QuotationResult
   public class Index
   {
     public IEnumerable<QuotationDto.Index>? Quotation { get; set; }
-
     public int TotalAmount { get; set; }
+  }
+
+  public class DetailEdit
+  {
+    public QuotationDto.DetailEdit Quotation { get; set; } = default!;
   }
 
   public class Dates
