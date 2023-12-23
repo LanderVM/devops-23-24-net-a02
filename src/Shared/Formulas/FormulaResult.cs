@@ -15,6 +15,11 @@ public class FormulaResult
     public ImageData? Image { get; set; }
   }
   
+  public class EditWithoutImage
+  {
+    public int Id { get; set; }
+  }
+  
   
 }
 

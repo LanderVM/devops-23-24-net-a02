@@ -24,14 +24,17 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddTransient<CleanErrorHandler>();
 
-// Attaches access token to each HTTP request
 builder.Services.AddHttpClient("FoodtruckAPI", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
        .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>()
-       .AddHttpMessageHandler<CleanErrorHandler>(); ;
+       .AddHttpMessageHandler<CleanErrorHandler>();
 builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>()
        .CreateClient("FoodtruckAPI"));
 
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+builder.Services.AddHttpClient("PublicAPI", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
+  .AddHttpMessageHandler<CleanErrorHandler>();
+builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>()
+  .CreateClient("PublicAPI"));
+
 builder.Services.AddScoped<PersonalDetailsState>();
 builder.Services.AddScoped<ExtraMaterialState>();
 builder.Services.AddScoped<QuotationEstimateState>();

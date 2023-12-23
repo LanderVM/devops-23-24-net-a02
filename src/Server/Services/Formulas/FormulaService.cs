@@ -78,7 +78,7 @@ public class FormulaService: IFormulaService
 
     if (formula is null)
     {
-      throw new Exception($"Equipment with id: {formulaId} doesn't exist");
+      throw new Exception($"Formula with id: {formulaId} doesn't exist");
     }
 
     Image image = new Image(_storageService.BasePath, model.ImageContentType!);
@@ -103,6 +103,32 @@ public class FormulaService: IFormulaService
               AltText = formula.Description.Title
             }
             
+    };
+
+    return result;
+  }
+
+  
+  public async Task<FormulaResult.EditWithoutImage> UpdateWithoutImageAsync(int formulaId, FormulaDto.Mutate model)
+  {
+    Formula? formula = await _dbContext.Formulas.FirstOrDefaultAsync(x => x.Id == formulaId);
+
+    if (formula is null)
+    {
+      throw new Exception($"Formula with id: {formulaId} doesn't exist");
+    }
+    
+    formula.Description = new Description(model.Title, model.Attributes.Split('\n').ToList());
+    formula.BasePrice = model.BasePrice.Split('\n').Select(decimal.Parse).ToList();
+    formula.PricePerDayExtra = model.PricePerDayExtra;
+    formula.IsActive = model.IsActive;
+    
+    await _dbContext.SaveChangesAsync();
+    
+    
+    FormulaResult.EditWithoutImage result = new FormulaResult.EditWithoutImage
+    {
+      Id = formula.Id
     };
 
     return result;

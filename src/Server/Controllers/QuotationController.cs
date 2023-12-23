@@ -4,6 +4,7 @@ using shared.GoogleMaps;
 using Swashbuckle.AspNetCore.Annotations;
 using devops_23_24_net_a02.Shared.Emails;
 using Shared.Common;
+using Microsoft.AspNetCore.Authorization;
 
 namespace devops_23_24_net_a02.Server.Controllers;
 
@@ -59,6 +60,7 @@ public class QuotationController : ControllerBase
 
   [HttpPut("{QuotationId}")]
   [SwaggerOperation("Changes a quotation offer and send a mail to the costumer")]
+  [Authorize]
   public async Task<QuotationResponse.Edit> UpdateQuotationRequest(int QuotationId, QuotationDto.Edit model)
   {
     _logger.Log(LogLevel.Information, "Fetching quotation with id {QuotationId} to edit based off model: {model.ToString()}", QuotationId, model.ToString());

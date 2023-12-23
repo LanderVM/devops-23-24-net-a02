@@ -1,6 +1,6 @@
 ﻿
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using shared.Equipment;
 using shared.Formulas;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -30,6 +30,7 @@ public class FormulaController : ControllerBase
   
   [HttpGet("{formulaId}")]
   [SwaggerOperation("Returns a specific formula based on id.")]
+  [Authorize]
   public async Task<FormulaDto.Mutate> GetSpecificFormulaMutate(int formulaId)
   {
     _logger.Log(LogLevel.Information, "Fetching formula with id {formulaId}", formulaId);
@@ -40,10 +41,22 @@ public class FormulaController : ControllerBase
   
   [SwaggerOperation("Edits a formula in the catalog.")]
   [HttpPut("{formulaId}")]
+  [Authorize]
   public async Task<FormulaResult.Edit> Edit(int formulaId, FormulaDto.Mutate model)
   {
     _logger.Log(LogLevel.Information, "Fetching formula with id {formulaId} to edit based off model: {model.ToString}", formulaId, model.ToString());
     var result = await _formulaService.UpdateAsync(formulaId, model);
+    _logger.Log(LogLevel.Information, "Edited equipment with id {formulaId}: {result.ToString}", formulaId, result.ToString());
+    return result;
+  }
+  
+  [SwaggerOperation("Edits a formula in the catalog without changing the image.")]
+  [HttpPut("WithoutImage/{formulaId}")]
+  [Authorize]
+  public async Task<FormulaResult.EditWithoutImage> EditWithoutImage(int formulaId, FormulaDto.Mutate model)
+  {
+    _logger.Log(LogLevel.Information, "Fetching formula with id {formulaId} to edit based off model: {model.ToString}", formulaId, model.ToString());
+    var result = await _formulaService.UpdateWithoutImageAsync(formulaId, model);
     _logger.Log(LogLevel.Information, "Edited equipment with id {formulaId}: {result.ToString}", formulaId, result.ToString());
     return result;
   }

@@ -1,35 +1,41 @@
-﻿using System.Net.Http.Json;
-using shared.Equipment;
+using System.Net.Http.Json;
 using shared.Formulas;
-
 namespace devops_23_24_net_a02.Client.Pages.Formulas
 {
   public class FormulaService : IFormulaService
   {
-    private readonly HttpClient client;
+    
+    private readonly HttpClient publicClient;
+    private readonly HttpClient adminClient;
     private const string endpoint = "/api/formula";
 
-    public FormulaService(HttpClient client)
-    {
-      this.client = client;
+    public FormulaService(IHttpClientFactory  httpClientFactory) {
+      adminClient = httpClientFactory.CreateClient("FoodtruckAPI");
+      publicClient = httpClientFactory.CreateClient("PublicAPI");
     }
 
     public async Task<FormulaResult.Index> GetIndexAsync()
     {
-      FormulaResult.Index response = await client.GetFromJsonAsync<FormulaResult.Index>(endpoint);
+      FormulaResult.Index response = await publicClient.GetFromJsonAsync<FormulaResult.Index>(endpoint);
       return response;
     }
 
     public async Task<FormulaDto.Mutate> GetSpecificMutateAsync(int formulaId)
     {
-      FormulaDto.Mutate? response = await client.GetFromJsonAsync<FormulaDto.Mutate>($"{endpoint}/{formulaId}");
+      FormulaDto.Mutate? response = await adminClient.GetFromJsonAsync<FormulaDto.Mutate>($"{endpoint}/{formulaId}");
       return response;
     }
 
     public async Task<FormulaResult.Edit> UpdateAsync(int formulaId, FormulaDto.Mutate model)
     {
-      var response = await client.PutAsJsonAsync($"{endpoint}/{formulaId}", model);
+      var response = await adminClient.PutAsJsonAsync($"{endpoint}/{formulaId}", model);
       return await response.Content.ReadFromJsonAsync<FormulaResult.Edit>();
+    }
+
+    public async Task<FormulaResult.EditWithoutImage> UpdateWithoutImageAsync(int formulaId, FormulaDto.Mutate model)
+    {
+      var response = await adminClient.PutAsJsonAsync($"{endpoint}/WithoutImage/{formulaId}", model);
+      return await response.Content.ReadFromJsonAsync<FormulaResult.EditWithoutImage>();
     }
   }
 }
