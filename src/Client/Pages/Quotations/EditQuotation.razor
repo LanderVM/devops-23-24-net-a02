@@ -1,7 +1,5 @@
-﻿@using shared.Quotations;
-@using shared.Equipment;
-@using Microsoft.AspNetCore.Components;
-
+﻿@using shared.Quotations
+@using shared.Equipment
 <Loader IsLoading=@(_loader)>
     <EditForm Model="@Model" OnValidSubmit="AcceptQuotationAsync">
         <Blazored.FluentValidation.FluentValidationValidator/>
@@ -96,59 +94,60 @@
                 </MudItem>
             </MudGrid>
         </MudPaper>
-
         <MudPaper Class="pa-5 my-6" xs="6">
-            <MudTable Items="Model.EquipmentList" CanCancelEdit="true" Hover="true" Context="items">
-                <ToolBarContent>
-                    <MudText Typo="Typo.h6">Extra items</MudText>
-                </ToolBarContent>
-                <ColGroup>
-                    <col style="width:80%;"/>
-                    <col/>
-                    <col/>
-                    <col/>
-                    <col/>
-                </ColGroup>
-                <HeaderContent>
-                    <MudTh>
-                        <MudTableSortLabel SortBy="new Func<EquipmentDto.LinesDetail, object>(x => x.Name)">Naam</MudTableSortLabel>
-                    </MudTh>
-                    <MudTh>
-                        <MudTableSortLabel SortBy="new Func<EquipmentDto.LinesDetail, object>(x => x.Amount)">Aantal</MudTableSortLabel>
-                    </MudTh>
-                    <MudTh>
-                        <MudTableSortLabel SortBy="new Func<EquipmentDto.LinesDetail, object>(x => x.Price)">Eenheid</MudTableSortLabel>
-                    </MudTh>
-                    <MudTh>
-                        <MudTableSortLabel SortBy="new Func<EquipmentDto.LinesDetail, object>(x => x.Price * x.Amount)">Totaal</MudTableSortLabel>
-                    </MudTh>
-                </HeaderContent>
-                <RowTemplate>
-                    <MudTd DataLabel="Naam">@items.Name</MudTd>
-                    <MudTd DataLabel="Aantal">@items.Amount</MudTd>
-                    <MudTd DataLabel="Eenheid">€ @items.Price</MudTd>
-                    <MudTd DataLabel="Totaal">€ @decimal.Round(@items.Price * @items.Amount, 2)</MudTd>
-                    <MudIcon Class="ma-4" Icon="@Icons.Outlined.Delete" @onclick="@(async () => await DeleteEntry(items))" Size="Size.Small"></MudIcon>
-                </RowTemplate>
-                <RowEditingTemplate>
-                    <MudTd DataLabel="Name">
-                        <MudText>@items.Name</MudText>
-                    </MudTd>
-                    <MudTd DataLabel="Aantal">
-                        <MudNumericField @bind-Value="@items.Amount" For="(() => items.Amount)" Required Min="1"/>
-                    </MudTd>
-                    <MudTd DataLabel="Eenheid">
-                        <MudText>€ @items.Price</MudText>
-                    </MudTd>
-                    <MudTd DataLabel="Totaal">
-                        <MudText>€ @decimal.Round(@items.Price * @items.Amount, 2)</MudText>
-                    </MudTd>
-                </RowEditingTemplate>
-                <EditButtonContent Context="button">
-                    <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" Class="pa-0" OnClick="@button.ButtonAction" Disabled="@button.ButtonDisabled"/>
-                </EditButtonContent>
-            </MudTable>
-
+            @if (Model.EquipmentList.ToList().Count != 0)
+            {
+                <MudTable Items="Model.EquipmentList" CanCancelEdit="true" Hover="true" Context="items">
+                    <ToolBarContent>
+                        <MudText Typo="Typo.h6">Extra items</MudText>
+                    </ToolBarContent>
+                    <ColGroup>
+                        <col style="width:80%;"/>
+                        <col/>
+                        <col/>
+                        <col/>
+                        <col/>
+                    </ColGroup>
+                    <HeaderContent>
+                        <MudTh>
+                            <MudTableSortLabel SortBy="new Func<EquipmentDto.LinesDetail, object>(x => x.Name)">Naam</MudTableSortLabel>
+                        </MudTh>
+                        <MudTh>
+                            <MudTableSortLabel SortBy="new Func<EquipmentDto.LinesDetail, object>(x => x.Amount)">Aantal</MudTableSortLabel>
+                        </MudTh>
+                        <MudTh>
+                            <MudTableSortLabel SortBy="new Func<EquipmentDto.LinesDetail, object>(x => x.Price)">Eenheid</MudTableSortLabel>
+                        </MudTh>
+                        <MudTh>
+                            <MudTableSortLabel SortBy="new Func<EquipmentDto.LinesDetail, object>(x => x.Price * x.Amount)">Totaal</MudTableSortLabel>
+                        </MudTh>
+                    </HeaderContent>
+                    <RowTemplate>
+                        <MudTd DataLabel="Naam">@items.Name</MudTd>
+                        <MudTd DataLabel="Aantal">@items.Amount</MudTd>
+                        <MudTd DataLabel="Eenheid">€ @items.Price</MudTd>
+                        <MudTd DataLabel="Totaal">€ @decimal.Round(items.Price * items.Amount, 2)</MudTd>
+                        <MudIcon Class="ma-4" Icon="@Icons.Material.Outlined.Delete" @onclick="@(async () => await DeleteEntry(items))" Size="Size.Small"></MudIcon>
+                    </RowTemplate>
+                    <RowEditingTemplate>
+                        <MudTd DataLabel="Name">
+                            <MudText>@items.Name</MudText>
+                        </MudTd>
+                        <MudTd DataLabel="Aantal">
+                            <MudNumericField @bind-Value="@items.Amount" For="(() => items.Amount)" Required Min="1"/>
+                        </MudTd>
+                        <MudTd DataLabel="Eenheid">
+                            <MudText>€ @items.Price</MudText>
+                        </MudTd>
+                        <MudTd DataLabel="Totaal">
+                            <MudText>€ @decimal.Round(@items.Price * @items.Amount, 2)</MudText>
+                        </MudTd>
+                    </RowEditingTemplate>
+                    <EditButtonContent Context="button">
+                        <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" Class="pa-0" OnClick="@button.ButtonAction" Disabled="@button.ButtonDisabled"/>
+                    </EditButtonContent>
+                </MudTable>
+            }
             <MudSwitch @bind-Checked="Model.IsTripelBier"
                        For="@(() => Model.IsTripelBier)"
                        Label="Tripel bier"
@@ -171,7 +170,7 @@
                 </MudButton>
             </MudItem>
             <MudItem xs="6">
-                <MudButton Class="d-flex align-center justify-center mud-width-full py-2" Variant="Variant.Filled" Size="Size.Large" Color="Color.Primary" OnClick="Close">
+                <MudButton Class="d-flex align-center justify-center mud-width-full py-2" Variant="Variant.Filled" Size="Size.Large" Color="Color.Primary">
                     Annuleren
                 </MudButton>
             </MudItem>
@@ -236,7 +235,7 @@
 
         if (Model.EquipmentList.Contains(item))
         {
-            Model.EquipmentList = Model.EquipmentList.Where(e => e.EquipmentId != itemToDelete.EquipmentId).ToList();
+            Model.EquipmentList = Model.EquipmentList.Where(e => itemToDelete is not null && e.EquipmentId != itemToDelete.EquipmentId).ToList();
             StateHasChanged();
         }
     }
