@@ -1,63 +1,95 @@
 ﻿@using shared.Quotations;
 @using shared.Equipment;
-@using Client.Files;
 @using Microsoft.AspNetCore.Components;
-@using Microsoft.AspNetCore.Components.Forms;
-@using FluentValidation;
 
-<Loader IsLoading=@(loader)>
+<Loader IsLoading=@(_loader)>
     <EditForm Model="@Model" OnValidSubmit="AcceptQuotationAsync">
-    <Blazored.FluentValidation.FluentValidationValidator />
+        <Blazored.FluentValidation.FluentValidationValidator/>
         <MudPaper Class="pa-5 my-6">
             <MudGrid>
                 <MudItem xs="3">
-                     <MudText><b>Naam:</b></MudText>
+                    <MudText>
+                        <b>Naam:</b>
+                    </MudText>
                 </MudItem>
                 <MudItem xs="9">
-                     <MudText>@Quotation.Customer.FirstName @Quotation.Customer.LastName</MudText>
+                    <MudText>@Quotation.Customer.FirstName @Quotation.Customer.LastName</MudText>
                 </MudItem>
 
                 <MudItem xs="3">
-                    <MudText><b>Email:</b></MudText>
+                    <MudText>
+                        <b>Telefoonnummer:</b>
+                    </MudText>
+                </MudItem>
+                <MudItem xs="9">
+                    <MudText>@Quotation.Customer.PhoneNumber</MudText>
+                </MudItem>
+
+                <MudItem xs="3">
+                    <MudText>
+                        <b>Email:</b>
+                    </MudText>
                 </MudItem>
                 <MudItem xs="9">
                     <MudText>@Quotation.Customer.Email.Email</MudText>
                 </MudItem>
 
                 <MudItem xs="3">
-                    <MudText><b>Adres event:</b></MudText>
+                    <MudText>
+                        <b>Factuuradres:</b>
+                    </MudText>
                 </MudItem>
                 <MudItem xs="9">
-                    <MudText>@Quotation.EventLocation.Street @Quotation.EventLocation.HouseNumber, @Quotation.EventLocation.City @Quotation.EventLocation.PostalCode</MudText>
+                    <MudText>@Quotation.Customer.BillingAddress.Street @Quotation.Customer.BillingAddress.HouseNumber, @Quotation.Customer.BillingAddress.City @Quotation.Customer.BillingAddress.PostalCode</MudText>
                 </MudItem>
 
-                <MudItem xs="3">
-                    <MudText><b>Telefoonnummer:</b></MudText>
-                </MudItem>
-                <MudItem xs="9">
-                    <MudText>@Quotation.Customer.PhoneNumber</MudText>
-                </MudItem>
+                @if (Quotation.Customer.VatNumber != null)
+                {
+                    <MudItem xs="3">
+                        <MudText>
+                            <b>BTW:</b>
+                        </MudText>
+                    </MudItem>
+                    <MudItem xs="9">
+                        <MudText>@Quotation.Customer.VatNumber</MudText>
+                    </MudItem>
+                }
             </MudGrid>
 
-            <MudDivider Class="my-8" />
+            <MudDivider Class="my-8"/>
 
             <MudGrid>
                 <MudItem xs="3">
-                    <MudText><b>Formule:</b></MudText>
+                    <MudText>
+                        <b>Gekozen formule:</b>
+                    </MudText>
                 </MudItem>
                 <MudItem xs="9">
                     <MudText>@Quotation.Formula.Title</MudText>
                 </MudItem>
 
                 <MudItem xs="3">
-                    <MudText><b>Verwacht aantal personen:</b></MudText>
+                    <MudText>
+                        <b>Locatieadres:</b>
+                    </MudText>
+                </MudItem>
+                <MudItem xs="9">
+                    <MudText>@Quotation.EventLocation.Street @Quotation.EventLocation.HouseNumber, @Quotation.EventLocation.City @Quotation.EventLocation.PostalCode</MudText>
+                </MudItem>
+
+                <MudItem xs="3">
+                    <MudText>
+                        <b>Verwacht aantal personen:</b>
+                    </MudText>
                 </MudItem>
                 <MudItem xs="9">
                     <MudText>@Quotation.NumberOfPeople</MudText>
                 </MudItem>
 
                 <MudItem xs="3">
-                    <MudText><b>Status:</b></MudText>
+                    <MudText>
+                        <b>Status:</b>
+                    </MudText>
                 </MudItem>
                 <MudItem xs="9">
                     <MudText>@Quotation.Status</MudText>
@@ -71,57 +103,65 @@
                     <MudText Typo="Typo.h6">Extra items</MudText>
                 </ToolBarContent>
                 <ColGroup>
-                    <col style="width:80%;" />
-                    <col />
-                    <col />
-                    <col />
-                    <col />
+                    <col style="width:80%;"/>
+                    <col/>
+                    <col/>
+                    <col/>
+                    <col/>
                 </ColGroup>
                 <HeaderContent>
-                    <MudTh><MudTableSortLabel SortBy="new Func<EquipmentDto.LinesDetail, object>(x=>x.Name)">Naam</MudTableSortLabel></MudTh>
-                    <MudTh><MudTableSortLabel SortBy="new Func<EquipmentDto.LinesDetail, object>(x=>x.Amount)">Aantal</MudTableSortLabel></MudTh>
-                    <MudTh><MudTableSortLabel SortBy="new Func<EquipmentDto.LinesDetail, object>(x=>x.Price)">Eenheid</MudTableSortLabel></MudTh>
-                    <MudTh><MudTableSortLabel SortBy="new Func<EquipmentDto.LinesDetail, object>(x=>x.Price * x.Amount)">Totaal</MudTableSortLabel></MudTh>
+                    <MudTh>
+                        <MudTableSortLabel SortBy="new Func<EquipmentDto.LinesDetail, object>(x => x.Name)">Naam</MudTableSortLabel>
+                    </MudTh>
+                    <MudTh>
+                        <MudTableSortLabel SortBy="new Func<EquipmentDto.LinesDetail, object>(x => x.Amount)">Aantal</MudTableSortLabel>
+                    </MudTh>
+                    <MudTh>
+                        <MudTableSortLabel SortBy="new Func<EquipmentDto.LinesDetail, object>(x => x.Price)">Eenheid</MudTableSortLabel>
+                    </MudTh>
+                    <MudTh>
+                        <MudTableSortLabel SortBy="new Func<EquipmentDto.LinesDetail, object>(x => x.Price * x.Amount)">Totaal</MudTableSortLabel>
+                    </MudTh>
                 </HeaderContent>
                 <RowTemplate>
                     <MudTd DataLabel="Naam">@items.Name</MudTd>
                     <MudTd DataLabel="Aantal">@items.Amount</MudTd>
                     <MudTd DataLabel="Eenheid">€ @items.Price</MudTd>
                     <MudTd DataLabel="Totaal">€ @decimal.Round(@items.Price * @items.Amount, 2)</MudTd>
-                    <MudIcon Class="ma-4" Icon="@Icons.Outlined.Delete" @onclick="@( async() => await DeleteEntry(items))" Size="Size.Small"></MudIcon>
+                    <MudIcon Class="ma-4" Icon="@Icons.Outlined.Delete" @onclick="@(async () => await DeleteEntry(items))" Size="Size.Small"></MudIcon>
                 </RowTemplate>
                 <RowEditingTemplate>
                     <MudTd DataLabel="Name">
                         <MudText>@items.Name</MudText>
-                     </MudTd>
-                     <MudTd DataLabel="Aantal">
-                         <MudNumericField @bind-Value="@items.Amount" For="(() => items.Amount)" Required Min="1" />
-                     </MudTd>
-                     <MudTd DataLabel="Eenheid">
-                         <MudText>€ @items.Price</MudText>
-                     </MudTd>
-                     <MudTd DataLabel="Totaal">
-                         <MudText>€ @decimal.Round(@items.Price * @items.Amount, 2)</MudText>
-                     </MudTd>
-                 </RowEditingTemplate>
-                 <EditButtonContent Context="button">
-                     <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" Class="pa-0" OnClick="@button.ButtonAction" Disabled="@button.ButtonDisabled" />
-                 </EditButtonContent>
-             </MudTable>
+                    </MudTd>
+                    <MudTd DataLabel="Aantal">
+                        <MudNumericField @bind-Value="@items.Amount" For="(() => items.Amount)" Required Min="1"/>
+                    </MudTd>
+                    <MudTd DataLabel="Eenheid">
+                        <MudText>€ @items.Price</MudText>
+                    </MudTd>
+                    <MudTd DataLabel="Totaal">
+                        <MudText>€ @decimal.Round(@items.Price * @items.Amount, 2)</MudText>
+                    </MudTd>
+                </RowEditingTemplate>
+                <EditButtonContent Context="button">
+                    <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" Class="pa-0" OnClick="@button.ButtonAction" Disabled="@button.ButtonDisabled"/>
+                </EditButtonContent>
+            </MudTable>
 
-             <MudSwitch @bind-Checked="Model.IsTripelBier"
-                        For="@(() => Model.IsTripelBier)"
-                        Label="Tripel bier"
-                        Class="my-8"
-                        Color="Color.Primary"
-                        UnCheckedColor="Color.Secondary" />
+            <MudSwitch @bind-Checked="Model.IsTripelBier"
+                       For="@(() => Model.IsTripelBier)"
+                       Label="Tripel bier"
+                       Class="my-8"
+                       Color="Color.Primary"
+                       UnCheckedColor="Color.Secondary"/>
 
-             <MudTextField @bind-Value="Model.Opmerking"
-                           For="@(() => Model.Opmerking)"
-                           Label="Opmerking"
-                           Variant="Variant.Outlined"
-                           Lines="3"
-                           Class="my-8" />
+            <MudTextField @bind-Value="Model.Opmerking"
+                          For="@(() => Model.Opmerking)"
+                          Label="Opmerking"
+                          Variant="Variant.Outlined"
+                          Lines="3"
+                          Class="my-8"/>
         </MudPaper>
 
         <MudGrid>
@@ -141,26 +181,30 @@
 
 
 @code {
+
     [Inject]
     private IQuotationService QuotationService { get; set; } = default!;
-    [Inject] 
+
+    [Inject]
     public ISnackbar Snackbar { get; set; } = default!;
 
     [Parameter]
-    public EventCallback Close { get; set; } = default!;
-    [Parameter]
-    public EventCallback Refresh { get; set; } = default!;
-    [Parameter]
-    public int QuotationId { get; set; } = default!;
+    public EventCallback Close { get; set; }
 
-    private QuotationDto.Edit Model { get; set; } = new QuotationDto.Edit();
-    private QuotationDto.DetailEdit Quotation { get; set; } = new QuotationDto.DetailEdit();
+    [Parameter]
+    public EventCallback Refresh { get; set; }
 
-    private bool loader = false;
+    [Parameter]
+    public int QuotationId { get; set; }
+
+    private QuotationDto.Edit Model { get; } = new();
+    private QuotationDto.DetailEdit Quotation { get; } = new();
+
+    private bool _loader;
 
     protected override async Task OnInitializedAsync()
     {
-        loader = true;
+        _loader = true;
         QuotationResult.DetailEdit response = await QuotationService.GetSpecificDetailEditAsync(QuotationId);
         Quotation.Formula = response.Quotation.Formula;
         Quotation.NumberOfPeople = response.Quotation.NumberOfPeople;
@@ -172,14 +216,14 @@
         Model.Opmerking = response.Quotation.Opmerking;
         Model.EquipmentList = response.Quotation.Equipment;
         Model.IsTripelBier = response.Quotation.IsTripelBier;
-        loader = false;
+        _loader = false;
         StateHasChanged();
     }
 
     private async Task AcceptQuotationAsync()
     {
         await QuotationService.UpdateAsync(QuotationId, Model);
-        Snackbar.Add("Je offerte werd succesvol verstuurd", MudBlazor.Severity.Success);
+        Snackbar.Add("Je offerte werd succesvol verstuurd", Severity.Success);
 
         await Close.InvokeAsync();
         await Refresh.InvokeAsync();
@@ -196,4 +240,5 @@
             StateHasChanged();
         }
     }
+
 }
