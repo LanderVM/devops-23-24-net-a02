@@ -1,9 +1,6 @@
-﻿using System;
-using Azure.Storage.Blobs;
+﻿using Azure.Storage.Blobs;
 using Azure.Storage.Sas;
 using devops_23_24_net_a02.Domain.Files;
-using HeyRed.Mime;
-using Microsoft.Extensions.Configuration;
 
 namespace devops_23_24_net_a02.Services.Files;
 
@@ -11,7 +8,7 @@ public class BlobStorageService : IStorageService
 {
   private readonly string connectionString;
 
-  public Uri BasePath => new Uri("https://a2blanchestorage.blob.core.windows.net/images");
+  public Uri BasePath => new("https://a2blanchestorage.blob.core.windows.net/images");
 
   public BlobStorageService(IConfiguration configuration)
   {
