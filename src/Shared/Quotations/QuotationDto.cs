@@ -55,8 +55,6 @@ public static class QuotationDto
         RuleFor(model => new { model.StartTime, model.EndTime })
           .Must(model => model.EndTime - model.StartTime >= 0)
           .WithMessage("De begin tijd kan niet starten achter de eind tijd!");
-        RuleFor(model => model.IsTripelBier).NotEmpty()
-          .WithMessage("De keuze voor tripel bier moet aangevuld zijn!");
         RuleFor(model => model.EstimatedNumberOfPeople).GreaterThan(0)
           .WithMessage("Het verwacht aantal personen kan niet minder dan 0 zijn!");
       }
