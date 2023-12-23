@@ -147,7 +147,7 @@ public class MailSender
     if (distancePrice.DistanceAmount.HasValue)
     {
       decimal? vervoerskosten = distancePrice.PricePerKilometer * distancePrice.DistanceAmount;
-      decimal btw = vervoerskosten.Value * 0.21M; 
+      decimal btw = vervoerskosten.Value * 0.21M;
 
       contentBuilder.Append("<tr>");
       contentBuilder.Append($"<td style='border: 1px solid #ddd; padding: 10px; text-align: center; width: 12%'>{distancePrice.DistanceAmount} Km</td>");
@@ -156,6 +156,8 @@ public class MailSender
       contentBuilder.Append($"<td style='border: 1px solid #ddd; padding: 10px; text-align: center; width: 13%;'>{(distancePrice.PricePerKilometer * distancePrice.DistanceAmount).Value.ToString("C2")}</td>");
       contentBuilder.Append($"<td style='border: 1px solid #ddd; padding: 10px; text-align: center; width: 22%;'>{btw.ToString("C2")}</td>");
       contentBuilder.Append("</tr>");
+
+      totalPrice += vervoerskosten.Value + btw;
     }
 
 

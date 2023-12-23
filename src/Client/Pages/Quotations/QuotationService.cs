@@ -69,13 +69,13 @@ public class QuotationService : IQuotationService
 
   public async Task<QuotationResult.Create> CreateAsync(QuotationDto.Create model)
   {
-    var response = await client.PostAsJsonAsync(endpoint, model);
+    var response = await publicClient.PostAsJsonAsync(endpoint, model);
     return await response.Content.ReadFromJsonAsync<QuotationResult.Create>();
   }
 
   public async Task<QuotationResponse.Create> UpdateAsync(int QuotationId, QuotationDto.Edit model)
   {
-    var response = await client.PutAsJsonAsync($"{endpoint}/{QuotationId}", model);
+    var response = await adminClient.PutAsJsonAsync($"{endpoint}/{QuotationId}", model);
     return await response.Content.ReadFromJsonAsync<QuotationResponse.Create>();
   }
 }
