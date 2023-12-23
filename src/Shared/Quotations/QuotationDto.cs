@@ -38,7 +38,7 @@ public static class QuotationDto
   public class Estimate
   {
     public int FormulaId { get; set; }
-    public List<int> EquipmentIds { get; set; } = default!;
+    public List<int>? EquipmentIds { get; set; }
     public long StartTime { get; set; }
     public long EndTime { get; set; }
     public int EstimatedNumberOfPeople { get; set; }

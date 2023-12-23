@@ -276,19 +276,14 @@ public class QuotationService : IQuotationService
 
     var equipmentDtoQuery = new List<EquipmentDto.Index>();
 
-    if (model.EquipmentIds.Any())
+    if (model.EquipmentIds is not null && model.EquipmentIds.Any())
     {
       equipmentDtoQuery = await queryEquipment
         .Where(x => model.EquipmentIds.Contains(x.Id))
         .Select(z => new EquipmentDto.Index { Id = z.Id, Price = z.Price }).ToListAsync();
     }
 
-    List<Equipment> equipmentList = new();
-    foreach (var item in equipmentDtoQuery)
-    {
-      Equipment equipment = new(item.Price);
-      equipmentList.Add(equipment);
-    }
+    List<Equipment> equipmentList = equipmentDtoQuery.Select(item => new Equipment(item.Price)).ToList();
 
     chosenFormula.Equipment.AddRange(equipmentList);
 
