@@ -131,8 +131,7 @@ public class QuotationService : IQuotationService
         model.Customer.LastName,
         GetCustomerEmail(model)
         ?? new Email(model.Customer.Email.Email),
-        GetCustomerAddress(model)
-        ?? new BillingAddress(model.Customer.BillingAddress.Street,
+        new BillingAddress(model.Customer.BillingAddress.Street,
           model.Customer.BillingAddress.HouseNumber,
           model.Customer.BillingAddress.City,
           model.Customer.BillingAddress.PostalCode),
@@ -153,7 +152,7 @@ public class QuotationService : IQuotationService
     }
 
     if (customer.Email.IsActive is false)
-      customer.Email.IsActive = true; // TODO nieuwe maken of gewoon terug actief zetten?
+      customer.Email.IsActive = true;
 
     Quotation quotation = new Quotation(
       chosenFormula,
@@ -216,18 +215,6 @@ public class QuotationService : IQuotationService
     return _dbContext.Emails.FirstOrDefault(email => email.Value == model.Customer.Email.Email);
   }
 
-  private BillingAddress? GetCustomerAddress(QuotationDto.Create model)
-  {
-    var result = _dbContext.Customers.Include(customer => customer.BillingAddress)
-      .FirstOrDefault(customerFromDb =>
-        customerFromDb != null
-        && customerFromDb.BillingAddress.Street == model.Customer.BillingAddress.Street
-        && customerFromDb.BillingAddress.HouseNumber == model.Customer.BillingAddress.HouseNumber
-        && customerFromDb.BillingAddress.PostalCode == model.Customer.BillingAddress.PostalCode
-        && customerFromDb.BillingAddress.City == model.Customer.BillingAddress.City, null)?.BillingAddress;
-    return result;
-  }
-
   private static bool EqualsCustomer(QuotationDto.Create model, Customer customerFromDb)
   {
     return customerFromDb.FirstName == model.Customer.FirstName
@@ -283,7 +270,7 @@ public class QuotationService : IQuotationService
 
     List<EquipmentDto.Index> equipmentDtoQuery = new List<EquipmentDto.Index>();
 
-    if (model.EquipmentIds != null && model.EquipmentIds.Any())
+    if (model.EquipmentIds.Any())
     {
       equipmentDtoQuery = await queryEquipment
         .Where(x => model.EquipmentIds.Contains(x.Id))
@@ -320,12 +307,11 @@ public class QuotationService : IQuotationService
     }
 
     var quotationLines = new List<QuotationLine>();
-    if (model.EquipmentList is not null)
-      quotationLines.AddRange(from lines in model.EquipmentList
-        let equipment = _dbContext.Equipments.FirstOrDefault(equipment => equipment.Id == lines.EquipmentId)
-        where equipment is not null
-        select new QuotationLine(equipment, lines.Amount)
-      );
+    quotationLines.AddRange(from lines in model.EquipmentList
+      let equipment = _dbContext.Equipments.FirstOrDefault(equipment => equipment.Id == lines.EquipmentId)
+      where equipment is not null
+      select new QuotationLine(equipment, lines.Amount)
+    );
 
     quotation.QuotationLines = quotationLines;
     quotation.Status = QuotationStatus.Accepted;
