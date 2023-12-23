@@ -58,7 +58,7 @@
                 </MudItem>
             </MudGrid>
 
-            @if (QuotationEstimateState.FormulaId is not null && QuotationEstimateState.FormulaId.Id != 1)
+            @if (QuotationEstimateState.FormulaId is not null && QuotationEstimateState.FormulaId != Formulas!.ToList()[0])
             {
                 <MudGrid Class="my-5 align-center">
                     <MudItem>
