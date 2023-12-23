@@ -114,7 +114,7 @@ public class QuotationService : IQuotationService
     };
   }
 
-  public async Task<QuotationResult.Create> CreateAsync(QuotationDto.Create model)
+  public async Task<QuotationResponse.Create> CreateAsync(QuotationDto.Create model)
   {
     Formula? chosenFormula = _dbContext.Formulas.FirstOrDefault(formula => formula.Id == model.FormulaId);
     if (chosenFormula is null)
@@ -147,12 +147,11 @@ public class QuotationService : IQuotationService
     var quotationLines = new List<QuotationLine>();
     foreach (var lines in model.Equipments)
     {
-      
-        var equipment = _dbContext.Equipments.FirstOrDefault(equipment => equipment.Id == lines.EquipmentId);
+      var equipment = _dbContext.Equipments.FirstOrDefault(equipment => equipment.Id == lines.EquipmentId);
+      if (equipment is not null)
+      {
         quotationLines.Add(new QuotationLine(equipment, lines.Amount));
-     
-      
-      
+      }
     }
     if (customer.Email.IsActive is false)
       customer.Email.IsActive = true; // TODO nieuwe maken of gewoon terug actief zetten?
@@ -175,9 +174,10 @@ public class QuotationService : IQuotationService
 
     _dbContext.Quotations.Add(quotation);
     await _dbContext.SaveChangesAsync();
-    QuotationResult.Create result = new QuotationResult.Create
+    QuotationResponse.Create result = new QuotationResponse.Create
     {
       QuotationId = quotation.Id,
+      FormulaId = chosenFormula.Id,
       EventLocation = new AddressDto
       {
         Street = quotation.EventLocation.Street,

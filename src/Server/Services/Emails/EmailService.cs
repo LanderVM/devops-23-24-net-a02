@@ -9,6 +9,7 @@ using Domain.Formulas;
 using Domain.Quotations;
 using shared.Quotations;
 using shared.GoogleMaps;
+using static shared.Equipment.EquipmentDto;
 
 namespace Server.Services;
 
@@ -108,11 +109,66 @@ public class EmailService : IEmailService
       model.EventLocation.PostalCode
       );
 
+    Quotation quotation = new(formule, customer, eventLocation, equipmentItems, model.StartTime, model.EndTime, model.NumberOfPeople, model.IsTripelBier)
+    {
+      Opmerking = model.Opmerking,
+      QuotationLines = equipmentItems
+    };
+
+    DistancePrice distance = new DistancePrice
+    {
+      PricePerKilometer = distancePrice.PricePerKm,
+      DistanceAmount = distancePrice.DistanceAmount
+    };
+
+
     EmailConfiguration emailConfig = EmailConfiguration.GetInstance();
+
     string mail = emailConfig.Mail;
     string password = emailConfig.Password;
 
     MailSender mailSender = new MailSender(mail, model.Customer.Email.Email, new System.Net.NetworkCredential(mail, password));
+
+   
+    mailSender.SendQuoteToCustomer(quotation, distance);
+
+    return result;
+  }
+
+  public async Task SendQuotationMail(QuotationResponse.Create model, GoogleMapsDto.Response distancePrice)
+  {
+
+    var formule = _dbContext.Formulas.FirstOrDefault(formule => formule.Id == model.FormulaId);
+    if (formule is null)
+    {
+      throw new Exception($"Formula with Id: {model.FormulaId}, does not exist");
+    }
+
+    var equipmentItems = new List<QuotationLine>();
+    foreach (var item in model.Equipments)
+    {
+      var equipment = _dbContext.Equipments.FirstOrDefault(equipment => equipment.Id == item.EquipmentId);
+      if (equipment is not null)
+      {
+        equipmentItems.Add(new QuotationLine(new Equipment(equipment.Description.Title, equipment.Price), item.Amount));
+      }
+    }
+
+    Customer customer = new(
+      model.Customer.FirstName,
+      model.Customer.LastName,
+      new Email(model.Customer.Email.Email),
+      new BillingAddress(model.Customer.BillingAddress.Street, model.Customer.BillingAddress.HouseNumber, model.Customer.BillingAddress.City, model.Customer.BillingAddress.PostalCode),
+      new PhoneNumber(model.Customer.PhoneNumber),
+      model.Customer.VatNumber is null ? null : new VatNumber(model.Customer.VatNumber)
+      );
+
+    EventLocation eventLocation = new(
+      model.EventLocation.Street,
+      model.EventLocation.HouseNumber,
+      model.EventLocation.City,
+      model.EventLocation.PostalCode
+      );
 
     Quotation quotation = new(formule, customer, eventLocation, equipmentItems, model.StartTime, model.EndTime, model.NumberOfPeople, model.IsTripelBier)
     {
@@ -126,9 +182,15 @@ public class EmailService : IEmailService
       DistanceAmount = distancePrice.DistanceAmount
     };
 
-    mailSender.SendNewQuote(quotation, distance);
 
-    return result;
+    EmailConfiguration emailConfig = EmailConfiguration.GetInstance();
+
+    string mail = emailConfig.Mail;
+    string password = emailConfig.Password;
+
+    MailSender mailSender = new MailSender(mail, mail, new System.Net.NetworkCredential(mail, password));
+
+    
+    mailSender.ReceiveQuoteFromCustomer(quotation, distance);
   }
-
 }

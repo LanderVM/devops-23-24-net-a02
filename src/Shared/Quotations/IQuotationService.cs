@@ -9,7 +9,7 @@ public interface IQuotationService
   Task<QuotationResult.Detail> GetPriceEstimationDetailsAsync();
   Task<QuotationResult.Calculation> GetPriceEstimationPrice(QuotationDto.Estimate model);
 
-  Task<QuotationResult.Create> CreateAsync(QuotationDto.Create model);
+  Task<QuotationResponse.Create> CreateAsync(QuotationDto.Create model);
   Task<QuotationResponse.Create> UpdateAsync(int QuotationId, QuotationDto.Edit model);
 }
 

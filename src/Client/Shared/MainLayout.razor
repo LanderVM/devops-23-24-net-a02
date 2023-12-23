@@ -19,13 +19,14 @@
                     @Body
                 </ChildContent>
                 <ErrorContent>
+                    <NavBar />
                     <MudAlert Severity="Severity.Error"
-                              ContentAlignment="HorizontalAlignment.Right"
+                              ContentAlignment="HorizontalAlignment.Start"
                               ShowCloseIcon="true"
-                              CloseIconClicked="ResetError">
-                        Er ging iets mis!
+                              CloseIconClicked="ResetError"
+                              Class="ma-16">
+                        @Exception.Message
                     </MudAlert>
-                    @Body
                 </ErrorContent>
             </CustomErrorBoundary>
         </MudMainContent>

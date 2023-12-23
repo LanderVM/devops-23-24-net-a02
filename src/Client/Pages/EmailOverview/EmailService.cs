@@ -36,5 +36,10 @@ public class EmailService : IEmailService
   {
     throw new NotImplementedException();
   }
+
+  public Task SendQuotationMail(QuotationResponse.Create model, GoogleMapsDto.Response distancePrice)
+  {
+    throw new NotImplementedException();
+  }
 }
 

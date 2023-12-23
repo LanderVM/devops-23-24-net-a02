@@ -5,6 +5,7 @@ using Swashbuckle.AspNetCore.Annotations;
 using devops_23_24_net_a02.Shared.Emails;
 using Shared.Common;
 using Microsoft.AspNetCore.Authorization;
+using Domain.Quotations;
 
 namespace devops_23_24_net_a02.Server.Controllers;
 
@@ -39,6 +40,7 @@ public class QuotationController : ControllerBase
 
   [HttpGet("{QuotationId}")]
   [SwaggerOperation("Returns a quotation that matches the given id")]
+  [Authorize]
   public async Task<QuotationResult.DetailEdit> GetSpecificDetailQuotation(int QuotationId)
   {
     return await _quotationService.GetSpecificDetailEditAsync(QuotationId);
@@ -51,11 +53,14 @@ public class QuotationController : ControllerBase
     _logger.Log(LogLevel.Information,
       "Registering new quotation request at {model} for {(model.Customer.FirstName + model.Customer.LastName)}",
       model.EventLocation, (model.Customer.FirstName + model.Customer.LastName));
-    QuotationResult.Create quotation = await _quotationService.CreateAsync(model);
+    QuotationResponse.Create quotation = await _quotationService.CreateAsync(model);
     _logger.Log(LogLevel.Information,
       "Registered new quotation request at {model} for {(model.Customer.FirstName + model.Customer.LastName)}",
       model.EventLocation, (model.Customer.FirstName + model.Customer.LastName));
-    return CreatedAtAction(nameof(RegisterQuotationRequest), quotation); // TODO QuotationResponse ipv QuotationResult teruggeven
+    var address = $"{quotation.EventLocation.Street} {quotation.EventLocation.HouseNumber}, {quotation.EventLocation.City} {quotation.EventLocation.PostalCode}";
+    var distancePrice = await _googleMapsService.GetDistanceAsync(address);
+    await _emailService.SendQuotationMail(quotation, distancePrice);
+    return CreatedAtAction(nameof(RegisterQuotationRequest), quotation); 
   }
 
   [HttpPut("{QuotationId}")]

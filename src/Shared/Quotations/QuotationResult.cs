@@ -31,22 +31,9 @@ public static class QuotationResult
     public IEnumerable<EquipmentDto.Select> Equipment { get; set; } = default!;
     public IEnumerable<DateDto> UnavailableDates { get; set; } = default!;
   }
-
-    public class Create
-    {
-      public int QuotationId { get; set; } = default!;
-      public int FormulaId { get; set; } = default!;
-      public AddressDto EventLocation { get; set; } = default!;
-      public DateTime StartTime { get; set; } = default!;
-      public DateTime EndTime { get; set; } = default!;
-      public List<EquipmentDto.Lines> Equipments { get; set; } = default!;
-      public CustomerDto.Details Customer { get; set; } = default!;
-      public Boolean IsTripelBier { get; set; } = default!;
-      public int NumberOfPeople { get; set; } = default!;
-    }
-    
-    public class Calculation
-    {
-      public decimal EstimatedPrice { get; set; }
-    }
+  
+  public class Calculation
+  {
+    public decimal EstimatedPrice { get; set; }
+  }
 }

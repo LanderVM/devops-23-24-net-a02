@@ -7,5 +7,6 @@ public interface IEmailService
 {
   Task<int> CreateAsync(EmailDto.Create model);
   Task<QuotationResponse.Edit> SendConfirmationMail(QuotationResponse.Create model, GoogleMapsDto.Response distancePrice);
+  Task SendQuotationMail(QuotationResponse.Create model, GoogleMapsDto.Response distancePrice);
   Task<EmailResult.Index> GetEmailsAsync();
 }
