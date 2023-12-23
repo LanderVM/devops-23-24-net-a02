@@ -3,19 +3,19 @@
 @attribute [Authorize]
 @inject IStorageService StorageService;
 
-<EditForm Model="@formula" OnValidSubmit="UpdateFormulaAsync">
+<EditForm Model="@Formula" OnValidSubmit="UpdateFormulaAsync">
     <Blazored.FluentValidation.FluentValidationValidator/>
 
-    <MudTextField @bind-Value="formula.Title"
-                  For="@(() => formula.Title)"
+    <MudTextField @bind-Value="Formula.Title"
+                  For="@(() => Formula.Title)"
                   Label="Titel"
                   Variant="Variant.Outlined"
                   data-test-id="formulas-admin-edit-title"/>
 
-    <MudNumericField @bind-Value="formula.PricePerDayExtra"
+    <MudNumericField @bind-Value="Formula.PricePerDayExtra"
                      Class="mt-3"
                      Label="Prijs extra dagen"
-                     For="@(() => formula.PricePerDayExtra)"
+                     For="@(() => Formula.PricePerDayExtra)"
                      Variant="Variant.Outlined"
                      Step="1"
                      Min="0"
@@ -23,21 +23,21 @@
 
     <MudText Class="mt-5 mb-1" Typo="Typo.body2">Plaats elk element op een nieuwe lijn</MudText>
 
-    <MudTextField @bind-Value="formula.BasePrice"
+    <MudTextField @bind-Value="Formula.BasePrice"
                   Label="Basisprijs"
-                  For="@(() => formula.BasePrice)"
+                  For="@(() => Formula.BasePrice)"
                   Variant="Variant.Outlined"
                   Lines="3"
                   data-test-id="formulas-admin-edit-basePrice"/>
 
-    <MudTextField @bind-Value="formula.Attributes"
+    <MudTextField @bind-Value="Formula.Attributes"
                   Label="Kenmerken"
                   Variant="Variant.Outlined"
                   Lines="5"
                   data-test-id="formulas-admin-edit-attributes"/>
 
-    <MudCheckBox @bind-Checked="@formula.IsActive"
-                 For="@(() => formula.IsActive)"
+    <MudCheckBox @bind-Checked="@Formula.IsActive"
+                 For="@(() => Formula.IsActive)"
                  Label="Is Actief"
                  Color="Color.Primary"
                  Size="Size.Medium">
@@ -121,39 +121,33 @@
     [Parameter]
     public EventCallback Refresh { get; set; }
 
-    private IBrowserFile? image;
+    private IBrowserFile? _image;
 
-    private FormulaDto.Mutate formula { get; } = new();
+    private FormulaDto.Mutate Formula { get; set; } = new();
 
-    protected override async Task OnParametersSetAsync()
+    protected override async Task OnInitializedAsync()
     {
-        formula.ImageData = new FormulaDto.ImageData
-        {
-            ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/7/77/Google_Images_2015_logo.svg",
-            AltText = "a google image"
-        };
         var response = await FormulaService.GetSpecificMutateAsync(FormulaId);
-
-        formula.Title = response.Title;
-        formula.Attributes = response.Attributes;
-        formula.BasePrice = response.BasePrice;
-        formula.PricePerDayExtra = Math.Round(response.PricePerDayExtra, 0);
-        formula.IsActive = response.IsActive;
-        formula.ImageData = response.ImageData;
+        Formula = new FormulaDto.Mutate
+        {
+            Title = response.Title,
+            Attributes = response.Attributes,
+            BasePrice = response.BasePrice,
+            PricePerDayExtra = Math.Round(response.PricePerDayExtra, 0),
+            IsActive = response.IsActive,
+            ImageData = response.ImageData
+        };
         StateHasChanged();
     }
 
     private async Task UpdateFormulaAsync()
     {
-        if (image == null)
+        if (_image is not null)
         {
-            await FormulaService.UpdateWithoutImageAsync(FormulaId, formula);
+            var result = await FormulaService.UpdateAsync(FormulaId, Formula);
+            await StorageService.UploadImageAsync(result.Image.ImageUrl, _image!);
         }
-        else
-        {
-            var result = await FormulaService.UpdateAsync(FormulaId, formula);
-            await StorageService.UploadImageAsync(result.Image.ImageUrl, image!);
-        }
+        else await FormulaService.UpdateWithoutImageAsync(FormulaId, Formula);
 
         await Close.InvokeAsync();
         await Refresh.InvokeAsync();
@@ -182,7 +176,7 @@
 
     private void ClearDragClass()
     {
-        image = null;
+        _image = null;
         _dragClass = DefaultDragClass;
     }
 
@@ -196,15 +190,15 @@
             var newestFile = files.First();
             _fileNames.Add(newestFile.Name);
 
-            image = e.File;
-            formula.ImageContentType = image.ContentType;
+            _image = e.File;
+            Formula.ImageContentType = _image.ContentType;
         }
     }
 
     private void LoadImage(InputFileChangeEventArgs e)
     {
-        image = e.File;
-        formula.ImageContentType = image.ContentType;
+        _image = e.File;
+        Formula.ImageContentType = _image.ContentType;
     }
 
 }

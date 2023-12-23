@@ -140,6 +140,11 @@
         StateHasChanged();
     }
 
+    private void Cancel()
+    {
+        Close.InvokeAsync();
+    }
+
     private async Task UpdateEquipmentAsync()
     {
         if (_image is not null)
@@ -148,11 +153,12 @@
             await StorageService.UploadImageAsync(result.Image!.ImageUrl!, _image!);
         }
         else await EquipmentService.UpdateAsync(EquipmentId, Model);
+
         await Close.InvokeAsync();
         await Refresh.InvokeAsync();
     }
 
-        private const string DefaultDragClass = "relative rounded-lg border-2 pa-4 mt-4 mud-width-full mud-height-full z-10";
+    private const string DefaultDragClass = "relative rounded-lg border-2 pa-4 mt-4 mud-width-full mud-height-full z-10";
     private string _dragClass = DefaultDragClass;
 
     private readonly List

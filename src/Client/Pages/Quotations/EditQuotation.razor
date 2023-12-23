@@ -223,6 +223,11 @@
         _buttonSize = Quotation.Status == QuotationStatus.Accepted ? 12 : 6;
         StateHasChanged();
     }
+    
+    private void Cancel()
+    {
+        Close.InvokeAsync();
+    }
 
     private async Task UpdateQuotationAsync()
     {
