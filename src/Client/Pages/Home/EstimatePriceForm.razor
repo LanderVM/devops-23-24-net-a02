@@ -58,15 +58,17 @@
                 </MudItem>
             </MudGrid>
 
-            <MudGrid Class="my-5 align-center">
-                <MudItem>
-                    <MudText>Tripel bier?</MudText>
-                </MudItem>
-                <MudItem>
-                    <MudCheckBox Immediate="true" @bind-Checked="QuotationEstimateState.IsTripelBier"></MudCheckBox>
-                </MudItem>
-            </MudGrid>
-
+            @if (QuotationEstimateState.FormulaId is not null && QuotationEstimateState.FormulaId.Id != 1)
+            {
+                <MudGrid Class="my-5 align-center">
+                    <MudItem>
+                        <MudText>Tripel bier in plaats van pils</MudText>
+                    </MudItem>
+                    <MudItem>
+                        <MudCheckBox Immediate="true" @bind-Checked="QuotationEstimateState.IsTripelBier"></MudCheckBox>
+                    </MudItem>
+                </MudGrid>
+            }
             <MudGrid Class="my-5" Spacing="5">
                 @if (_showPrice)
                 {

@@ -51,9 +51,9 @@
             <div style="width: 100%">
                 @if (FormulaState.ChosenFormulaId != 1)
                 {
-                    <MudSwitch @bind-Checked="@EventDetailsState.HasTripleBeer" Label="Bestel trippel bier i.p.v. blond" Color="Color.Primary" UnCheckedColor="Color.Secondary"/>
+                    <MudSwitch @bind-Checked="@EventDetailsState.HasTripleBeer" Label="Bestel tripel bier i.p.v. pils" Color="Color.Primary" UnCheckedColor="Color.Secondary"/>
                 }
-                <MudNumericField Class="d-inline-flex" @bind-Value="@EventDetailsState.NumberOfPeople" Label="Aantal Personen"Min="0" Max="50000" Error="@numberOfPeopleError" ErrorText="Gelieve een geldig nummer op te geven"/>
+                <MudNumericField Class="d-inline-flex" @bind-Value="@EventDetailsState.NumberOfPeople" Label="Aantal Personen" Min="0" Max="50000" Error="@numberOfPeopleError" ErrorText="Gelieve een geldig nummer op te geven"/>
             </div>
 
 
