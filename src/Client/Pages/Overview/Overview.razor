@@ -145,15 +145,15 @@
                             <OverviewCostSmallFontsizeComponent Title="@FormulaState.Title"
                                                                 PriceFormula="@GetPriceFormulaWithoutBeerAndBarbeque()"
                                                                 TotalWithoutBtw="@CalculateTotalWithoutBtw()"
-                                                                BtwOnTotal="CalculateBtwOnTotal()"
-                                                                TotalWithBtw="@decimal.Round(CalculateTotalWithoutBtw(), 2) + decimal.Round(CalculateBtwOnTotal(), 2)"/>
+                                                                BtwOnTotal="@CalculateBtwOnTotal()"
+                                                                TotalWithBtw="@CalculateTotalWithBtw()"/>
                         </MudHidden>
                         <MudHidden Breakpoint="Breakpoint.Xs">
-                            <OverviewCostComponent Title="@FormulaState.Title"
-                                                   PriceFormula="@GetPriceFormulaWithoutBeerAndBarbeque()"
-                                                   TotalWithoutBtw="@CalculateTotalWithoutBtw()"
-                                                   BtwOnTotal="CalculateBtwOnTotal()"
-                                                   TotalWithBtw="@decimal.Round(CalculateTotalWithoutBtw(), 2) + decimal.Round(CalculateBtwOnTotal(), 2)"/>
+                            <OverviewCostSmallFontsizeComponent Title="@FormulaState.Title"
+                            PriceFormula="@GetPriceFormulaWithoutBeerAndBarbeque()"
+                            TotalWithoutBtw="@CalculateTotalWithoutBtw()"
+                            BtwOnTotal="@CalculateBtwOnTotal()"
+                            TotalWithBtw="@CalculateTotalWithBtw()" />
                         </MudHidden>
                     }
                 </MudItem>
@@ -320,6 +320,11 @@
             }
         }
         return CalculateTransportCost() * 0.21M + GetPriceFormulaWithoutBeerAndBarbeque() * 0.21M + GetPriceBeer() * 0.12M + GetPriceBarbeque() * 0.12M + extrasCostBtw;
+    }
+
+    private decimal CalculateTotalWithBtw()
+    {
+        return decimal.Round(CalculateTotalWithoutBtw(), 2) + decimal.Round(CalculateBtwOnTotal(), 2);
     }
 
     private async Task CreateQuotationAsync()

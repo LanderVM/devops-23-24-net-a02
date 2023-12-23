@@ -8,27 +8,27 @@
                 <MudPopover Open="@_isMenuOpen" Fixed="true" Class="px-4 pt-4" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight">
                     <div class="d-flex flex-column">
                         <AuthorizeView>
-                            <NavLink href="@Routes.Quotations "@onclick="ToggleMenuOpen">
+                            <NavLink href=@Routes.Quotations @onclick="ToggleMenuOpen">
                                 <p class="appBarNavItemDropDown">Offertes</p>
                             </NavLink>
-                            <NavLink href="@Routes.ExtraMaterialAdmin "@onclick="ToggleMenuOpen">
+                            <NavLink href=@Routes.ExtraMaterialAdmin @onclick="ToggleMenuOpen">
                                 <p class="appBarNavItemDropDown">Extra Items</p>
                             </NavLink>
-                            <NavLink href="@Routes.FormulasAdmin "@onclick="ToggleMenuOpen">
+                            <NavLink href=@Routes.FormulasAdmin @onclick="ToggleMenuOpen">
                                 <p class="appBarNavItemDropDown">Formules</p>
                             </NavLink>
-                            <NavLink href="@Routes.EmailOverview "@onclick="ToggleMenuOpen">
+                            <NavLink href=@Routes.EmailOverview @onclick="ToggleMenuOpen">
                                 <p class="appBarNavItemDropDown">Emails</p>
                             </NavLink>
                             <MudDivider/>
                         </AuthorizeView>
-                        <NavLink href="@Routes.Home "@onclick="ToggleMenuOpen">
+                        <NavLink href=@Routes.Home @onclick="ToggleMenuOpen">
                             <p class="appBarNavItemDropDown">Home</p>
                         </NavLink>
-                        <NavLink href="@Routes.Formula "@onclick="ToggleMenuOpen">
+                        <NavLink href=@Routes.Formula @onclick="ToggleMenuOpen">
                             <p class="appBarNavItemDropDown">Verhuur</p>
                         </NavLink>
-                        <NavLink href="@Routes.About "@onclick="ToggleMenuOpen">
+                        <NavLink href=@Routes.About @onclick="ToggleMenuOpen">
                             <p class="appBarNavItemDropDown">Over ons</p>
                         </NavLink>
                     </div>
@@ -37,27 +37,27 @@
 
             <div class="navivgation">
                 <AuthorizeView>
-                    <NavLink href="@Routes.Quotations">
+                    <NavLink href=@Routes.Quotations>
                         <p class="appBarNavItem">Offertes</p>
                     </NavLink>
-                    <NavLink href="@Routes.ExtraMaterialAdmin">
+                    <NavLink href=@Routes.ExtraMaterialAdmin>
                         <p class="appBarNavItem">Extra Items</p>
                     </NavLink>
-                    <NavLink href="@Routes.FormulasAdmin">
+                    <NavLink href=@Routes.FormulasAdmin>
                         <p class="appBarNavItem">Formules</p>
                     </NavLink>
-                    <NavLink href="@Routes.EmailOverview">
+                    <NavLink href=@Routes.EmailOverview>
                         <p class="appBarNavItem">Emails</p>
                     </NavLink>
                     <div style="padding-right: 40px"/>
                 </AuthorizeView>
-                <NavLink href="@Routes.Home">
+                <NavLink href=@Routes.Home>
                     <p class="appBarNavItem">Home</p>
                 </NavLink>
-                <NavLink href="@Routes.Formula">
+                <NavLink href=@Routes.Formula>
                     <p class="appBarNavItem">Verhuur</p>
                 </NavLink>
-                <NavLink href="@Routes.About">
+                <NavLink href=@Routes.About>
                     <p class="appBarNavItem">Over ons</p>
                 </NavLink>
             </div>
