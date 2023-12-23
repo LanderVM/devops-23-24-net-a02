@@ -7,14 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <SupportedPlatform Include="browser" />
+    <SupportedPlatform Include="browser"/>
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentValidation" Version="11.8.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Domain\devops-23-24-net-a02.Domain.csproj" />
+    <PackageReference Include="FluentValidation" Version="11.8.0"/>
   </ItemGroup>
 </Project>

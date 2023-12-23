@@ -1,4 +1,4 @@
-﻿namespace Domain.Quotations;
+﻿namespace Shared.Quotations;
 
 public enum QuotationStatus
 {

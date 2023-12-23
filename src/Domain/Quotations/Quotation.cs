@@ -1,6 +1,7 @@
 ﻿using Domain.Common;
 using Domain.Customers;
 using Domain.Formulas;
+using Shared.Quotations;
 
 namespace Domain.Quotations;
 

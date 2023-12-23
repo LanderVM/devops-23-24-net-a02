@@ -1,10 +1,9 @@
-﻿using Domain.Quotations;
-using FluentValidation;
+﻿using FluentValidation;
 using shared.Equipment;
 using shared.Formulas;
-using Domain.Common;
 using Shared.Customer;
 using shared.Common;
+using Shared.Quotations;
 
 namespace shared.Quotations;
 
@@ -22,7 +21,7 @@ public static class QuotationDto
     public int QuotationId { get; set; }
     public FormulaDto.Select Formula { get; set; } = default!;
     public CustomerDto.Details Customer { get; set; } = default!;
-    public EventLocation EventLocation { get; set; } = default!;
+    public AddressDto EventLocation { get; set; } = default!;
     public IEnumerable<EquipmentDto.LinesDetail> Equipment { get; set; } = default!;
     public bool IsTripelBier { get; set; }
     public decimal NumberOfPeople { get; set; }
@@ -69,6 +68,7 @@ public static class QuotationDto
     public string? Opmerking { get; set; }
     public IEnumerable<EquipmentDto.LinesDetail> EquipmentList { get; set; } = default!;
     public bool IsTripelBier { get; set; }
+    public bool IsAccepted { get; set; }
   }
 
   public class Create

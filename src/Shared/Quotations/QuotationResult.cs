@@ -1,9 +1,6 @@
-﻿using shared.Common;
-using Shared.Common;
-using Shared.Customer;
+﻿using Shared.Common;
 using shared.Equipment;
 using shared.Formulas;
-using Domain.Quotations;
 
 namespace shared.Quotations;
 

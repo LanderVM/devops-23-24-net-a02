@@ -9,7 +9,7 @@ using Domain.Formulas;
 using Domain.Quotations;
 using shared.Quotations;
 using shared.GoogleMaps;
-using static shared.Equipment.EquipmentDto;
+using Shared.Quotations;
 
 namespace Server.Services;
 

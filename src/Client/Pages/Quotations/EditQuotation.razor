@@ -1,7 +1,8 @@
 ﻿@using shared.Quotations
 @using shared.Equipment
+@using global::Shared.Quotations
 <Loader IsLoading=@(_loader)>
-    <EditForm Model="@Model" OnValidSubmit="AcceptQuotationAsync">
+    <EditForm Model="@Model" OnValidSubmit="UpdateQuotationAsync">
         <Blazored.FluentValidation.FluentValidationValidator/>
         <MudPaper Class="pa-5 my-6">
             <MudGrid>
@@ -161,15 +162,17 @@
                           Variant="Variant.Outlined"
                           Lines="3"/>
         </MudPaper>
-
-        <MudGrid Class="my-8">
-            <MudItem xs="6">
-                <MudButton Class="d-flex align-center justify-center mud-width-full py-2" Variant="Variant.Filled" Size="Size.Large" Color="Color.Primary" ButtonType="ButtonType.Submit">
-                    Pas aan
-                </MudButton>
-            </MudItem>
-            <MudItem xs="6">
-                <MudButton Class="d-flex align-center justify-center mud-width-full py-2" Variant="Variant.Filled" Size="Size.Large" Color="Color.Primary">
+        <MudGrid Class="my-1">
+            @if (Quotation.Status == QuotationStatus.Open)
+            {
+                <MudItem xs="@_buttonSize">
+                    <MudButton Class="d-flex align-center justify-center mud-width-full py-2" Variant="Variant.Filled" Size="Size.Large" Color="Color.Primary" ButtonType="ButtonType.Submit">
+                        Doorsturen
+                    </MudButton>
+                </MudItem>
+            }
+            <MudItem xs="@_buttonSize">
+                <MudButton Class="d-flex align-center justify-center mud-width-full py-2" Variant="Variant.Filled" Size="Size.Large" Color="Color.Primary" OnClick="Close">
                     Annuleren
                 </MudButton>
             </MudItem>
@@ -200,10 +203,12 @@
 
     private bool _loader;
 
+    private int _buttonSize = 6;
+
     protected override async Task OnInitializedAsync()
     {
         _loader = true;
-        QuotationResult.DetailEdit response = await QuotationService.GetSpecificDetailEditAsync(QuotationId);
+        var response = await QuotationService.GetSpecificDetailEditAsync(QuotationId);
         Quotation.Formula = response.Quotation.Formula;
         Quotation.NumberOfPeople = response.Quotation.NumberOfPeople;
         Quotation.IsTripelBier = response.Quotation.IsTripelBier;
@@ -215,13 +220,15 @@
         Model.EquipmentList = response.Quotation.Equipment;
         Model.IsTripelBier = response.Quotation.IsTripelBier;
         _loader = false;
+        _buttonSize = Quotation.Status == QuotationStatus.Accepted ? 12 : 6;
         StateHasChanged();
     }
 
-    private async Task AcceptQuotationAsync()
+    private async Task UpdateQuotationAsync()
     {
+        Model.IsAccepted = true;
         await QuotationService.UpdateAsync(QuotationId, Model);
-        Snackbar.Add("Je offerte werd succesvol verstuurd", Severity.Success);
+        Snackbar.Add("De offerte werd succesvol aangepast", Severity.Success);
 
         await Close.InvokeAsync();
         await Refresh.InvokeAsync();

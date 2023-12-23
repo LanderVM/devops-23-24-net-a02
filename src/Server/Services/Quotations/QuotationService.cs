@@ -6,12 +6,13 @@ using Domain.Formulas;
 using Domain.Quotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Shared.Common;
 using shared.Common;
+using Shared.Common;
 using Shared.Customer;
 using shared.Equipment;
 using shared.Formulas;
 using shared.Quotations;
+using Shared.Quotations;
 
 namespace Api.Data.Services.Quotations;
 
@@ -96,7 +97,13 @@ public class QuotationService : IQuotationService
           City = quotation.OrderedBy.BillingAddress.City,
         }
       },
-      EventLocation = quotation.EventLocation,
+      EventLocation = new AddressDto
+      {
+        Street = quotation.EventLocation.Street,
+        HouseNumber = quotation.EventLocation.HouseNumber,
+        City = quotation.EventLocation.City,
+        PostalCode = quotation.EventLocation.PostalCode,
+      },
       Equipment = quotation.QuotationLines.Select(line => new EquipmentDto.LinesDetail
       {
         Amount = line.AmountOrdered,
@@ -302,10 +309,7 @@ public class QuotationService : IQuotationService
       .ThenInclude(customer => customer.PhoneNumber).Include(quotation => quotation.OrderedBy)
       .ThenInclude(customer => customer.BillingAddress).Include(quotation => quotation.EventLocation)
       .FirstOrDefault(quotation => quotation.Id == QuotationId);
-    if (quotation is null)
-    {
-      throw new Exception($"No quotation found with Id: {QuotationId}");
-    }
+    if (quotation is null) throw new Exception($"No quotation found with Id: {QuotationId}");
 
     var quotationLines = new List<QuotationLine>();
     quotationLines.AddRange(from lines in model.EquipmentList
@@ -315,7 +319,7 @@ public class QuotationService : IQuotationService
     );
 
     quotation.QuotationLines = quotationLines;
-    quotation.Status = QuotationStatus.Accepted;
+    if (model.IsAccepted) quotation.Status = QuotationStatus.Accepted;
     quotation.IsTripelBier = model.IsTripelBier;
     quotation.Opmerking = model.Opmerking;
 

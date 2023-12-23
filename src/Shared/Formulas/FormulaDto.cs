@@ -1,6 +1,4 @@
-﻿using Domain.Formulas;
-using FluentValidation;
-using Shared.Common;
+﻿using FluentValidation;
 
 namespace shared.Formulas;
 public class FormulaDto {
@@ -39,7 +37,7 @@ public class FormulaDto {
     public ImageData ImageData { get; set; }
 
 
-    public class Validator : AbstractValidator<FormulaDto.Mutate>
+    public class Validator : AbstractValidator<Mutate>
     {
       public Validator()
       {

@@ -2,6 +2,7 @@
 using Domain.Customers;
 using Domain.Formulas;
 using Domain.Quotations;
+using Shared.Quotations;
 
 namespace Domain.Tests;
 
