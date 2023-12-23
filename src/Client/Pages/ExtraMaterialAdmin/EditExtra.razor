@@ -1,19 +1,17 @@
-@using shared.Equipment;
-@using Microsoft.AspNetCore.Components;
-@using Client.Files;
-
+@using shared.Equipment
+@using devops_23_24_net_a02.Client.Files
 @inject IEquipmentService EquipmentService;
 @inject IStorageService StorageService;
 
 
 <EditForm Model="@Model" OnValidSubmit="UpdateEquipmentAsync">
-    <Blazored.FluentValidation.FluentValidationValidator />
+    <Blazored.FluentValidation.FluentValidationValidator/>
 
     <MudTextField @bind-Value="Model.Title"
                   For="@(() => Model.Title)"
                   Label="Titel"
-                  Variant="Variant.Outlined" 
-                  data-test-id="admin-extra-edit-title" />
+                  Variant="Variant.Outlined"
+                  data-test-id="admin-extra-edit-title"/>
 
     <MudNumericField @bind-Value="Model.Price"
                      Class="mt-3"
@@ -21,8 +19,8 @@
                      For="@(() => Model.Price)"
                      Variant="Variant.Outlined"
                      Step="0.01M"
-                     Min="0.0M" 
-                     data-test-id="admin-extra-edit-price" />
+                     Min="0.0M"
+                     data-test-id="admin-extra-edit-price"/>
 
     <MudNumericField @bind-Value="Model.Stock"
                      Class="mt-3"
@@ -30,8 +28,8 @@
                      For="@(() => Model.Stock)"
                      Variant="Variant.Outlined"
                      Step="1"
-                     Min="0" 
-                     data-test-id="admin-extra-edit-stock" />
+                     Min="0"
+                     data-test-id="admin-extra-edit-stock"/>
 
     <MudText Class="mt-5 mb-1" Typo="Typo.body2">Onderscheid je attributen in de text met een ";"</MudText>
 
@@ -39,8 +37,8 @@
                   For="@(() => Model.Attributes)"
                   Label="Attributen"
                   Variant="Variant.Outlined"
-                  Lines="3" 
-                  data-test-id="admin-extra-edit-attributes" />
+                  Lines="3"
+                  data-test-id="admin-extra-edit-attributes"/>
 
     <MudCheckBox @bind-Checked="@Model.IsActive"
                  For="@(() => Model.IsActive)"
@@ -70,7 +68,7 @@
                             </MudText>
                             @foreach (var file in _fileNames)
                             {
-                                <MudChip Color="Color.Dark" Text="@file" />
+                                <MudChip Color="Color.Dark" Text="@file"/>
                             }
                         </MudPaper>
                         <MudToolBar DisableGutters="true"
@@ -103,7 +101,7 @@
             <MudButton Class="mr-1" Variant="Variant.Filled" FullWidth="true" Color="Color.Primary" ButtonType="ButtonType.Submit" data-test-id="extras-admin-edit-editbutton">Pas aan</MudButton>
         </MudItem>
         <MudItem xs="5">
-            <MudButton Class="ml-1" Variant="Variant.Filled" FullWidth="true" Color="Color.Primary" OnClick="Close">Annuleren</MudButton>
+            <MudButton Class="ml-1" Variant="Variant.Filled" FullWidth="true" Color="Color.Primary">Annuleren</MudButton>
         </MudItem>
         <MudItem xs="1">
 
@@ -114,61 +112,52 @@
 
 
 @code {
-    [Parameter]
-    public int EquipmentId { get; set; } = default!;
 
     [Parameter]
-    public EventCallback Close { get; set; } = default!;
+    public int EquipmentId { get; set; }
+
     [Parameter]
-    public EventCallback Refresh { get; set; } = default!;
+    public EventCallback Close { get; set; }
 
-    private IBrowserFile? image;
+    [Parameter]
+    public EventCallback Refresh { get; set; }
 
-    private EquipmentDto.Mutate Model { get; set; } = new EquipmentDto.Mutate();
+    private IBrowserFile? _image;
 
-    protected override async Task OnParametersSetAsync()
+    private EquipmentDto.Mutate Model { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync()
     {
-        Model.ImageData = new EquipmentDto.ImageData
-            {
-                ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/7/77/Google_Images_2015_logo.svg",
-                AltText = "a google image"
-
-            };
-
-        EquipmentDto.Mutate response = await EquipmentService.GetSpecificMutateAsync(EquipmentId);
-        Model.Title = response.Title;
-        Model.Stock = response.Stock;
-        Model.Price = Decimal.Round(response.Price,2);
-        Model.Attributes = response.Attributes;
-        Model.ImageData = response.ImageData;
-        Model.IsActive = response.IsActive;
+        var response = await EquipmentService.GetSpecificMutateAsync(EquipmentId);
+        Model = new EquipmentDto.Mutate
+        {
+            Title = response.Title,
+            Stock = response.Stock,
+            Price = decimal.Round(response.Price, 2),
+            Attributes = response.Attributes,
+            ImageData = response.ImageData,
+            IsActive = response.IsActive
+        };
         StateHasChanged();
     }
 
     private async Task UpdateEquipmentAsync()
     {
-        if (image == null)
+        if (_image is not null)
         {
-            await EquipmentService.UpdateAsync(EquipmentId, Model);
+            var result = await EquipmentService.UpdateWithImageAsync(EquipmentId, Model);
+            await StorageService.UploadImageAsync(result.Image!.ImageUrl!, _image!);
         }
-        else
-        {
-            EquipmentResult.CreateWithImage result = await EquipmentService.UpdateWithImageAsync(EquipmentId, Model);
-            await StorageService.UploadImageAsync(result.Image.ImageUrl, image!);
-        }
+        else await EquipmentService.UpdateAsync(EquipmentId, Model);
         await Close.InvokeAsync();
         await Refresh.InvokeAsync();
     }
 
-    private void Cancel()
-    {
-        Close.InvokeAsync();
-    }
-
-
-    private const string DefaultDragClass = "relative rounded-lg border-2 pa-4 mt-4 mud-width-full mud-height-full z-10";
+        private const string DefaultDragClass = "relative rounded-lg border-2 pa-4 mt-4 mud-width-full mud-height-full z-10";
     private string _dragClass = DefaultDragClass;
-    private readonly List<string> _fileNames = new();
+
+    private readonly List
+        <string> _fileNames = new();
 
     private async Task Clear()
     {
@@ -182,29 +171,22 @@
 
     private void ClearDragClass()
     {
-        image = null;
+        _image = null;
         _dragClass = DefaultDragClass;
     }
 
     private void OnInputFileChanged(InputFileChangeEventArgs e)
     {
         ClearDragClass();
+
         var files = e.GetMultipleFiles();
         _fileNames.Clear();
-        if (files.Any())
-        {
-            var newestFile = files.First();
-            _fileNames.Add(newestFile.Name);
+        if (!files.Any()) return;
 
-            image = e.File;
-            Model.ImageContentType = image.ContentType;
-        }  
-    }
-
-    private void LoadImage(InputFileChangeEventArgs e)
-    {
-        image = e.File;
-        Model.ImageContentType = image.ContentType;
+        var newestFile = files.First();
+        _fileNames.Add(newestFile.Name);
+        _image = e.File;
+        Model.ImageContentType = _image.ContentType;
     }
 
 }
