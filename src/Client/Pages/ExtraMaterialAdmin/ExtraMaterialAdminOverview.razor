@@ -69,14 +69,12 @@
     {
         var callback1 = EventCallback.Factory.Create(this, Close);
         var callback2 = EventCallback.Factory.Create(this, Refresh);
-
-        var equipmentId2 = (int)equipmentId;
-
+        
         var parameters = new Dictionary<string, object>
         {
             { nameof(EditExtra.Close), callback1 },
             { nameof(EditExtra.Refresh), callback2 },
-            { nameof(EditExtra.EquipmentId), equipmentId2 }
+            { nameof(EditExtra.EquipmentId), equipmentId }
         };
 
         Sidepanel.Open<EditExtra>("Extra item", "updaten", parameters);

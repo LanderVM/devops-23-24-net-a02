@@ -43,12 +43,11 @@
         Quotations = response.Quotation;
     }
 
-    private void UpdateItem(object QuotationId)
+    private void UpdateItem(object quotationId)
     {
         var callback1 = EventCallback.Factory.Create(this, Close);
         var callback2 = EventCallback.Factory.Create(this, Refresh);
 
-        var quotationId = (int)QuotationId;
 
         var parameters = new Dictionary<string, object>
         {

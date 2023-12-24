@@ -97,7 +97,9 @@
             <MudButton Class="mr-1" Variant="Variant.Filled" FullWidth="true" Color="Color.Primary" ButtonType="ButtonType.Submit" data-test-id="formulas-admin-edit-editbutton">Pas aan</MudButton>
         </MudItem>
         <MudItem xs="5">
-            <MudButton Class="ml-1" Variant="Variant.Filled" FullWidth="true" Color="Color.Primary" OnClick="Close">Annuleren</MudButton>
+            <MudButton Class="ml-1" Variant="Variant.Filled" FullWidth="true" Color="Color.Primary" OnClick="Close">
+                Annuleren
+            </MudButton>
         </MudItem>
         <MudItem xs="1">
 
@@ -158,7 +160,7 @@
         Close.InvokeAsync();
     }
 
-    private const string DefaultDragClass = "relative rounded-lg border-2 pa-4 mt-4 mud-width-full mud-height-full z-10";
+        private const string DefaultDragClass = "relative rounded-lg border-2 pa-4 mt-4 mud-width-full mud-height-full z-10";
     private string _dragClass = DefaultDragClass;
     private readonly List<string> _fileNames = new();
 
@@ -194,4 +196,5 @@
             Formula.ImageContentType = _image.ContentType;
         }
     }
+
 }
